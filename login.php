@@ -23,7 +23,7 @@
                     <input type="password" class="form-control" placeholder="Enter your password" name="password"
                         maxlength="15" required>
                 </div>
-                <div class="mb-3 ">
+                <div class="mb-3 justify-content-center align-items-center d-flex">
                     <button type="submit" name="loginForm" class="btn btn-primary">Submit</button>
                 </div>
             </form>
@@ -41,9 +41,9 @@
                     if ($password === $fetchedPassword) { ?>
                         <script>window.location.href = 'index.php'</script> <?php
                     } else { ?>
-                        <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Password</p><?php }
+                        <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Password.</p><?php }
                 } else { ?>
-                    <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Username</p><?php }
+                    <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Username.</p><?php }
             } ?>
         </div>
     </div>

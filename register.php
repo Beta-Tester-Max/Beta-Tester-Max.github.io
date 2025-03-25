@@ -13,7 +13,7 @@
 <body>
     <div class="container-fluid">
         <div class="position-absolute top-50 start-50 translate-middle">
-            <form method="POST" action="login.php">
+            <form method="POST" action="">
                 <div class="mb-3">
                     <label for="loginUsername" class="form-label">Username</label>
                     <input type="text" class="form-control" placeholder="Enter your username" name="username" required>
@@ -31,10 +31,20 @@
                 $username = $_POST['username'];
                 $password = $_POST['password'];
 
-                $sql = "INSERT INTO register_tbl (Username, Password)
+                $sql = "SELECT * FROM register_tbl where username = '$username'";
+                $result = mysqli_query($conn, $sql);
+
+                if (mysqli_num_rows($result) == 0) {
+                    $sql = "INSERT INTO register_tbl (Username, Password)
                         VALUES ('$username', '$password')";
 
-                mysqli_query($conn, $sql);
+                    if (mysqli_query($conn, $sql)) {
+                        ?>
+                        <script>window.location.href = "login.php"</script><?php
+                    }
+                } else { ?>
+                    <p class="text-danger justify-content-center align-items-center d-flex">Username Already Exists.</p><?php
+                }
             } ?>
         </div>
     </div>

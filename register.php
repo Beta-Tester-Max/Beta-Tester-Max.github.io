@@ -45,7 +45,7 @@
                 } else { ?>
                     <p class="text-danger justify-content-center align-items-center d-flex">Username Already Exists.</p><?php
                 }
-            } ?>
+            } $conn->close()?>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

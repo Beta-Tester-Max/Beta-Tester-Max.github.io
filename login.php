@@ -1,5 +1,6 @@
 <?php include 'connect.php'; 
-session_start();?>
+session_start();
+if (empty($_SESSION)) {?>
 <!doctype html>
 <html lang="en">
 
@@ -28,6 +29,7 @@ session_start();?>
                 <div class="mb-3 justify-content-center align-items-center d-flex">
                     <button type="submit" name="loginForm" class="btn btn-primary">Submit</button>
                 </div>
+                <p>Go to <a href="register.php">Sign up</a> or <a href="index.php">homepage</a></p>
             </form>
             <?php if (isset($_POST['loginForm'])) {
                 $account = $_POST['account'];
@@ -56,3 +58,4 @@ session_start();?>
 </body>
 
 </html>
+<?php } else {?> <script>window.location.href = 'index.php'</script><?php }

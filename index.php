@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!doctype html>
 <html lang="en">
 
@@ -14,7 +15,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">AICS/LOGO</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedCntent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -46,21 +47,35 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex position-absolute top-50 start-50 translate-middle" role="search">
+                <form class="d-flex m-auto" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
-                <ulv class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="login.php">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <p class="nav-link btn-secondary pe-none">or</p>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="register.php">Sign up</a>
-                    </li>
-                </ul>
+                <?php if (empty($_SESSION['username'])) { ?>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <p class="nav-link btn-secondary pe-none">or</p>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="register.php">Sign up</a>
+                        </li>
+                    </ul>
+                <?php } else { ?>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <?php echo $_SESSION['username'] ?>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                <?php } ?>
             </div>
         </div>
     </nav>

@@ -13,14 +13,26 @@
 <body>
     <div class="container-fluid">
         <div class="position-absolute top-50 start-50 translate-middle">
-            <form method="POST" action="">
+            <form method="POST">
                 <div class="mb-3">
-                    <label for="loginUsername" class="form-label">Username</label>
-                    <input type="text" class="form-control" placeholder="Enter your username" name="username" required>
+                    <label for="fname" class="form-label">First Name</label>
+                    <input type="text" maxlength="20" class="form-control" placeholder="Enter your First Name" name="fname" required>
                 </div>
                 <div class="mb-3">
-                    <label for="loginPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" placeholder="Enter your password" name="password"
+                    <label for="lname" class="form-label">Last Name</label>
+                    <input type="text" maxlength="20" class="form-control" placeholder="Enter your Last Name" name="lname" required>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" maxlength="25" class="form-control" placeholder="Enter your Username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" maxlength="25" class="form-control" placeholder="Enter your Email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" placeholder="Enter your Password" name="password"
                         maxlength="15" required>
                 </div>
                 <div class="mb-3 justify-content-center align-items-center d-flex">
@@ -28,19 +40,22 @@
                 </div>
             </form>
             <?php if (isset($_POST['registerForm'])) {
+                $fname = $_POST['fname'];
+                $lname = $_POST['lname'];
                 $username = $_POST['username'];
+                $email = $_POST['email'];
                 $password = $_POST['password'];
 
                 $sql = "SELECT * FROM register_tbl where username = '$username'";
                 $result = mysqli_query($conn, $sql);
 
                 if (mysqli_num_rows($result) == 0) {
-                    $sql = "INSERT INTO register_tbl (Username, Password)
-                        VALUES ('$username', '$password')";
+                    $sql = "INSERT INTO register_tbl (Fname, Lname, Username, Email, Password)
+                            VALUES ('$fname', '$lname', '$username', '$email', '$password')";
 
                     if (mysqli_query($conn, $sql)) {
                         ?>
-                        <script>window.location.href = "login.php"</script><?php
+                        <script>window.location.href = "login.php"</script> <?php
                     }
                 } else { ?>
                     <p class="text-danger justify-content-center align-items-center d-flex">Username Already Exists.</p><?php

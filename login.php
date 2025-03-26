@@ -1,4 +1,5 @@
-<?php include 'connect.php'; ?>
+<?php include 'connect.php'; 
+session_start();?>
 <!doctype html>
 <html lang="en">
 
@@ -13,14 +14,15 @@
 <body>
     <div class="container-fluid">
         <div class="position-absolute top-50 start-50 translate-middle">
-            <form method="POST" action="">
+            <form method="POST">
                 <div class="mb-3">
-                    <label for="loginUsername" class="form-label">Username</label>
-                    <input type="text" class="form-control" placeholder="Enter your username" name="username" required>
+                    <label for="account" class="form-label">Username or Email</label>
+                    <input type="text" class="form-control" placeholder="Enter Username/Email" name="account"
+                        maxlength="25" required>
                 </div>
                 <div class="mb-3">
-                    <label for="loginPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" placeholder="Enter your password" name="password"
+                    <label for="Password" class="form-label">Password</label>
+                    <input type="password" class="form-control" placeholder="Enter Password" name="password"
                         maxlength="15" required>
                 </div>
                 <div class="mb-3 justify-content-center align-items-center d-flex">
@@ -28,23 +30,24 @@
                 </div>
             </form>
             <?php if (isset($_POST['loginForm'])) {
-                $username = $_POST['username'];
+                $account = $_POST['account'];
                 $password = $_POST['password'];
 
-                $sql = "SELECT password FROM register_tbl where username = '$username'";
-
+                $sql = "SELECT * FROM register_tbl where Username = '$account' OR Email = '$account'";
                 $result = mysqli_query($conn, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
                     $row = mysqli_fetch_array($result);
-                    $fetchedPassword = $row["password"];
+                    $fetchedPassword = $row['Password'];
                     if ($password === $fetchedPassword) { ?>
                         <script>window.location.href = 'index.php'</script> <?php
+                        $_SESSION['username'] = $row['Username'];
                     } else { ?>
                         <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Password.</p><?php }
                 } else { ?>
                     <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Username.</p><?php }
-            } $conn->close()?>
+            }
+            $conn->close() ?>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

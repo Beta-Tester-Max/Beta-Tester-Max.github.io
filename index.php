@@ -71,6 +71,7 @@
                                 <?php echo $_SESSION['username'] ?>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="messaging.php">Messages</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                             </ul>
                         </li>

@@ -35,7 +35,7 @@ if (empty($_SESSION)) {?>
                 $account = $_POST['account'];
                 $password = $_POST['password'];
 
-                $sql = "SELECT * FROM register_tbl where Username = '$account' OR Email = '$account'";
+                $sql = "SELECT Username, User_ID, Password FROM register_tbl where Username = '$account' OR Email = '$account'";
                 $result = mysqli_query($conn, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
@@ -44,6 +44,7 @@ if (empty($_SESSION)) {?>
                     if ($password === $fetchedPassword) { ?>
                         <script>window.location.href = 'index.php'</script> <?php
                         $_SESSION['username'] = $row['Username'];
+                        $_SESSION['userid'] = $row['User_ID'];
                     } else { ?>
                         <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Password.</p><?php }
                 } else { ?>

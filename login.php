@@ -43,7 +43,6 @@ if (empty($_SESSION)) {?>
                     $fetchedPassword = $row['Password'];
                     if ($password === $fetchedPassword) { ?>
                         <script>window.location.href = 'index.php'</script> <?php
-                        $_SESSION['username'] = $row['Username'];
                         $_SESSION['userid'] = $row['User_ID'];
                     } else { ?>
                         <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Password.</p><?php }

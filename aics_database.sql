@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2025 at 03:26 AM
+-- Generation Time: Mar 27, 2025 at 10:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,10 +40,10 @@ CREATE TABLE `messages_tbl` (
 --
 
 INSERT INTO `messages_tbl` (`Message_ID`, `Sender_ID`, `Reciever_ID`, `Message`, `Timestamp`) VALUES
-(24, 5, 3, 'Hello Admin', '2025-03-27 02:07:08'),
-(25, 3, 5, 'Hello samp', '2025-03-27 02:20:57'),
-(26, 6, 5, 'hello samp', '2025-03-27 02:22:15'),
-(27, 5, 3, 'can i apply', '2025-03-27 02:24:37');
+(28, 9, 13, 'hello john', '2025-03-27 05:35:58'),
+(29, 9, 10, 'hello samps', '2025-03-27 05:36:07'),
+(30, 10, 9, 'hello aswell', '2025-03-27 05:36:36'),
+(31, 10, 13, 'heloo john', '2025-03-27 05:36:59');
 
 -- --------------------------------------------------------
 
@@ -54,6 +54,7 @@ INSERT INTO `messages_tbl` (`Message_ID`, `Sender_ID`, `Reciever_ID`, `Message`,
 CREATE TABLE `register_tbl` (
   `User_ID` int(11) NOT NULL,
   `Fname` varchar(50) NOT NULL,
+  `Mname` varchar(50) DEFAULT NULL,
   `Lname` varchar(50) NOT NULL,
   `Username` varchar(50) NOT NULL,
   `Email` varchar(50) NOT NULL,
@@ -65,10 +66,10 @@ CREATE TABLE `register_tbl` (
 -- Dumping data for table `register_tbl`
 --
 
-INSERT INTO `register_tbl` (`User_ID`, `Fname`, `Lname`, `Username`, `Email`, `Password`, `Is_Admin`) VALUES
-(3, 'Admin', 'Owner', 'Test', 'Testacc@gmail.com', '123', 0),
-(5, 'samp', 'samps', 'hello', '1234@gmail.com', '123', 0),
-(6, 'John', 'Doe', 'jduser', 'jduser@gmail.com', '123', 0);
+INSERT INTO `register_tbl` (`User_ID`, `Fname`, `Mname`, `Lname`, `Username`, `Email`, `Password`, `Is_Admin`) VALUES
+(9, 'Admin', 'Mod', 'Owner', 'Test', 'Testacc@gmail.com', '123', 0),
+(10, 'Samp', '', 'Samps', 'hello', '1234@gmail.com', '123', 0),
+(13, 'John Doe', 'Not', 'Found', '333', '1234@gmail.com', '123', 0);
 
 --
 -- Indexes for dumped tables
@@ -95,13 +96,13 @@ ALTER TABLE `register_tbl`
 -- AUTO_INCREMENT for table `messages_tbl`
 --
 ALTER TABLE `messages_tbl`
-  MODIFY `Message_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `Message_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `register_tbl`
 --
 ALTER TABLE `register_tbl`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,6 +1,6 @@
 <?php include "connect.php";
 session_start();
-if (empty($_SESSION['username'])) { ?>
+if (empty($_SESSION['userid'])) { ?>
     <script>window.location.href = "logout.php"</script>
 <?php } else {
     ?>
@@ -20,9 +20,9 @@ if (empty($_SESSION['username'])) { ?>
             <div class="row m-5">
                 <div class="col-4">
                     <div class="position-relative border border-primary rounded shadow" style="height:40em;">
-                        <strong class="ms-2"><?php if (isset($_SESSION['recipientName'])) {
-                            $recipient = $_SESSION['recipientName'];
-                            $sql = "SELECT Fname, Lname FROM register_tbl where Username = '$recipient'";
+                        <strong class="ms-2"><?php if (isset($_SESSION['recieverid'])) {
+                            $recieverid = $_SESSION['recieverid'];
+                            $sql = "SELECT Fname, Lname FROM register_tbl where User_ID = '$recieverid'";
                             $result = mysqli_query($conn, $sql);
                             if ($row = mysqli_fetch_assoc($result)) {
                                 echo $row['Fname'] . "&nbsp;" . $row['Lname'];
@@ -41,35 +41,30 @@ if (empty($_SESSION['username'])) { ?>
                             </form>
                             <?php
                             if (isset($_POST['sendMessage'])) {
-                                if (isset($_SESSION['recipientName'])) {
-                                    $recipient = $_SESSION['recipientName'];
-                                    $sql = "SELECT User_ID FROM register_tbl where Username = '$recipient'";
-                                    $result = mysqli_query($conn, $sql);
-                                    if ($row = mysqli_fetch_assoc($result)) {
-                                        $recieverid = $row['User_ID'];
-                                        $message = $_POST['message'];
-                                        $senderid = $_SESSION['userid'];
-                                        $sql = "INSERT INTO messages_tbl (Sender_ID, Reciever_ID, Message)
+                                if (isset($_SESSION['recieverid'])) {
+                                    $recieverid = $_SESSION['recieverid'];
+                                    $message = $_POST['message'];
+                                    $senderid = $_SESSION['userid'];
+                                    $sql = "INSERT INTO messages_tbl (Sender_ID, Reciever_ID, Message)
                                             VALUES ('$senderid', '$recieverid', '$message')";
 
-                                        if (mysqli_query($conn, $sql)) {
-                                            ?>
-                                            <script>window.location.href = "messaging.php"</script>
-                                            <?php
-                                        } else { ?>
-                                            <script>alert('Something went wrong.')
-                                                window.location.href = 'messaging.php'</script><?php }
-                                    }
+                                    if (mysqli_query($conn, $sql)) {
+                                        ?>
+                                        <script>window.location.href = "messaging.php"</script>
+                                        <?php
+                                    } else { ?>
+                                        <script>alert('Something went wrong.')
+                                            window.location.href = 'messaging.php'</script><?php }
                                 } else { ?>
                                     <script>alert('Please select a recipient.')</script><?php }
                             } ?>
                         </div>
                         <div class="ms-2 me-2 mt-3">
                             <?php
-                            if (isset($_SESSION['recipientName'])) {
-                                $recipient = $_SESSION['recipientName'];
+                            if (isset($_SESSION['recieverid'])) {
+                                $recieverid = $_SESSION['recieverid'];
                                 $userid = $_SESSION['userid'];
-                                $sql = "SELECT User_ID FROM register_tbl where Username = '$recipient'";
+                                $sql = "SELECT User_ID FROM register_tbl where User_ID = '$recieverid'";
                                 $result = mysqli_query($conn, $sql);
                                 if ($row = mysqli_fetch_array($result)) {
                                     $recieverid = $row["User_ID"];
@@ -102,22 +97,22 @@ if (empty($_SESSION['username'])) { ?>
                     <strong>Select Users to talk to:</strong>
                     <div>
                         <form method="POST">
-                            <select name="recipient">
-                                <?php $sql = "SELECT Fname, Lname, Username FROM register_tbl";
+                            <select name="recieverid">
+                                <?php $sql = "SELECT Fname, Lname, User_ID FROM register_tbl";
                                 $result = mysqli_query($conn, $sql);
                                 while ($row = mysqli_fetch_array($result)) {
-                                    if ($_SESSION['username'] !== $row['Username']) {
+                                    if ($_SESSION['userid'] !== $row['User_ID']) {
                                         ?>
-                                        <option value=<?php echo $row['Username'] ?>><?php echo $row['Fname'] . "&nbsp;" . $row['Lname']; ?></option>
+                                        <option value=<?php echo $row['User_ID'] ?>><?php echo $row['Fname'] . "&nbsp;" . $row['Lname']; ?></option>
                                         <?php
                                     }
                                 }
                                 ?>
                             </select>
-                            <button type="submit" name="recipientForm">Choose</button>
+                            <button type="submit" name="recieverForm">Choose</button>
                         </form>
-                        <?php if (isset($_POST['recipientForm'])) {
-                            $_SESSION['recipientName'] = $_POST['recipient'];
+                        <?php if (isset($_POST['recieverForm'])) {
+                            $_SESSION['recieverid'] = $_POST['recieverid'];
                             ?>
                             <script>window.location.href = "messaging.php"</script><?php } ?>
                     </div>

@@ -21,6 +21,10 @@ if (empty($_SESSION)) {?>
                     <input type="text" maxlength="20" class="form-control" placeholder="Enter your First Name" name="fname" required>
                 </div>
                 <div class="mb-3">
+                    <label for="mname" class="form-label">Middle Name</label>
+                    <input type="text" maxlength="20" class="form-control" placeholder="Enter your Middle Name" name="mname">
+                </div>
+                <div class="mb-3">
                     <label for="lname" class="form-label">Last Name</label>
                     <input type="text" maxlength="20" class="form-control" placeholder="Enter your Last Name" name="lname" required>
                 </div>
@@ -43,8 +47,9 @@ if (empty($_SESSION)) {?>
                 <p>Go to <a href="login.php">login</a> or <a href="index.php">homepage</a></p>
             </form>
             <?php if (isset($_POST['registerForm'])) {
-                $fname = $_POST['fname'];
-                $lname = $_POST['lname'];
+                $fname = ucwords(strtolower($_POST['fname']));
+                $mname = ucwords(strtolower($_POST['mname'])) ?: "";
+                $lname = ucwords(strtolower($_POST['lname']));
                 $username = $_POST['username'];
                 $email = $_POST['email'];
                 $password = $_POST['password'];
@@ -53,12 +58,12 @@ if (empty($_SESSION)) {?>
                 $result = mysqli_query($conn, $sql);
 
                 if (mysqli_num_rows($result) == 0) {
-                    $sql = "INSERT INTO register_tbl (Fname, Lname, Username, Email, Password)
-                            VALUES ('$fname', '$lname', '$username', '$email', '$password')";
+                    $sql = "INSERT INTO register_tbl (Fname, Mname, Lname, Username, Email, Password)
+                            VALUES ('$fname', '$mname', '$lname', '$username', '$email', '$password')";
 
                     if (mysqli_query($conn, $sql)) {
-                        ?>
-                        <script>window.location.href = "login.php"</script> <?php
+                        $_SESSION['username'] = $username;?>
+                        <script>window.location.href = "index.php"</script> <?php
                     }
                 } else { ?>
                     <p class="text-danger justify-content-center align-items-center d-flex">Username Already Exists.</p><?php

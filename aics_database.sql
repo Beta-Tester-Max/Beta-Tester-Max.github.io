@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2025 at 08:09 AM
+-- Generation Time: Mar 31, 2025 at 09:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -84,13 +84,9 @@ INSERT INTO `register_tbl` (`User_ID`, `Fname`, `Mname`, `Lname`, `Username`, `E
 CREATE TABLE `requirements_tbl` (
   `Requirements_ID` int(11) NOT NULL,
   `User_ID` int(11) NOT NULL,
-  `Brgy_Indigency` varchar(255) NOT NULL,
-  `Valid_ID` varchar(255) NOT NULL,
-  `Birth/Marriage_Cert` varchar(255) NOT NULL,
-  `Ref_Letter` varchar(255) NOT NULL,
-  `Med/Psycho_Rep` varchar(255) DEFAULT NULL,
-  `Police/Legal_Rep` varchar(255) DEFAULT NULL,
-  `Disaster/Emergency_Cert` varchar(255) DEFAULT NULL
+  `Document_Type` varchar(255) NOT NULL,
+  `File_Name` varchar(255) NOT NULL,
+  `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -137,7 +133,7 @@ ALTER TABLE `register_tbl`
 -- AUTO_INCREMENT for table `requirements_tbl`
 --
 ALTER TABLE `requirements_tbl`
-  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables

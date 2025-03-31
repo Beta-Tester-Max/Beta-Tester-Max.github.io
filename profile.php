@@ -11,9 +11,8 @@ if (empty($_SESSION['userid'])) { ?>
     <title>Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
 
-<body>
+<body class="overflow-x-hidden" style="min-width: 50em;">
     <div class="container-fluid ">
         <div class="col d-flex justify-content-center align-items-center mt-5">
             <div class="row-12 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5">
@@ -39,12 +38,13 @@ if (empty($_SESSION['userid'])) { ?>
                 <h1 class="mb-4">Requirements</h1>
                 <table class="table table-striped border shadow rounded">
                     <?php $userid = $_SESSION['userid'];
-                    $sql = "SELECT * FROM requirements_tbl where User_ID = '$userid'";
+                    $sql = "SELECT Document_Type, File_Name FROM requirements_tbl where User_ID = '$userid'";
                     $result = mysqli_query($conn, $sql);
                     $row = mysqli_fetch_assoc($result) ?>
                     <thead>
                         <tr>
                             <th scope="col">Document Type</th>
+                            <th scope="col">Uploaded File</th>
                             <th scope="col">Importance</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
@@ -52,20 +52,25 @@ if (empty($_SESSION['userid'])) { ?>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Updated Original Certificate of Indigency from Barangay with proof of low income.</td>
+                            <td>Barangay Indigency</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Barangay_Indigency") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
                             <td class="text-center">Required</td>
-                            <td class="text-center"><?php echo (empty($row['Brgy_Indigency'])) ? "❌" : "✅"; ?></td>
-                            <td><?php if (empty($row['Brgy_Indigency'])) { ?>
+                            <td class="text-center">
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Barangay_Indigency") ? "✅" : "❌"; ?>
+                            </td>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
                                     <form method="POST" enctype="multipart/form-data">
                                         <input type="file" id="myFile" name="file" accept="application/pdf" required>
                                         <input class="btn btn-primary shadow" value="Upload" type="submit"
                                             name="fileUpload01">
                                     </form><?php if (isset($_POST['fileUpload01'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Barangay_Indigency";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
-                                        $sql = "INSERT INTO requirements_tbl (User_ID, Brgy_Indigency)
-                                                VALUES ('$userid', '$file')";
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -82,13 +87,13 @@ if (empty($_SESSION['userid'])) { ?>
                                         <input class="btn btn-primary shadow" value="Edit" type="submit"
                                             name="fileUpdate01">
                                     </form><?php if (isset($_POST['fileUpdate01'])) {
-                                        print_r($file);
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Barangay_Indigency";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
                                         $sql = "UPDATE requirements_tbl
-                                            SET Brgy_Indigency = '$file'
-                                            where User_ID = '$userid'";
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -103,20 +108,25 @@ if (empty($_SESSION['userid'])) { ?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Valid ID.</td>
+                            <td>Valid ID</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Valid_ID") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
                             <td class="text-center">Required</td>
-                            <td class="text-center"><?php echo (empty($row['Valid_ID'])) ? "❌" : "✅"; ?></td>
-                            <td><?php if (empty($row['Valid_ID'])) { ?>
+                            <td class="text-center">
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Valid_ID") ? "✅" : "❌"; ?>
+                            </td>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
                                     <form method="POST" enctype="multipart/form-data">
                                         <input type="file" id="myFile" name="file" accept="application/pdf" required>
                                         <input class="btn btn-primary shadow" value="Upload" type="submit"
                                             name="fileUpload02">
                                     </form><?php if (isset($_POST['fileUpload02'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Valid_ID";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
-                                        $sql = "INSERT INTO requirements_tbl (User_ID, Valid_ID)
-                                                VALUES ('$userid', '$file')";
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -133,12 +143,13 @@ if (empty($_SESSION['userid'])) { ?>
                                         <input class="btn btn-primary shadow" value="Edit" type="submit"
                                             name="fileUpdate02">
                                     </form><?php if (isset($_POST['fileUpdate02'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Valid_ID";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
                                         $sql = "UPDATE requirements_tbl
-                                            SET Valid_ID = '$file'
-                                            where User_ID = '$userid'";
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -153,22 +164,25 @@ if (empty($_SESSION['userid'])) { ?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Marriage Certificate or Birth Certificate.</td>
+                            <td>Marriage Certificate</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Marriage_Certificate") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
                             <td class="text-center">Required</td>
                             <td class="text-center">
-                                <?php echo (empty($row['Birth/Marriage_Cert'])) ? "❌" : "✅"; ?>
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Marriage_Certificate") ? "✅" : "❌"; ?>
                             </td>
-                            <td><?php if (empty($row['Birth/Marriage_Cert'])) { ?>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
                                     <form method="POST" enctype="multipart/form-data">
                                         <input type="file" id="myFile" name="file" accept="application/pdf" required>
                                         <input class="btn btn-primary shadow" value="Upload" type="submit"
                                             name="fileUpload03">
                                     </form><?php if (isset($_POST['fileUpload03'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Marriage_Certificate";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
-                                        $sql = "INSERT INTO requirements_tbl (User_ID, Birth/Marriage_Cert)
-                                                VALUES ('$userid', '$file')";
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -185,12 +199,13 @@ if (empty($_SESSION['userid'])) { ?>
                                         <input class="btn btn-primary shadow" value="Edit" type="submit"
                                             name="fileUpdate03">
                                     </form><?php if (isset($_POST['fileUpdate03'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Marriage_Certificate";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
                                         $sql = "UPDATE requirements_tbl
-                                            SET Birth/Marriage_Cert = '$file'
-                                            where User_ID = '$userid'";
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -205,20 +220,25 @@ if (empty($_SESSION['userid'])) { ?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Referral Letter from Social Worker, Barangay Officer, or Mental Health Professional.
+                            <td>Birth Certificate</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Birth_Certificate") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
                             <td class="text-center">Required</td>
-                            <td class="text-center"><?php echo (empty($row['Ref_Letter'])) ? "❌" : "✅"; ?></td>
-                            <td><?php if (empty($row['Ref_Letter'])) { ?>
+                            <td class="text-center">
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Birth_Certificate") ? "✅" : "❌"; ?>
+                            </td>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
                                     <form method="POST" enctype="multipart/form-data">
                                         <input type="file" id="myFile" name="file" accept="application/pdf" required>
                                         <input class="btn btn-primary shadow" value="Upload" type="submit"
                                             name="fileUpload04">
                                     </form><?php if (isset($_POST['fileUpload04'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Birth_Certificate";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
-                                        $sql = "INSERT INTO requirements_tbl (User_ID, Ref_Letter)
-                                                VALUES ('$userid', '$file')";
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -235,12 +255,13 @@ if (empty($_SESSION['userid'])) { ?>
                                         <input class="btn btn-primary shadow" value="Edit" type="submit"
                                             name="fileUpdate04">
                                     </form><?php if (isset($_POST['fileUpdate04'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Birth_Certificate";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
                                         $sql = "UPDATE requirements_tbl
-                                            SET Ref_Letter = '$file'
-                                            where User_ID = '$userid'";
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -255,22 +276,25 @@ if (empty($_SESSION['userid'])) { ?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Medical or Psychological Report.</td>
-                            <td class="text-center">Optional</td>
-                            <td class="text-center">
-                                <?php echo (empty($row['Med/Psycho_Rep'])) ? "❌" : "✅"; ?>
+                            <td>Referral Letter</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Referral_Letter") ? $row['File_Name'] : "No Uploaded File" ?>
                             </td>
-                            <td><?php if (empty($row['Med/Psycho_Rep'])) { ?>
+                            <td class="text-center">Required</td>
+                            <td class="text-center">
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Referral_Letter") ? "✅" : "❌"; ?>
+                            </td>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
                                     <form method="POST" enctype="multipart/form-data">
                                         <input type="file" id="myFile" name="file" accept="application/pdf" required>
                                         <input class="btn btn-primary shadow" value="Upload" type="submit"
                                             name="fileUpload05">
                                     </form><?php if (isset($_POST['fileUpload05'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Referral_Letter";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
-                                        $sql = "INSERT INTO requirements_tbl (User_ID, Med/Psycho_Rep)
-                                                VALUES ('$userid', '$file')";
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -287,12 +311,13 @@ if (empty($_SESSION['userid'])) { ?>
                                         <input class="btn btn-primary shadow" value="Edit" type="submit"
                                             name="fileUpdate05">
                                     </form><?php if (isset($_POST['fileUpdate05'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Referral_Letter";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
                                         $sql = "UPDATE requirements_tbl
-                                            SET Med/Psycho_Rep = '$file'
-                                            where User_ID = '$userid'";
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -307,22 +332,25 @@ if (empty($_SESSION['userid'])) { ?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Police or Legal Report.</td>
+                            <td>Medical Report</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Medical_Report") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
                             <td class="text-center">Optional</td>
                             <td class="text-center">
-                                <?php echo (empty($row['Police/Legal_Rep'])) ? "❌" : "✅"; ?>
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Medical_Report") ? "✅" : "❌"; ?>
                             </td>
-                            <td><?php if (empty($row['Police/Legal_Rep'])) { ?>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
                                     <form method="POST" enctype="multipart/form-data">
                                         <input type="file" id="myFile" name="file" accept="application/pdf" required>
                                         <input class="btn btn-primary shadow" value="Upload" type="submit"
                                             name="fileUpload06">
                                     </form><?php if (isset($_POST['fileUpload06'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Medical_Report";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
-                                        $sql = "INSERT INTO requirements_tbl (User_ID, Police/Legal_Rep)
-                                                VALUES ('$userid', '$file')";
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -339,12 +367,13 @@ if (empty($_SESSION['userid'])) { ?>
                                         <input class="btn btn-primary shadow" value="Edit" type="submit"
                                             name="fileUpdate06">
                                     </form><?php if (isset($_POST['fileUpdate06'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Medical_Report";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
                                         $sql = "UPDATE requirements_tbl
-                                            SET Police/Legal_Rep = '$file'
-                                            where User_ID = '$userid'";
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -356,25 +385,28 @@ if (empty($_SESSION['userid'])) { ?>
                                         <?php }
                                     }
                             } ?>
-                            </td>
                         </tr>
                         <tr>
-                            <td>Disaster or Emergency Certification.</td>
+                            </td>
+                            <td>Psychological Report</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Psychological_Report") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
                             <td class="text-center">Optional</td>
                             <td class="text-center">
-                                <?php echo (empty($row['Disaster/Emergency_Cert'])) ? "❌" : "✅"; ?>
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Psychological_Report") ? "✅" : "❌"; ?>
                             </td>
-                            <td><?php if (empty($row['Ref_Letter'])) { ?>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
                                     <form method="POST" enctype="multipart/form-data">
                                         <input type="file" id="myFile" name="file" accept="application/pdf" required>
                                         <input class="btn btn-primary shadow" value="Upload" type="submit"
                                             name="fileUpload07">
                                     </form><?php if (isset($_POST['fileUpload07'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Psychological_Report";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
-                                        $sql = "INSERT INTO requirements_tbl (User_ID, Police/Legal_Rep)
-                                                VALUES ('$userid', '$file')";
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>
@@ -391,12 +423,237 @@ if (empty($_SESSION['userid'])) { ?>
                                         <input class="btn btn-primary shadow" value="Edit" type="submit"
                                             name="fileUpdate07">
                                     </form><?php if (isset($_POST['fileUpdate07'])) {
-                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Psychological_Report";
                                         $userid = $_SESSION['userid'];
-                                        $location = "image/" . $file;
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
                                         $sql = "UPDATE requirements_tbl
-                                            SET Police/Legal_Rep = '$file'
-                                            where User_ID = '$userid'";
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
+                                        mysqli_query($conn, $sql);
+                                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                                            ?>
+                                            <script>alert("Files Updated Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script><?php
+                                        } else { ?>
+                                            <script>alert("Something went wrong.")</script>
+                                        <?php }
+                                    }
+                            } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Police Report</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Police_Report") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
+                            <td class="text-center">Optional</td>
+                            <td class="text-center">
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Police_Report") ? "✅" : "❌"; ?>
+                            </td>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="myFile" name="file" accept="application/pdf" required>
+                                        <input class="btn btn-primary shadow" value="Upload" type="submit"
+                                            name="fileUpload08">
+                                    </form><?php if (isset($_POST['fileUpload08'])) {
+                                        $documenttype = "Police_Report";
+                                        $userid = $_SESSION['userid'];
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
+                                        mysqli_query($conn, $sql);
+                                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                                            ?>
+                                            <script>alert("Files Uploaded Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script><?php
+                                        } else { ?>
+                                            <script>alert("Something went wrong.")</script>
+                                        <?php }
+                                    }
+                            } else { ?>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="myFile" name="file" accept="application/pdf" required>
+                                        <input class="btn btn-primary shadow" value="Edit" type="submit"
+                                            name="fileUpdate08">
+                                    </form><?php if (isset($_POST['fileUpdate08'])) {
+                                        $file = $_FILES['file']['name'];
+                                        $documenttype = "Police_Report";
+                                        $userid = $_SESSION['userid'];
+                                        $location = "file/" . $file;
+                                        $sql = "UPDATE requirements_tbl
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
+                                        mysqli_query($conn, $sql);
+                                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                                            ?>
+                                            <script>alert("Files Updated Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script><?php
+                                        } else { ?>
+                                            <script>alert("Something went wrong.")</script>
+                                        <?php }
+                                    }
+                            } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Legal Report</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Legal_Report") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
+                            <td class="text-center">Optional</td>
+                            <td class="text-center">
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Legal_Report") ? "✅" : "❌"; ?>
+                            </td>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="myFile" name="file" accept="application/pdf" required>
+                                        <input class="btn btn-primary shadow" value="Upload" type="submit"
+                                            name="fileUpload09">
+                                    </form><?php if (isset($_POST['fileUpload09'])) {
+                                        $documenttype = "Legal_Report";
+                                        $userid = $_SESSION['userid'];
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
+                                        mysqli_query($conn, $sql);
+                                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                                            ?>
+                                            <script>alert("Files Uploaded Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script><?php
+                                        } else { ?>
+                                            <script>alert("Something went wrong.")</script>
+                                        <?php }
+                                    }
+                            } else { ?>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="myFile" name="file" accept="application/pdf" required>
+                                        <input class="btn btn-primary shadow" value="Edit" type="submit"
+                                            name="fileUpdate09">
+                                    </form><?php if (isset($_POST['fileUpdate09'])) {
+                                        $documenttype = "Legal_Report";
+                                        $userid = $_SESSION['userid'];
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "UPDATE requirements_tbl
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
+                                        mysqli_query($conn, $sql);
+                                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                                            ?>
+                                            <script>alert("Files Updated Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script><?php
+                                        } else { ?>
+                                            <script>alert("Something went wrong.")</script>
+                                        <?php }
+                                    }
+                            } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Disaster Certification</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Disaster_Certification") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
+                            <td class="text-center">Optional</td>
+                            <td class="text-center">
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Disaster_Certification") ? "✅" : "❌"; ?>
+                            </td>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="myFile" name="file" accept="application/pdf" required>
+                                        <input class="btn btn-primary shadow" value="Upload" type="submit"
+                                            name="fileUpload10">
+                                    </form><?php if (isset($_POST['fileUpload10'])) {
+                                        $documenttype = "Disaster_Certification";
+                                        $userid = $_SESSION['userid'];
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
+                                        mysqli_query($conn, $sql);
+                                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                                            ?>
+                                            <script>alert("Files Uploaded Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script><?php
+                                        } else { ?>
+                                            <script>alert("Something went wrong.")</script>
+                                        <?php }
+                                    }
+                            } else { ?>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="myFile" name="file" accept="application/pdf" required>
+                                        <input class="btn btn-primary shadow" value="Edit" type="submit"
+                                            name="fileUpdate10">
+                                    </form><?php if (isset($_POST['fileUpdate10'])) {
+                                        $documenttype = "Disaster_Certification";
+                                        $userid = $_SESSION['userid'];
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "UPDATE requirements_tbl
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
+                                        mysqli_query($conn, $sql);
+                                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                                            ?>
+                                            <script>alert("Files Updated Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script><?php
+                                        } else { ?>
+                                            <script>alert("Something went wrong.")</script>
+                                        <?php }
+                                    }
+                            } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Emergency Certification</td>
+                            <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Emergency_Certification") ? $row['File_Name'] : "No Uploaded File" ?>
+                            </td>
+                            <td class="text-center">Optional</td>
+                            <td class="text-center">
+                                <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == "Emergency_Certification") ? "✅" : "❌"; ?>
+                            </td>
+                            <td><?php if (empty($row['Document_Type'])) { ?>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="myFile" name="file" accept="application/pdf" required>
+                                        <input class="btn btn-primary shadow" value="Upload" type="submit"
+                                            name="fileUpload11">
+                                    </form><?php if (isset($_POST['fileUpload11'])) {
+                                        $documenttype = "Emergency_Certification";
+                                        $userid = $_SESSION['userid'];
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_Name)
+                                                VALUES ('$userid', '$documenttype', '$file')";
+                                        mysqli_query($conn, $sql);
+                                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+                                            ?>
+                                            <script>alert("Files Uploaded Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script><?php
+                                        } else { ?>
+                                            <script>alert("Something went wrong.")</script>
+                                        <?php }
+                                    }
+                            } else { ?>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="myFile" name="file" accept="application/pdf" required>
+                                        <input class="btn btn-primary shadow" value="Edit" type="submit"
+                                            name="fileUpdate11">
+                                    </form><?php if (isset($_POST['fileUpdate11'])) {
+                                        $documenttype = "Emergency_Certification";
+                                        $userid = $_SESSION['userid'];
+                                        $file = $_FILES['file']['name'];
+                                        $location = "file/" . $file;
+                                        $sql = "UPDATE requirements_tbl
+                                            SET File_Name = '$file'
+                                            where Document_Type = '$documenttype' AND User_ID = '$userid'";
                                         mysqli_query($conn, $sql);
                                         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
                                             ?>

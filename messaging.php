@@ -114,10 +114,9 @@ if (empty($_SESSION['userid'])) { ?>
                     </div>
                 </div>
                 <div class="col-4">
-                    <strong>Select Recipient Here:</strong>
                     <div>
                         <form method="POST">
-                            <select name="recieverid">
+                            <select class="btn btn-outline-primary" name="recieverid">
                                 <?php $sql = "SELECT Fname, Lname, User_ID FROM register_tbl";
                                 $result = mysqli_query($conn, $sql);
                                 while ($row = mysqli_fetch_array($result)) {
@@ -129,7 +128,7 @@ if (empty($_SESSION['userid'])) { ?>
                                 }
                                 ?>
                             </select>
-                            <button type="submit" name="recieverForm">Choose</button>
+                            <button class="btn btn-primary" type="submit" name="recieverForm">Choose</button>
                         </form>
                         <?php if (isset($_POST['recieverForm'])) {
                             $_SESSION['recieverid'] = $_POST['recieverid'];

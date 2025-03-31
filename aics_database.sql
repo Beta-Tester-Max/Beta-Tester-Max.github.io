@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2025 at 03:38 AM
+-- Generation Time: Mar 31, 2025 at 08:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -75,6 +75,24 @@ INSERT INTO `register_tbl` (`User_ID`, `Fname`, `Mname`, `Lname`, `Username`, `E
 (10, 'Samp', '', 'Samps', 'hello', '1234@gmail.com', '123', 0),
 (13, 'John Doe', 'Not', 'Found', '333', '1234@gmail.com', '123', 0);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `requirements_tbl`
+--
+
+CREATE TABLE `requirements_tbl` (
+  `Requirements_ID` int(11) NOT NULL,
+  `User_ID` int(11) NOT NULL,
+  `Brgy_Indigency` varchar(255) NOT NULL,
+  `Valid_ID` varchar(255) NOT NULL,
+  `Birth/Marriage_Cert` varchar(255) NOT NULL,
+  `Ref_Letter` varchar(255) NOT NULL,
+  `Med/Psycho_Rep` varchar(255) DEFAULT NULL,
+  `Police/Legal_Rep` varchar(255) DEFAULT NULL,
+  `Disaster/Emergency_Cert` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -93,6 +111,13 @@ ALTER TABLE `register_tbl`
   ADD PRIMARY KEY (`User_ID`);
 
 --
+-- Indexes for table `requirements_tbl`
+--
+ALTER TABLE `requirements_tbl`
+  ADD PRIMARY KEY (`Requirements_ID`),
+  ADD KEY `User_ID` (`User_ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -107,6 +132,22 @@ ALTER TABLE `messages_tbl`
 --
 ALTER TABLE `register_tbl`
   MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `requirements_tbl`
+--
+ALTER TABLE `requirements_tbl`
+  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `requirements_tbl`
+--
+ALTER TABLE `requirements_tbl`
+  ADD CONSTRAINT `User_ID` FOREIGN KEY (`User_ID`) REFERENCES `register_tbl` (`User_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

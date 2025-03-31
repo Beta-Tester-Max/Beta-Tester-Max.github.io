@@ -77,7 +77,7 @@ if (empty($_SESSION['userid'])) { ?>
                             Password = '$password'
                         where User_ID = '$userid'";
                 if (mysqli_query($conn, $sql)) {
-                    ?> <script>window.location.href = "index.php";</script><?php
+                    ?> <script>window.location.href = "profile.php";</script><?php
                 }
             } ?>
         </div>

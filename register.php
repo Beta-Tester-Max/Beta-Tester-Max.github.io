@@ -14,7 +14,7 @@ if (empty($_SESSION)) {?>
 
 <body>
     <div class="container-fluid">
-        <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="d-flex flex-column justify-content-center align-items-center mt-5">
             <form method="POST">
                 <div class="mb-3">
                     <label for="fname" class="form-label">First Name</label>

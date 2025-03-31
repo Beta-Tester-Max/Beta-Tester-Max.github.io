@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2025 at 10:09 AM
+-- Generation Time: Mar 31, 2025 at 03:38 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,7 +43,11 @@ INSERT INTO `messages_tbl` (`Message_ID`, `Sender_ID`, `Reciever_ID`, `Message`,
 (28, 9, 13, 'hello john', '2025-03-27 05:35:58'),
 (29, 9, 10, 'hello samps', '2025-03-27 05:36:07'),
 (30, 10, 9, 'hello aswell', '2025-03-27 05:36:36'),
-(31, 10, 13, 'heloo john', '2025-03-27 05:36:59');
+(31, 10, 13, 'heloo john', '2025-03-27 05:36:59'),
+(32, 9, 10, 'hello1', '2025-03-31 00:40:06'),
+(33, 9, 10, 'hello2', '2025-03-31 00:40:10'),
+(34, 9, 10, 'hello3', '2025-03-31 00:40:14'),
+(35, 9, 10, 'Hello 4', '2025-03-31 00:40:18');
 
 -- --------------------------------------------------------
 
@@ -67,7 +71,7 @@ CREATE TABLE `register_tbl` (
 --
 
 INSERT INTO `register_tbl` (`User_ID`, `Fname`, `Mname`, `Lname`, `Username`, `Email`, `Password`, `Is_Admin`) VALUES
-(9, 'Admin', 'Mod', 'Owner', 'Test', 'Testacc@gmail.com', '123', 0),
+(9, 'Admin', 'Modifier', 'Owner', 'Test', 'Testacc@gmail.com', '123', 0),
 (10, 'Samp', '', 'Samps', 'hello', '1234@gmail.com', '123', 0),
 (13, 'John Doe', 'Not', 'Found', '333', '1234@gmail.com', '123', 0);
 
@@ -96,7 +100,7 @@ ALTER TABLE `register_tbl`
 -- AUTO_INCREMENT for table `messages_tbl`
 --
 ALTER TABLE `messages_tbl`
-  MODIFY `Message_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `Message_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `register_tbl`

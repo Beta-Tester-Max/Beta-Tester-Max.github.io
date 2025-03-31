@@ -13,13 +13,30 @@ if (empty($_SESSION['userid'])) { ?>
         <title>Messaging System</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <style>
+            ::-webkit-scrollbar {
+                width: .2em;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: rgb(133, 133, 133);
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: rgb(71, 70, 70);
+            }
+        </style>
     </head>
 
     <body class="overflow-x-hidden" style="min-width: 50em;">
         <div class="container-fluid">
             <div class="row m-5">
                 <div class="col-4">
-                    <div class="position-relative border border-primary rounded shadow" style="height:40em;">
+                    <div class="border border-primary rounded shadow" style="height:40em;">
                         <strong class="ms-2"><?php if (isset($_SESSION['recieverid'])) {
                             $recieverid = $_SESSION['recieverid'];
                             $sql = "SELECT Fname, Lname FROM register_tbl where User_ID = '$recieverid'";
@@ -33,8 +50,43 @@ if (empty($_SESSION['userid'])) { ?>
                         }
                         ; ?>
                         </strong>
-                        <div class="position-absolute top-100 start-50 translate-middle" style="width: 100%;">
-                            <form class="mb-5 ms-2 me-2 d-flex justify-content-center align-items-center" method="POST">
+                        <div class="d-flex flex-column" style="width: 100%;">
+
+                            <?php
+                            if (isset($_SESSION['recieverid'])) {
+                                $recieverid = $_SESSION['recieverid'];
+                                $userid = $_SESSION['userid'];
+                                $sql = "SELECT User_ID FROM register_tbl where User_ID = '$recieverid'";
+                                $result = mysqli_query($conn, $sql);
+                                if ($row = mysqli_fetch_array($result)) {
+                                    $recieverid = $row["User_ID"];
+                                    $sql = "SELECT Sender_ID, Message, Timestamp FROM messages_tbl
+                                    where (Sender_ID = '$recieverid' OR Sender_ID = '$userid')
+                                    AND (Reciever_ID = '$recieverid' OR Reciever_ID = '$userid')";
+                                    $result = mysqli_query($conn, $sql);
+                                    ?>
+                                    <div class="overflow-y-scroll ms-2 me-2 mt-" style="height: 34em;"><?php
+                                    while ($row = mysqli_fetch_array($result)) {
+                                        if ($userid == $row['Sender_ID']) {
+                                            ?>
+                                                <div class="text-end me-2">
+                                                    <p class=><?php echo $row['Message'] ?></p>
+                                                    <p><b><?php echo $row['Timestamp'] ?></b></p><br>
+                                                </div><?php
+                                        } else {
+                                            ?>
+                                                <div>
+                                                    <p class=><?php echo $row['Message'] ?></p>
+                                                    <p><b><?php echo $row['Timestamp'] ?></b></p><br>
+                                                </div><?php
+                                        }
+                                    }
+                                }
+                            } else { ?> <div class="d-flex justify-content-center align-items-center m-auto" style="height: 34em;">
+                                <h3>Please Select a Recipient</h3><?php }
+                            ?>
+                            </div>
+                            <form class="mt-3 ms-2 me-2 d-flex justify-content-center align-items-center" method="POST">
                                 <input class="form-control me-2" name="message" type="text" placeholder="Write a Message"
                                     aria-label="Send" required>
                                 <button class="btn btn-outline-primary" name="sendMessage" type="submit">Send</button>
@@ -59,42 +111,10 @@ if (empty($_SESSION['userid'])) { ?>
                                     <script>alert('Please select a recipient.')</script><?php }
                             } ?>
                         </div>
-                        <div class="ms-2 me-2 mt-3">
-                            <?php
-                            if (isset($_SESSION['recieverid'])) {
-                                $recieverid = $_SESSION['recieverid'];
-                                $userid = $_SESSION['userid'];
-                                $sql = "SELECT User_ID FROM register_tbl where User_ID = '$recieverid'";
-                                $result = mysqli_query($conn, $sql);
-                                if ($row = mysqli_fetch_array($result)) {
-                                    $recieverid = $row["User_ID"];
-                                    $sql = "SELECT Sender_ID, Message, Timestamp FROM messages_tbl
-                                    where (Sender_ID = '$recieverid' OR Sender_ID = '$userid')
-                                    AND (Reciever_ID = '$recieverid' OR Reciever_ID = '$userid')";
-                                    $result = mysqli_query($conn, $sql);
-                                    while ($row = mysqli_fetch_array($result)) {
-                                        if ($userid == $row['Sender_ID']) {
-                                            ?>
-                                            <div class="text-end">
-                                                <p class=><?php echo $row['Message'] ?></p>
-                                                <p><b><?php echo $row['Timestamp'] ?></b></p><br>
-                                            </div><?php
-                                        } else {
-                                            ?>
-                                            <div>
-                                                <p class=><?php echo $row['Message'] ?></p>
-                                                <p><b><?php echo $row['Timestamp'] ?></b></p><br>
-                                            </div><?php
-                                        }
-                                    }
-                                }
-                            }
-                            ?>
-                        </div>
                     </div>
                 </div>
                 <div class="col-4">
-                    <strong>Select Users to talk to:</strong>
+                    <strong>Select Recipient Here:</strong>
                     <div>
                         <form method="POST">
                             <select name="recieverid">

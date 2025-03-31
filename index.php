@@ -76,7 +76,7 @@ session_start(); ?>
                                 echo $row['Username'] ?>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="profileeditor.php">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                                 <li><a class="dropdown-item" href="messaging.php">Messages</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                             </ul>

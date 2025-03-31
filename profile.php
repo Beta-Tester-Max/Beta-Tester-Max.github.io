@@ -15,21 +15,23 @@ if (empty($_SESSION['userid'])) { ?>
 
 <body>
     <div class="container-fluid ">
-        <div class="position-absolute top-50 start-50 translate-middle">
-            <div class="border rounded shadow p-5">
+        <div class="d-flex justify-content-center align-items-center mt-5">
+            <div class="d-flex flex-column justify-content-center align-items-center border rounded shadow p-5">
                 <img class="border rounded shadow p-2 mb-5" src="profile.png">
-                <?php 
+                <?php
                 if (isset($_SESSION['userid'])) {
                     $userid = $_SESSION['userid'];
-                $sql = "SELECT Fname, Mname, Lname, Username, Email FROM register_tbl where = '$userid'";
-                $result = mysqli_query($conn, $sql);
-                $row = mysqli_fetch_assoc($result);?>
-                <h3><b>First Name: </b><?php echo $row['Fname']?></h3>
-                <h3><b>Middle Name: </b><?php echo $row['Fname']?></h3>
-                <h3><b>Last Name: </b><?php echo $row['Fname']?></h3>
-                <h3><b>Username: </b><?php echo $row['Fname']?></h3>
-                <h3><b>Email: </b></h3>
-                <?php }?>
+                    $sql = "SELECT Fname, Mname, Lname, Username, Email FROM register_tbl where User_ID = '$userid'";
+                    $result = mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_assoc($result); ?>
+                    <h3><b>First Name: </b><?php echo $row['Fname'] ?></h3>
+                    <h3><b>Middle Name: </b><?php echo $row['Mname'] ?></h3>
+                    <h3><b>Last Name: </b><?php echo $row['Lname'] ?></h3>
+                    <h3><b>Username: </b><?php echo $row['Username'] ?></h3>
+                    <h3><b>Email: </b><?php echo $row['Email'] ?></h3>
+                    <a class="btn btn-primary btn-lg mt-3 mb-2" href="profileeditor.php">Edit Profile</a>
+                    <p>Go to <a href="index.php">Home</a>.</p>
+                <?php } ?>
             </div>
         </div>
     </div>

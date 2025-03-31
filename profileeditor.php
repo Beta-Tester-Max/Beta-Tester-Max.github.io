@@ -13,34 +13,41 @@ if (empty($_SESSION['userid'])) { ?>
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body>
+<body class="overflow-x-hidden" style="min-width: 50em;">
     <div class="container-fluid">
-        <div class="position-absolute top-50 start-50 translate-middle">
-            <a class="position-absolute top-0 start-50 translate-middle" href="index.php">Go Back.</a>
-            <form method="POST">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <a class="mt-5" href="index.php">Go Back.</a>
+            <form method="POST" enctype="multipart/form-data">
                 <?php if (isset($_SESSION['userid'])) {
                     $userid = $_SESSION['userid'];
-                    $sql = "SELECT Fname, Mname, Lname, Username, Email, Password FROM register_tbl where User_ID = '$userid'";
+                    $sql = "SELECT Fname, Mname, Lname, Username, Profile_Pic, Email, Password FROM register_tbl where User_ID = '$userid'";
                     $result = mysqli_query($conn, $sql);
                     $row = mysqli_fetch_assoc($result);
                     ?>
-                    <div class="mt-4 mb-3">
+                    <div class="d-flex flex-column justify-content-center align-items-center mt-3 mb-3">
+                        <img class="border rounded shadow p-2 mb-3" style="width: 10em; height: 10em;"
+                            src="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/".$row['Profile_Pic'] ?>">
+                        <input class="btn btn-outline-primary d-flex justify-content-center align-items-center" type="file" id="myFile" name="file"
+                            value="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/".$row['Profile_Pic'] ?>" accept="image/png, image/jpeg, image/jpg, image/PNG, image/JPG">
+                    </div>
+                    <div class="mb-3">
                         <label for="fname" class="form-label">First Name</label>
-                        <input type="text" maxlength="20" class="form-control" value="<?php echo $row['Fname']?>"
+                        <input type="text" maxlength="20" class="form-control" value="<?php echo $row['Fname'] ?>"
                             name="fname" required>
                     </div>
                     <div class="mb-3">
                         <label for="mname" class="form-label">Middle Name</label>
-                        <input type="text" maxlength="20" class="form-control" name="mname" value="<?php echo $row['Mname']?>">
+                        <input type="text" maxlength="20" class="form-control" name="mname"
+                            value="<?php echo $row['Mname'] ?>">
                     </div>
                     <div class="mb-3">
                         <label for="lname" class="form-label">Last Name</label>
-                        <input type="text" maxlength="20" class="form-control" value="<?php echo $row['Lname']?>"
+                        <input type="text" maxlength="20" class="form-control" value="<?php echo $row['Lname'] ?>"
                             name="lname" required>
                     </div>
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" maxlength="25" class="form-control" value="<?php echo $row['Username']?>"
+                        <input type="text" maxlength="25" class="form-control" value="<?php echo $row['Username'] ?>"
                             name="username" required>
                     </div>
                     <div class="mb-3">
@@ -65,6 +72,7 @@ if (empty($_SESSION['userid'])) { ?>
                 $mname = ucwords(strtolower($_POST['mname'])) ?: "";
                 $lname = ucwords(strtolower($_POST['lname']));
                 $username = $_POST['username'];
+                $file = $_FILES['file']['name'];
                 $email = $_POST['email'];
                 $password = $_POST['password'];
 
@@ -73,11 +81,15 @@ if (empty($_SESSION['userid'])) { ?>
                             Mname = '$mname',
                             Lname = '$lname',
                             Username = '$username',
+                            Profile_Pic = '$file',
                             Email = '$email',
                             Password = '$password'
                         where User_ID = '$userid'";
                 if (mysqli_query($conn, $sql)) {
-                    ?> <script>window.location.href = "profile.php";</script><?php
+                    $location = "file/".$file;
+                    if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {?>
+                    <script>window.location.href = "profile.php";</script><?php } else {?>
+                        <script>window.location.href = "profile.php";</script><?php }
                 }
             } ?>
         </div>

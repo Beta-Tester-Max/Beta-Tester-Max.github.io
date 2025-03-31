@@ -16,13 +16,13 @@ if (empty($_SESSION['userid'])) { ?>
     <div class="container-fluid ">
         <div class="col d-flex justify-content-center align-items-center mt-5">
             <div class="row-12 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5">
-                <img class="border rounded shadow p-2 mb-5" src="profile.png">
                 <?php
                 if (isset($_SESSION['userid'])) {
                     $userid = $_SESSION['userid'];
-                    $sql = "SELECT Fname, Mname, Lname, Username, Email FROM register_tbl where User_ID = '$userid'";
+                    $sql = "SELECT Fname, Mname, Lname, Username, Profile_Pic, Email FROM register_tbl where User_ID = '$userid'";
                     $result = mysqli_query($conn, $sql);
                     $row = mysqli_fetch_assoc($result); ?>
+                    <img class="border rounded shadow p-2 mb-5" style="width: 10em; height: 10em;" src="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/".$row['Profile_Pic']?>">
                     <h3><b>First Name: </b><?php echo $row['Fname'] ?></h3>
                     <h3><b>Middle Name: </b><?php echo $row['Mname'] ?></h3>
                     <h3><b>Last Name: </b><?php echo $row['Lname'] ?></h3>

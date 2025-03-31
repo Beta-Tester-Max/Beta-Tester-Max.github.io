@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2025 at 09:44 AM
+-- Generation Time: Mar 31, 2025 at 10:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -61,6 +61,7 @@ CREATE TABLE `register_tbl` (
   `Mname` varchar(50) DEFAULT NULL,
   `Lname` varchar(50) NOT NULL,
   `Username` varchar(50) NOT NULL,
+  `Profile_Pic` varchar(255) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Is_Admin` tinyint(1) NOT NULL DEFAULT 0
@@ -70,10 +71,10 @@ CREATE TABLE `register_tbl` (
 -- Dumping data for table `register_tbl`
 --
 
-INSERT INTO `register_tbl` (`User_ID`, `Fname`, `Mname`, `Lname`, `Username`, `Email`, `Password`, `Is_Admin`) VALUES
-(9, 'Admin', 'Modifier', 'Owner', 'Test', 'Testacc@gmail.com', '123', 0),
-(10, 'Samp', '', 'Samps', 'hello', '1234@gmail.com', '123', 0),
-(13, 'John Doe', 'Not', 'Found', '333', '1234@gmail.com', '123', 0);
+INSERT INTO `register_tbl` (`User_ID`, `Fname`, `Mname`, `Lname`, `Username`, `Profile_Pic`, `Email`, `Password`, `Is_Admin`) VALUES
+(9, 'Admin', 'Modifier', 'Owner', 'Test', '', 'Testacc@gmail.com', '123', 0),
+(10, 'Samp', '', 'Samps', 'hello', '', '1234@gmail.com', '123', 0),
+(13, 'John Doe', 'Not', 'Found', '333', '', '1234@gmail.com', '123', 0);
 
 -- --------------------------------------------------------
 

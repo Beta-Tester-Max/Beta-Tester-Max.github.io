@@ -39,7 +39,7 @@ if (empty($_SESSION['userid'])) { ?>
                     <div class="border border-primary rounded shadow" style="height:40em;">
                         <strong class="ms-2"><?php if (isset($_SESSION['recieverid'])) {
                             $recieverid = $_SESSION['recieverid'];
-                            $sql = "SELECT Fname, Lname FROM register_tbl where User_ID = '$recieverid'";
+                            $sql = "SELECT Fname, Lname FROM userinfo_tbl where User_ID = '$recieverid'";
                             $result = mysqli_query($conn, $sql);
                             if ($row = mysqli_fetch_assoc($result)) {
                                 echo $row['Fname'] . "&nbsp;" . $row['Lname'];
@@ -47,8 +47,7 @@ if (empty($_SESSION['userid'])) { ?>
                                 ?>
                                     <script>window.location.href = "logout.php"</script><?php
                             }
-                        }
-                        ; ?>
+                        }?>
                         </strong>
                         <div class="d-flex flex-column" style="width: 100%;">
 
@@ -65,31 +64,38 @@ if (empty($_SESSION['userid'])) { ?>
                                     AND (Reciever_ID = '$recieverid' OR Reciever_ID = '$userid')";
                                     $result = mysqli_query($conn, $sql);
                                     ?>
-                                    <div class="overflow-y-scroll ms-2 me-2 mt-" style="height: 34em;"><?php
-                                    while ($row = mysqli_fetch_array($result)) {
-                                        if ($userid == $row['Sender_ID']) {
-                                            ?>
-                                                <div class="text-end me-2">
-                                                    <p class=><?php echo $row['Message'] ?></p>
-                                                    <p><b><?php echo $row['Timestamp'] ?></b></p><br>
-                                                </div><?php
-                                        } else {
-                                            ?>
-                                                <div>
-                                                    <p class=><?php echo $row['Message'] ?></p>
-                                                    <p><b><?php echo $row['Timestamp'] ?></b></p><br>
-                                                </div><?php
+                                    <div class="overflow-y-scroll ms-2 me-2 mt-" style="height: 34em;">
+                                        <div class="d-flex flex-column justify-content-center align-items-center"><?php
+                                        while ($row = mysqli_fetch_array($result)) {
+                                            if ($userid == $row['Sender_ID']) {
+                                                ?>
+                                                    <div class="d-flex flex-column justify-content-center align-items-center ms-auto me-2 mt-2">
+                                                        <div class="d-flex flex-column justify-content-center align-items-center ms-auto border border-primary bg-primary rounded-pill shadow px-3 py-2">
+                                                        <p class="m-0 text-white"><?php echo $row['Message'] ?></p>
+                                                        </div>
+                                                    </div>
+                                                    <?php
+                                            } else {
+                                                ?>
+                                                    <div class="d-flex flex-column justify-content-center align-items-center me-auto me-2 mt-2">
+                                                        <div class="d-flex flex-column justify-content-center align-items-center ms-auto border border-black rounded-pill shadow px-3 py-2">
+                                                        <p class="m-0"><?php echo $row['Message'] ?></p>
+                                                        </div>
+                                                    </div>
+                                                    <?php
+                                            }
                                         }
-                                    }
+                                        ?>
+                                        </div>
+                                    </div><?php
                                 }
-                            } else { ?> <div class="d-flex justify-content-center align-items-center m-auto" style="height: 34em;">
-                                <h3>Please Select a Recipient</h3><?php }
-                            ?>
-                            </div>
+                            } else { ?>
+                                <div class="d-flex justify-content-center align-items-center m-auto text-center" style="height: 34em;">
+                                    <h3>Please Select a Recipient</h3> </div> <?php }?>
                             <form class="mt-3 ms-2 me-2 d-flex justify-content-center align-items-center" method="POST">
-                                <input class="form-control me-2" name="message" type="text" placeholder="Write a Message"
+                                <input class="form-control me-2 shadow" name="message" type="text" placeholder="Write a Message"
                                     aria-label="Send" required>
-                                <button class="btn btn-outline-primary" name="sendMessage" type="submit">Send</button>
+                                <button class="btn btn-outline-primary shadow" name="sendMessage" type="submit">Send</button>
                             </form>
                             <?php
                             if (isset($_POST['sendMessage'])) {
@@ -114,17 +120,16 @@ if (empty($_SESSION['userid'])) { ?>
                     </div>
                 </div>
                 <div class="col-4">
-                    <div>
                         <form method="POST">
                             <select class="btn btn-outline-primary" name="recieverid">
-                                <?php $sql = "SELECT Fname, Lname, User_ID FROM register_tbl";
+                                <?php $userid = $_SESSION['userid'];
+                                $sql = "SELECT Fname, Lname, User_ID FROM userinfo_tbl
+                                            where NOT User_ID = '$userid'";
                                 $result = mysqli_query($conn, $sql);
                                 while ($row = mysqli_fetch_array($result)) {
-                                    if ($_SESSION['userid'] !== $row['User_ID']) {
-                                        ?>
-                                        <option value=<?php echo $row['User_ID'] ?>><?php echo $row['Fname'] . "&nbsp;" . $row['Lname']; ?></option>
-                                        <?php
-                                    }
+                                    ?>
+                                    <option value=<?php echo $row['User_ID'] ?>><?php echo $row['Fname'] . "&nbsp;" . $row['Lname']; ?></option>
+                                    <?php
                                 }
                                 ?>
                             </select>
@@ -134,7 +139,6 @@ if (empty($_SESSION['userid'])) { ?>
                             $_SESSION['recieverid'] = $_POST['recieverid'];
                             ?>
                             <script>window.location.href = "messaging.php"</script><?php } ?>
-                    </div>
                     <p>Go back to <a href="index.php">Homepage</a>.</p>
                 </div>
             </div>
@@ -143,6 +147,5 @@ if (empty($_SESSION['userid'])) { ?>
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
     </body>
-
-    </html><?php
+</html><?php
 }

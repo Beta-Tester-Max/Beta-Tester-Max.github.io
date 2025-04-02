@@ -19,10 +19,11 @@ if (empty($_SESSION['userid'])) { ?>
                 <?php
                 if (isset($_SESSION['userid'])) {
                     $userid = $_SESSION['userid'];
-                    $sql = "SELECT Fname, Mname, Lname, Username, Profile_Pic, Email FROM register_tbl where User_ID = '$userid'";
+                    $sql = "SELECT t2.Fname, t2.Mname, t2.Lname, t1.Username, t1.Profile_Pic, t1.Email FROM register_tbl As t1, userinfo_tbl AS t2 where t1.User_ID = '$userid' AND t2.User_ID = '$userid'";
                     $result = mysqli_query($conn, $sql);
                     $row = mysqli_fetch_assoc($result); ?>
-                    <img class="border rounded shadow p-2 mb-5" style="width: 10em; height: 10em;" src="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/".$row['Profile_Pic']?>">
+                    <img class="border rounded shadow p-2 mb-5" style="width: 10em; height: 10em;"
+                        src="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/" . $row['Profile_Pic'] ?>">
                     <h3><b>First Name: </b><?php echo $row['Fname'] ?></h3>
                     <h3><b>Middle Name: </b><?php echo $row['Mname'] ?></h3>
                     <h3><b>Last Name: </b><?php echo $row['Lname'] ?></h3>

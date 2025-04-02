@@ -44,7 +44,16 @@ session_start(); ?>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Create Application</a></li>
+                            <?php if (empty($_SESSION['userid'])) {
+                                ?>
+                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">
+                                        Create Application
+                                    </button>
+                                </li>
+                            <?php } else { ?>
+                                <li><a class="dropdown-item" href="application.php">Create Application</a></li>
+                            <?php } ?>
                         </ul>
                     </li>
                 </ul>
@@ -88,11 +97,28 @@ session_start(); ?>
     </nav>
 
     <div class="container-fluid">
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">You are not <b>Signed In</b>.</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You must be <b>Signed In</b> to be able to create an application.</p>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center align-items-center">
+                        <a type="button" class="btn btn-primary" href="login.php">Go to login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="position-absolute top-50 start-50 translate-middle">
             <?php if (isset($_SESSION['userid'])) {
                 ?>
                 <h1>Hello! <?php $userid = $_SESSION['userid'];
-                $sql = "SELECT Fname, Mname, Lname FROM register_tbl where User_ID = '$userid'";
+                $sql = "SELECT Fname, Mname, Lname FROM userinfo_tbl where User_ID = '$userid'";
                 $result = mysqli_query($conn, $sql);
                 $row = mysqli_fetch_assoc($result);
                 if (empty($row['Mname'])) {

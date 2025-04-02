@@ -20,7 +20,7 @@ if (empty($_SESSION['userid'])) { ?>
             <form method="POST" enctype="multipart/form-data">
                 <?php if (isset($_SESSION['userid'])) {
                     $userid = $_SESSION['userid'];
-                    $sql = "SELECT Fname, Mname, Lname, Username, Profile_Pic, Email, Password FROM register_tbl where User_ID = '$userid'";
+                    $sql = "SELECT t2.Fname, t2.Mname, t2.Lname, t1.Username, t1.Profile_Pic, t1.Email, t1.Password FROM register_tbl AS t1, userinfo_tbl AS t2 where t1.User_ID = '$userid'";
                     $result = mysqli_query($conn, $sql);
                     $row = mysqli_fetch_assoc($result);
                     ?>

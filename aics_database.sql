@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2025 at 09:33 AM
+-- Generation Time: Apr 03, 2025 at 10:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -69,6 +69,9 @@ CREATE TABLE `application_tbl` (
   `Req5` varchar(255) NOT NULL,
   `Req6` varchar(255) NOT NULL,
   `Req7` varchar(255) NOT NULL,
+  `Status` varchar(10) NOT NULL DEFAULT 'Pending',
+  `Date_Submitted` date NOT NULL,
+  `Date_Approved` int(11) NOT NULL,
   `Timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -211,7 +214,7 @@ ALTER TABLE `address_tbl`
 -- AUTO_INCREMENT for table `application_tbl`
 --
 ALTER TABLE `application_tbl`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `messages_tbl`
@@ -229,7 +232,7 @@ ALTER TABLE `register_tbl`
 -- AUTO_INCREMENT for table `requirements_tbl`
 --
 ALTER TABLE `requirements_tbl`
-  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `userinfo_tbl`

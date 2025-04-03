@@ -67,17 +67,17 @@ if (empty($_SESSION['userid'])) { ?>
                     <tbody>
                         <?php
                         $doctype = array(
-                            "Barangay Indigency"=>"Required",
-                            "Valid ID"=>"Required",
-                            "Marriage Certificate"=>"Required",
-                            "Birth Certificate"=>"Required",
-                            "Referral Letter"=>"Required",
-                            "Medical Report"=>"Optional",
-                            "Psychological Report"=>"Optional",
-                            "Polica Report"=>"Optional",
-                            "Legal Report"=>"Optional",
-                            "Disaster Certificate"=>"Optional",
-                            "Emergency Certificate"=>"Optional"
+                            "Barangay Indigency" => "Required",
+                            "Valid ID" => "Required",
+                            "Marriage Certificate" => "Required",
+                            "Birth Certificate" => "Required",
+                            "Referral Letter" => "Required",
+                            "Medical Report" => "Optional",
+                            "Psychological Report" => "Optional",
+                            "Polica Report" => "Optional",
+                            "Legal Report" => "Optional",
+                            "Disaster Certificate" => "Optional",
+                            "Emergency Certificate" => "Optional"
                         );
                         foreach ($doctype as $dt => $im) {
                             $userid = $_SESSION['userid'];
@@ -88,7 +88,10 @@ if (empty($_SESSION['userid'])) { ?>
                                 <td><?php echo $dt ?></td>
                                 <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == $dt) ? $row['File_Name'] : "No Uploaded File" ?>
                                 </td>
-                                <td class="text-center"><?php if ($im == "Required") {?> <p class="text-danger"><b>Required</b></p><?php } else {?><p class="text-secondary"><i>(Optional)</i></p><?php }?></td>
+                                <td class="text-center"><?php if ($im == "Required") { ?>
+                                        <p class="text-danger"><b>Required</b></p><?php } else { ?>
+                                        <p class="text-secondary"><i>(Optional)</i></p><?php } ?>
+                                </td>
                                 <td class="text-center">
                                     <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == $dt) ? "✅" : "❌"; ?>
                                 </td>
@@ -157,8 +160,62 @@ if (empty($_SESSION['userid'])) { ?>
                     </tbody>
                 </table>
             </div>
+            <div class="col-2"></div>
         </div>
-        <div class="col-2"></div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div
+                class="col-8 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5 m-5">
+                <h1 class="mb-4" id="pending">Pending Applications</h1>
+                <table class="table table-striped border shadow rounded">
+                    <tr>
+                        <th scope="col">Assistance Type</th>
+                        <th class="text-center" scope="col">Status</th>
+                        <th class="text-center" scope="col">Date Submitted</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <?php $userid = $_SESSION['userid'];
+                        $sql = "SELECT Assistance_Type, Status, Date_Submitted FROM application_tbl where User_ID = '$userid'";
+                        $result = mysqli_query($conn, $sql);
+                        if ($row = mysqli_fetch_array($result)) { ?>
+                            <tr>
+                                <th><?php echo $row['Assistance_Type']?></th>
+                                <th class="text-center text-warning"><?php echo $row['Status']?></th>
+                                <th class="text-center"><?php echo $row['Date_Submitted']?></th>
+                                <th>
+                                    <button type="button mx-2" class="btn btn-primary">Edit</button>
+                                    <button type="button mx-2" class="btn btn-danger">Delete</button>
+                                </th>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div
+                class="col-8 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5 m-5">
+                <h1 class="mb-4" id="history">Applications History</h1>
+                <table class="table table-striped border shadow rounded">
+                    <tr>
+                        <th scope="col">Assistance Type</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Date Submitted</th>
+                        <th scope="col">Date Approved/Rejected</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-2"></div>
+        </div>
     </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

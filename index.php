@@ -34,26 +34,70 @@ session_start(); ?>
                             Assistance
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Medical Assistance</a></li>
-                            <li><a class="dropdown-item" href="#">Transportation Assistance</a></li>
-                            <li><a class="dropdown-item" href="#">Educational Assistance</a></li>
-                            <li><a class="dropdown-item" href="#">Food Assistance</a></li>
-                            <li><a class="dropdown-item" href="#">other options</a></li>
-                            <li><a class="dropdown-item" href="#">other options</a></li>
-                            <li><a class="dropdown-item" href="#">other options</a></li>
+                            <li><a class="dropdown-item" href="application.php">Psychosocial Support</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <?php if (empty($_SESSION['userid'])) {
                                 ?>
                                 <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop">
+                                        data-bs-target="#staticBackdrop01">
                                         Create Application
                                     </button>
                                 </li>
-                            <?php } else { ?>
-                                <li><a class="dropdown-item" href="application.php">Create Application</a></li>
-                            <?php } ?>
+                            <?php } else {
+                                $userid = $_SESSION['userid'];
+                                $rows = [];
+                                $sql = "SELECT Document_Type 
+                                        FROM requirements_tbl 
+                                        where User_ID = '$userid'";
+                                $result = mysqli_query($conn, $sql);
+                                while ($row = mysqli_fetch_array($result)) {
+                                    $rows[] = $row['Document_Type'];
+                                }
+                                if (in_array("Barangay Indigency", $rows)) {
+                                    if (in_array("Valid ID", $rows)) {
+                                        if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                            if (in_array("Referral Letter", $rows)) {
+                                                ?>
+                                                <li><a class="dropdown-item" href="application.php">Create Application</a></li><?php
+                                            } else {
+                                                $modaltext = "Referral Letter";
+                                                ?>
+                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02">
+                                                        Create Application
+                                                    </button>
+                                                </li><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Birth Certificate or Marriage Certificate";
+                                            ?>
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02">
+                                                    Create Application
+                                                </button>
+                                            </li><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Valid ID";
+                                        ?>
+                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02">
+                                                Create Application
+                                            </button>
+                                        </li><?php
+                                    }
+                                } else {
+                                    $modaltext = "Barangay Indigency";
+                                    ?>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02">
+                                            Create Application
+                                        </button>
+                                    </li><?php
+                                }
+                            } ?>
                         </ul>
                     </li>
                 </ul>
@@ -97,7 +141,7 @@ session_start(); ?>
     </nav>
 
     <div class="container-fluid">
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="staticBackdrop01" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -110,6 +154,25 @@ session_start(); ?>
                     </div>
                     <div class="modal-footer d-flex justify-content-center align-items-center">
                         <a type="button" class="btn btn-primary" href="login.php">Go to login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="staticBackdrop02" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">You are missing some <b>Requirements</b>.
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You Are Missing <b><?php echo $modaltext ?></b>.</p>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center align-items-center">
+                        <a type="button" class="btn btn-primary" href="profile.php#requirements">Upload Missing
+                            Requirements</a>
                     </div>
                 </div>
             </div>

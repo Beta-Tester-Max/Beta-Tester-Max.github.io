@@ -372,7 +372,7 @@ if (empty($_SESSION)) { ?>
                                                     VALUES ('$userid', '$streetaddress', '$barangay', '$cityormuni', '$province', '$region', '$zipcode')";
                                             if (mysqli_query($conn, $sql)) {
                                                 $_SESSION['userid'] = $userid ?>
-                                                <?php }
+                                                <script>window.location.href = "index.php"</script><?php }
                                         }
                                     }
                                 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 02, 2025 at 10:37 AM
+-- Generation Time: Apr 03, 2025 at 09:33 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,7 +43,7 @@ CREATE TABLE `address_tbl` (
 --
 
 INSERT INTO `address_tbl` (`Address_ID`, `User_ID`, `Street_Address`, `Barangay`, `CityorMunicipality`, `Province`, `Region`, `Zip_Code`) VALUES
-(1, 19, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001);
+(2, 20, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001);
 
 -- --------------------------------------------------------
 
@@ -58,6 +58,17 @@ CREATE TABLE `application_tbl` (
   `Birth_Date` date NOT NULL,
   `Address_ID` varchar(255) NOT NULL,
   `Assistance_Type` varchar(255) NOT NULL,
+  `Civil_Status` varchar(50) NOT NULL,
+  `Contact_Number` varchar(13) NOT NULL DEFAULT '0000-000-0000',
+  `Email` varchar(50) NOT NULL,
+  `Reason` text NOT NULL,
+  `Req1` varchar(255) NOT NULL,
+  `Req2` varchar(255) NOT NULL,
+  `Req3` varchar(255) NOT NULL,
+  `Req4` varchar(255) NOT NULL,
+  `Req5` varchar(255) NOT NULL,
+  `Req6` varchar(255) NOT NULL,
+  `Req7` varchar(255) NOT NULL,
   `Timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -96,7 +107,7 @@ CREATE TABLE `register_tbl` (
 --
 
 INSERT INTO `register_tbl` (`User_ID`, `Username`, `Profile_Pic`, `Email`, `Password`, `Access_Level`, `Timestamp`) VALUES
-(19, 'Test', '', 'Testacc@gmail.com', '123', 'User', '2025-04-02 08:20:08');
+(20, 'test101', '', '1234@gmail.com', '123', 'User', '2025-04-03 07:10:26');
 
 -- --------------------------------------------------------
 
@@ -109,6 +120,7 @@ CREATE TABLE `requirements_tbl` (
   `User_ID` int(11) NOT NULL,
   `Document_Type` varchar(255) NOT NULL,
   `File_Name` varchar(255) NOT NULL,
+  `Importance` varchar(10) NOT NULL,
   `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -137,7 +149,7 @@ CREATE TABLE `userinfo_tbl` (
 --
 
 INSERT INTO `userinfo_tbl` (`UserInfo_ID`, `User_ID`, `Fname`, `Mname`, `Lname`, `Birth_Date`, `Sex`, `Contact_Number`, `Civil_Status`, `Religion`, `Nationality`) VALUES
-(6, 19, 'Admin', 'Modifier', 'Owner', '2025-04-23', 'm', '0888-888-8888', 'Single', 'Roman Catholic', 'filipino');
+(7, 20, 'Test', 'T', 'Tests', '2001-11-24', 'm', '0912-345-6789', 'Single', 'Roman Catholic', 'filipino');
 
 --
 -- Indexes for dumped tables
@@ -193,13 +205,13 @@ ALTER TABLE `userinfo_tbl`
 -- AUTO_INCREMENT for table `address_tbl`
 --
 ALTER TABLE `address_tbl`
-  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `application_tbl`
 --
 ALTER TABLE `application_tbl`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `messages_tbl`
@@ -211,19 +223,19 @@ ALTER TABLE `messages_tbl`
 -- AUTO_INCREMENT for table `register_tbl`
 --
 ALTER TABLE `register_tbl`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `requirements_tbl`
 --
 ALTER TABLE `requirements_tbl`
-  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `userinfo_tbl`
 --
 ALTER TABLE `userinfo_tbl`
-  MODIFY `UserInfo_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `UserInfo_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

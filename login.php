@@ -35,16 +35,24 @@ if (empty($_SESSION)) {?>
                 $account = $_POST['account'];
                 $password = $_POST['password'];
 
-                $sql = "SELECT Username, User_ID, Password FROM register_tbl where Username = '$account' OR Email = '$account'";
+                $sql = "SELECT User_ID, Password FROM register_tbl where Username = '$account' OR Email = '$account'";
                 $result = mysqli_query($conn, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
-                    $row = mysqli_fetch_array($result);
+                    $row = mysqli_fetch_assoc($result);
                     $fetchedPassword = $row['Password'];
-                    if ($password === $fetchedPassword) { ?>
+                    if ($password === $fetchedPassword) {
+                        $userid = $row['User_ID'];
+                        $sql = "SELECT Access_Level FROM register_tbl where User_ID = '$userid'";
+                        $result = mysqli_query($conn, $sql);
+                        $row = mysqli_fetch_assoc($result);
+                        if ($row['Access_Level'] === "Admin") {
+                            $_SESSION['authority'] = $row['Access_Level']?>
+                        <script>window.location.href = 'administration.php'</script> <?php
+                        } else {?>
                         <script>window.location.href = 'index.php'</script> <?php
-                        $_SESSION['userid'] = $row['User_ID'];
-                    } else { ?>
+                        $_SESSION['userid'] = $userid;
+                    }} else { ?>
                         <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Password.</p><?php }
                 } else { ?>
                     <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Username.</p><?php }

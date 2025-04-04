@@ -49,7 +49,7 @@ if (in_array("Barangay Indigency", $rows)) {
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body>
+<body class="overflow-x-hidden" style="min-width: 50em;">
     <div class="container-fluid">
         <div class="row">'
             <div class="col-12">
@@ -96,7 +96,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                         <label class="mb-2" for="assistanceType">Type of Assitance</label><br>
                                         <select class="py-2 form-select" name="assistancetype" id="assistanceType"
                                             required>
-                                            <option value="Psychosocial_Support">Psychosocial Support</option>
+                                            <option value="Psychosocial Support">Psychosocial Support</option>
                                         </select>
                                     </div>
                                 </div>
@@ -136,8 +136,8 @@ if (in_array("Barangay Indigency", $rows)) {
                                         <div class="col-6">
                                             <div class="mt-3">
                                                 <label class="mb-1 text-danger" for="file01"><b>Required</b></label>
-                                                <select class="form-select" id="file01" name="file02" required>
-                                                    <option>Select a Document Type</option>
+                                                <select class="form-select" id="file01" name="file01" required>
+                                                    <option value="">Select a Document Type</option>
                                                     <?php $userid = $_SESSION['userid'];
                                                     $documenttype = "Barangay Indigency";
                                                     $sql = "SELECT File_Name
@@ -155,8 +155,8 @@ if (in_array("Barangay Indigency", $rows)) {
                                             </div>
                                             <div class="mt-3">
                                                 <label class="mb-1 text-danger" for="file02"><b>Required</b></label>
-                                                <select class="form-select" id="file02" name="file03" required>
-                                                    <option>Select a Document Type</option>
+                                                <select class="form-select" id="file02" name="file02" required>
+                                                    <option value="">Select a Document Type</option>
                                                     <?php $userid = $_SESSION['userid'];
                                                     $documenttype = "Valid ID";
                                                     $sql = "SELECT Document_Type, File_Name
@@ -174,8 +174,8 @@ if (in_array("Barangay Indigency", $rows)) {
                                             </div>
                                             <div class="mt-3">
                                                 <label class="mb-1 text-danger" for="file03"><b>Required</b></label>
-                                                <select class="form-select" id="file03" name="file04" required>
-                                                    <option>Select a Document Type</option>
+                                                <select class="form-select" id="file03" name="file03" required>
+                                                    <option value="">Select a Document Type</option>
                                                     <?php $userid = $_SESSION['userid'];
                                                     $documenttype1 = "Birth Certificate";
                                                     $documenttype2 = "Marriage Certificate";
@@ -194,8 +194,8 @@ if (in_array("Barangay Indigency", $rows)) {
                                             </div>
                                             <div class="mt-3">
                                                 <label class="mb-1 text-danger" for="file04"><b>Required</b></label>
-                                                <select class="form-select" id="file04" name="file01" required>
-                                                    <option>Select a Document Type</option>
+                                                <select class="form-select" id="file04" name="file04" required>
+                                                    <option value="">Select a Document Type</option>
                                                     <?php $userid = $_SESSION['userid'];
                                                     $documenttype = "Referral Letter";
                                                     $sql = "SELECT Document_Type, File_Name
@@ -217,7 +217,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                 <label class="mb-1 text-secondary"
                                                     for="file05"><i>(Optional)</i></label>
                                                 <select class="form-select" id="file05" name="file05">
-                                                    <option>Select a Document Type</option>
+                                                    <option value="">Select a Document Type</option>
                                                     <?php $userid = $_SESSION['userid'];
                                                     $documenttype1 = "Medical Report";
                                                     $documenttype2 = "Psychological Report";
@@ -238,7 +238,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                 <label class="mb-1 text-secondary"
                                                     for="file06"><i>(Optional)</i></label>
                                                 <select class="form-select" id="file06" name="file06">
-                                                    <option>Select a Document Type</option>
+                                                    <option value="">Select a Document Type</option>
                                                     <?php $userid = $_SESSION['userid'];
                                                     $documenttype1 = "Police Report";
                                                     $documenttype2 = "Legal Report";
@@ -259,7 +259,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                 <label class="mb-1 text-secondary"
                                                     for="file07"><i>(Optional)</i></label>
                                                 <select class="form-select" id="file07" name="file07">
-                                                    <option>Select a Document Type</option>
+                                                    <option value="">Select a Document Type</option>
                                                     <?php $userid = $_SESSION['userid'];
                                                     $documenttype1 = "Disaster Certificate";
                                                     $documenttype2 = "Emergency Certificate";
@@ -301,8 +301,9 @@ if (in_array("Barangay Indigency", $rows)) {
                             $req5 = $_POST['file05'];
                             $req6 = $_POST['file06'];
                             $req7 = $_POST['file07'];
-                            $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7)
-                                    VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7')";
+                            $date = date('Y-m-d');
+                            $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7, Date_Submitted)
+                                    VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$date')";
                             if ($result = mysqli_query($conn, $sql)) {
                                 ?>
                                 <script>alert("Your Application has been Submitted.")

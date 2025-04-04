@@ -70,16 +70,16 @@ if (empty($_SESSION['userid'])) { ?>
                                             if ($userid == $row['Sender_ID']) {
                                                 ?>
                                                     <div class="d-flex flex-column justify-content-center align-items-center ms-auto me-2 mt-2">
-                                                        <div class="d-flex flex-column justify-content-center align-items-center ms-auto border border-primary bg-primary rounded-pill shadow px-3 py-2">
-                                                        <p class="m-0 text-white"><?php echo $row['Message'] ?></p>
+                                                        <div class="d-flex flex-column justify-content-center align-items-center ms-auto border border-primary bg-primary rounded shadow px-3 py-2">
+                                                        <p class="m-0 text-white"><?php echo $row['Message']?></p>
                                                         </div>
                                                     </div>
                                                     <?php
                                             } else {
                                                 ?>
                                                     <div class="d-flex flex-column justify-content-center align-items-center me-auto me-2 mt-2">
-                                                        <div class="d-flex flex-column justify-content-center align-items-center ms-auto border border-black rounded-pill shadow px-3 py-2">
-                                                        <p class="m-0"><?php echo $row['Message'] ?></p>
+                                                        <div class="d-flex flex-column justify-content-center align-items-center ms-auto border border-black rounded shadow px-3 py-2">
+                                                        <p class="m-0"><?php echo $row['Message']?></p>
                                                         </div>
                                                     </div>
                                                     <?php

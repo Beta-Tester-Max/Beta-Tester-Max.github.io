@@ -1,7 +1,7 @@
 <?php include "connect.php";
 session_start();
 if (empty($_SESSION['userid'])) { ?>
-    <script>window.location.href = "logout.php";</script><?php } ?>
+    <script>window.location.href = "logout.php";</script><?php }?>
 <!doctype html>
 <html lang="en">
 
@@ -59,8 +59,8 @@ if (empty($_SESSION['userid'])) { ?>
                     <tr>
                         <th scope="col">Document Type</th>
                         <th scope="col">Uploaded File</th>
-                        <th scope="col">Importance</th>
-                        <th scope="col">Status</th>
+                        <th class="text-center" scope="col">Importance</th>
+                        <th class="text-center" scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -177,16 +177,38 @@ if (empty($_SESSION['userid'])) { ?>
                     </thead>
                     <tbody>
                         <?php $userid = $_SESSION['userid'];
-                        $sql = "SELECT Assistance_Type, Status, Date_Submitted FROM application_tbl where User_ID = '$userid'";
+                        $sql = "SELECT Application_ID, Assistance_Type, Status, Date_Submitted 
+                                FROM application_tbl 
+                                where User_ID = '$userid' 
+                                AND is_deleted = 0 
+                                AND status = 'Pending'";
                         $result = mysqli_query($conn, $sql);
                         if ($row = mysqli_fetch_array($result)) { ?>
                             <tr>
                                 <th><?php echo $row['Assistance_Type']?></th>
                                 <th class="text-center text-warning"><?php echo $row['Status']?></th>
                                 <th class="text-center"><?php echo $row['Date_Submitted']?></th>
-                                <th>
-                                    <button type="button mx-2" class="btn btn-primary">Edit</button>
-                                    <button type="button mx-2" class="btn btn-danger">Delete</button>
+                                <th class="d-flex">
+                                    <form method="POST">
+                                        <input type="hidden" name="appid" value="<?php echo $row['Application_ID']?>">
+                                        <button type="submit" name="editForm" class="btn btn-primary me-1">Edit</button>
+                                    </form>
+                                    <?php if (isset($_POST['editForm'])) {
+                                        $_SESSION['appid'] = $_POST['appid'];
+                                        ?><script>window.location.href = "applicationeditor.php"</script><?php
+                                    }?>
+                                    <form method="POST">
+                                        <button type="submit" name="deleteForm" class="btn btn-danger">Delete</button>
+                                    </form>
+                                    <?php if (isset($_POST['deleteForm'])) {
+                                        $userid = $_SESSION['userid'];
+                                        $appid = $row['Application_ID'];
+                                        $sql = "UPDATE application_tbl
+                                                SET is_deleted = 1
+                                                where Application_ID = '$appid'";
+                                        mysqli_query($conn, $sql);
+                                        ?><script>window.location.href = "profile.php"</script><?php
+                                    }?>
                                 </th>
                             </tr>
                         <?php } ?>
@@ -202,15 +224,30 @@ if (empty($_SESSION['userid'])) { ?>
                 <h1 class="mb-4" id="history">Applications History</h1>
                 <table class="table table-striped border shadow rounded">
                     <tr>
-                        <th scope="col">Assistance Type</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Date Submitted</th>
-                        <th scope="col">Date Approved/Rejected</th>
-                        <th scope="col">Action</th>
+                        <th class="text-center" scope="col">Assistance Type</th>
+                        <th class="text-center" scope="col">Status</th>
+                        <th class="text-center" scope="col">Date Reviewed</th>
                     </tr>
                     </thead>
                     <tbody>
-
+                        <?php $userid = $_SESSION['userid'];
+                        $sql = "SELECT Assistance_Type, Status, Date_Submitted, Date_ApporRej
+                                FROM application_tbl
+                                where User_ID = '$userid' 
+                                AND is_deleted = '0' 
+                                AND NOT Status = 'Pending'";
+                        $result = mysqli_query($conn, $sql);
+                        while ($row = mysqli_fetch_array($result)) {?>
+                            <tr>
+                                <th class="text-center"><?php echo $row['Assistance_Type']?></th>
+                                <?php if ($row['Status'] == "Approved") { ?>
+                                <th class="text-center text-success"><?php echo $row['Status']?></th>
+                                <?php } else {?>
+                                <th class="text-center text-danger"><?php echo $row['Status']?></th>
+                                <?php }?>
+                                <th class="text-center"><?php echo $row['Date_ApporRej']?></th>
+                            </tr>
+                        <?php }?>
                     </tbody>
                 </table>
             </div>

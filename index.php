@@ -7,14 +7,30 @@ session_start(); ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AICS System demo</title>
+    <link rel="icon" type="image/x-icon" href="Logo.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .logo {
+            height: 3em;
+            width: 3.5em;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotateZ(360deg);
+            }
+        }
+    </style>
 </head>
 
-<body class="overflow-x-hidden" style="min-width: 50em;">
+<body class="overflow-x-hidden" style="min-width: 20em;">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">AICS/LOGO</a>
+            <a class="navbar-brand" href="#">
+                <img class="logo" src="logo.ico" alt="AICS">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -177,20 +193,22 @@ session_start(); ?>
                 </div>
             </div>
         </div>
-        <div class="position-absolute top-50 start-50 translate-middle">
-            <?php if (isset($_SESSION['userid'])) {
-                ?>
-                <h1>Hello! <?php $userid = $_SESSION['userid'];
-                $sql = "SELECT Fname, Mname, Lname FROM userinfo_tbl where User_ID = '$userid'";
-                $result = mysqli_query($conn, $sql);
-                $row = mysqli_fetch_assoc($result);
-                if (empty($row['Mname'])) {
-                    echo $row['Fname'] . "&nbsp;" . $row['Lname'];
-                } else {
-                    echo $row['Fname'] . "&nbsp;" . $row['Mname'] . "&nbsp;" . $row['Lname'];
-                }
-                ?>.</h1>
-            <?php } ?>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center align-items-center" style="height: 30em;">
+                <?php if (isset($_SESSION['userid'])) {
+                    ?>
+                    <h1>Hello! <?php $userid = $_SESSION['userid'];
+                    $sql = "SELECT Fname, Mname, Lname FROM userinfo_tbl where User_ID = '$userid'";
+                    $result = mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_assoc($result);
+                    if (empty($row['Mname'])) {
+                        echo $row['Fname'] . "&nbsp;" . $row['Lname'];
+                    } else {
+                        echo $row['Fname'] . "&nbsp;" . $row['Mname'] . "&nbsp;" . $row['Lname'];
+                    }
+                    ?>.</h1>
+                <?php } ?>
+            </div>
         </div>
     </div>
 

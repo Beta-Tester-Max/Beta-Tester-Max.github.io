@@ -117,7 +117,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
-                                                                AND File_Name = '$req1'";
+                                                                AND File_Name = '$req1' AND Status = 'Validated'";
                                                             $result = mysqli_query($conn, $sql);
                                                             $row = mysqli_fetch_array($result);
                                                             if (empty($row['Document_Type']) == false) { ?>
@@ -138,7 +138,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
-                                                                AND File_Name = '$req2'";
+                                                                AND File_Name = '$req2' AND Status = 'Validated'";
                                                             $result = mysqli_query($conn, $sql);
                                                             $row = mysqli_fetch_array($result);
                                                             if (empty($row['Document_Type']) == false) { ?>
@@ -159,7 +159,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
-                                                                AND File_Name = '$req3'";
+                                                                AND File_Name = '$req3' AND Status = 'Validated'";
                                                             $result = mysqli_query($conn, $sql);
                                                             $row = mysqli_fetch_array($result);
                                                             if (empty($row['Document_Type']) == false) { ?>
@@ -174,7 +174,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                         $documenttype = ($row['Document_Type'] == "Marriage Certificate") ? $row['Document_Type'] : "Birth Certificate";
                                                         $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
+                                                            where User_ID = '$userid' AND Status = 'Validated'
                                                             AND Document_Type = '$documenttype'";
                                                         $result = mysqli_query($conn, $sql);
                                                         while ($row = mysqli_fetch_array($result)) {
@@ -192,7 +192,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
-                                                                AND File_Name = '$req4'";
+                                                                AND File_Name = '$req4' AND Status = 'Validated'";
                                                             $result = mysqli_query($conn, $sql);
                                                             $row = mysqli_fetch_array($result);
                                                             if (empty($row['Document_Type']) == false) { ?>
@@ -214,7 +214,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                         <?php if (empty($req5) == false) {
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
-                                                                where User_ID = '$userid' 
+                                                                where User_ID = '$userid' AND Status = 'Validated'
                                                                 AND File_Name = '$req5'";
                                                             $result = mysqli_query($conn, $sql);
                                                             $row = mysqli_fetch_array($result);
@@ -231,7 +231,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                         $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype'";
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                                         $result = mysqli_query($conn, $sql);
                                                         while ($row = mysqli_fetch_array($result)) {
                                                             ?>
@@ -249,7 +249,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
-                                                                AND File_Name = '$req6'";
+                                                                AND File_Name = '$req6' AND Status = 'Validated'";
                                                             $result = mysqli_query($conn, $sql);
                                                             $row = mysqli_fetch_array($result);
                                                             if (empty($row['Document_Type']) == false) { ?>
@@ -265,7 +265,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                         $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype'";
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                                         $result = mysqli_query($conn, $sql);
                                                         while ($row = mysqli_fetch_array($result)) {
                                                             ?>
@@ -283,7 +283,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
-                                                                AND File_Name = '$req7'";
+                                                                AND File_Name = '$req7' AND Status = 'Validated'";
                                                             $result = mysqli_query($conn, $sql);
                                                             $row = mysqli_fetch_array($result);
                                                             if (empty($row['Document_Type']) == false) { ?>
@@ -299,7 +299,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                         $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype'";
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                                         $result = mysqli_query($conn, $sql);
                                                         while ($row = mysqli_fetch_array($result)) {
                                                             ?>

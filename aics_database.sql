@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2025 at 10:13 AM
+-- Generation Time: Apr 07, 2025 at 09:06 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -129,7 +129,7 @@ CREATE TABLE `register_tbl` (
 --
 
 INSERT INTO `register_tbl` (`User_ID`, `Username`, `Profile_Pic`, `Email`, `Password`, `Access_Level`, `Timestamp`) VALUES
-(1, 'Admin', '', '', '123', 'Admin', '2025-04-04 04:38:59'),
+(1, 'Admin', '', '', '123', 'Admin', '0000-00-00 00:00:00'),
 (20, 'test101', '', '1234@gmail.com', '123', 'User', '2025-04-03 07:10:26'),
 (22, 'hello', '', 'jduser@gmail.com', '123', 'User', '2025-04-04 08:02:03');
 
@@ -145,6 +145,7 @@ CREATE TABLE `requirements_tbl` (
   `Document_Type` varchar(255) NOT NULL,
   `File_Name` varchar(255) NOT NULL,
   `Importance` varchar(10) NOT NULL,
+  `Status` varchar(20) NOT NULL DEFAULT 'Unvalidated',
   `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -236,7 +237,7 @@ ALTER TABLE `address_tbl`
 -- AUTO_INCREMENT for table `application_tbl`
 --
 ALTER TABLE `application_tbl`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `messages_tbl`
@@ -254,7 +255,7 @@ ALTER TABLE `register_tbl`
 -- AUTO_INCREMENT for table `requirements_tbl`
 --
 ALTER TABLE `requirements_tbl`
-  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `userinfo_tbl`

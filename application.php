@@ -7,7 +7,7 @@ $userid = $_SESSION['userid'];
 $rows = [];
 $sql = "SELECT Document_Type 
         FROM requirements_tbl 
-        where User_ID = '$userid'";
+        where User_ID = '$userid' AND Status = 'Validated'";
 $result = mysqli_query($conn, $sql);
 while ($row = mysqli_fetch_array($result)) {
     $rows[] = $row['Document_Type'];
@@ -18,22 +18,22 @@ if (in_array("Barangay Indigency", $rows)) {
             if (in_array("Referral Letter", $rows)) {
             } else {
                 ?>
-                <script>alert("You Are Missing Referral Letter")
+                <script>alert("Missing Validated Referral Letter")
                     window.location.href = "profile.php#requirements"</script><?php
             }
         } else {
             ?>
-            <script>alert("You Are Missing either Birth Certificate or Marriage Certificate")
+            <script>alert("Missing Validated Birth Certificate or Validated Marriage Certificate")
                 window.location.href = "profile.php#requirements"</script><?php
         }
     } else {
         ?>
-        <script>alert("You Are Missing Valid ID")
+        <script>alert("Missing Validated Valid ID")
             window.location.href = "profile.php#requirements"</script><?php
     }
 } else {
     ?>
-    <script>alert("You Are Missing Barangay Indigency")
+    <script>alert("Missing Validated Barangay Indigency")
         window.location.href = "profile.php#requirements"</script>
     <?php
 }
@@ -143,7 +143,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                     $sql = "SELECT File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype'";
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_array($result)) {
                                                         ?>
@@ -162,7 +162,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                     $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype'";
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_array($result)) {
                                                         ?>
@@ -181,7 +181,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                     $documenttype2 = "Marriage Certificate";
                                                     $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
+                                                            where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_array($result)) {
@@ -201,7 +201,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                     $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype'";
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_array($result)) {
                                                         ?>
@@ -223,7 +223,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                     $documenttype2 = "Psychological Report";
                                                     $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
+                                                            where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_array($result)) {
@@ -244,7 +244,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                     $documenttype2 = "Legal Report";
                                                     $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
+                                                            where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_array($result)) {
@@ -265,7 +265,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                                     $documenttype2 = "Emergency Certificate";
                                                     $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
+                                                            where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
                                                     $result = mysqli_query($conn, $sql);
                                                     while ($row = mysqli_fetch_array($result)) {

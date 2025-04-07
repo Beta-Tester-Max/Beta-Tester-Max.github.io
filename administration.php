@@ -15,6 +15,62 @@ if ($_SESSION['authority'] === "Admin") {
 
     <body class="overflow-x-hidden" style="min-width: 50em;">
         <div class="container-fluid">
+        <div class="row">
+                <div class="col-2"></div>
+                <div
+                    class="col-8 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5 my-5">
+                    <h1 class="mb-4" id="history">Pending Requirements</h1>
+                    <table class="table table-striped border shadow rounded">
+                        <tr>
+                            <th class="text-center text-primary" scope="col">ID</th>
+                            <th class="text-center" scope="col">Document_Type</th>
+                            <th class="" scope="col">File Name</th>
+                            <th class="" scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <?php $sql = "SELECT Requirements_ID, Document_Type, File_Name
+                                        FROM requirements_tbl
+                                        where Status = 'Unvalidated'";
+                            $result = mysqli_query($conn, $sql);
+                            while ($row = mysqli_fetch_array($result)) { ?>
+                                <tr>
+                                    <th class="text-center text-primary"><?php echo $row['Requirements_ID'] ?></th>
+                                    <th class="text-center"><?php echo $row['Document_Type'] ?></th>
+                                    <th class=""><?php echo $row['File_Name'] ?></th>
+                                    <th class="">
+                                        <form method="POST">
+                                            <button class="btn btn-primary" style="width: 8em;" type="submit" name="fileopen" value="<?php echo $row['File_Name']?>">Open File</button>
+                                        </form>
+                                        <form method="POST">
+                                            <button class="btn btn-success my-1" type="submit" name="validatereq" value="<?php echo $row['Requirements_ID']?>">Validate</button>
+                                        </form>
+                                        <form method="POST">
+                                            <button class="btn btn-danger" type="submit" name="rejectreq" value="<?php echo $row['Requirements_ID']?>">Reject</button>
+                                        </form>
+                                    </th>
+                                    <?php 
+                                    if (isset($_POST['fileopen'])) {
+                                        $_SESSION['file'] = $_POST['fileopen']?>
+                                        <script>window.location.href = "pdfdisplayer.php"</script><?php
+                                    }
+                                    if (isset($_POST['validatereq']) || isset($_POST['rejectreq'])) {
+                                        $reqid  = (isset($_POST['validatereq'])) ? $_POST['validatereq'] : $_POST['rejectreq'];
+                                        $status = (isset($_POST['validatereq'])) ? "Validated" : "Rejected";
+                                        $sql = "UPDATE requirements_tbl
+                                                SET Status = '$status'
+                                                where Requirements_ID = '$reqid'";
+                                        mysqli_query($conn, $sql);?>
+                                        <script>window.location.href = "administration.php"</script>
+                                    <?php }
+                                    ?>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-2"></div>
+            </div>
             <div class="row">
                 <div class="col-2"></div>
                 <div
@@ -162,6 +218,36 @@ if ($_SESSION['authority'] === "Admin") {
                             <?php } ?>
                         </tbody>
                     </table>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8 d-flex justify-content-center align-items-center border rounded shadow p-2 my-5">
+                    <div
+                        class="container-fluid text-light d-flex flex-column justify-content-center align-items-center border bg-primary rounded shadow p-2 m-2">
+                        <?php $sql = "SELECT Application_ID FROM application_tbl where is_deleted = '0'";
+                        $result = mysqli_query($conn, $sql);
+                        ?>
+                        <strong>Total Application</strong>
+                        <h2><?php echo mysqli_num_rows($result); ?></h2>
+                    </div>
+                    <div
+                        class="container-fluid text-light d-flex flex-column justify-content-center align-items-center border bg-success rounded shadow p-2 m-2">
+                        <?php $sql = "SELECT Application_ID FROM application_tbl where is_deleted = '0' AND Status = 'Approved'";
+                        $result = mysqli_query($conn, $sql);
+                        ?>
+                        <strong>Total Approved</strong>
+                        <h2><?php echo mysqli_num_rows($result); ?></h2>
+                    </div>
+                    <div
+                        class="container-fluid text-light d-flex flex-column justify-content-center align-items-center border bg-danger rounded shadow p-2 m-2">
+                        <?php $sql = "SELECT Application_ID FROM application_tbl where is_deleted = '0' And Status = 'Rejected'";
+                        $result = mysqli_query($conn, $sql);
+                        ?>
+                        <strong>Total Rejected</strong>
+                        <h2><?php echo mysqli_num_rows($result); ?></h2>
+                    </div>
                 </div>
                 <div class="col-2"></div>
             </div>

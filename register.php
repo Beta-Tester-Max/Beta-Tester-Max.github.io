@@ -342,15 +342,15 @@ if (empty($_SESSION)) { ?>
                             $email = $_POST['email'];
                             $bday = $_POST['bday'];
                             $password = $_POST['password'];
-                            $sex = $_POST['sex'];
+                            $sex = ucwords(strtolower($_POST['sex']));
                             $phoneno = $_POST['phoneno'];
                             $civilstatus = $_POST['civilstatus'];
-                            $religion = $_POST['religion'];
+                            $religion = ucwords(strtolower($_POST['religion']));
                             $nationality = $_POST['nationality'];
-                            $streetaddress = $_POST['streetaddress'];
-                            $barangay = $_POST['barangay'];
-                            $cityormuni = $_POST['cityormunicipality'];
-                            $province = $_POST['province'];
+                            $streetaddress = ucwords(strtolower($_POST['streetaddress']));
+                            $barangay = ucwords(strtolower($_POST['barangay']));
+                            $cityormuni = ucwords(strtolower($_POST['cityormunicipality']));
+                            $province = ucwords(strtolower($_POST['province']));
                             $region = $_POST['region'];
                             $zipcode = $_POST['zipcode'];
 

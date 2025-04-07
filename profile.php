@@ -1,7 +1,7 @@
 <?php include "connect.php";
 session_start();
 if (empty($_SESSION['userid'])) { ?>
-    <script>window.location.href = "logout.php";</script><?php }?>
+    <script>window.location.href = "logout.php";</script><?php } ?>
 <!doctype html>
 <html lang="en">
 
@@ -25,11 +25,9 @@ if (empty($_SESSION['userid'])) { ?>
                     $row = mysqli_fetch_assoc($result); ?>
                     <img class="border rounded shadow p-2 mb-5" style="width: 10em; height: 10em;"
                         src="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/" . $row['Profile_Pic'] ?>">
-                    <h3><b>First Name: </b><?php echo $row['Fname'] ?></h3>
-                    <h3><b>Middle Name: </b><?php echo $row['Mname'] ?></h3>
-                    <h3><b>Last Name: </b><?php echo $row['Lname'] ?></h3>
-                    <h3><b>Username: </b><?php echo $row['Username'] ?></h3>
-                    <h3><b>Email: </b><?php echo $row['Email'] ?></h3>
+                    <h3><b><?php echo $row['Fname'] ?>     <?php echo $row['Mname'] ?>     <?php echo $row['Lname'] ?></b></h3>
+                    <h3><i><?php echo $row['Username'] ?></i></h3>
+                    <h3><?php echo $row['Email'] ?></h3>
                     <a class="btn btn-primary btn-lg mt-3 mb-2" href="profileeditor.php">Edit Profile</a>
                     <p>Go to <a href="index.php">Home</a>.</p>
                 <?php } ?>
@@ -74,26 +72,37 @@ if (empty($_SESSION['userid'])) { ?>
                             "Referral Letter" => "Required",
                             "Medical Report" => "Optional",
                             "Psychological Report" => "Optional",
-                            "Polica Report" => "Optional",
+                            "Police Report" => "Optional",
                             "Legal Report" => "Optional",
                             "Disaster Certificate" => "Optional",
                             "Emergency Certificate" => "Optional"
                         );
                         foreach ($doctype as $dt => $im) {
                             $userid = $_SESSION['userid'];
-                            $sql = "SELECT Document_Type, File_Name FROM requirements_tbl where User_ID = '$userid' AND Document_Type = '$dt'";
+                            $sql = "SELECT Document_Type, File_Name, Status FROM requirements_tbl where User_ID = '$userid' AND Document_Type = '$dt'";
                             $result = mysqli_query($conn, $sql);
                             $row = mysqli_fetch_array($result) ?>
                             <tr>
                                 <td><?php echo $dt ?></td>
-                                <td><?php echo (isset($row['Document_Type']) && $row['Document_Type'] == $dt) ? $row['File_Name'] : "No Uploaded File" ?>
+                                <td><?php if (isset($row['Status']) && $row['Status'] === "Rejected") {?>
+                                    Your File has been Rejected.
+                                <?php } else {
+                                echo (isset($row['Document_Type']) && $row['Document_Type'] == $dt) ? $row['File_Name'] : "No Uploaded File";}?>
                                 </td>
                                 <td class="text-center"><?php if ($im == "Required") { ?>
                                         <p class="text-danger"><b>Required</b></p><?php } else { ?>
                                         <p class="text-secondary"><i>(Optional)</i></p><?php } ?>
                                 </td>
                                 <td class="text-center">
-                                    <?php echo (isset($row['Document_Type']) && $row['Document_Type'] == $dt) ? "✅" : "❌"; ?>
+                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                        <img src="img/validated.png" alt="Validated" title="Validated" style="width: 1.5em; height: 1.5em;">
+                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                        <img src="img/unvalidated.png" alt="Unvalidated" title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                        <img src="img/reject.png" alt="Rejected" title="Rejected" style="width: 1.5em; height: 1.5em;">
+                                    <?php } else { ?>
+                                        <img src="img/missing.png" alt="Missing" title="Missing" style="width: 1.5em; height: 1.5em;">
+                                    <?php } ?>
                                 </td>
                                 <td><?php if (isset($row['Document_Type']) && $row['Document_Type'] == $dt) { ?>
                                         <form method="POST" enctype="multipart/form-data">
@@ -109,7 +118,8 @@ if (empty($_SESSION['userid'])) { ?>
                                             $result = mysqli_query($conn, $sql);
                                             if (mysqli_num_rows($result) == 0) {
                                                 $sql = "UPDATE requirements_tbl
-                                                        SET File_Name = '$file'
+                                                        SET File_Name = '$file',
+                                                        Status = 'Unvalidated'
                                                         where Document_Type = '$documenttype' 
                                                         AND User_ID = '$userid'";
                                                 mysqli_query($conn, $sql);
@@ -185,18 +195,19 @@ if (empty($_SESSION['userid'])) { ?>
                         $result = mysqli_query($conn, $sql);
                         if ($row = mysqli_fetch_array($result)) { ?>
                             <tr>
-                                <th><?php echo $row['Assistance_Type']?></th>
-                                <th class="text-center text-warning"><?php echo $row['Status']?></th>
-                                <th class="text-center"><?php echo $row['Date_Submitted']?></th>
+                                <th><?php echo $row['Assistance_Type'] ?></th>
+                                <th class="text-center text-warning"><?php echo $row['Status'] ?></th>
+                                <th class="text-center"><?php echo $row['Date_Submitted'] ?></th>
                                 <th class="d-flex">
                                     <form method="POST">
-                                        <input type="hidden" name="appid" value="<?php echo $row['Application_ID']?>">
+                                        <input type="hidden" name="appid" value="<?php echo $row['Application_ID'] ?>">
                                         <button type="submit" name="editForm" class="btn btn-primary me-1">Edit</button>
                                     </form>
                                     <?php if (isset($_POST['editForm'])) {
                                         $_SESSION['appid'] = $_POST['appid'];
-                                        ?><script>window.location.href = "applicationeditor.php"</script><?php
-                                    }?>
+                                        ?>
+                                        <script>window.location.href = "applicationeditor.php"</script><?php
+                                    } ?>
                                     <form method="POST">
                                         <button type="submit" name="deleteForm" class="btn btn-danger">Delete</button>
                                     </form>
@@ -207,8 +218,9 @@ if (empty($_SESSION['userid'])) { ?>
                                                 SET is_deleted = 1
                                                 where Application_ID = '$appid'";
                                         mysqli_query($conn, $sql);
-                                        ?><script>window.location.href = "profile.php"</script><?php
-                                    }?>
+                                        ?>
+                                        <script>window.location.href = "profile.php"</script><?php
+                                    } ?>
                                 </th>
                             </tr>
                         <?php } ?>
@@ -237,17 +249,17 @@ if (empty($_SESSION['userid'])) { ?>
                                 AND is_deleted = '0' 
                                 AND NOT Status = 'Pending'";
                         $result = mysqli_query($conn, $sql);
-                        while ($row = mysqli_fetch_array($result)) {?>
+                        while ($row = mysqli_fetch_array($result)) { ?>
                             <tr>
-                                <th class="text-center"><?php echo $row['Assistance_Type']?></th>
+                                <th class="text-center"><?php echo $row['Assistance_Type'] ?></th>
                                 <?php if ($row['Status'] == "Approved") { ?>
-                                <th class="text-center text-success"><?php echo $row['Status']?></th>
-                                <?php } else {?>
-                                <th class="text-center text-danger"><?php echo $row['Status']?></th>
-                                <?php }?>
-                                <th class="text-center"><?php echo $row['Date_ApporRej']?></th>
+                                    <th class="text-center text-success"><?php echo $row['Status'] ?></th>
+                                <?php } else { ?>
+                                    <th class="text-center text-danger"><?php echo $row['Status'] ?></th>
+                                <?php } ?>
+                                <th class="text-center"><?php echo $row['Date_ApporRej'] ?></th>
                             </tr>
-                        <?php }?>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>

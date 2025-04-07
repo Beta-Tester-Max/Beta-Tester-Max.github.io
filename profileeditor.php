@@ -26,9 +26,11 @@ if (empty($_SESSION['userid'])) { ?>
                     ?>
                     <div class="d-flex flex-column justify-content-center align-items-center mt-3 mb-3">
                         <img class="border rounded shadow p-2 mb-3" style="width: 10em; height: 10em;"
-                            src="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/".$row['Profile_Pic'] ?>">
-                        <input class="btn btn-outline-primary d-flex justify-content-center align-items-center" type="file" id="myFile" name="file"
-                            value="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/".$row['Profile_Pic'] ?>" accept="image/png, image/jpeg, image/jpg, image/PNG, image/JPG">
+                            src="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/" . $row['Profile_Pic'] ?>">
+                        <input class="btn btn-outline-primary d-flex justify-content-center align-items-center" type="file"
+                            id="myFile" name="file"
+                            value="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/" . $row['Profile_Pic'] ?>"
+                            accept="image/png, image/jpeg, image/jpg, image/PNG, image/JPG">
                     </div>
                     <div class="mb-3">
                         <label for="fname" class="form-label">First Name</label>
@@ -77,19 +79,23 @@ if (empty($_SESSION['userid'])) { ?>
                 $password = $_POST['password'];
 
                 $sql = "UPDATE register_tbl
-                        SET Fname = '$fname',
-                            Mname = '$mname',
-                            Lname = '$lname',
-                            Username = '$username',
+                        SET Username = '$username',
                             Profile_Pic = '$file',
                             Email = '$email',
                             Password = '$password'
                         where User_ID = '$userid'";
                 if (mysqli_query($conn, $sql)) {
-                    $location = "file/".$file;
-                    if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {?>
-                    <script>window.location.href = "profile.php";</script><?php } else {?>
-                        <script>window.location.href = "profile.php";</script><?php }
+                    $sql = "UPDATE userinfo_tbl
+                        SET Fname = '$fname',
+                            Mname = '$mname',
+                            Lname = '$lname'
+                        where User_ID = '$userid'";
+                    if (mysqli_query($conn, $sql)) {
+                        $location = "file/" . $file;
+                        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) { ?>
+                            <script>window.location.href = "profile.php";</script><?php } else { ?>
+                            <script>window.location.href = "profile.php";</script><?php }
+                    }
                 }
             } ?>
         </div>

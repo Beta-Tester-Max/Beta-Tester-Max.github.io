@@ -14,13 +14,6 @@ session_start(); ?>
         .logo {
             height: 3em;
             width: 3.5em;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            100% {
-                transform: rotateZ(360deg);
-            }
         }
     </style>
 </head>

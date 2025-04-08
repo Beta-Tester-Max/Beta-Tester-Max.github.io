@@ -56,7 +56,7 @@ if (empty($_SESSION['userid'])) { ?>
                 <table class="table table-striped border shadow rounded">
                     <tr>
                         <th scope="col">Document Type</th>
-                        <th scope="col">Uploaded File</th>
+                        <th scope="col">Uploaded File Name/Reason For Rejection</th>
                         <th class="text-center" scope="col">Importance</th>
                         <th class="text-center" scope="col">Status</th>
                         <th scope="col">Action</th>
@@ -79,14 +79,14 @@ if (empty($_SESSION['userid'])) { ?>
                         );
                         foreach ($doctype as $dt => $im) {
                             $userid = $_SESSION['userid'];
-                            $sql = "SELECT Document_Type, File_Name, Status FROM requirements_tbl where User_ID = '$userid' AND Document_Type = '$dt'";
+                            $sql = "SELECT Document_Type, File_Name, Status, ReasonFR FROM requirements_tbl where User_ID = '$userid' AND Document_Type = '$dt'";
                             $result = mysqli_query($conn, $sql);
                             $row = mysqli_fetch_array($result) ?>
                             <tr>
                                 <td><?php echo $dt ?></td>
-                                <td><?php if (isset($row['Status']) && $row['Status'] === "Rejected") {?>
-                                    Your File has been Rejected.
-                                <?php } else {
+                                <td><?php if (isset($row['Status']) && $row['Status'] === "Rejected") {
+                                    echo $row['ReasonFR'];
+                                } else {
                                 echo (isset($row['Document_Type']) && $row['Document_Type'] == $dt) ? $row['File_Name'] : "No Uploaded File";}?>
                                 </td>
                                 <td class="text-center"><?php if ($im == "Required") { ?>
@@ -238,12 +238,13 @@ if (empty($_SESSION['userid'])) { ?>
                     <tr>
                         <th class="text-center" scope="col">Assistance Type</th>
                         <th class="text-center" scope="col">Status</th>
+                        <th scope="col">Reason</th>
                         <th class="text-center" scope="col">Date Reviewed</th>
                     </tr>
                     </thead>
                     <tbody>
                         <?php $userid = $_SESSION['userid'];
-                        $sql = "SELECT Assistance_Type, Status, Date_Submitted, Date_ApporRej
+                        $sql = "SELECT Assistance_Type, Status, Date_Submitted, Date_ApporRej, ReasonFR
                                 FROM application_tbl
                                 where User_ID = '$userid' 
                                 AND is_deleted = '0' 
@@ -257,6 +258,7 @@ if (empty($_SESSION['userid'])) { ?>
                                 <?php } else { ?>
                                     <th class="text-center text-danger"><?php echo $row['Status'] ?></th>
                                 <?php } ?>
+                                <th><?php echo (empty($row['ReasonFR'])) ? "This Application Has Been Approved" : $row['ReasonFR']?></th>
                                 <th class="text-center"><?php echo $row['Date_ApporRej'] ?></th>
                             </tr>
                         <?php } ?>

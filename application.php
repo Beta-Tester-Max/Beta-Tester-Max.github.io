@@ -294,13 +294,13 @@ if (in_array("Barangay Indigency", $rows)) {
                             $phoneno = $_POST['phoneno'];
                             $email = $_POST['email'];
                             $reason = htmlspecialchars($_POST['reason']);
-                            $req1 = $_POST['file01'];
-                            $req2 = $_POST['file02'];
-                            $req3 = $_POST['file03'];
-                            $req4 = $_POST['file04'];
-                            $req5 = $_POST['file05'];
-                            $req6 = $_POST['file06'];
-                            $req7 = $_POST['file07'];
+                            $req1 = htmlspecialchars($_POST['file01']);
+                            $req2 = htmlspecialchars($_POST['file02']);
+                            $req3 = htmlspecialchars($_POST['file03']);
+                            $req4 = htmlspecialchars($_POST['file04']);
+                            $req5 = htmlspecialchars($_POST['file05']);
+                            $req6 = htmlspecialchars($_POST['file06']);
+                            $req7 = htmlspecialchars($_POST['file07']);
                             $date = date('Y-m-d');
                             $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7, Date_Submitted)
                                     VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$date')";

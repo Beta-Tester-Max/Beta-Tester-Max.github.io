@@ -43,10 +43,6 @@ session_start(); ?>
                             Assistance
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="application.php">Psychosocial Support</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                             <?php if (empty($_SESSION['userid'])) {
                                 ?>
                                 <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
@@ -69,13 +65,22 @@ session_start(); ?>
                                         if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
                                             if (in_array("Referral Letter", $rows)) {
                                                 ?>
-                                                <li><a class="dropdown-item" href="application.php">Create Application</a></li><?php
+                                                <li>
+                                                    <form method="POST">
+                                                        <button type="submit" class="dropdown-item" name="psysup"
+                                                            value="Psychosocial Support">Psychosocial Support</button>
+                                                    </form>
+                                                </li><?php if (isset($_POST['psysup'])) {
+                                                    $_SESSION['assistancetype'] = $_POST['psysup'];
+                                                    $_SESSION['goback'] = "index.php";
+                                                    ?><script>window.location.href = "application.php"</script><?php
+                                                }
                                             } else {
                                                 $modaltext = "Referral Letter";
                                                 ?>
                                                 <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop02">
-                                                        Create Application
+                                                        Psychosocial Support
                                                     </button>
                                                 </li><?php
                                             }
@@ -84,7 +89,7 @@ session_start(); ?>
                                             ?>
                                             <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                                     data-bs-target="#staticBackdrop02">
-                                                    Create Application
+                                                    Psychosocial Support
                                                 </button>
                                             </li><?php
                                         }
@@ -93,7 +98,7 @@ session_start(); ?>
                                         ?>
                                         <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                                 data-bs-target="#staticBackdrop02">
-                                                Create Application
+                                                Psychosocial Support
                                             </button>
                                         </li><?php
                                     }
@@ -102,11 +107,15 @@ session_start(); ?>
                                     ?>
                                     <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                             data-bs-target="#staticBackdrop02">
-                                            Create Application
+                                            Psychosocial Support
                                         </button>
                                     </li><?php
                                 }
                             } ?>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="assistanceoptions.php">Create Application</a></li>
                         </ul>
                     </li>
                 </ul>

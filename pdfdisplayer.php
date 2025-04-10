@@ -1,5 +1,5 @@
 <?php session_start();
-if ($_SESSION['authority'] === "Admin") {
+if (isset($_SESSION['file'])) {
     $file = realpath("file/" . $_SESSION['file']);
     $filename = "file.pdf";
     header("Content-Type: application/pdf");

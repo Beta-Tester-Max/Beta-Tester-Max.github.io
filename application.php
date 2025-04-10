@@ -5,37 +5,39 @@ if (empty($_SESSION['userid'])) { ?>
     <script>window.location.href = "logout.php";</script><?php }
 $userid = $_SESSION['userid'];
 $rows = [];
-$sql = "SELECT Document_Type 
+if ($_SESSION['assistancetype'] === "Psychosocial Support") {
+    $sql = "SELECT Document_Type 
         FROM requirements_tbl 
         where User_ID = '$userid' AND Status = 'Validated'";
-$result = mysqli_query($conn, $sql);
-while ($row = mysqli_fetch_array($result)) {
-    $rows[] = $row['Document_Type'];
-}
-if (in_array("Barangay Indigency", $rows)) {
-    if (in_array("Valid ID", $rows)) {
-        if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
-            if (in_array("Referral Letter", $rows)) {
+    $result = mysqli_query($conn, $sql);
+    while ($row = mysqli_fetch_array($result)) {
+        $rows[] = $row['Document_Type'];
+    }
+    if (in_array("Barangay Indigency", $rows)) {
+        if (in_array("Valid ID", $rows)) {
+            if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                if (in_array("Referral Letter", $rows)) {
+                } else {
+                    ?>
+                    <script>alert("Missing Validated Referral Letter")
+                        window.location.href = "profile.php#requirements"</script><?php
+                }
             } else {
                 ?>
-                <script>alert("Missing Validated Referral Letter")
+                <script>alert("Missing Validated Birth Certificate or Validated Marriage Certificate")
                     window.location.href = "profile.php#requirements"</script><?php
             }
         } else {
             ?>
-            <script>alert("Missing Validated Birth Certificate or Validated Marriage Certificate")
+            <script>alert("Missing Validated Valid ID")
                 window.location.href = "profile.php#requirements"</script><?php
         }
     } else {
         ?>
-        <script>alert("Missing Validated Valid ID")
-            window.location.href = "profile.php#requirements"</script><?php
+        <script>alert("Missing Validated Barangay Indigency")
+            window.location.href = "profile.php#requirements"</script>
+        <?php
     }
-} else {
-    ?>
-    <script>alert("Missing Validated Barangay Indigency")
-        window.location.href = "profile.php#requirements"</script>
-    <?php
 }
 ?>
 <!doctype html>
@@ -52,28 +54,32 @@ if (in_array("Barangay Indigency", $rows)) {
 <body class="overflow-x-hidden" style="min-width: 50em;">
     <div class="container-fluid">
         <div class="row">'
-            <div class="col-12">
-                <div class="d-flex flex-column justify-content-center align-items-center">
-                    <div class="border border-black rounded shadow p-5">
-                        <a class="mb-3 d-flex justify-content-center align-items-center" href="index.php">Go Back.</a>
-                        <form method="POST">
-                            <div class="mb-3 d-flex justify-content-center align-items-center">
-                                <h3><b>Application Form</b></h3>
-                            </div>
-                            <?php $userid = $_SESSION['userid'];
-                            $sql = "SELECT t1.Fname, t1.Mname, t1.Lname, t1.Birth_Date, t1.Civil_Status, t1.Contact_Number,
+            <div
+                class="col-12 d-flex flex-column justify-content-center align-items-center border border-black rounded shadow p-5">
+                <?php if (isset($_SESSION['goback'])) {
+                    $gb = $_SESSION['goback'] ?>
+                    <a class="mb-3 d-flex justify-content-center align-items-center" href="<?php echo $gb ?>">Go Back.</a>
+                <?php } ?>
+                <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
+                    <h3><b><?php echo $_SESSION['assistancetype'] ?> Application Form</b></h3>
+                </div>
+                <form method="POST">
+                    <?php $userid = $_SESSION['userid'];
+                    $sql = "SELECT t1.Fname, t1.Mname, t1.Lname, t1.Birth_Date, t1.Civil_Status, t1.Contact_Number,
                                     t2.Email,
                                     t3.Address_ID, t3.Street_Address, t3.Barangay, t3.CityorMunicipality, t3.Province
                                     FROM userinfo_tbl AS t1, 
                                     register_tbl AS t2,
                                     address_tbl AS t3
                                     where t1.User_ID = '$userid' AND t2.User_ID = '$userid' AND t3.User_ID = '$userid'";
-                            $result = mysqli_query($conn, $sql);
-                            $row = mysqli_fetch_assoc($result);
-                            $address = $row["Address_ID"];
-                            ?>
+                    $result = mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_assoc($result);
+                    $address = $row["Address_ID"];
+                    ?>
+                    <div class="row">
+                        <div class="col-6">
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-6">
                                     <div class="mt-3">
                                         <label class="mb-1" for="fullname">Full Name</label><br>
                                         <input class="form-control" type="text" id="fullname" name="fullname"
@@ -82,7 +88,7 @@ if (in_array("Barangay Indigency", $rows)) {
                                     </div>
                                     <div class="mt-3">
                                         <label class="mb-1" for="bday">Date of Birth</label><br>
-                                        <input class="p-2 form-control" type="date" id="bday" name="bday"
+                                        <input class=" form-control" type="date" id="bday" name="bday"
                                             value="<?php echo $row['Birth_Date'] ?>" aria-label="Disabled input example"
                                             readonly required>
                                     </div>
@@ -92,15 +98,9 @@ if (in_array("Barangay Indigency", $rows)) {
                                             value="<?php echo $row['Street_Address'] . "&nbsp;" . $row['Barangay'] . "&nbsp;" . $row['CityorMunicipality'] . ",&nbsp;" . $row['Province'] ?>"
                                             aria-label="Disabled input example" readonly>
                                     </div>
-                                    <div class="mt-3">
-                                        <label class="mb-2" for="assistanceType">Type of Assitance</label><br>
-                                        <select class="py-2 form-select" name="assistancetype" id="assistanceType"
-                                            required>
-                                            <option value="Psychosocial Support">Psychosocial Support</option>
-                                        </select>
-                                    </div>
                                 </div>
-                                <div class="col-3">
+
+                                <div class="col-6">
                                     <div class="mt-3">
                                         <label class="mb-1" for="civSta">Civil Status</label><br>
                                         <input class="form-control" type="text" id="civSta" name="civilstatus"
@@ -120,199 +120,198 @@ if (in_array("Barangay Indigency", $rows)) {
                                             value="<?php echo $row['Email'] ?>" aria-label="Disabled input example"
                                             readonly required>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mt-3">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="State your reason here"
+                                            id="floatingTextarea" style="height: 10em" name="reason"
+                                            required></textarea>
+                                        <label for="floatingTextarea">Reason</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <label class="mt-3 mb-1 d-flex justify-content-center align-items-center"><b>Choose
+                                        file to Submit:</b></label>
+                                <div class="col-6">
                                     <div class="mt-3">
-                                        <div class="form-floating">
-                                            <textarea class="form-control" placeholder="State your reason here"
-                                                id="floatingTextarea" style="height: 10em" name="reason"
-                                                required></textarea>
-                                            <label for="floatingTextarea">Reason</label>
-                                        </div>
+                                        <label class="mb-1 text-danger" for="file01"><b>Required</b></label>
+                                        <select class="form-select" id="file01" name="file01" required>
+                                            <option value="">Select a Document Type</option>
+                                            <?php $userid = $_SESSION['userid'];
+                                            $documenttype = "Barangay Indigency";
+                                            $sql = "SELECT File_Name
+                                                            FROM requirements_tbl 
+                                                            where User_ID = '$userid' 
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                ?>
+                                                <option value="<?php echo $row['File_Name']; ?>">
+                                                    <?php echo $documenttype ?>
+                                                </option><?php
+                                            } ?>
+                                        </select>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="mb-1 text-danger" for="file02"><b>Required</b></label>
+                                        <select class="form-select" id="file02" name="file02" required>
+                                            <option value="">Select a Document Type</option>
+                                            <?php $userid = $_SESSION['userid'];
+                                            $documenttype = "Valid ID";
+                                            $sql = "SELECT Document_Type, File_Name
+                                                            FROM requirements_tbl 
+                                                            where User_ID = '$userid' 
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                ?>
+                                                <option value="<?php echo $row['File_Name'] ?>">
+                                                    <?php echo $row['Document_Type'] ?>
+                                                </option><?php
+                                            } ?>
+                                        </select>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="mb-1 text-danger" for="file03"><b>Required</b></label>
+                                        <select class="form-select" id="file03" name="file03" required>
+                                            <option value="">Select a Document Type</option>
+                                            <?php $userid = $_SESSION['userid'];
+                                            $documenttype1 = "Birth Certificate";
+                                            $documenttype2 = "Marriage Certificate";
+                                            $sql = "SELECT Document_Type, File_Name
+                                                            FROM requirements_tbl 
+                                                            where User_ID = '$userid' AND Status = 'Validated'
+                                                            AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                ?>
+                                                <option value="<?php echo $row['File_Name'] ?>">
+                                                    <?php echo $row['Document_Type'] ?>
+                                                </option><?php
+                                            } ?>
+                                        </select>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="mb-1 text-danger" for="file04"><b>Required</b></label>
+                                        <select class="form-select" id="file04" name="file04" required>
+                                            <option value="">Select a Document Type</option>
+                                            <?php $userid = $_SESSION['userid'];
+                                            $documenttype = "Referral Letter";
+                                            $sql = "SELECT Document_Type, File_Name
+                                                            FROM requirements_tbl 
+                                                            where User_ID = '$userid' 
+                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                ?>
+                                                <option value="<?php echo $row['File_Name'] ?>">
+                                                    <?php echo $row['Document_Type'] ?>
+                                                </option><?php
+                                            } ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="row">
-                                        <label class="mt-3 mb-1 d-flex justify-content-center align-items-center"><b>Choose
-                                                file to Submit:</b></label>
-                                        <div class="col-6">
-                                            <div class="mt-3">
-                                                <label class="mb-1 text-danger" for="file01"><b>Required</b></label>
-                                                <select class="form-select" id="file01" name="file01" required>
-                                                    <option value="">Select a Document Type</option>
-                                                    <?php $userid = $_SESSION['userid'];
-                                                    $documenttype = "Barangay Indigency";
-                                                    $sql = "SELECT File_Name
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_array($result)) {
-                                                        ?>
-                                                        <option value="<?php echo $row['File_Name']; ?>">
-                                                            <?php echo $documenttype ?>
-                                                        </option><?php
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                            <div class="mt-3">
-                                                <label class="mb-1 text-danger" for="file02"><b>Required</b></label>
-                                                <select class="form-select" id="file02" name="file02" required>
-                                                    <option value="">Select a Document Type</option>
-                                                    <?php $userid = $_SESSION['userid'];
-                                                    $documenttype = "Valid ID";
-                                                    $sql = "SELECT Document_Type, File_Name
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_array($result)) {
-                                                        ?>
-                                                        <option value="<?php echo $row['File_Name'] ?>">
-                                                            <?php echo $row['Document_Type'] ?>
-                                                        </option><?php
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                            <div class="mt-3">
-                                                <label class="mb-1 text-danger" for="file03"><b>Required</b></label>
-                                                <select class="form-select" id="file03" name="file03" required>
-                                                    <option value="">Select a Document Type</option>
-                                                    <?php $userid = $_SESSION['userid'];
-                                                    $documenttype1 = "Birth Certificate";
-                                                    $documenttype2 = "Marriage Certificate";
-                                                    $sql = "SELECT Document_Type, File_Name
+                                    <div class="mt-3">
+                                        <label class="mb-1 text-secondary" for="file05"><i>(Optional)</i></label>
+                                        <select class="form-select" id="file05" name="file05">
+                                            <option value="">Select a Document Type</option>
+                                            <?php $userid = $_SESSION['userid'];
+                                            $documenttype1 = "Medical Report";
+                                            $documenttype2 = "Psychological Report";
+                                            $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_array($result)) {
-                                                        ?>
-                                                        <option value="<?php echo $row['File_Name'] ?>">
-                                                            <?php echo $row['Document_Type'] ?>
-                                                        </option><?php
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                            <div class="mt-3">
-                                                <label class="mb-1 text-danger" for="file04"><b>Required</b></label>
-                                                <select class="form-select" id="file04" name="file04" required>
-                                                    <option value="">Select a Document Type</option>
-                                                    <?php $userid = $_SESSION['userid'];
-                                                    $documenttype = "Referral Letter";
-                                                    $sql = "SELECT Document_Type, File_Name
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_array($result)) {
-                                                        ?>
-                                                        <option value="<?php echo $row['File_Name'] ?>">
-                                                            <?php echo $row['Document_Type'] ?>
-                                                        </option><?php
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="mt-3">
-                                                <label class="mb-1 text-secondary"
-                                                    for="file05"><i>(Optional)</i></label>
-                                                <select class="form-select" id="file05" name="file05">
-                                                    <option value="">Select a Document Type</option>
-                                                    <?php $userid = $_SESSION['userid'];
-                                                    $documenttype1 = "Medical Report";
-                                                    $documenttype2 = "Psychological Report";
-                                                    $sql = "SELECT Document_Type, File_Name
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                ?>
+                                                <option value="<?php echo $row['File_Name'] ?>">
+                                                    <?php echo $row['Document_Type'] ?>
+                                                </option><?php
+                                            } ?>
+                                        </select>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="mb-1 text-secondary" for="file06"><i>(Optional)</i></label>
+                                        <select class="form-select" id="file06" name="file06">
+                                            <option value="">Select a Document Type</option>
+                                            <?php $userid = $_SESSION['userid'];
+                                            $documenttype1 = "Police Report";
+                                            $documenttype2 = "Legal Report";
+                                            $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_array($result)) {
-                                                        ?>
-                                                        <option value="<?php echo $row['File_Name'] ?>">
-                                                            <?php echo $row['Document_Type'] ?>
-                                                        </option><?php
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                            <div class="mt-3">
-                                                <label class="mb-1 text-secondary"
-                                                    for="file06"><i>(Optional)</i></label>
-                                                <select class="form-select" id="file06" name="file06">
-                                                    <option value="">Select a Document Type</option>
-                                                    <?php $userid = $_SESSION['userid'];
-                                                    $documenttype1 = "Police Report";
-                                                    $documenttype2 = "Legal Report";
-                                                    $sql = "SELECT Document_Type, File_Name
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                ?>
+                                                <option value="<?php echo $row['File_Name'] ?>">
+                                                    <?php echo $row['Document_Type'] ?>
+                                                </option><?php
+                                            } ?>
+                                        </select>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="mb-1 text-secondary" for="file07"><i>(Optional)</i></label>
+                                        <select class="form-select" id="file07" name="file07">
+                                            <option value="">Select a Document Type</option>
+                                            <?php $userid = $_SESSION['userid'];
+                                            $documenttype1 = "Disaster Certificate";
+                                            $documenttype2 = "Emergency Certificate";
+                                            $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_array($result)) {
-                                                        ?>
-                                                        <option value="<?php echo $row['File_Name'] ?>">
-                                                            <?php echo $row['Document_Type'] ?>
-                                                        </option><?php
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                            <div class="mt-3">
-                                                <label class="mb-1 text-secondary"
-                                                    for="file07"><i>(Optional)</i></label>
-                                                <select class="form-select" id="file07" name="file07">
-                                                    <option value="">Select a Document Type</option>
-                                                    <?php $userid = $_SESSION['userid'];
-                                                    $documenttype1 = "Disaster Certificate";
-                                                    $documenttype2 = "Emergency Certificate";
-                                                    $sql = "SELECT Document_Type, File_Name
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                    $result = mysqli_query($conn, $sql);
-                                                    while ($row = mysqli_fetch_array($result)) {
-                                                        ?>
-                                                        <option value="<?php echo $row['File_Name'] ?>">
-                                                            <?php echo $row['Document_Type'] ?>
-                                                        </option><?php
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                        </div>
+                                            $result = mysqli_query($conn, $sql);
+                                            while ($row = mysqli_fetch_array($result)) {
+                                                ?>
+                                                <option value="<?php echo $row['File_Name'] ?>">
+                                                    <?php echo $row['Document_Type'] ?>
+                                                </option><?php
+                                            } ?>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="mt-4 d-flex justify-content-center align-items-center">
-                                    <button type="submit" name="applicationForm" class="btn btn-outline-primary">Submit
-                                        Application</button>
-                                </div>
                             </div>
-                        </form>
-                        <?php if (isset($_POST['applicationForm'])) {
-                            $userid = $_SESSION['userid'];
-                            $fullname = $_POST['fullname'];
-                            $bday = $_POST['bday'];
-                            $assistancetype = $_POST['assistancetype'];
-                            $civsta = $_POST['civilstatus'];
-                            $phoneno = $_POST['phoneno'];
-                            $email = $_POST['email'];
-                            $reason = htmlspecialchars($_POST['reason']);
-                            $req1 = htmlspecialchars($_POST['file01']);
-                            $req2 = htmlspecialchars($_POST['file02']);
-                            $req3 = htmlspecialchars($_POST['file03']);
-                            $req4 = htmlspecialchars($_POST['file04']);
-                            $req5 = htmlspecialchars($_POST['file05']);
-                            $req6 = htmlspecialchars($_POST['file06']);
-                            $req7 = htmlspecialchars($_POST['file07']);
-                            $date = date('Y-m-d');
-                            $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7, Date_Submitted)
-                                    VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$date')";
-                            if ($result = mysqli_query($conn, $sql)) {
-                                ?>
-                                <script>alert("Your Application has been Submitted.")
-                                    window.location.href = "profile.php"</script><?php
-                            }
-                        }
-                        ?>
+                        </div>
+                        <div class="mt-4 d-flex justify-content-center align-items-center">
+                            <button type="submit" name="applicationForm" class="btn btn-outline-primary">Submit
+                                Application</button>
+                        </div>
                     </div>
-                </div>
+                </form>
+                <?php if (isset($_POST['applicationForm'])) {
+                    $userid = $_SESSION['userid'];
+                    $fullname = $_POST['fullname'];
+                    $bday = $_POST['bday'];
+                    $assistancetype = $_SESSION['assistancetype'];
+                    $civsta = $_POST['civilstatus'];
+                    $phoneno = $_POST['phoneno'];
+                    $email = $_POST['email'];
+                    $reason = htmlspecialchars($_POST['reason']);
+                    $req1 = htmlspecialchars($_POST['file01']);
+                    $req2 = htmlspecialchars($_POST['file02']);
+                    $req3 = htmlspecialchars($_POST['file03']);
+                    $req4 = htmlspecialchars($_POST['file04']);
+                    $req5 = htmlspecialchars($_POST['file05']);
+                    $req6 = htmlspecialchars($_POST['file06']);
+                    $req7 = htmlspecialchars($_POST['file07']);
+                    $date = date('Y-m-d');
+                    $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7, Date_Submitted)
+                                    VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$date')";
+                    if ($result = mysqli_query($conn, $sql)) {
+                        ?>
+                        <script>alert("Your Application has been Submitted.")
+                            window.location.href = "profile.php"</script><?php
+                    }
+                }
+                ?>
             </div>
         </div>
     </div>

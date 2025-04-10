@@ -15,6 +15,228 @@ session_start(); ?>
             height: 3em;
             width: 3.5em;
         }
+
+        .carousel {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotateX(-30deg) rotateY(0deg) rotateZ(0deg);
+            }
+
+            100% {
+                transform: rotateX(-30deg) rotateY(360deg) rotateZ(0deg);
+            }
+        }
+
+        .carousel .sides {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+
+        }
+
+        .carousel .side {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            opacity: 0.8;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .robot {
+            margin-top: 160px;
+            height: 200px;
+            width: auto;
+        }
+
+        .side1 {
+            transform: translateZ(300px);
+            cursor: pointer;
+        }
+
+        .side1:hover {
+            scale: 1.05;
+        }
+
+        .side2 {
+            transform: rotateY(45deg) translateZ(300px);
+            cursor: pointer;
+        }
+
+        .side2:hover {
+            scale: 1.05;
+        }
+
+        .side3 {
+            transform: rotateY(90deg) translateZ(300px);
+            cursor: pointer;
+        }
+
+        .side3:hover {
+            scale: 1.05;
+        }
+
+        .side4 {
+            transform: rotateY(135deg) translateZ(300px);
+            cursor: pointer;
+        }
+
+        .side4:hover {
+            scale: 1.05;
+        }
+
+        .side5 {
+            transform: rotateY(180deg) translateZ(300px);
+            cursor: pointer;
+        }
+
+        .side5:hover {
+            scale: 1.05;
+        }
+
+        .side6 {
+            transform: rotateY(225deg) translateZ(300px);
+            cursor: pointer;
+        }
+
+        .side6:hover {
+            scale: 1.05;
+        }
+
+        .side7 {
+            transform: rotateY(270deg) translateZ(300px);
+            cursor: pointer;
+        }
+
+        .side7:hover {
+            scale: 1.05;
+        }
+
+        .side8 {
+            transform: rotateY(315deg) translateZ(300px);
+            cursor: pointer;
+        }
+
+        .side8:hover {
+            scale: 1.05;
+        }
+
+        .inf-scroll {
+            display: none;
+            width: 100px;
+            margin-inline: auto;
+            position: relative;
+            height: 80%;
+            margin-top: 75px;
+            overflow: hidden;
+            mask-image: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0),
+                    rgba(0, 0, 0, 1) 20%,
+                    rgba(0, 0, 0, 1) 80%,
+                    rgba(0, 0, 0, 0));
+        }
+
+        .item {
+            width: 100px;
+            height: 100px;
+            border-radius: 6px;
+            position: absolute;
+            animation: scrollLeft 30s linear infinite;
+        }
+
+        @keyframes scrollLeft {
+            from {
+                transform: translateY(-500px);
+            }
+
+            to {
+                transform: translateY(500px);
+            }
+        }
+
+        .item:nth-child(1) {
+            animation-delay: calc(30s / 8 * 7 * -1);
+        }
+
+        .item:nth-child(2) {
+            animation-delay: calc(30s / 8 * 6 * -1);
+        }
+
+        .item:nth-child(3) {
+            animation-delay: calc(30s / 8 * 5 * -1);
+        }
+
+        .item:nth-child(4) {
+            animation-delay: calc(30s / 8 * 4 * -1);
+        }
+
+        .item:nth-child(5) {
+            animation-delay: calc(30s / 8 * 3 * -1);
+        }
+
+        .item:nth-child(6) {
+            animation-delay: calc(30s / 8 * 2 * -1);
+        }
+
+        .item:nth-child(7) {
+            animation-delay: calc(30s / 8 * 1 * -1);
+        }
+
+        .item:nth-child(8) {
+            animation-delay: calc(30s / 8 * 0 * -1);
+        }
+
+        .item1:hover {
+            scale: 1.1;
+        }
+
+        .item2:hover {
+            scale: 1.1;
+        }
+
+        .item3:hover {
+            scale: 1.1;
+        }
+
+        .item4:hover {
+            scale: 1.1;
+        }
+
+        .item5:hover {
+            scale: 1.1;
+        }
+
+        .item6:hover {
+            scale: 1.1;
+        }
+
+        .item7:hover {
+            scale: 1.1;
+        }
+
+        .item8:hover {
+            scale: 1.1;
+        }
+
+        @media (max-width: 1400px) {
+            .carousel {
+                display: none;
+            }
+
+            .inf-scroll {
+                display: flex;
+            }
+        }
     </style>
 </head>
 
@@ -210,6 +432,34 @@ session_start(); ?>
                     }
                     ?>.</h1>
                 <?php } ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="carousel">
+                    <div class="sides">
+                        <img src="img/missing.png" class="side side1">
+                        <img src="img/missing.png" class="side side2">
+                        <img src="img/missing.png" class="side side3">
+                        <img src="img/missing.png" class="side side4">
+                        <img src="img/missing.png" class="side side5">
+                        <img src="img/missing.png" class="side side6">
+                        <img src="img/missing.png" class="side side7">
+                        <img src="img/missing.png" class="side side8">
+                    </div>
+                </div>
+                <div class="inf-scroll">
+                    <div class="items">
+                        <img src="images/html_logo.png" class="item item1">
+                        <img onclick="toBootstrap()" src="images/bs_logo.png" class="item item2">
+                        <img src="images/css_logo.png" class="item item3">
+                        <img src="images/js_logo.png" class="item item4">
+                        <img src="images/php_logo.png" class="item item5">
+                        <img src="images/python_logo.png" class="item item6">
+                        <img src="images/cprog_logo.png" class="item item7">
+                        <img src="images/cplusplus_logo.png" class="item item8">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

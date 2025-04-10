@@ -161,33 +161,43 @@ session_start(); ?>
       to alleviate distress, meet basic needs, and pave the way toward long-term
       stability.
     </div>
-    <section class="assistance" id="assistance">
-                <h1>Assistance</h1>
-                <div class="carousel">
+    <br/>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+                <h1 class="text-center">Assistance Programs</h1>
+            </div>
+        </div>
+        <br/>
+    <div class="row">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+            <div class="carousel">
                     <div class="sides">
-                        <img src="img/transportation.png" class="side side1">
-                        <img src="img/food.png" class="side side2">
-                        <img src="img/medical.png" class="side side3">
-                        <img src="img/cash.png" class="side side4">
-                        <img src="img/burial.png" class="side side5">
-                        <img src="img/educational.png" class="side side6">
-                        <img src="img/psychosocial.png" class="side side7">
-                        <img src="img/psychosocial.png" class="side side8">
+                        <img src="./img/missing.png" class="side side1">
+                        <img src="./img/missing.png" class="side side2">
+                        <img src="./img/missing.png" class="side side3">
+                        <img src="./img/missing.png" class="side side4">
+                        <img src="./img/missing.png" class="side side5">
+                        <img src="./img/missing.png" class="side side6">
+                        <img src="./img/missing.png" class="side side7">
+                        <img src="./img/missing.png" class="side side8">
                     </div>
                 </div>
                 <div class="inf-scroll">
                     <div class="items">
-                        <img src="img/transportation.png" class="item item1">
-                        <img src="img/food.png" class="item item2">
-                        <img src="img/medical.png" class="item item3">
-                        <img src="img/cash.png" class="item item4">
-                        <img src="img/burial.png" class="item item5">
-                        <img src="img/educational.png" class="item item6">
-                        <img src="img/psychosocial.png" class="item item7">
+                        <img src="./img/missing.png" class="item item1">
+                        <img onclick="toBootstrap()" src="./img/missing.png" class="item item2">
+                        <img src="./img/missing.png" class="item item3">
+                        <img src="./img/missing.png" class="item item4">
+                        <img src="./img/missing.png" class="item item5">
+                        <img src="./img/missing.png" class="item item6">
+                        <img src="./img/missing.png" class="item item7">
+                        <img src="./img/missing.png" class="item item8">
                     </div>
                 </div>
-        </section>
-
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

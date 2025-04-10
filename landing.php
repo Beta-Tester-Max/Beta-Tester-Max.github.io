@@ -6,7 +6,7 @@ session_start(); ?>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AICS System demo</title>
+    <title>AICS Landing Page</title>
     <link rel="icon" type="image/x-icon" href="./img/aics-logo.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -28,7 +28,7 @@ session_start(); ?>
             <div class="collapse navbar-collapse " id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="landing.php">Home</a>
+                        <a class="nav-link" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -147,60 +147,19 @@ session_start(); ?>
         </div>
     </nav>
     
-    <div class="container-fluid">
-        <div class="modal fade" id="staticBackdrop01" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">You are not <b>Signed In</b>.</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>You must be <b>Signed In</b> to be able to create an application.</p>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center align-items-center">
-                        <a type="button" class="btn btn-primary" href="login.php">Go to login</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="staticBackdrop02" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">You are missing some <b>Requirements</b>.
-                        </h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>You Are Missing <b><?php echo $modaltext ?></b>.</p>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center align-items-center">
-                        <a type="button" class="btn btn-primary" href="profile.php#requirements">Upload Missing
-                            Requirements</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 d-flex justify-content-center align-items-center" style="height: 30em;">
-                <?php if (isset($_SESSION['userid'])) {
-                    ?>
-                    <h1>Hello! <?php $userid = $_SESSION['userid'];
-                    $sql = "SELECT Fname, Mname, Lname FROM userinfo_tbl where User_ID = '$userid'";
-                    $result = mysqli_query($conn, $sql);
-                    $row = mysqli_fetch_assoc($result);
-                    if (empty($row['Mname'])) {
-                        echo $row['Fname'] . "&nbsp;" . $row['Lname'];
-                    } else {
-                        echo $row['Fname'] . "&nbsp;" . $row['Mname'] . "&nbsp;" . $row['Lname'];
-                    }
-                    ?>.</h1>
-                <?php } ?>
-            </div>
-        </div>
+    <div class="aics">AICS</div>
+    <div
+      class="brief-desc"
+    >
+      The Municipality of Alaminos, Laguna, through its Municipal Social Welfare
+      and Development Office (MSWDO)
+      <br />
+      , is committed to providing immediate and compassionate support to
+      individuals and families facing urgent crises. Guided by Section 16 of the
+      Local Government Code of 1991 (RA 7160), the AICS Program ensures that
+      marginalized, vulnerable, and low-income residents receive timely assistance
+      to alleviate distress, meet basic needs, and pave the way toward long-term
+      stability.
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

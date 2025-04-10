@@ -1,0 +1,18 @@
+:root{
+    --primary-dark: #000133;
+    --primary-color: #0347FF;
+}
+body {
+    background-color: var(--primary-dark);
+}
+.logo {
+    height: 2em;
+    width: 2em;
+}
+.navbar {
+    background-color: var(--primary-color);
+    color: white;
+}
+.nav-link {
+    color: white;
+}

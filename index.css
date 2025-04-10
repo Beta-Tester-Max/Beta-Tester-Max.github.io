@@ -4,6 +4,7 @@
 }
 body {
     background-color: var(--primary-dark);
+    color: white;
 }
 .logo {
     height: 2em;
@@ -16,3 +17,65 @@ body {
 .nav-link {
     color: white;
 }
+.search-container {
+    width: 577px;
+    height: 30px;
+    position: static;
+  }
+  .searchbar {
+    background: #d9d9d9;
+    border-radius: 18px 0px 0px 18px;
+    width: 338px;
+    height: 30px;
+    position: absolute;
+    text-align: left;
+    font-family: "Inter-Regular", sans-serif;
+    font-size: 20px;
+    left: 605px;
+    top: 16px;
+  }
+  .searchbtn {
+    background: rgba(217, 217, 217, 0);
+    border-radius: 0px 18px 18px 0px;
+    border-style: solid;
+    border-color: #d9d9d9;
+    border-width: 1px;
+    width: 162px;
+    height: 30px;
+    position: absolute;
+    text-align: left;
+    display: flex;
+    font-family: "Inter-Regular", sans-serif;
+    font-size: 20px;
+    justify-content: left;
+    align-items: center;
+    left: 944px;
+    top: 16px;
+  }
+  .aics {
+    color: #fff5f5;
+    text-align: center;
+    font-family: "Inter-Regular", sans-serif;
+    font-size: 128px;
+    font-weight: 400;
+    position: absolute;
+    left: 320px;
+    top: 151px;
+    width: 732px;
+    height: 176px;
+  }
+  .brief-desc  {
+    color: #ffffff;
+    text-align: justified;
+    font-family: "Inter-Regular", sans-serif;
+    font-size: 35px;
+    font-weight: 400;
+    position: absolute;
+    left: 40px;
+    top: 557px;
+    width: 1278px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+  }
+  

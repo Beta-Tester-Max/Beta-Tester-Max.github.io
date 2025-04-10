@@ -105,10 +105,12 @@ session_start(); ?>
                         </ul>
                     </li>
                 </ul>
+                <div class="search-container">
                 <form class="d-flex m-auto" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                    <input class="form-control me-2 searchbar" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light searchbtn" type="submit">Search</button>
                 </form>
+                </div>
                 <?php if (empty($_SESSION['userid'])) { ?>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -143,7 +145,22 @@ session_start(); ?>
             </div>
         </div>
     </nav>
-
+    
+    <div class="aics">AICS</div>
+    <div
+      class="brief-desc"
+    >
+      The Municipality of Alaminos, Laguna, through its Municipal Social Welfare
+      and Development Office (MSWDO)
+      <br />
+      , is committed to providing immediate and compassionate support to
+      individuals and families facing urgent crises. Guided by Section 16 of the
+      Local Government Code of 1991 (RA 7160), the AICS Program ensures that
+      marginalized, vulnerable, and low-income residents receive timely assistance
+      to alleviate distress, meet basic needs, and pave the way toward long-term
+      stability.
+    </div>
+    
     <div class="container-fluid">
         <div class="modal fade" id="staticBackdrop01" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">

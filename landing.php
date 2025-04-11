@@ -212,6 +212,165 @@ session_start(); ?>
         descriptionBox.classList.add("active");
     }
 </script>
+<!-- Feedback Section -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="./img/aics-logo.ico" alt="AICS Logo">
+        </div>
+        <div class="rectangle-215"></div>
+  <div class="feedback2">Feedback</div>
+  <div class="rate-us">Rate Us</div>
+  <div class="rectangle-216"></div>
+  <div class="write-your-feedback-here">Write your Feedback here</div>
+  <div class="stars">
+    <img class="hand-drawn-star" src="hand-drawn-star0.png" />
+    <img class="hand-drawn-star2" src="hand-drawn-star1.png" />
+    <img class="hand-drawn-star3" src="hand-drawn-star2.png" />
+    <img class="hand-drawn-star4" src="hand-drawn-star3.png" />
+    <img class="hand-drawn-star5" src="hand-drawn-star4.png" />
+  </div>
+  <div class="input">
+    <div class="rectangle-211"></div>
+    <div class="rectangle-212"></div>
+    <div class="gmail">Gmail</div>
+  </div>
+  <div class="input">
+    <div class="rectangle-2112"></div>
+    <div class="rectangle-2122"></div>
+    <div class="name">Name</div>
+  </div>
+  <div class="rectangle-2152"></div>
+  <div class="aics-logo2">
+    <div class="ellipse-823"></div>
+    <div class="ellipse-832"></div>
+    <div class="ellipse-842"></div>
+    <div class="ellipse-852"></div>
+    <div class="ellipse-824"></div>
+    <img class="union5" src="union4.svg" />
+    <img class="union6" src="union5.svg" />
+    <img class="educ2" src="educ1.svg" />
+    <img class="union7" src="union6.svg" />
+    <img class="union8" src="union7.svg" />
+    <img class="ambulance2" src="ambulance1.svg" />
+    <img class="subtract2" src="subtract1.svg" />
+  </div>
+
+        <div class="visit-us">VISIT US</div>
+  <div class="d-fandi-o-street-poblacion-3-alaminos-laguna">
+    D. Fandiño Street, Poblacion 3, Alaminos, Laguna
+  </div>
+  <div class="line-2"></div>
+  <div class="line-3"></div>
+  <div class="about-us">ABOUT US</div>
+  <div
+    class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines"
+  >
+    <span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span"
+      >
+        Alaminos, officially the Municipality of Alaminos (
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span2"
+      >
+        Tagalog
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span3"
+      >
+        : Bayan ng Alaminos), is a 1st class 
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span4"
+      >
+        municipality
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span5"
+      >
+         in the 
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span6"
+      >
+        province
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span7"
+      >
+         of 
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span8"
+      >
+        Laguna
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span9"
+      >
+        , 
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span10"
+      >
+        Philippines
+      </span>
+      <span
+        class="alaminos-officially-the-municipality-of-alaminos-tagalog-bayan-ng-alaminos-is-a-1st-class-municipality-in-the-province-of-laguna-philippines-span11"
+      >
+        . 
+      </span>
+    </span>
+  </div>
+  <div
+    class="according-to-the-2020-census-it-has-a-population-of-51-619-people"
+  >
+    According to the 2020 census, it has a population of 51,619 people.
+  </div>
+  <div class="_2024-alaminos-laguna-all-rights-reserved">
+    © 2024 Alaminos Laguna. All Rights Reserved.
+  </div>
+  
+  <div class="line-4"></div>
+  <div class="line-5"></div>
+  <div class="government-links">Government Links</div>
+  <div class="about-gov-ph">About Gov PH</div>
+  <div class="line-6"></div>
+  <div class="line-7"></div>
+  <div class="the-president">The President</div>
+  <div class="line-8"></div>
+  <div class="office-of-the-president">Office of the President</div>
+  <div class="line-9"></div>
+  <div class="office-of-the-vice-president">Office of the Vice President</div>
+  <div class="line-10"></div>
+  <div class="senate-of-the-philippines">Senate of the Philippines</div>
+  <div class="house-of-the-representatives">House of the Representatives</div>
+  <div class="line-12"></div>
+  <div class="line-14"></div>
+  <div class="alaminos-laguna-official-website">
+    Alaminos Laguna Official Website
+  </div>
+  <div class="line-13"></div>
+  <img
+    class="screenshot-2025-04-02-101146-1"
+    src="screenshot-2025-04-02-101146-10.png"
+  />
+  <img
+    class="cropped-cropped-cropped-alaminos-laguna-seal-logo-2"
+    src="cropped-cropped-cropped-alaminos-laguna-seal-logo-20.png"
+  />
+</div>
+
+
+
+
+        <div class="footer-text">
+            <p>&copy;2025 AICS. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

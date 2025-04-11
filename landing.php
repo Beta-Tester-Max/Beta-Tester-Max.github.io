@@ -162,43 +162,56 @@ session_start(); ?>
       stability.
     </div>
     <br/>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 d-flex justify-content-center align-items-center">
-                <h1 class="text-center">Assistance Programs</h1>
-            </div>
+    <div class="spaceX"></div>
+    <br/>
+    <br/>
+    <div class="banner">
+    <div class="slider" style="--quantity: 7">
+        <div class="item" style="--position: 1" onclick="showDescription(1)">
+            <img src="./img/transportation.png" alt="">
         </div>
-        <br/>
-    <div class="row">
-            <div class="col-12 d-flex justify-content-center align-items-center">
-            <div class="carousel">
-                    <div class="sides">
-                        <img src="./img/missing.png" class="side side1">
-                        <img src="./img/missing.png" class="side side2">
-                        <img src="./img/missing.png" class="side side3">
-                        <img src="./img/missing.png" class="side side4">
-                        <img src="./img/missing.png" class="side side5">
-                        <img src="./img/missing.png" class="side side6">
-                        <img src="./img/missing.png" class="side side7">
-                        <img src="./img/missing.png" class="side side8">
-                    </div>
-                </div>
-                <div class="inf-scroll">
-                    <div class="items">
-                        <img src="./img/missing.png" class="item item1">
-                        <img onclick="toBootstrap()" src="./img/missing.png" class="item item2">
-                        <img src="./img/missing.png" class="item item3">
-                        <img src="./img/missing.png" class="item item4">
-                        <img src="./img/missing.png" class="item item5">
-                        <img src="./img/missing.png" class="item item6">
-                        <img src="./img/missing.png" class="item item7">
-                        <img src="./img/missing.png" class="item item8">
-                    </div>
-                </div>
-            </div>
+        <div class="item" style="--position: 2" onclick="showDescription(2)">
+            <img src="./img/food.png" alt="">
+        </div>
+        <div class="item" style="--position: 3" onclick="showDescription(3)">
+            <img src="./img/medical.png" alt="">
+        </div>
+        <div class="item" style="--position: 4" onclick="showDescription(4)">
+            <img src="./img/cash.png" alt="">
+        </div>
+        <div class="item" style="--position: 5" onclick="showDescription(5)">
+            <img src="./img/burial.png" alt="">
+        </div>
+        <div class="item" style="--position: 6" onclick="showDescription(6)">
+            <img src="./img/educational.png" alt="">
+        </div>
+        <div class="item" style="--position: 7" onclick="showDescription(7)">
+            <img src="./img/psychosocial.png" alt="">
         </div>
     </div>
+    <div class="description-box">
+        <p id="description-text">Click on an image to see the description.</p>
+    </div>
+</div>
+<script>
+    function showDescription(position) {
+        const descriptions = {
+            1: "Transportation Assistance offers financial aid to individuals who need travel funds for medical treatments, job relocation, or emergency situations. This program ensures that applicants can reach their destinations, such as hospitals or places of employment, without financial hardship.",
+            2: "Food Assistance provides essential food supplies or financial aid to individuals and families facing hunger due to crisis situations such as calamities, job loss, or financial instability. This program aims to ensure food security and prevent malnutrition, especially among vulnerable groups.",
+            3: "Medical Assistance provides financial aid to individuals who need support for hospitalization, medical procedures, laboratory tests, or the purchase of essential medicines. This program helps applicants cover medical expenses, ensuring they receive the necessary healthcare services, particularly for emergency and life-threatening conditions.",
+            4: "Cash Relief Assistance offers immediate financial aid to individuals and families affected by unexpected crises such as natural disasters, accidents, or economic hardships. The provided cash support helps them address urgent needs, including rent, food, and other daily expenses.",
+            5: "Burial Assistance helps families cope with funeral and burial expenses after the loss of a loved one. This program provides financial support for coffin purchase, funeral services, and burial costs, reducing the financial burden on grieving families during difficult times.",
+            6: "Educational Assistance is designed to support students from financially struggling families by providing financial aid for tuition fees, school supplies, and other academic-related expenses. This assistance aims to ensure that students, particularly those in crisis situations, can continue their education without financial barriers.",
+            7: "Psychosocial Support is designed to assist individuals dealing with emotional, mental, or social distress caused by traumatic experiences, such as disasters, abuse, or loss. This program offers counseling, therapy, and guidance services to help applicants recover and rebuild their emotional well-being."
+        };
 
+        const descriptionBox = document.querySelector(".description-box");
+        const descriptionText = document.getElementById("description-text");
+
+        descriptionText.textContent = descriptions[position];
+        descriptionBox.classList.add("active");
+    }
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

@@ -1,5 +1,8 @@
 <?php include "connect.php";
-session_start(); ?>
+session_start(); 
+if (isset($_SESSION['userid'])) {
+    $userid = $_SESSION['userid'];
+}?>
 <!doctype html>
 <html lang="en">
 
@@ -51,12 +54,6 @@ session_start(); ?>
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        .robot {
-            margin-top: 160px;
-            height: 200px;
-            width: auto;
         }
 
         .side1 {
@@ -273,14 +270,485 @@ session_start(); ?>
                                     </button>
                                 </li>
                             <?php } else {
-                                $userid = $_SESSION['userid'];
                                 $rows = [];
                                 $sql = "SELECT Document_Type 
                                         FROM requirements_tbl 
-                                        where User_ID = '$userid'";
+                                        where User_ID = '$userid' AND Status = 'Validated'";
                                 $result = mysqli_query($conn, $sql);
                                 while ($row = mysqli_fetch_array($result)) {
                                     $rows[] = $row['Document_Type'];
+                                }
+                                if (in_array("Barangay Indigency", $rows)) {
+                                    if (in_array("Medical Certificate Referral", $rows)) {
+                                        if (in_array("Death Certificate", $rows) || in_array("Medical Report", $rows)) {
+                                            if (in_array("Police Report", $rows)) {
+                                                if (in_array("Representative Valid ID", $rows)) {
+                                                    if (in_array("Valid ID", $rows)) {
+                                                        if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                                            ?>
+                                                            <li>
+                                                                <form method="POST">
+                                                                    <button type="submit" class="dropdown-item" name="traass"
+                                                                        value="Transportation Assistance">Transportation Assistance</button>
+                                                                </form>
+                                                            </li><?php if (isset($_POST['traass'])) {
+                                                                $_SESSION['assistancetype'] = $_POST['traass'];
+                                                                $_SESSION['goback'] = "index.php";
+                                                                ?>
+                                                                <script>window.location.href = "application.php"</script><?php
+                                                            }
+                                                        } else {
+                                                            $modaltext = "Birth Certificate or Marriage Certificate";
+                                                            ?>
+                                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop02">
+                                                                    Transportation Assistance
+                                                                </button>
+                                                            </li><?php
+                                                        }
+                                                    } else {
+                                                        $modaltext = "Valid ID";
+                                                        ?>
+                                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop02">
+                                                                Transportation Assistance
+                                                            </button>
+                                                        </li><?php
+                                                    }
+                                                } else {
+                                                    $modaltext = "Representative Valid ID";
+                                                    ?>
+                                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop02">
+                                                            Transportation Assistance
+                                                        </button>
+                                                    </li><?php
+                                                }
+                                            } else {
+                                                $modaltext = "Police Report";
+                                                ?>
+                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02">
+                                                        Transportation Assistance
+                                                    </button>
+                                                </li><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Death Certificate or Medical Report";
+                                            ?>
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02">
+                                                    Transportation Assistance
+                                                </button>
+                                            </li><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Medical Certificate Referral";
+                                        ?>
+                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02">
+                                                Transportation Assistance
+                                            </button>
+                                        </li><?php
+                                    }
+                                } else {
+                                    $modaltext = "Barangay Indigency";
+                                    ?>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02">
+                                            Transportation Assistance
+                                        </button>
+                                    </li><?php
+                                }
+                                if (in_array("Barangay Indigency", $rows)) {
+                                    if (in_array("Medical Certificate", $rows) || in_array("Clinical Abstract", $rows)) {
+                                        if (in_array("Hospital Billing Statement", $rows)) {
+                                            if (in_array("Pharmacy Quotation", $rows)) {
+                                                if (in_array("Laboratory Request", $rows) || in_array("Diagnostic Request", $rows)) {
+                                                    if (in_array("Official Receipts", $rows)) {
+                                                        if (in_array("Outstanding Payer Certificate", $rows)) {
+                                                            if (in_array("Representative Valid ID", $rows)) {
+                                                                if (in_array("Authorization Letter", $rows)) {
+                                                                    if (in_array("Valid ID", $rows)) {
+                                                                        if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                                                            ?>
+                                                                            <li>
+                                                                                <form method="POST">
+                                                                                    <button type="submit" class="dropdown-item" name="medass"
+                                                                                        value="Medical Assistance">Medical Assistance</button>
+                                                                                </form>
+                                                                            </li><?php if (isset($_POST['medass'])) {
+                                                                                $_SESSION['assistancetype'] = $_POST['medass'];
+                                                                                $_SESSION['goback'] = "index.php";
+                                                                                ?>
+                                                                                <script>window.location.href = "application.php"</script><?php
+                                                                            }
+                                                                        } else {
+                                                                            $modaltext = "Birth Certificate or Marriage Certificate";
+                                                                            ?>
+                                                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                                    data-bs-target="#staticBackdrop02">
+                                                                                    Medical Assistance
+                                                                                </button>
+                                                                            </li><?php
+                                                                        }
+                                                                    } else {
+                                                                        $modaltext = "Valid ID";
+                                                                        ?>
+                                                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                                data-bs-target="#staticBackdrop02">
+                                                                                Medical Assistance
+                                                                            </button>
+                                                                        </li><?php
+                                                                    }
+                                                                } else {
+                                                                    $modaltext = "Authorization Letter";
+                                                                    ?>
+                                                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                            data-bs-target="#staticBackdrop02">
+                                                                            Medical Assistance
+                                                                        </button>
+                                                                    </li><?php
+                                                                }
+                                                            } else {
+                                                                $modaltext = "Representative Valid ID";
+                                                                ?>
+                                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                        data-bs-target="#staticBackdrop02">
+                                                                        Medical Assistance
+                                                                    </button>
+                                                                </li><?php
+                                                            }
+                                                        } else {
+                                                            $modaltext = "Outstanding Payer Certificate";
+                                                            ?>
+                                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop02">
+                                                                    Medical Assistance
+                                                                </button>
+                                                            </li><?php
+                                                        }
+                                                    } else {
+                                                        $modaltext = "Official Receipts";
+                                                        ?>
+                                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop02">
+                                                                Medical Assistance
+                                                            </button>
+                                                        </li><?php
+                                                    }
+                                                } else {
+                                                    $modaltext = "Laboratory Request or Diagnostic Request";
+                                                    ?>
+                                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop02">
+                                                            Medical Assistance
+                                                        </button>
+                                                    </li><?php
+                                                }
+                                            } else {
+                                                $modaltext = "Pharmacy Quotation";
+                                                ?>
+                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02">
+                                                        Medical Assistance
+                                                    </button>
+                                                </li><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Hospital Billing Statement";
+                                            ?>
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02">
+                                                    Medical Assistance
+                                                </button>
+                                            </li><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Medical Certificate or Clinical Abstract";
+                                        ?>
+                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02">
+                                                Medical Assistance
+                                            </button>
+                                        </li><?php
+                                    }
+                                } else {
+                                    $modaltext = "Barangay Indigency";
+                                    ?>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02">
+                                            Medical Assistance
+                                        </button>
+                                    </li><?php
+                                }
+                                if (in_array("Barangay Indigency", $rows)) {
+                                    if (in_array("Death Certificate", $rows)) {
+                                        if (in_array("Funeral Contract", $rows)) {
+                                            if (in_array("Official Receipts", $rows)) {
+                                                if (in_array("Representative Valid ID", $rows)) {
+                                                    if (in_array("Valid ID", $rows)) {
+                                                        if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                                            if (in_array("Authorization Letter", $rows)) {
+                                                                if (in_array("Marriage Contract", $rows)) {
+                                                                    if (in_array("Outstanding Payer Certificate", $rows)) {
+                                                                        ?>
+                                                                        <li>
+                                                                            <form method="POST">
+                                                                                <button type="submit" class="dropdown-item" name="burass"
+                                                                                    value="Burial Assistance">Burial Assistance</button>
+                                                                            </form>
+                                                                        </li><?php if (isset($_POST['burass'])) {
+                                                                            $_SESSION['assistancetype'] = $_POST['burass'];
+                                                                            $_SESSION['goback'] = "index.php";
+                                                                            ?>
+                                                                            <script>window.location.href = "application.php"</script><?php
+                                                                        }
+                                                                    } else {
+                                                                        $modaltext = "Outstanding Payer Certificate";
+                                                                        ?>
+                                                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                                data-bs-target="#staticBackdrop02">
+                                                                                Burial Assistance
+                                                                            </button>
+                                                                        </li><?php
+                                                                    }
+                                                                } else {
+                                                                    $modaltext = "Marriage Contract";
+                                                                    ?>
+                                                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                            data-bs-target="#staticBackdrop02">
+                                                                            Burial Assistance
+                                                                        </button>
+                                                                    </li><?php
+                                                                }
+                                                            } else {
+                                                                $modaltext = "Authorization Letter";
+                                                                ?>
+                                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                        data-bs-target="#staticBackdrop02">
+                                                                        Burial Assistance
+                                                                    </button>
+                                                                </li><?php
+                                                            }
+                                                        } else {
+                                                            $modaltext = "Birth Certificate or Marriage Certificate";
+                                                            ?>
+                                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop02">
+                                                                    Burial Assistance
+                                                                </button>
+                                                            </li><?php
+                                                        }
+                                                    } else {
+                                                        $modaltext = "Valid ID";
+                                                        ?>
+                                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop02">
+                                                                Burial Assistance
+                                                            </button>
+                                                        </li><?php
+                                                    }
+                                                } else {
+                                                    $modaltext = "Representative Valid ID";
+                                                    ?>
+                                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop02">
+                                                            Burial Assistance
+                                                        </button>
+                                                    </li><?php
+                                                }
+                                            } else {
+                                                $modaltext = "Official Receipts";
+                                                ?>
+                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02">
+                                                        Burial Assistance
+                                                    </button>
+                                                </li><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Funeral Contract";
+                                            ?>
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02">
+                                                    Burial Assistance
+                                                </button>
+                                            </li><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Death Certificate";
+                                        ?>
+                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02">
+                                                Burial Assistance
+                                            </button>
+                                        </li><?php
+                                    }
+                                } else {
+                                    $modaltext = "Barangay Indigency";
+                                    ?>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02">
+                                            Burial Assistance
+                                        </button>
+                                    </li><?php
+                                }
+                                if (in_array("Barangay Indigency", $rows)) {
+                                    if (in_array("Enrollment Assessment Form", $rows) || in_array("Certificate of Enrollment", $rows)) {
+                                        if (in_array("School ID", $rows)) {
+                                            if (in_array("Grade", $rows)) {
+                                                if (in_array("Police Report", $rows) || in_array("Social Worker's Assessment", $rows)) {
+                                                    ?>
+                                                    <li>
+                                                        <form method="POST">
+                                                            <button type="submit" class="dropdown-item" name="eduass"
+                                                                value="Educational Assistance">Educational Assistance</button>
+                                                        </form>
+                                                    </li><?php if (isset($_POST['eduass'])) {
+                                                        $_SESSION['assistancetype'] = $_POST['eduass'];
+                                                        $_SESSION['goback'] = "index.php";
+                                                        ?>
+                                                        <script>window.location.href = "application.php"</script><?php
+                                                    }
+                                                } else {
+                                                    $modaltext = "Police Report or Social Worker's Assessment";
+                                                    ?>
+                                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop02">
+                                                            Educational Assistance
+                                                        </button>
+                                                    </li><?php
+                                                }
+                                            } else {
+                                                $modaltext = "Grade";
+                                                ?>
+                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02">
+                                                        Educational Assistance
+                                                    </button>
+                                                </li><?php
+                                            }
+                                        } else {
+                                            $modaltext = "School ID";
+                                            ?>
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02">
+                                                    Educational Assistance
+                                                </button>
+                                            </li><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Enrollment Assessment Form or Certificate of Enrollment";
+                                        ?>
+                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02">
+                                                Educational Assistance
+                                            </button>
+                                        </li><?php
+                                    }
+                                } else {
+                                    $modaltext = "Barangay Indigency";
+                                    ?>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02">
+                                            Educational Assistance
+                                        </button>
+                                    </li><?php
+                                }
+                                if (in_array("Barangay Indigency", $rows)) {
+                                    if (in_array("Valid ID", $rows)) {
+                                        if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                            ?>
+                                            <li>
+                                                <form method="POST">
+                                                    <button type="submit" class="dropdown-item" name="fooass"
+                                                        value="Food Assistance">Food Assistance</button>
+                                                </form>
+                                            </li><?php if (isset($_POST['fooass'])) {
+                                                $_SESSION['assistancetype'] = $_POST['fooass'];
+                                                $_SESSION['goback'] = "index.php";
+                                                ?>
+                                                <script>window.location.href = "application.php"</script><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Birth Certificate or Marriage Certificate";
+                                            ?>
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02">
+                                                    Food Assistance
+                                                </button>
+                                            </li><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Valid ID";
+                                        ?>
+                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02">
+                                                Food Assistance
+                                            </button>
+                                        </li><?php
+                                    }
+                                } else {
+                                    $modaltext = "Barangay Indigency";
+                                    ?>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02">
+                                            Food Assistance
+                                        </button>
+                                    </li><?php
+                                }
+                                if (in_array("Barangay Indigency", $rows)) {
+                                    if (in_array("Valid ID", $rows)) {
+                                        if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                            if (in_array("Incident Report", $rows)) {
+                                                ?>
+                                                <li>
+                                                    <form method="POST">
+                                                        <button type="submit" class="dropdown-item" name="casass"
+                                                            value="Cash Relief Assistance">Cash Relief Assistance</button>
+                                                    </form>
+                                                </li><?php if (isset($_POST['casass'])) {
+                                                    $_SESSION['assistancetype'] = $_POST['casass'];
+                                                    $_SESSION['goback'] = "index.php";
+                                                    ?>
+                                                    <script>window.location.href = "application.php"</script><?php
+                                                }
+                                            } else {
+                                                $modaltext = "Incident Report";
+                                                ?>
+                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02">
+                                                        Cash Relief Assistance
+                                                    </button>
+                                                </li><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Birth Certificate or Marriage Certificate";
+                                            ?>
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02">
+                                                    Cash Relief Assistance
+                                                </button>
+                                            </li><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Valid ID";
+                                        ?>
+                                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02">
+                                                Cash Relief Assistance
+                                            </button>
+                                        </li><?php
+                                    }
+                                } else {
+                                    $modaltext = "Barangay Indigency";
+                                    ?>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02">
+                                            Cash Relief Assistance
+                                        </button>
+                                    </li><?php
                                 }
                                 if (in_array("Barangay Indigency", $rows)) {
                                     if (in_array("Valid ID", $rows)) {
@@ -295,7 +763,8 @@ session_start(); ?>
                                                 </li><?php if (isset($_POST['psysup'])) {
                                                     $_SESSION['assistancetype'] = $_POST['psysup'];
                                                     $_SESSION['goback'] = "index.php";
-                                                    ?><script>window.location.href = "application.php"</script><?php
+                                                    ?>
+                                                    <script>window.location.href = "application.php"</script><?php
                                                 }
                                             } else {
                                                 $modaltext = "Referral Letter";
@@ -362,8 +831,7 @@ session_start(); ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                <?php $userid = $_SESSION['userid'];
-                                $sql = "SELECT Username FROM register_tbl where User_ID = '$userid'";
+                                <?php $sql = "SELECT Username FROM register_tbl where User_ID = '$userid'";
                                 $result = mysqli_query($conn, $sql);
                                 $row = mysqli_fetch_assoc($result);
                                 echo $row['Username'] ?>
@@ -408,7 +876,7 @@ session_start(); ?>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>You Are Missing <b><?php echo $modaltext ?></b>.</p>
+                        <p>You Are Either Missing <b><?php echo $modaltext ?></b> or it's Not Validated.</p>
                     </div>
                     <div class="modal-footer d-flex justify-content-center align-items-center">
                         <a type="button" class="btn btn-primary" href="profile.php#requirements">Upload Missing
@@ -418,11 +886,10 @@ session_start(); ?>
             </div>
         </div>
         <div class="row">
-            <div class="col-12 d-flex justify-content-center align-items-center" style="height: 30em;">
+            <div class="col-12 d-flex justify-content-center align-items-center" style="height: 10em;">
                 <?php if (isset($_SESSION['userid'])) {
                     ?>
-                    <h1>Hello! <?php $userid = $_SESSION['userid'];
-                    $sql = "SELECT Fname, Mname, Lname FROM userinfo_tbl where User_ID = '$userid'";
+                    <h1>Hello! <?php $sql = "SELECT Fname, Mname, Lname FROM userinfo_tbl where User_ID = '$userid'";
                     $result = mysqli_query($conn, $sql);
                     $row = mysqli_fetch_assoc($result);
                     if (empty($row['Mname'])) {
@@ -435,29 +902,29 @@ session_start(); ?>
             </div>
         </div>
         <div class="row">
-            <div class="col-12 d-flex justify-content-center align-items-center">
-            <div class="carousel">
+            <div class="col-12 d-flex justify-content-center align-items-center" style="height: 20em;">
+                <div class="carousel">
                     <div class="sides">
-                        <img src="img/missing.png" class="side side1">
-                        <img src="img/missing.png" class="side side2">
-                        <img src="img/missing.png" class="side side3">
-                        <img src="img/missing.png" class="side side4">
-                        <img src="img/missing.png" class="side side5">
-                        <img src="img/missing.png" class="side side6">
-                        <img src="img/missing.png" class="side side7">
-                        <img src="img/missing.png" class="side side8">
+                        <img src="img/bananaman.gif" class="side side1">
+                        <img src="img/bananaman.gif" class="side side2">
+                        <img src="img/bananaman.gif" class="side side3">
+                        <img src="img/bananaman.gif" class="side side4">
+                        <img src="img/bananaman.gif" class="side side5">
+                        <img src="img/bananaman.gif" class="side side6">
+                        <img src="img/bananaman.gif" class="side side7">
+                        <img src="img/bananaman.gif" class="side side8">
                     </div>
                 </div>
                 <div class="inf-scroll">
                     <div class="items">
-                        <img src="images/html_logo.png" class="item item1">
-                        <img onclick="toBootstrap()" src="images/bs_logo.png" class="item item2">
-                        <img src="images/css_logo.png" class="item item3">
-                        <img src="images/js_logo.png" class="item item4">
-                        <img src="images/php_logo.png" class="item item5">
-                        <img src="images/python_logo.png" class="item item6">
-                        <img src="images/cprog_logo.png" class="item item7">
-                        <img src="images/cplusplus_logo.png" class="item item8">
+                        <img src="img/bananaman.gif" class="item item1">
+                        <img src="img/bananaman.gif" class="item item2">
+                        <img src="img/bananaman.gif" class="item item3">
+                        <img src="img/bananaman.gif" class="item item4">
+                        <img src="img/bananaman.gif" class="item item5">
+                        <img src="img/bananaman.gif" class="item item6">
+                        <img src="img/bananaman.gif" class="item item7">
+                        <img src="img/bananaman.gif" class="item item8">
                     </div>
                 </div>
             </div>

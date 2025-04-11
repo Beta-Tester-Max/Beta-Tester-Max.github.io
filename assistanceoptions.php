@@ -40,6 +40,368 @@ if (empty($_SESSION['userid'])) { ?>
                     while ($row = mysqli_fetch_array($result)) {
                         $rows[] = $row['Document_Type'];
                     }
+                    if ($at === "Transportation Assistance") {
+                        if (in_array("Barangay Indigency", $rows)) {
+                            if (in_array("Medical Certificate Referral", $rows)) {
+                                if (in_array("Death Certificate", $rows) || in_array("Medical Report", $rows)) {
+                                    if (in_array("Police Report", $rows)) {
+                                        if (in_array("Representative Valid ID", $rows)) {
+                                            if (in_array("Valid ID", $rows)) {
+                                                if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                                    ?>
+                                                    <form method="POST">
+                                                        <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="asstyp"
+                                                            value="<?php echo $at ?>"><?php echo $at ?></button>
+                                                    </form><?php
+                                                } else {
+                                                    $modaltext = "Birth Certificate or Marriage Certificate";
+                                                    ?>
+                                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                }
+                                            } else {
+                                                $modaltext = "Valid ID";
+                                                ?>
+                                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Representative Valid ID";
+                                            ?>
+                                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Police Report";
+                                        ?>
+                                        <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                    }
+                                } else {
+                                    $modaltext = "Death Certificate or Medical Report";
+                                    ?>
+                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                }
+                            } else {
+                                $modaltext = "Medical Certificate Referral";
+                                ?>
+                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                            }
+                        } else {
+                            $modaltext = "Barangay Indigency";
+                            ?>
+                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                        }
+                    }
+                    if ($at === "Medical Assistance") {
+                        if (in_array("Barangay Indigency", $rows)) {
+                            if (in_array("Medical Certificate", $rows) || in_array("Clinical Abstract", $rows)) {
+                                if (in_array("Hospital Billing Statement", $rows)) {
+                                    if (in_array("Pharmacy Quotation", $rows)) {
+                                        if (in_array("Laboratory Request", $rows) || in_array("Diagnostic Request", $rows)) {
+                                            if (in_array("Official Receipts", $rows)) {
+                                                if (in_array("Outstanding Payer Certificate", $rows)) {
+                                                    if (in_array("Representative Valid ID", $rows)) {
+                                                        if (in_array("Authorization Letter", $rows)) {
+                                                            if (in_array("Valid ID", $rows)) {
+                                                                if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                                                    ?>
+                                                                    <form method="POST">
+                                                                        <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="asstyp"
+                                                                            value="<?php echo $at ?>"><?php echo $at ?></button>
+                                                                    </form><?php
+                                                                } else {
+                                                                    $modaltext = "Birth Certificate or Marriage Certificate";
+                                                                    ?>
+                                                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                                }
+                                                            } else {
+                                                                $modaltext = "Valid ID";
+                                                                ?>
+                                                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                            }
+                                                        } else {
+                                                            $modaltext = "Authorization Letter";
+                                                            ?>
+                                                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                        }
+                                                    } else {
+                                                        $modaltext = "Representative Valid ID";
+                                                        ?>
+                                                        <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                            value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                    }
+                                                } else {
+                                                    $modaltext = "Outstanding Payer Certificate";
+                                                    ?>
+                                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                }
+                                            } else {
+                                                $modaltext = "Official Receipts";
+                                                ?>
+                                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Laboratory Request or Diagnostic Request";
+                                            ?>
+                                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Pharmacy Quotation";
+                                        ?>
+                                        <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                    }
+                                } else {
+                                    $modaltext = "Hospital Billing Statement";
+                                    ?>
+                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                }
+                            } else {
+                                $modaltext = "Medical Certificate or Clinical Abstract";
+                                ?>
+                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                            }
+                        } else {
+                            $modaltext = "Barangay Indigency";
+                            ?>
+                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                        }
+                    }
+                    if ($at === "Burial Assistance") {
+                        if (in_array("Barangay Indigency", $rows)) {
+                            if (in_array("Death Certificate", $rows)) {
+                                if (in_array("Funeral Contract", $rows)) {
+                                    if (in_array("Official Receipts", $rows)) {
+                                        if (in_array("Representative Valid ID", $rows)) {
+                                            if (in_array("Valid ID", $rows)) {
+                                                if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                                    if (in_array("Authorization Letter", $rows)) {
+                                                        if (in_array("Marriage Contract", $rows)) {
+                                                            if (in_array("Outstanding Payer Certificate", $rows)) {
+                                                                ?>
+                                                                <form method="POST">
+                                                                    <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="asstyp"
+                                                                        value="<?php echo $at ?>"><?php echo $at ?></button>
+                                                                </form><?php
+                                                            } else {
+                                                                $modaltext = "Outstanding Payer Certificate";
+                                                                ?>
+                                                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                            }
+                                                        } else {
+                                                            $modaltext = "Marriage Contract";
+                                                            ?>
+                                                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                        }
+                                                    } else {
+                                                        $modaltext = "Authorization Letter";
+                                                        ?>
+                                                        <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                            value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                    }
+                                                } else {
+                                                    $modaltext = "Birth Certificate or Marriage Certificate";
+                                                    ?>
+                                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                                }
+                                            } else {
+                                                $modaltext = "Valid ID";
+                                                ?>
+                                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                            }
+                                        } else {
+                                            $modaltext = "Representative Valid ID";
+                                            ?>
+                                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Official Receipts";
+                                        ?>
+                                        <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                    }
+                                } else {
+                                    $modaltext = "Funeral Contract";
+                                    ?>
+                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                }
+                            } else {
+                                $modaltext = "Death Certificate";
+                                ?>
+                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                            }
+                        } else {
+                            $modaltext = "Barangay Indigency";
+                            ?>
+                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                        }
+                    }
+                    if ($at === "Educational Assistance") {
+                        if (in_array("Barangay Indigency", $rows)) {
+                            if (in_array("Enrollment Assessment Form", $rows) || in_array("Certificate of Enrollment", $rows)) {
+                                if (in_array("School ID", $rows)) {
+                                    if (in_array("Grade", $rows)) {
+                                        if (in_array("Police Report", $rows) || in_array("Social Worker's Assessment", $rows)) {
+                                            ?>
+                                            <form method="POST">
+                                                <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="asstyp"
+                                                    value="<?php echo $at ?>"><?php echo $at ?></button>
+                                            </form><?php
+                                        } else {
+                                            $modaltext = "Police Report or Social Worker's Assessment";
+                                            ?>
+                                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                        }
+                                    } else {
+                                        $modaltext = "Grade";
+                                        ?>
+                                        <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                    }
+                                } else {
+                                    $modaltext = "School ID";
+                                    ?>
+                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                }
+                            } else {
+                                $modaltext = "Enrollment Assessment Form or Certificate of Enrollment";
+                                ?>
+                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                            }
+                        } else {
+                            $modaltext = "Barangay Indigency";
+                            ?>
+                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                        }
+                    }
+                    if ($at === "Food Assistance") {
+                        if (in_array("Barangay Indigency", $rows)) {
+                            if (in_array("Valid ID", $rows)) {
+                                if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                    ?>
+                                    <form method="POST">
+                                        <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="asstyp"
+                                            value="<?php echo $at ?>"><?php echo $at ?></button>
+                                    </form><?php
+                                } else {
+                                    $modaltext = "Birth Certificate or Marriage Certificate";
+                                    ?>
+                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                }
+                            } else {
+                                $modaltext = "Valid ID";
+                                ?>
+                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                            }
+                        } else {
+                            $modaltext = "Barangay Indigency";
+                            ?>
+                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                        }
+                    }
+                    if ($at === "Cash Relief Assistance") {
+                        if (in_array("Barangay Indigency", $rows)) {
+                            if (in_array("Valid ID", $rows)) {
+                                if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
+                                    if (in_array("Incident Report", $rows)) {
+                                        ?>
+                                        <form method="POST">
+                                            <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="asstyp"
+                                                value="<?php echo $at ?>"><?php echo $at ?></button>
+                                        </form><?php
+                                    } else {
+                                        $modaltext = "Incident Report";
+                                        ?>
+                                        <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                    }
+                                } else {
+                                    $modaltext = "Birth Certificate or Marriage Certificate";
+                                    ?>
+                                    <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                                }
+                            } else {
+                                $modaltext = "Valid ID";
+                                ?>
+                                <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                            }
+                        } else {
+                            $modaltext = "Barangay Indigency";
+                            ?>
+                            <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                value="<?php echo $at ?>"><?php echo $at ?></button><?php
+                        }
+                    }
                     if ($at === "Psychosocial Support") {
                         if (in_array("Barangay Indigency", $rows)) {
                             if (in_array("Valid ID", $rows)) {
@@ -47,44 +409,39 @@ if (empty($_SESSION['userid'])) { ?>
                                     if (in_array("Referral Letter", $rows)) {
                                         ?>
                                         <form method="POST">
-                                            <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="psysup"
+                                            <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="asstyp"
                                                 value="<?php echo $at ?>"><?php echo $at ?></button>
                                         </form><?php
                                     } else {
-                                        $mt = "Referral Letter";
+                                        $modaltext = "Referral Letter";
                                         ?>
                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
                                             data-bs-target="#staticBackdrop02" style="width: 20em;"
                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                     }
                                 } else {
-                                    $mt = "Birth Certificate or Marriage Certificate";
+                                    $modaltext = "Birth Certificate or Marriage Certificate";
                                     ?>
                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop02" style="width: 20em;"
                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                 }
                             } else {
-                                $mt = "Valid ID";
+                                $modaltext = "Valid ID";
                                 ?>
                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
                                     data-bs-target="#staticBackdrop02" style="width: 20em;"
                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                             }
                         } else {
-                            $mt = "Barangay Indigency";
+                            $modaltext = "Barangay Indigency";
                             ?>
                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop02" style="width: 20em;"
                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                         }
-                    } else { ?>
-                        <form method="POST">
-                            <button class="btn btn-lg btn-outline-primary my-1" type="submit" style="width: 20em;" name="psysup"
-                                value="<?php echo $at ?>"><?php echo $at ?></button>
-                        </form><?php
-                    }
-                } ?>
+                    } ?>
+                <?php } ?>
                 <div class="modal fade" id="staticBackdrop02" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -97,7 +454,7 @@ if (empty($_SESSION['userid'])) { ?>
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>You Are Missing <b><?php echo $mt ?></b>.</p>
+                                <p>You Are Missing <b><?php echo $modaltext ?></b>.</p>
                             </div>
                             <div class="modal-footer d-flex justify-content-center align-items-center">
                                 <a type="button" class="btn btn-primary" href="profile.php#requirements">Upload Missing
@@ -107,8 +464,8 @@ if (empty($_SESSION['userid'])) { ?>
                     </div>
                 </div>
                 <a class="btn btn-lg btn-outline-primary my-1" href="index.php" style="width: 20em;"><-- Go Back</a>
-                        <?php if (isset($_POST['psysup'])) {
-                            $_SESSION['assistancetype'] = $_POST['psysup'];
+                        <?php if (isset($_POST['asstyp'])) {
+                            $_SESSION['assistancetype'] = $_POST['asstyp'];
                             $_SESSION['goback'] = "assistanceoptions.php";
                             ?>
                             <script>window.location.href = "application.php"</script><?php

@@ -1631,8 +1631,7 @@ if (empty($_SESSION['userid'])) { ?>
                     </tr>
                     </thead>
                     <tbody>
-                        <?php $userid = $_SESSION['userid'];
-                        $sql = "SELECT Application_ID, Assistance_Type, Status, Date_Submitted 
+                        <?php $sql = "SELECT Application_ID, Assistance_Type, Status, Date_Submitted 
                                 FROM application_tbl 
                                 where User_ID = '$userid' 
                                 AND is_deleted = 0 

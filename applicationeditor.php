@@ -2,7 +2,13 @@
 <?php include "connect.php";
 session_start();
 if (empty($_SESSION['userid'])) { ?>
-    <script>window.location.href = "logout.php";</script><?php } elseif (isset($_SESSION['appid'])) { ?>
+    <script>window.location.href = "logout.php";</script><?php
+} else {
+    $userid = $_SESSION['userid'];
+}
+if (empty($_SESSION['appid'])) {
+    ?><script>window.location.href = "profile.php#pending"</script><?php
+} ?>
     <!doctype html>
     <html lang="en">
 
@@ -112,8 +118,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                 <div class="mt-3">
                                                     <label class="mb-1 text-danger" for="file01"><b>Required</b></label>
                                                     <select class="form-select" id="file01" name="file01" required>
-                                                        <?php $userid = $_SESSION['userid'];
-                                                        if (empty($req1) == false) {
+                                                        <?php if (empty($req1) == false) {
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
@@ -133,8 +138,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                 <div class="mt-3">
                                                     <label class="mb-1 text-danger" for="file02"><b>Required</b></label>
                                                     <select class="form-select" id="file02" name="file02" required>
-                                                        <?php $userid = $_SESSION['userid'];
-                                                        if (empty($req2) == false) {
+                                                        <?php if (empty($req2) == false) {
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
@@ -154,8 +158,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                 <div class="mt-3">
                                                     <label class="mb-1 text-danger" for="file03"><b>Required</b></label>
                                                     <select class="form-select" id="file03" name="file03" required>
-                                                        <?php $userid = $_SESSION['userid'];
-                                                        if (empty($req3) == false) {
+                                                        <?php if (empty($req3) == false) {
                                                             $sql = "SELECT Document_Type 
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
@@ -170,7 +173,6 @@ if (empty($_SESSION['userid'])) { ?>
                                                         } else { ?>
                                                             <option value="">Select a Document</option>
                                                         <?php }
-                                                        $userid = $_SESSION['userid'];
                                                         $documenttype = ($row['Document_Type'] == "Marriage Certificate") ? $row['Document_Type'] : "Birth Certificate";
                                                         $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
@@ -226,7 +228,6 @@ if (empty($_SESSION['userid'])) { ?>
                                                         } else { ?>
                                                             <option value="">Select a Document</option>
                                                         <?php }
-                                                        $userid = $_SESSION['userid'];
                                                         $documenttype = ($row['Document_Type'] == "Medical Report") ? $row['Document_Type'] : "Psychological Report";
                                                         $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
@@ -260,7 +261,6 @@ if (empty($_SESSION['userid'])) { ?>
                                                         } else { ?>
                                                             <option value="">Select a Document</option>
                                                         <?php }
-                                                        $userid = $_SESSION['userid'];
                                                         $documenttype = ($row['Document_Type'] == "Police Report") ? $row['Document_Type'] : "Legal Report";
                                                         $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
@@ -294,7 +294,6 @@ if (empty($_SESSION['userid'])) { ?>
                                                         } else { ?>
                                                             <option value="">Select a Document</option>
                                                         <?php }
-                                                        $userid = $_SESSION['userid'];
                                                         $documenttype = ($row['Document_Type'] == "Disaster Certificate") ? $row['Document_Type'] : "Marriage Certificate";
                                                         $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
@@ -319,7 +318,6 @@ if (empty($_SESSION['userid'])) { ?>
                                 </div>
                             </form>
                             <?php if (isset($_POST['applicationForm'])) {
-                                $userid = $_SESSION['userid'];
                                 $fullname = $_POST['fullname'];
                                 $bday = $_POST['bday'];
                                 $assistancetype = $_POST['assistancetype'];
@@ -374,6 +372,3 @@ if (empty($_SESSION['userid'])) { ?>
     </body>
 
     </html>
-<?php } else { ?>
-    <script>window.location.href = "profile.php#pending"</script>
-<?php }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2025 at 03:55 AM
+-- Generation Time: Apr 14, 2025 at 11:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,19 +58,23 @@ CREATE TABLE `application_tbl` (
   `User_ID` int(11) NOT NULL,
   `Full_Name` varchar(70) NOT NULL,
   `Birth_Date` date NOT NULL,
-  `Address_ID` varchar(255) NOT NULL,
+  `Address_ID` int(11) NOT NULL,
   `Assistance_Type` varchar(255) NOT NULL,
   `Civil_Status` varchar(50) NOT NULL,
   `Contact_Number` varchar(13) NOT NULL DEFAULT '0000-000-0000',
   `Email` varchar(50) NOT NULL,
   `Reason` text NOT NULL,
-  `Req1` varchar(255) NOT NULL,
-  `Req2` varchar(255) NOT NULL,
-  `Req3` varchar(255) NOT NULL,
-  `Req4` varchar(255) NOT NULL,
-  `Req5` varchar(255) NOT NULL,
-  `Req6` varchar(255) NOT NULL,
-  `Req7` varchar(255) NOT NULL,
+  `Req1` int(11) DEFAULT NULL,
+  `Req2` int(11) DEFAULT NULL,
+  `Req3` int(11) DEFAULT NULL,
+  `Req4` int(11) DEFAULT NULL,
+  `Req5` int(11) DEFAULT NULL,
+  `Req6` int(11) DEFAULT NULL,
+  `Req7` int(11) DEFAULT NULL,
+  `Req8` int(11) DEFAULT NULL,
+  `Req9` int(11) DEFAULT NULL,
+  `Req10` int(11) DEFAULT NULL,
+  `Req11` int(11) DEFAULT NULL,
   `Status` varchar(10) NOT NULL DEFAULT 'Pending',
   `Date_Submitted` date NOT NULL,
   `Edited_Count` int(255) NOT NULL DEFAULT 0,
@@ -78,6 +82,20 @@ CREATE TABLE `application_tbl` (
   `Date_ApporRej` date NOT NULL,
   `ReasonFR` text NOT NULL,
   `Timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `file_tbl`
+--
+
+CREATE TABLE `file_tbl` (
+  `File_ID` int(11) NOT NULL,
+  `User_ID` int(11) NOT NULL,
+  `File_Name` text NOT NULL,
+  `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -147,7 +165,7 @@ CREATE TABLE `requirements_tbl` (
   `Requirements_ID` int(11) NOT NULL,
   `User_ID` int(11) NOT NULL,
   `Document_Type` varchar(255) NOT NULL,
-  `File_Name` varchar(255) NOT NULL,
+  `File_ID` int(11) NOT NULL,
   `Importance` varchar(10) NOT NULL,
   `Status` varchar(20) NOT NULL DEFAULT 'Unvalidated',
   `ReasonFR` text NOT NULL,
@@ -179,6 +197,7 @@ CREATE TABLE `userinfo_tbl` (
 --
 
 INSERT INTO `userinfo_tbl` (`UserInfo_ID`, `User_ID`, `Fname`, `Mname`, `Lname`, `Birth_Date`, `Sex`, `Contact_Number`, `Civil_Status`, `Religion`, `Nationality`) VALUES
+(1, 1, 'Admin', '', '', '0000-00-00', '', '0000-000-0000', '', '', ''),
 (7, 20, 'John', '', 'Doe', '2001-11-24', 'm', '0912-345-6789', 'Single', 'Roman Catholic', 'filipino'),
 (8, 22, 'John', 'Mod', 'Owner', '2025-04-14', 'm', '0987-654-3210', 'Single', 'Roman Catholic', 'filipino'),
 (9, 23, 'Jane', '', 'Air', '2001-11-24', 'F', '0912-345-6789', 'Single', 'Roman Catholic', 'filipino');
@@ -199,7 +218,26 @@ ALTER TABLE `address_tbl`
 --
 ALTER TABLE `application_tbl`
   ADD PRIMARY KEY (`Application_ID`),
-  ADD KEY `Relation5` (`User_ID`);
+  ADD KEY `Relation5` (`User_ID`),
+  ADD KEY `Relation8` (`Address_ID`),
+  ADD KEY `Req1` (`Req1`),
+  ADD KEY `Req2` (`Req2`),
+  ADD KEY `Req3` (`Req3`),
+  ADD KEY `Req4` (`Req4`),
+  ADD KEY `Req5` (`Req5`),
+  ADD KEY `Req6` (`Req6`),
+  ADD KEY `Req7` (`Req7`),
+  ADD KEY `Req8` (`Req8`),
+  ADD KEY `Req9` (`Req9`),
+  ADD KEY `Req10` (`Req10`),
+  ADD KEY `Req11` (`Req11`);
+
+--
+-- Indexes for table `file_tbl`
+--
+ALTER TABLE `file_tbl`
+  ADD PRIMARY KEY (`File_ID`),
+  ADD KEY `Relation10` (`User_ID`);
 
 --
 -- Indexes for table `messages_tbl`
@@ -220,7 +258,8 @@ ALTER TABLE `register_tbl`
 --
 ALTER TABLE `requirements_tbl`
   ADD PRIMARY KEY (`Requirements_ID`),
-  ADD KEY `Relation2` (`User_ID`);
+  ADD KEY `Relation2` (`User_ID`),
+  ADD KEY `Relation7` (`File_ID`);
 
 --
 -- Indexes for table `userinfo_tbl`
@@ -243,7 +282,13 @@ ALTER TABLE `address_tbl`
 -- AUTO_INCREMENT for table `application_tbl`
 --
 ALTER TABLE `application_tbl`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `file_tbl`
+--
+ALTER TABLE `file_tbl`
+  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `messages_tbl`
@@ -261,7 +306,7 @@ ALTER TABLE `register_tbl`
 -- AUTO_INCREMENT for table `requirements_tbl`
 --
 ALTER TABLE `requirements_tbl`
-  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT for table `userinfo_tbl`
@@ -283,7 +328,14 @@ ALTER TABLE `address_tbl`
 -- Constraints for table `application_tbl`
 --
 ALTER TABLE `application_tbl`
-  ADD CONSTRAINT `Relation5` FOREIGN KEY (`User_ID`) REFERENCES `register_tbl` (`User_ID`);
+  ADD CONSTRAINT `Relation5` FOREIGN KEY (`User_ID`) REFERENCES `register_tbl` (`User_ID`),
+  ADD CONSTRAINT `Relation8` FOREIGN KEY (`Address_ID`) REFERENCES `address_tbl` (`Address_ID`);
+
+--
+-- Constraints for table `file_tbl`
+--
+ALTER TABLE `file_tbl`
+  ADD CONSTRAINT `Relation10` FOREIGN KEY (`User_ID`) REFERENCES `register_tbl` (`User_ID`);
 
 --
 -- Constraints for table `messages_tbl`
@@ -296,7 +348,8 @@ ALTER TABLE `messages_tbl`
 -- Constraints for table `requirements_tbl`
 --
 ALTER TABLE `requirements_tbl`
-  ADD CONSTRAINT `Relation2` FOREIGN KEY (`User_ID`) REFERENCES `register_tbl` (`User_ID`);
+  ADD CONSTRAINT `Relation2` FOREIGN KEY (`User_ID`) REFERENCES `register_tbl` (`User_ID`),
+  ADD CONSTRAINT `Relation7` FOREIGN KEY (`File_ID`) REFERENCES `file_tbl` (`File_ID`);
 
 --
 -- Constraints for table `userinfo_tbl`

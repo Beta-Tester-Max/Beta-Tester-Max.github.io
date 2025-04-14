@@ -1,6 +1,6 @@
 <?php include 'connect.php';
 session_start();
-if (empty($_SESSION)) { ?>
+if (empty($_SESSION['userid'])) { ?>
     <!doctype html>
     <html lang="en">
 

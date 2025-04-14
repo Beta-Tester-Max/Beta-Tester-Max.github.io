@@ -71,15 +71,16 @@ if (empty($_SESSION['userid'])) { ?>
                             </button>
                             <div class="modal fade" id="<?php echo $id ?>" aria-hidden="true"
                                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalToggleLabel"><?php echo $at?></h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalToggleLabel"><?php echo $at ?>
+                                                Requirements</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                        <table class="table table-striped">
+                                            <table class="table table-striped">
                                                 <tr>
                                                     <th class="text-start" scope="col">Document Type</th>
                                                     <th class="text-center" scope="col">Status</th>
@@ -113,13 +114,12 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
                                                                         style="font-size: .8em;">Required</i></td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID, ReasonFR
+                                                                $sql = "SELECT Status, File_ID
                                                                         FROM requirements_tbl
                                                                         where User_ID = '$userid' AND Document_type = '$doclist'";
                                                                 $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result); 
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID']: "";
-                                                                $modalreason = (isset($row['Reason'])) ? $row['Reason']: "";?>
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
                                                                 <td class="text-center">
                                                                     <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
@@ -137,48 +137,53 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 </td>
                                                                 <td><?php if (isset($row['File_ID'])) { ?>
                                                                         <div class="d-flex">
-                                                                            <form method="POST" enctype="multipart/form-data">
-                                                                                <div class="d-flex">
-                                                                                    <div class="mb-3">
-                                                                                        <input class="form-control" type="file"
-                                                                                            id="formFile" name="file"
-                                                                                            accept="application/pdf" required>
-                                                                                    </div>
-                                                                                    <input type="hidden" name="fileid" 
-                                                                                        value="<?php echo $fileid?>">
-                                                                                    <input type="hidden" name="docname"
-                                                                                        value="<?php echo $doclist ?>">
-                                                                                    <button class="btn btn-primary shadow ms-2"
-                                                                                        type="submit" style="height: 2.3em;"
-                                                                                        name="editRequirements">Edit</button>
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
                                                                                 </div>
-                                                                            </form><?php 
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <?php
                                                                             $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
                                                                             $result = mysqli_query($conn, $sql);
                                                                             $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] :'';
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : ''; ?>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
                                                                             ?>
-                                                                            <form method="POST">
-                                                                                <input type="hidden"
-                                                                                    value="<?php echo $file?>" name="file">
-                                                                                <button type="submit" class="btn btn-primary ms-2"
-                                                                                    style="height: 2.3em; width: 6em;"
-                                                                                    name="fileopener">Open File</button>
-                                                                            </form>
+
                                                                         </div>
                                                                         <?php if (isset($_POST['fileopener'])) {
                                                                             $_SESSION['file'] = $_POST['file'] ?>
                                                                             <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
-                                                                        if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
-                                                                            <div class="form-floating">
-                                                                                <textarea class="form-control"
-                                                                                    placeholder="State your reason here"
-                                                                                    id="floatingTextarea" style="height: 10em" name="reason"
-                                                                                    disabled readonly required></textarea>
-                                                                                <label
-                                                                                    for="floatingTextarea"><?php echo (empty($row['ReasonFR'])) ? "The Admin did not leave a reason" : $row['ReasonFR'] ?></label>
-                                                                            </div>
                                                                         <?php }
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
@@ -213,7 +218,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                         where User_ID = '$userid' AND Document_type = '$doclist'";
                                                                 $result = mysqli_query($conn, $sql);
                                                                 $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID']: "";?>
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
                                                                 <td class="text-center">
                                                                     <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
@@ -231,44 +236,52 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 </td>
                                                                 <td><?php if (isset($row['File_ID'])) { ?>
                                                                         <div class="d-flex">
-                                                                            <form method="POST" enctype="multipart/form-data">
-                                                                                <div class="d-flex">
-                                                                                    <div class="mb-3">
-                                                                                        <input class="form-control" type="file"
-                                                                                            id="formFile" name="file"
-                                                                                            accept="application/pdf" required>
-                                                                                    </div>
-                                                                                    <input type="hidden" name="fileid" 
-                                                                                        value="<?php echo $fileid?>">
-                                                                                    <input type="hidden" name="docname"
-                                                                                        value="<?php echo $doclist ?>">
-                                                                                    <button class="btn btn-primary shadow ms-2"
-                                                                                        type="submit" style="height: 2.3em;"
-                                                                                        name="editRequirements">Edit</button>
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
                                                                                 </div>
-                                                                            </form><?php 
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
                                                                             $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
                                                                             $result = mysqli_query($conn, $sql);
                                                                             $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] :'';
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
-                                                                            <form method="POST">
-                                                                                <input type="hidden"
-                                                                                    value="<?php echo $file?>" name="file">
-                                                                                <button type="submit" class="btn btn-primary ms-2"
-                                                                                    style="height: 2.3em; width: 6em;"
-                                                                                    name="fileopener">Open File</button>
-                                                                            </form>
+
                                                                         </div>
                                                                         <?php if (isset($_POST['fileopener'])) {
                                                                             $_SESSION['file'] = $_POST['file'] ?>
                                                                             <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
-                                                                        if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
-                                                                            <div class="modal-footer">
-                                                                                <button class="btn btn-primary" data-bs-target="#<?php echo "reason".$id?>"
-                                                                                data-bs-toggle="modal">View Reason</button>
-                                                                            </div>
                                                                         <?php }
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
@@ -278,7 +291,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         id="formFile" name="file"
                                                                                         accept="application/pdf" required>
                                                                                 </div>
-                                                                                <input type="hidden" name="importance" value="Required">
+                                                                                <input type="hidden" name="importance" value="Optional">
                                                                                 <input type="hidden" name="docname"
                                                                                     value="<?php echo $doclist ?>">
                                                                                 <button class="btn btn-primary shadow ms-2"
@@ -303,6 +316,103 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Birth Certificate"
                                                             ]
                                                         );
+                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
+                                                            $doclist = $doctype['Required'][$i];
+                                                            ?>
+                                                            <tr>
+                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
+                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Required">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
                                                     } elseif ($at === "Medical Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -322,6 +432,103 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Birth Certificate"
                                                             ]
                                                         );
+                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
+                                                            $doclist = $doctype['Required'][$i];
+                                                            ?>
+                                                            <tr>
+                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
+                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Required">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
                                                     } elseif ($at === "Burial Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -338,6 +545,103 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Outstanding Payer Certificate"
                                                             ]
                                                         );
+                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
+                                                            $doclist = $doctype['Required'][$i];
+                                                            ?>
+                                                            <tr>
+                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
+                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Required">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
                                                     } elseif ($at === "Educational Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -352,25 +656,213 @@ if (empty($_SESSION['userid'])) { ?>
                                                             "Optional" => [
                                                                 "Medical Certificate"
                                                             ]
-                                                        ); ?>
-                                                        <td class="text-start"><?php
-                                                        if ($doclist === "Enrollment Assessment From") {
-                                                            echo $doclist;
+                                                        );
+                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
+                                                            $doclist = htmlspecialchars($doctype['Required'][$i]);
                                                             ?>
-                                                                <p> (Certified True Copy)</p><?php
-                                                        } elseif ($doclist === "Certificate of Enrollment") {
-                                                            echo $doclist;
+                                                            <tr>
+                                                                <td class="text-start"><?php
+                                                                switch ($doclist) {
+                                                                    case 'Enrollment Assessment From':
+                                                                        echo $doclist . "(Certified True Copy)";
+                                                                        break;
+                                                                    case 'Grades':
+                                                                        echo $doclist . "(Certified True Copy)";
+                                                                        break;
+                                                                    default:
+                                                                        echo $doclist;
+                                                                }
+                                                                ?> <i class="text-danger"
+                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Required">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
+                                                        for ($i = 0; $i < count($doctype['Optional']); $i++) {
+                                                            $doclist = $doctype['Optional'][$i];
                                                             ?>
-                                                                <p> (Certified True Copy)</p><?php
-                                                        } elseif ($doclist === "Grades") {
-                                                            echo $doclist;
-                                                            ?>
-                                                                <p> (Certified True Copy signed by Authorized Personnel)</p><?php
-                                                        } else {
-                                                            echo $doclist;
-                                                        }
-                                                        ?>
-                                                        </td><?php
+                                                            <tr>
+                                                                <td class="text-start"><?php echo $doclist ?> <i
+                                                                        class="text-secondary" style="font-size: .8em;">Optional</i>
+                                                                </td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID, ReasonFR
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Optional">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
                                                     } elseif ($at === "Food Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -385,6 +877,201 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Medical Referral"
                                                             ]
                                                         );
+                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
+                                                            $doclist = $doctype['Required'][$i];
+                                                            ?>
+                                                            <tr>
+                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
+                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Required">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
+                                                        for ($i = 0; $i < count($doctype['Optional']); $i++) {
+                                                            $doclist = $doctype['Optional'][$i];
+                                                            ?>
+                                                            <tr>
+                                                                <td class="text-start"><?php echo $doclist ?> <i
+                                                                        class="text-secondary" style="font-size: .8em;">Optional</i>
+                                                                </td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID, ReasonFR
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="fileopener">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Optional">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
                                                     } elseif ($at === "Cash Relief Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -399,35 +1086,205 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Medical Referral"
                                                             ]
                                                         );
+                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
+                                                            $doclist = $doctype['Required'][$i];
+                                                            ?>
+                                                            <tr>
+                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
+                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="editRequirements">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Required">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
+                                                        for ($i = 0; $i < count($doctype['Optional']); $i++) {
+                                                            $doclist = $doctype['Optional'][$i];
+                                                            ?>
+                                                            <tr>
+                                                                <td class="text-start"><?php echo $doclist ?> <i
+                                                                        class="text-secondary" style="font-size: .8em;">Optional</i>
+                                                                </td>
+                                                                <?php
+                                                                $sql = "SELECT Status, File_ID, ReasonFR
+                                                                        FROM requirements_tbl
+                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
+                                                                $result = mysqli_query($conn, $sql);
+                                                                $row = mysqli_fetch_assoc($result);
+                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                <td class="text-center">
+                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                        <img src="img/validated.png" alt="Validated" title="Validated"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                        <img src="img/unvalidated.png" alt="Unvalidated"
+                                                                            title="Unvalidated" style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                        <img src="img/reject.png" alt="Rejected" title="Rejected"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } else { ?>
+                                                                        <img src="img/missing.png" alt="Missing" title="Missing"
+                                                                            style="width: 1.5em; height: 1.5em;">
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                        <div class="d-flex">
+                                                                            <form class="d-flex me-2" method="POST"
+                                                                                enctype="multipart/form-data">
+                                                                                <div>
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="fileid"
+                                                                                    value="<?php echo $fileid ?>">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="editRequirements">Edit</button>
+                                                                            </form>
+                                                                            <div>
+                                                                                <form class="me-2" method="POST">
+                                                                                    <input type="hidden" value="<?php echo $file ?>"
+                                                                                        name="file">
+                                                                                    <button class="btn btn-primary shadow" type="submit"
+                                                                                        style="height: 2.3em; width: 6em;"
+                                                                                        name="editRequirements">Open File</button>
+                                                                                </form>
+                                                                                </form>
+                                                                            </div>
+                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                                <div>
+                                                                                    <div class="form-floating">
+                                                                                        <textarea class="form-control"
+                                                                                            placeholder="State your reason here"
+                                                                                            id="floatingTextarea" style="height: 10em"
+                                                                                            name="reason" disabled readonly
+                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                        <label for="floatingTextarea">Reason</label>
+                                                                                    </div>
+                                                                                </div><?php }
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
+                                                                            ?>
+
+                                                                        </div>
+                                                                        <?php if (isset($_POST['fileopener'])) {
+                                                                            $_SESSION['file'] = $_POST['file'] ?>
+                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
+                                                                        <?php }
+                                                                } else { ?>
+                                                                        <form method="POST" enctype="multipart/form-data">
+                                                                            <div class="d-flex">
+                                                                                <div class="mb-3">
+                                                                                    <input class="form-control" type="file"
+                                                                                        id="formFile" name="file"
+                                                                                        accept="application/pdf" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="importance" value="Optional">
+                                                                                <input type="hidden" name="docname"
+                                                                                    value="<?php echo $doclist ?>">
+                                                                                <button class="btn btn-primary shadow ms-2"
+                                                                                    type="submit" style="height: 2.3em;"
+                                                                                    name="uploadRequirements">Upload</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
                                                     }
                                                     ?>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="<?php echo "reason".$id?>" aria-hidden="true"
-                                aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-floating">
-                                                                                <textarea class="form-control"
-                                                                                    placeholder="State your reason here"
-                                                                                    id="floatingTextarea" style="height: 10em" name="reason"
-                                                                                    disabled readonly required></textarea>
-                                                                                <label
-                                                                                    for="floatingTextarea"><?php echo (empty($modalreason)) ? "The Admin did not leave a reason" : $modalreason ?></label>
-                                            </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-primary" data-bs-target="#exampleModalToggle"
-                                                data-bs-toggle="modal">Back to first</button>
                                         </div>
                                     </div>
                                 </div>

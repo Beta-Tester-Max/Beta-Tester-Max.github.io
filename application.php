@@ -117,14 +117,14 @@ if (empty($_SESSION['assistancetype'])) {
                                         <select class="form-select" id="file01" name="file01" required>
                                             <option value="">Select a Document Type</option>
                                             <?php $documenttype = "Barangay Indigency";
-                                            $sql = "SELECT File_Name
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
+                                            $sql = "SELECT File_ID
+                                                    FROM requirements_tbl 
+                                                    where User_ID = '$userid' 
+                                                    AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                             $result = mysqli_query($conn, $sql);
                                             while ($row = mysqli_fetch_array($result)) {
                                                 ?>
-                                                <option value="<?php echo $row['File_Name']; ?>">
+                                                <option value="<?php echo $row['File_ID']; ?>">
                                                     <?php echo $documenttype ?>
                                                 </option><?php
                                             } ?>
@@ -137,7 +137,7 @@ if (empty($_SESSION['assistancetype'])) {
                                             <?php if ($assistancetype === "Medical Assistance" || $assistancetype === "Educational Assistance") {
                                                 $documenttype1 = ($assistancetype === "Medical Assistance") ? "Medical Certificate" : "Enrollment Assessment Form";
                                                 $documenttype2 = ($assistancetype === "Medical Assistance") ? "Clinical Abstact" : "Certificate of Enrollment";
-                                                $sql = "SELECT Document_Type, File_Name
+                                                $sql = "SELECT Document_Type, File_ID
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
                                                                 AND Document_Type = '$documenttype' AND Status = 'Validated'
@@ -154,14 +154,14 @@ if (empty($_SESSION['assistancetype'])) {
                                                     default:
                                                         $documenttype = "Valid ID";
                                                 }
-                                            $sql = "SELECT Document_Type, File_Name
+                                            $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
                                                             AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                             $result = mysqli_query($conn, $sql);}
                                             while ($row = mysqli_fetch_array($result)) {
                                                 ?>
-                                                <option value="<?php echo $row['File_Name'] ?>">
+                                                <option value="<?php echo $row['File_ID'] ?>">
                                                     <?php echo $row['Document_Type'] ?>
                                                 </option><?php
                                             } ?>
@@ -183,7 +183,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                         $documenttype = "School ID";
                                                         break;
                                                 }
-                                                $sql = "SELECT Document_Type, File_Name
+                                                $sql = "SELECT Document_Type, File_ID
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' AND Status = 'Validated'
                                                                 AND Document_Type = '$documenttype'";
@@ -196,7 +196,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                     $documenttype1 = "Birth Certificate";
                                                     $documenttype2 = "Marriage Certificate";
                                                 }
-                                                $sql = "SELECT Document_Type, File_Name
+                                                $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
@@ -204,7 +204,7 @@ if (empty($_SESSION['assistancetype'])) {
                                             }
                                             while ($row = mysqli_fetch_array($result)) {
                                                 ?>
-                                                <option value="<?php echo $row['File_Name'] ?>">
+                                                <option value="<?php echo $row['File_ID'] ?>">
                                                     <?php echo $row['Document_Type'] ?>
                                                 </option><?php
                                             } ?>
@@ -243,14 +243,14 @@ if (empty($_SESSION['assistancetype'])) {
                                                         ;
                                                         break;
                                                 }
-                                                $sql = "SELECT Document_Type, File_Name
+                                                $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
                                                             AND Document_Type = '$documenttype' AND Status = 'Validated'";
                                                 $result = mysqli_query($conn, $sql);
                                                 while ($row = mysqli_fetch_array($result)) {
                                                     ?>
-                                                    <option value="<?php echo $row['File_Name'] ?>">
+                                                    <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
                                                     </option><?php
                                                 } ?>
@@ -267,7 +267,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                 <option value="">Select a Document Type</option>
                                                 <?php if ($assistancetype === "Transportation Assistance" || $assistancetype === "Burial Assistance" || $assistancetype === "Educational Assistance") {
                                                     $documenttype = ($assistancetype === "Educational Assistance") ? "Medical Certificate" : "Representative Valid ID";
-                                                    $sql = "SELECT Document_Type, File_Name
+                                                    $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
                                                             AND Document_Type = '$documenttype' AND Status = 'Validated'";
@@ -283,7 +283,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                         $documenttype1 = "Medical Certificate";
                                                         $documenttype2 = "Medical Referral";
                                                     }
-                                                    $sql = "SELECT Document_Type, File_Name
+                                                    $sql = "SELECT Document_Type, File_ID
                                                     FROM requirements_tbl 
                                                     where User_ID = '$userid' AND Status = 'Validated' 
                                                     AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
@@ -291,7 +291,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                 }
                                                 while ($row = mysqli_fetch_array($result)) {
                                                     ?>
-                                                    <option value="<?php echo $row['File_Name'] ?>">
+                                                    <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
                                                     </option><?php
                                                 } ?>
@@ -313,14 +313,14 @@ if (empty($_SESSION['assistancetype'])) {
                                                     <?php if ($assistancetype === "Educational Assistance" || $assistancetype === "Psychosocial Support") {
                                                         $documenttype1 = "Police Report";
                                                         $documenttype2 = htmlspecialchars(($assistancetype === "Educational Assistance") ? "Social Worker's Assessment" : "Legal Report");
-                                                        $sql = "SELECT Document_Type, File_Name
+                                                        $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
                                                         $result = mysqli_query($conn, $sql);
                                                     } else {
                                                         $documenttype = ($assistancetype === "Medical Assistance") ? "Official Receipts" : "Valid ID";
-                                                        $sql = "SELECT Document_Type, File_Name
+                                                        $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND Document_Type = '$documenttype'";
@@ -328,7 +328,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                     }
                                                     while ($row = mysqli_fetch_array($result)) {
                                                         ?>
-                                                        <option value="<?php echo $row['File_Name'] ?>">
+                                                        <option value="<?php echo $row['File_ID'] ?>">
                                                             <?php echo $row['Document_Type'] ?>
                                                         </option><?php
                                                     } ?>
@@ -347,7 +347,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                     <option value="">Select a Document Type</option>
                                                     <?php if ($assistancetype === "Medical Assistance") {
                                                         $documenttype = "Outstanding Payer Certificate";
-                                                        $sql = "SELECT Document_Type, File_Name
+                                                        $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND Document_Type = '$documenttype'";
@@ -360,7 +360,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                             $documenttype1 = "Birth Certificate";
                                                             $documenttype2 = "Marriage Certificate";
                                                         }
-                                                        $sql = "SELECT Document_Type, File_Name
+                                                        $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
@@ -368,7 +368,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                     }
                                                     while ($row = mysqli_fetch_array($result)) {
                                                         ?>
-                                                        <option value="<?php echo $row['File_Name'] ?>">
+                                                        <option value="<?php echo $row['File_ID'] ?>">
                                                             <?php echo $row['Document_Type'] ?>
                                                         </option><?php
                                                     } ?>
@@ -381,14 +381,14 @@ if (empty($_SESSION['assistancetype'])) {
                                             <select class="form-select" id="file08" name="file08" required>
                                                 <option value="">Select a Document Type</option>
                                                 <?php $documenttype = ($assistancetype === "Medical Assistance") ? "Representative Valid ID" : "Marriage Contract";
-                                                $sql = "SELECT Document_Type, File_Name
+                                                $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND Document_Type = '$documenttype'";
                                                 $result = mysqli_query($conn, $sql);
                                                 while ($row = mysqli_fetch_array($result)) {
                                                     ?>
-                                                    <option value="<?php echo $row['File_Name'] ?>">
+                                                    <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
                                                     </option><?php
                                                 } ?>
@@ -401,14 +401,14 @@ if (empty($_SESSION['assistancetype'])) {
                                             <select class="form-select" id="file09" name="file09" required>
                                                 <option value="">Select a Document Type</option>
                                                 <?php $documenttype = "Authorization Letter";
-                                                $sql = "SELECT Document_Type, File_Name
+                                                $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND Document_Type = '$documenttype'";
                                                 $result = mysqli_query($conn, $sql);
                                                 while ($row = mysqli_fetch_array($result)) {
                                                     ?>
-                                                    <option value="<?php echo $row['File_Name'] ?>">
+                                                    <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
                                                     </option><?php
                                                 } ?>
@@ -421,14 +421,14 @@ if (empty($_SESSION['assistancetype'])) {
                                             <select class="form-select" id="file10" name="file10" required>
                                                 <option value="">Select a Document Type</option>
                                                 <?php $documenttype = ($assistancetype === "Medical Assistance") ? "Valid ID" : "Outstanding Payer Certificate";
-                                                $sql = "SELECT Document_Type, File_Name
+                                                $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND Document_Type = '$documenttype'";
                                                 $result = mysqli_query($conn, $sql);
                                                 while ($row = mysqli_fetch_array($result)) {
                                                     ?>
-                                                    <option value="<?php echo $row['File_Name'] ?>">
+                                                    <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
                                                     </option><?php
                                                 } ?>
@@ -447,14 +447,14 @@ if (empty($_SESSION['assistancetype'])) {
                                                 <option value="">Select a Document Type</option>
                                                 <?php $documenttype1 = "Birth Certificate";
                                                 $documenttype2 = "Marriage Certificate";
-                                                $sql = "SELECT Document_Type, File_Name
+                                                $sql = "SELECT Document_Type, File_ID
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' AND Status = 'Validated'
                                                             AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
                                                 $result = mysqli_query($conn, $sql);
                                                 while ($row = mysqli_fetch_array($result)) {
                                                     ?>
-                                                    <option value="<?php echo $row['File_Name'] ?>">
+                                                    <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
                                                     </option><?php
                                                 } ?>
@@ -479,16 +479,20 @@ if (empty($_SESSION['assistancetype'])) {
                     $phoneno = $_POST['phoneno'];
                     $email = $_POST['email'];
                     $reason = htmlspecialchars($_POST['reason']);
-                    $req1 = htmlspecialchars($_POST['file01']);
-                    $req2 = htmlspecialchars($_POST['file02']);
-                    $req3 = htmlspecialchars($_POST['file03']);
-                    $req4 = htmlspecialchars($_POST['file04']);
-                    $req5 = htmlspecialchars($_POST['file05']);
-                    $req6 = htmlspecialchars($_POST['file06']);
-                    $req7 = htmlspecialchars($_POST['file07']);
+                    $req1 = (isset($_POST['file01'])) ? $_POST['file01'] : '';
+                    $req2 = (isset($_POST['file02'])) ? $_POST['file02'] : '';
+                    $req3 = (isset($_POST['file03'])) ? $_POST['file03'] : '';
+                    $req4 = (isset($_POST['file04'])) ? $_POST['file04'] : '';
+                    $req5 = (isset($_POST['file05'])) ? $_POST['file05'] : '';
+                    $req6 = (isset($_POST['file06'])) ? $_POST['file06'] : '';
+                    $req7 = (isset($_POST['file07'])) ? $_POST['file07'] : '';
+                    $req8 = (isset($_POST['file08'])) ? $_POST['file08'] : '';
+                    $req9 = (isset($_POST['file09'])) ? $_POST['file09'] : '';
+                    $req10 = (isset($_POST['file10'])) ? $_POST['file10'] : '';
+                    $req11 = (isset($_POST['file11'])) ? $_POST['file11'] : '';
                     $date = date('Y-m-d');
-                    $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7, Date_Submitted)
-                                    VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$date')";
+                    $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7, req8, req9, req10, req11, Date_Submitted)
+                                    VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$req8', '$req9', '$req10', '$req11', '$date')";
                     if ($result = mysqli_query($conn, $sql)) {
                         ?>
                         <script>alert("Your Application has been Submitted.")

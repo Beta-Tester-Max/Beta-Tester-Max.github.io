@@ -17,20 +17,19 @@ if ($_SESSION['authority'] === "Admin") {
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-2"></div>
+                <div class="col-3"></div>
                 <div
-                    class="col-8 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5 my-5">
+                    class="col-6 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5 my-5">
                     <h1 class="mb-4" id="history">Pending Requirements</h1>
                     <table class="table table-striped border shadow rounded">
                         <tr>
                             <th class="text-center text-primary" scope="col">ID</th>
                             <th class="text-center" scope="col">Document_Type</th>
-                            <th class="" scope="col">File Name</th>
                             <th class="" scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                            <?php $sql = "SELECT Requirements_ID, Document_Type, File_Name
+                            <?php $sql = "SELECT Requirements_ID, Document_Type, File_ID
                                         FROM requirements_tbl
                                         where Status = 'Unvalidated'";
                             $result = mysqli_query($conn, $sql);
@@ -38,17 +37,16 @@ if ($_SESSION['authority'] === "Admin") {
                                 <tr>
                                     <th class="text-center text-primary"><?php echo $row['Requirements_ID'] ?></th>
                                     <th class="text-center"><?php echo $row['Document_Type'] ?></th>
-                                    <th class=""><?php echo $row['File_Name'] ?></th>
-                                    <th class="">
+                                    <th class="d-flex">
                                         <form method="POST">
                                             <button class="btn btn-primary" style="width: 8em;" type="submit" name="fileopen"
-                                                value="<?php echo $row['File_Name'] ?>">Open File</button>
+                                                value="<?php echo $row['File_ID'] ?>">Open File</button>
                                         </form>
                                         <form method="POST">
-                                            <button class="btn btn-success my-1" type="submit" name="validatereq"
+                                            <button class="btn btn-success mx-2" type="submit" name="validatereq"
                                                 value="<?php echo $row['Requirements_ID'] ?>">Validate</button>
                                         </form>
-                                        <button type="button" class="btn btn-danger mt-1" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#requirementsRejectionModal">
                                             Reject
                                         </button>
@@ -83,8 +81,13 @@ if ($_SESSION['authority'] === "Admin") {
                                     </th>
                                     <?php
                                     if (isset($_POST['fileopen'])) {
-                                        $_SESSION['file'] = $_POST['fileopen'] ?>
-                                        <script>window.location.href = "pdfdisplayer.php"</script><?php
+                                        $fileid = $_POST['fileopen'];
+                                        $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                        $result = mysqli_query($conn, $sql);
+                                        if ($row = mysqli_fetch_assoc($result)){
+                                         $filename = $row['File_Name'];
+                                         $_SESSION['file'] = $filename; ?>
+                                        <script>window.location.href = "pdfdisplayer.php"</script><?php }
                                     }
                                     if (isset($_POST['validatereq']) || isset($_POST['rejectreq'])) {
                                         $reqid = (isset($_POST['validatereq'])) ? $_POST['validatereq'] : $_POST['rejectreq'];
@@ -110,7 +113,7 @@ if ($_SESSION['authority'] === "Admin") {
                         </tbody>
                     </table>
                 </div>
-                <div class="col-2"></div>
+                <div class="col-3"></div>
             </div>
             <div class="row">
                 <div class="col-1"></div>

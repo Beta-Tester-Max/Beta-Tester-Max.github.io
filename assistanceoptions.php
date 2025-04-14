@@ -35,7 +35,7 @@ if (empty($_SESSION['userid'])) { ?>
                     $rows = [];
                     $sql = "SELECT Document_Type
                             FROM requirements_tbl 
-                            where User_ID = '$userid'";
+                            where User_ID = '$userid' AND Status = 'Validated'";
                     $result = mysqli_query($conn, $sql);
                     while ($row = mysqli_fetch_array($result)) {
                         $rows[] = $row['Document_Type'];

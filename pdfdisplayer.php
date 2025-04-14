@@ -1,7 +1,7 @@
 <?php session_start();
 if (isset($_SESSION['file'])) {
-    $file = realpath("file/" . $_SESSION['file']);
-    $filename = "file.pdf";
+    $file = realpath("file/" . $_SESSION["file"]);
+    $filename = "File.pdf";
     header("Content-Type: application/pdf");
     header("Content-Disposition: inline; filename='" . $filename . "'");
     header("Content-Transfer-Encoding: binary");

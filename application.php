@@ -134,12 +134,31 @@ if (empty($_SESSION['assistancetype'])) {
                                         <label class="mb-1 text-danger" for="file02"><b>Required</b></label>
                                         <select class="form-select" id="file02" name="file02" required>
                                             <option value="">Select a Document Type</option>
-                                            <?php $documenttype = "Valid ID";
+                                            <?php if ($assistancetype === "Medical Assistance" || $assistancetype === "Educational Assistance") {
+                                                $documenttype1 = ($assistancetype === "Medical Assistance") ? "Medical Certificate" : "Enrollment Assessment Form";
+                                                $documenttype2 = ($assistancetype === "Medical Assistance") ? "Clinical Abstact" : "Certificate of Enrollment";
+                                                $sql = "SELECT Document_Type, File_Name
+                                                                FROM requirements_tbl 
+                                                                where User_ID = '$userid' 
+                                                                AND Document_Type = '$documenttype' AND Status = 'Validated'
+                                                                AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
+                                                $result = mysqli_query($conn, $sql);
+                                            } else {
+                                                switch ($documenttype) {
+                                                    case "Transportation Assistance":
+                                                        $documenttype = "Medical Certificate Referral";
+                                                    break;
+                                                    case "Burial Assistance":
+                                                        $documenttype = "Death Certificate";
+                                                    break;
+                                                    default:
+                                                        $documenttype = "Valid ID";
+                                                }
                                             $sql = "SELECT Document_Type, File_Name
                                                             FROM requirements_tbl 
                                                             where User_ID = '$userid' 
                                                             AND Document_Type = '$documenttype' AND Status = 'Validated'";
-                                            $result = mysqli_query($conn, $sql);
+                                            $result = mysqli_query($conn, $sql);}
                                             while ($row = mysqli_fetch_array($result)) {
                                                 ?>
                                                 <option value="<?php echo $row['File_Name'] ?>">

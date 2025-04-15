@@ -1,6 +1,7 @@
 :root {
   --primary-dark: #000133;
   --primary-color: #0347ff;
+  --primary-light: #f0f0f0;
 }
 body {
   background-color: var(--primary-dark);
@@ -233,27 +234,53 @@ body {
 }
 /* carousel 2 end */
 /* feedback start */
-.feedback-section {
-  background-color: var(--primary-color);
-  height: 500px;
-  color: #ffffff;
-  font-family: "Inter-Regular", sans-serif;
-  font-size: 16px;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  margin-top: 100px;
+.feedback-section{
+  background-color: var(--primary-light);
+  color: #333;
+  height: 600px;
 }
-.feedbacktext {
-  color: #ffffff;
-  text-align: center;
-  font-family: "Inter-Regular", sans-serif;
-  font-size: 48px;
-  font-weight: 400;
-  left: 320px;
-  top: 100px;
-  width: 732px;
-  height: 176px;
+.feedback-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-container {
+  position: relative;
+  margin: 20px 0;
+  background-color: #f0f0f0;
+}
+
+.input-container input {
+  width: 50%;
+  padding: 12px 8px;
+  font-size: 16px;
+  border: 1px solid #111010;
+  border-radius: 6px;
+}
+
+.input-container label {
+  position: absolute;
+  top: 12px;
+  left: 8px;
+  color: #999;
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 8px;
+  font-size: 12px;
+  color: #333;
+  background: #f0f0f0;
+  padding: 0 4px;
+}
+.feedbackText {
+  margin-left: 500px;
 }
 /* feedback end */
 /* footer start */

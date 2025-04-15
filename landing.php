@@ -330,18 +330,25 @@ session_start(); ?>
     </body>
     <br />
     <!-- Feedback Section start-->
-     <section class="feedback-section">
+    <section class="feedback-section">
       <div class="feedback-container">
         <h2 class="feedback-title">Feedback</h2>
         <p class="feedback-description">We value your feedback! Please let us know your thoughts about our services.</p>
         <form action="feedback.php" method="POST" class="feedback-form">
-          <input type="text" name="name" placeholder="Your Name" required>
-          <input type="email" name="email" placeholder="Your Email" required>
-          <textarea name="message" class="feedbacktext" rows="15" cols="70" placeholder="Write Your Feedback Here" required></textarea>
+          <div class="input-container">
+            <input type="text" id="email" placeholder="Email" required style="background-color: #f0f0f0;"/>
+            <label for="username">Email</label>
+          </div>
+          <div class="input-container">
+            <input type="text" id="name" placeholder="Name" required style="background-color: #f0f0f0;"/>
+            <label for="username">Name</label>
+          </div>
+          <textarea name="message" class="feedbackText" rows="15" cols="70" placeholder="Write Your Feedback Here" required></textarea>
           <button type="submit">Submit</button>
         </form>
-     </section>
-     <!-- Feedback Section end-->
+      </div>
+    </section>
+    <!-- Feedback Section end-->
     <!-- Footer Section start-->
     <footer>
       <div class="footer-content">

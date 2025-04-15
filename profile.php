@@ -3,6 +3,9 @@ session_start();
 if (empty($_SESSION['userid'])) { ?>
     <script>window.location.href = "logout.php";</script><?php } else {
     $userid = $_SESSION['userid'];
+    unset($_SESSION['assistancetype']);
+    unset($_SESSION['appid']);
+    unset($_SESSION['goback']);
 } ?>
 <!doctype html>
 <html lang="en">
@@ -312,6 +315,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Medical Report",
                                                                 "Police Report",
                                                                 "Representative Valid ID",
+                                                                "Valid ID",
                                                                 "Marriage Certificate",
                                                                 "Birth Certificate"
                                                             ]
@@ -361,6 +365,11 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                                                                            $result = mysqli_query($conn, $sql);
+                                                                            $row = mysqli_fetch_assoc($result);
+                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : ''; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -1396,18 +1405,21 @@ if (empty($_SESSION['userid'])) { ?>
                                 AND is_deleted = 0 
                                 AND status = 'Pending'";
                         $result = mysqli_query($conn, $sql);
-                        if ($row = mysqli_fetch_array($result)) { ?>
+                        while ($row = mysqli_fetch_array($result)) { ?>
                             <tr>
                                 <th><?php echo $row['Assistance_Type'] ?></th>
                                 <th class="text-center text-warning"><?php echo $row['Status'] ?></th>
                                 <th class="text-center"><?php echo $row['Date_Submitted'] ?></th>
                                 <th class="d-flex">
                                     <form method="POST">
+                                        <input type="hidden" name="asstype" value="<?php echo $row['Assistance_Type'] ?>">
                                         <input type="hidden" name="appid" value="<?php echo $row['Application_ID'] ?>">
                                         <button type="submit" name="editForm" class="btn btn-primary me-1">Edit</button>
                                     </form>
                                     <?php if (isset($_POST['editForm'])) {
                                         $_SESSION['appid'] = $_POST['appid'];
+                                        $_SESSION['assistancetype'] = $_POST['asstype'];
+                                        $_SESSION['goback'] = "profile.php#pending";
                                         ?>
                                         <script>window.location.href = "applicationeditor.php"</script><?php
                                     } ?>

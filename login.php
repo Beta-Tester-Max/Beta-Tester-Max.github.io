@@ -1,6 +1,8 @@
 <?php include 'connect.php'; 
 session_start();
-if (empty($_SESSION['userid'])) {?>
+if (empty($_SESSION['userid'])) {
+    session_destroy();
+    session_start();?>
 <!doctype html>
 <html lang="en">
 

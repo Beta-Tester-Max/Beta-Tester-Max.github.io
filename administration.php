@@ -51,12 +51,13 @@ if ($_SESSION['authority'] === "Admin") {
                                             Reject
                                         </button>
                                         <div class="modal fade" id="requirementsRejectionModal" data-bs-backdrop="static"
-                                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="requirementsRejectionModalLabel"
-                                            aria-hidden="true">
+                                            data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="requirementsRejectionModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="requirementsRejectionModalLabel">Reason For
+                                                        <h1 class="modal-title fs-5" id="requirementsRejectionModalLabel">Reason
+                                                            For
                                                             Rejection</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -84,29 +85,30 @@ if ($_SESSION['authority'] === "Admin") {
                                         $fileid = $_POST['fileopen'];
                                         $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
                                         $result = mysqli_query($conn, $sql);
-                                        if ($row = mysqli_fetch_assoc($result)){
-                                         $filename = $row['File_Name'];
-                                         $_SESSION['file'] = $filename; ?>
-                                        <script>window.location.href = "pdfdisplayer.php"</script><?php }
+                                        if ($row = mysqli_fetch_assoc($result)) {
+                                            $filename = $row['File_Name'];
+                                            $_SESSION['file'] = $filename; ?>
+                                            <script>window.location.href = "pdfdisplayer.php"</script><?php }
                                     }
                                     if (isset($_POST['validatereq']) || isset($_POST['rejectreq'])) {
                                         $reqid = (isset($_POST['validatereq'])) ? $_POST['validatereq'] : $_POST['rejectreq'];
                                         $status = (isset($_POST['validatereq'])) ? "Validated" : "Rejected";
                                         if (isset($_POST['validatereq'])) {
-                                        $sql = "UPDATE requirements_tbl
+                                            $sql = "UPDATE requirements_tbl
                                                 SET Status = '$status'
                                                 where Requirements_ID = '$reqid'";
-                                        mysqli_query($conn, $sql); ?>
-                                        <script>window.location.href = "administration.php"</script> 
-                                    <?php } elseif (isset($_POST['rejectreq'])) {
-                                        $reason = $_POST['reason'];
-                                        $sql = "UPDATE requirements_tbl
+                                            mysqli_query($conn, $sql); ?>
+                                            <script>window.location.href = "administration.php"</script>
+                                        <?php } elseif (isset($_POST['rejectreq'])) {
+                                            $reason = $_POST['reason'];
+                                            $sql = "UPDATE requirements_tbl
                                         SET Status = '$status',
                                         ReasonFR = '$reason'
                                         where Requirements_ID = '$reqid'";
-                                mysqli_query($conn, $sql); ?>
-                                <script>window.location.href = "administration.php"</script> 
-                                    <?php } }
+                                            mysqli_query($conn, $sql); ?>
+                                            <script>window.location.href = "administration.php"</script>
+                                        <?php }
+                                    }
                                     ?>
                                 </tr>
                             <?php } ?>
@@ -140,44 +142,31 @@ if ($_SESSION['authority'] === "Admin") {
                                             where is_deleted = 0 
                                             AND Status = 'Pending'";
                             $result = mysqli_query($conn, $sql);
-                            while ($row = mysqli_fetch_array($result)) { ?>
+                            while ($row = mysqli_fetch_array($result)) {
+                                $req1 = (isset($row['Req1'])) ? $row['Req1'] : "";
+                                $req2 = (isset($row['Req2'])) ? $row['Req2'] : "";
+                                $req3 = (isset($row['Req3'])) ? $row['Req3'] : "";
+                                $req4 = (isset($row['Req4'])) ? $row['Req4'] : "";
+                                $req5 = (isset($row['Req5'])) ? $row['Req5'] : "";
+                                $req6 = (isset($row['Req6'])) ? $row['Req6'] : "";
+                                $req7 = (isset($row['Req7'])) ? $row['Req7'] : "";
+                                $req8 = (isset($row['Req8'])) ? $row['Req8'] : "";
+                                $req9 = (isset($row['Req9'])) ? $row['Req9'] : "";
+                                $req10 = (isset($row['Req10'])) ? $row['Req10'] : "";
+                                $req11 = (isset($row['Req11'])) ? $row['Req11'] : "";
+                                $nestedsql = "SELECT Document_Type, File_ID
+                                            FROM requirements_tbl
+                                            WHERE File_ID IN ('$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$req8', '$req9', '$req10', '$req11')";
+                                $nestedresult = mysqli_query($conn, $nestedsql);
+                                ?>
                                 <tr>
                                     <th class="text-center text-primary"><?php echo $row['Application_ID'] ?></th>
                                     <th class="text-center"><?php echo $row['Assistance_Type'] ?></th>
                                     <th><?php echo $row['Reason'] ?></th>
-                                    <th><?php if (empty($row['Req1']) == false) { ?>1. <?php echo $row['Req1'] ?><br>
+                                    <th><?php while ($nestedrow = mysqli_fetch_array($nestedresult)) {
+                                        echo (isset($nestedrow['Document_Type'])) ? $nestedrow['Document_Type'] : ""?><br>
                                             <form method="POST">
-                                                <input type="hidden" value="<?php echo $row['Req1'] ?>" name="file">
-                                                <button type="submit" class="btn btn-primary" name="file01">Open File</button>
-                                            </form><br><?php } ?>
-                                        <?php if (empty($row['Req2']) == false) { ?>2. <?php echo $row['Req2'] ?><br>
-                                            <form method="POST">
-                                                <input type="hidden" value="<?php echo $row['Req2'] ?>" name="file">
-                                                <button type="submit" class="btn btn-primary" name="file01">Open File</button>
-                                            </form><br><?php } ?>
-                                        <?php if (empty($row['Req3']) == false) { ?>3. <?php echo $row['Req3'] ?><br>
-                                            <form method="POST">
-                                                <input type="hidden" value="<?php echo $row['Req3'] ?>" name="file">
-                                                <button type="submit" class="btn btn-primary" name="file01">Open File</button>
-                                            </form><br><?php } ?>
-                                        <?php if (empty($row['Req4']) == false) { ?>4. <?php echo $row['Req4'] ?><br>
-                                            <form method="POST">
-                                                <input type="hidden" value="<?php echo $row['Req4'] ?>" name="file">
-                                                <button type="submit" class="btn btn-primary" name="file01">Open File</button>
-                                            </form><br><?php } ?>
-                                        <?php if (empty($row['Req5']) == false) { ?>5. <?php echo $row['Req5'] ?><br>
-                                            <form method="POST">
-                                                <input type="hidden" value="<?php echo $row['Req5'] ?>" name="file">
-                                                <button type="submit" class="btn btn-primary" name="file01">Open File</button>
-                                            </form><br><?php } ?>
-                                        <?php if (empty($row['Req6']) == false) { ?>6. <?php echo $row['Req6'] ?><br>
-                                            <form method="POST">
-                                                <input type="hidden" value="<?php echo $row['Req6'] ?>" name="file">
-                                                <button type="submit" class="btn btn-primary" name="file01">Open File</button>
-                                            </form><br><?php } ?>
-                                        <?php if (empty($row['Req7']) == false) { ?>7. <?php echo $row['Req7'] ?><br>
-                                            <form method="POST">
-                                                <input type="hidden" value="<?php echo $row['Req7'] ?>" name="file">
+                                                <input type="hidden" value="<?php echo $nestedrow['File_ID'] ?>" name="file">
                                                 <button type="submit" class="btn btn-primary" name="file01">Open File</button>
                                             </form><br><?php } ?>
                                     </th>
@@ -196,12 +185,13 @@ if ($_SESSION['authority'] === "Admin") {
                                             Reject
                                         </button>
                                         <div class="modal fade" id="applicationRejectionModal" data-bs-backdrop="static"
-                                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="applicationRejectionModalLabel"
-                                            aria-hidden="true">
+                                            data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="applicationRejectionModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="applicationRejectionModalLabel">Reason For
+                                                        <h1 class="modal-title fs-5" id="applicationRejectionModalLabel">Reason
+                                                            For
                                                             Rejection</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -229,9 +219,14 @@ if ($_SESSION['authority'] === "Admin") {
                                 </tr>
                     </div>
                     <?php if (isset($_POST['file01'])) {
-                        $_SESSION['file'] = $_POST['file'] ?>
-                        <script>window.location.href = "pdfdisplayer.php"</script>
-                    <?php }
+                        $fileid = $_POST['file'];
+                        $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
+                        $result = mysqli_query($conn, $sql);
+                        if ($row = mysqli_fetch_assoc($result)) {
+                            $_SESSION['file'] = $row['File_Name']; ?>
+                            <script>window.location.href = "pdfdisplayer.php"</script>
+                        <?php }
+                    }
                     if (isset($_POST['approveForm'])) {
                         $appid = $_POST['appid'];
                         $date = date('Y-m-d');

@@ -2,7 +2,9 @@
 <?php include "connect.php";
 session_start();
 if (empty($_SESSION['userid'])) { ?>
-    <script>window.location.href = "logout.php";</script><?php } ?>
+    <script>window.location.href = "logout.php";</script><?php } else {
+        $userid = $_SESSION['userid'];
+    }?>
 <!doctype html>
 <html lang="en">
 
@@ -28,10 +30,7 @@ if (empty($_SESSION['userid'])) { ?>
                     'Cash Relief Assistance',
                     'Psychosocial Support'
                 );
-                foreach ($assistancetype as $at) { ?>
-
-                    <?php
-                    $userid = $_SESSION['userid'];
+                foreach ($assistancetype as $at) {
                     $rows = [];
                     $sql = "SELECT Document_Type
                             FROM requirements_tbl 
@@ -57,49 +56,49 @@ if (empty($_SESSION['userid'])) { ?>
                                                     $modaltext = "Birth Certificate or Marriage Certificate";
                                                     ?>
                                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                 }
                                             } else {
                                                 $modaltext = "Valid ID";
                                                 ?>
                                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?> style="width: 20em;"
                                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                             }
                                         } else {
                                             $modaltext = "Representative Valid ID";
                                             ?>
                                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                         }
                                     } else {
                                         $modaltext = "Police Report";
                                         ?>
                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                     }
                                 } else {
                                     $modaltext = "Death Certificate or Medical Report";
                                     ?>
                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                 }
                             } else {
                                 $modaltext = "Medical Certificate Referral";
                                 ?>
                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                             }
                         } else {
                             $modaltext = "Barangay Indigency";
                             ?>
                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                         }
                     }
@@ -124,77 +123,77 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     $modaltext = "Birth Certificate or Marriage Certificate";
                                                                     ?>
                                                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                                 }
                                                             } else {
                                                                 $modaltext = "Valid ID";
                                                                 ?>
                                                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                             }
                                                         } else {
                                                             $modaltext = "Authorization Letter";
                                                             ?>
                                                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                         }
                                                     } else {
                                                         $modaltext = "Representative Valid ID";
                                                         ?>
                                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                            data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                     }
                                                 } else {
                                                     $modaltext = "Outstanding Payer Certificate";
                                                     ?>
                                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                 }
                                             } else {
                                                 $modaltext = "Official Receipts";
                                                 ?>
                                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                             }
                                         } else {
                                             $modaltext = "Laboratory Request or Diagnostic Request";
                                             ?>
                                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                         }
                                     } else {
                                         $modaltext = "Pharmacy Quotation";
                                         ?>
                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                     }
                                 } else {
                                     $modaltext = "Hospital Billing Statement";
                                     ?>
                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                 }
                             } else {
                                 $modaltext = "Medical Certificate or Clinical Abstract";
                                 ?>
                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                             }
                         } else {
                             $modaltext = "Barangay Indigency";
                             ?>
                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                         }
                     }
@@ -218,70 +217,70 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 $modaltext = "Outstanding Payer Certificate";
                                                                 ?>
                                                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                             }
                                                         } else {
                                                             $modaltext = "Marriage Contract";
                                                             ?>
                                                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                         }
                                                     } else {
                                                         $modaltext = "Authorization Letter";
                                                         ?>
                                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                            data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                     }
                                                 } else {
                                                     $modaltext = "Birth Certificate or Marriage Certificate";
                                                     ?>
                                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                                 }
                                             } else {
                                                 $modaltext = "Valid ID";
                                                 ?>
                                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                             }
                                         } else {
                                             $modaltext = "Representative Valid ID";
                                             ?>
                                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                         }
                                     } else {
                                         $modaltext = "Official Receipts";
                                         ?>
                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                     }
                                 } else {
                                     $modaltext = "Funeral Contract";
                                     ?>
                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                 }
                             } else {
                                 $modaltext = "Death Certificate";
                                 ?>
                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                             }
                         } else {
                             $modaltext = "Barangay Indigency";
                             ?>
                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                         }
                     }
@@ -300,35 +299,35 @@ if (empty($_SESSION['userid'])) { ?>
                                             $modaltext = "Police Report or Social Worker's Assessment";
                                             ?>
                                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                         }
                                     } else {
                                         $modaltext = "Grade";
                                         ?>
                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                     }
                                 } else {
                                     $modaltext = "School ID";
                                     ?>
                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                 }
                             } else {
                                 $modaltext = "Enrollment Assessment Form or Certificate of Enrollment";
                                 ?>
                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                             }
                         } else {
                             $modaltext = "Barangay Indigency";
                             ?>
                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                         }
                     }
@@ -345,21 +344,21 @@ if (empty($_SESSION['userid'])) { ?>
                                     $modaltext = "Birth Certificate or Marriage Certificate";
                                     ?>
                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                 }
                             } else {
                                 $modaltext = "Valid ID";
                                 ?>
                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                             }
                         } else {
                             $modaltext = "Barangay Indigency";
                             ?>
                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                         }
                     }
@@ -377,28 +376,28 @@ if (empty($_SESSION['userid'])) { ?>
                                         $modaltext = "Incident Report";
                                         ?>
                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                     }
                                 } else {
                                     $modaltext = "Birth Certificate or Marriage Certificate";
                                     ?>
                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                 }
                             } else {
                                 $modaltext = "Valid ID";
                                 ?>
                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                             }
                         } else {
                             $modaltext = "Barangay Indigency";
                             ?>
                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                         }
                     }
@@ -416,33 +415,32 @@ if (empty($_SESSION['userid'])) { ?>
                                         $modaltext = "Referral Letter";
                                         ?>
                                         <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                            data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                             value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                     }
                                 } else {
                                     $modaltext = "Birth Certificate or Marriage Certificate";
                                     ?>
                                     <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                        data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                         value="<?php echo $at ?>"><?php echo $at ?></button><?php
                                 }
                             } else {
                                 $modaltext = "Valid ID";
                                 ?>
                                 <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                    data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                     value="<?php echo $at ?>"><?php echo $at ?></button><?php
                             }
                         } else {
                             $modaltext = "Barangay Indigency";
                             ?>
                             <button class="btn btn-lg btn-outline-primary my-1" type="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop02" style="width: 20em;"
+                                data-bs-target="#<?php echo str_replace(" ", "", $at)?>" style="width: 20em;"
                                 value="<?php echo $at ?>"><?php echo $at ?></button><?php
                         }
                     } ?>
-                <?php } ?>
-                <div class="modal fade" id="staticBackdrop02" data-bs-backdrop="static" data-bs-keyboard="false"
+                    <div class="modal fade" id="<?php echo str_replace(" ", "", $at)?>" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -463,6 +461,7 @@ if (empty($_SESSION['userid'])) { ?>
                         </div>
                     </div>
                 </div>
+                <?php } ?>
                 <a class="btn btn-lg btn-outline-primary my-1" href="index.php" style="width: 20em;"><-- Go Back</a>
                         <?php if (isset($_POST['asstyp'])) {
                             $_SESSION['assistancetype'] = $_POST['asstyp'];

@@ -140,7 +140,7 @@ if (empty($_SESSION['assistancetype'])) {
                                                 $sql = "SELECT Document_Type, File_ID
                                                                 FROM requirements_tbl 
                                                                 where User_ID = '$userid' 
-                                                                AND Document_Type = '$documenttype' AND Status = 'Validated'
+                                                                AND Status = 'Validated'
                                                                 AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
                                                 $result = mysqli_query($conn, $sql);
                                             } else {
@@ -174,7 +174,7 @@ if (empty($_SESSION['assistancetype'])) {
                                             <?php if ($assistancetype === "Medical Assistance" || $assistancetype === "Burial Assistance" || $assistancetype === "Educational Assistance") {
                                                 switch ($assistancetype) {
                                                     case "Medical Assistance":
-                                                        $documenttype = "Hospital Billin Statement";
+                                                        $documenttype = "Hospital Billing Statement";
                                                         break;
                                                     case "Burial Assistance":
                                                         $documenttype = "Funeral Contract";
@@ -479,22 +479,23 @@ if (empty($_SESSION['assistancetype'])) {
                     $phoneno = $_POST['phoneno'];
                     $email = $_POST['email'];
                     $reason = htmlspecialchars($_POST['reason']);
-                    $req1 = (isset($_POST['file01'])) ? $_POST['file01'] : '';
-                    $req2 = (isset($_POST['file02'])) ? $_POST['file02'] : '';
-                    $req3 = (isset($_POST['file03'])) ? $_POST['file03'] : '';
-                    $req4 = (isset($_POST['file04'])) ? $_POST['file04'] : '';
-                    $req5 = (isset($_POST['file05'])) ? $_POST['file05'] : '';
-                    $req6 = (isset($_POST['file06'])) ? $_POST['file06'] : '';
-                    $req7 = (isset($_POST['file07'])) ? $_POST['file07'] : '';
-                    $req8 = (isset($_POST['file08'])) ? $_POST['file08'] : '';
-                    $req9 = (isset($_POST['file09'])) ? $_POST['file09'] : '';
-                    $req10 = (isset($_POST['file10'])) ? $_POST['file10'] : '';
-                    $req11 = (isset($_POST['file11'])) ? $_POST['file11'] : '';
+                    $req1 = $_POST['file01'];
+                    $req2 = $_POST['file02'];
+                    $req3 = $_POST['file03'];
+                    $req4 = $_POST['file04'];
+                    $req5 = $_POST['file05'];
+                    $req6 = $_POST['file06'];
+                    $req7 = $_POST['file07'];
+                    $req8 = $_POST['file08'];
+                    $req9 = $_POST['file09'];
+                    $req10 = $_POST['file10'];
+                    $req11 = $_POST['file11'];
                     $date = date('Y-m-d');
                     $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7, req8, req9, req10, req11, Date_Submitted)
                                     VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$req8', '$req9', '$req10', '$req11', '$date')";
                     if ($result = mysqli_query($conn, $sql)) {
-                        ?>
+                        unset($_SESSION['assistancetype']);
+                        unset($_SESSION['goback'])?>
                         <script>alert("Your Application has been Submitted.")
                             window.location.href = "profile.php"</script><?php
                     }

@@ -343,7 +343,7 @@ session_start(); ?>
             <input type="text" id="name" placeholder="Name" required style="background-color: #f0f0f0;"/>
             <label for="username">Name</label>
           </div>
-          <textarea name="message" class="feedbackText" rows="15" cols="70" placeholder="Write Your Feedback Here" required></textarea>
+          <textarea name="message" class="feedbackText" rows="10" cols="70" placeholder="Write Your Feedback Here" required></textarea>
           <button type="submit">Submit</button>
         </form>
       </div>

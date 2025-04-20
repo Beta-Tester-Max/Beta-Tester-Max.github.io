@@ -13,18 +13,212 @@ session_start(); ?>
   <link rel="stylesheet" href="landing.css">
   <link rel="stylesheet" href="nav.css">
   <style>
-    footer .mg-widget p,
-    footer .site-title-footer a,
-    footer .site-title a:hover,
-    footer .site-description-footer,
-    footer .site-description:hover {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-      color: #000000;
+    .feedback-container {
+      background-color: #0066CC;
+      padding: 20px;
+      color: white;
+    }
+
+    .feedback-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 90px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .form-left {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .form-right {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      font-size: 48px;
+    }
+
+    .feedback-textarea {
+      width: 100%;
+      padding: 10px;
+      resize: none;
+      border: none;
+      background-color: #ddd;
+    }
+
+    .stars {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+
+    .star {
+      color: #ddd;
+      font-size: 60px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .star.active {
+      color: gold;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      background-color: #eee;
+    }
+
+    .submit-btn {
+      background-color: white;
+      color: #0066CC;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      align-self: flex-end;
+      font-weight: bold;
+    }
+
+    .submit-btn:hover {
+      background-color: #f0f0f0;
+    }
+
+    @media (max-width: 600px) {
+      .feedback-form {
+        flex-direction: column;
+      }
+    }
+
+    .footer-container {
+      background-color: #0066CC;
+      color: white;
+      margin-top: auto;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .footer-section {
+      flex: 1;
+      padding: 0 15px;
+    }
+
+    .footer-section h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #fff;
+      padding-bottom: 5px;
+    }
+
+    .footer-section p {
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .footer-section a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      margin: 10px 0;
+    }
+
+    .footer-section a:hover {
+      text-decoration: underline;
+    }
+
+    .map-container {
+      margin-top: 10px;
+      width: 100%;
+      height: 200px;
+      background-color: #eee;
+    }
+
+    .info-table {
+      background-color: #fff;
+      color: #0066CC;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 15px;
+    }
+
+    .info-table tr {
+      border-bottom: 1px solid #eee;
+    }
+
+    .info-table td {
+      padding: 8px 15px;
+    }
+
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .info-table th {
+      width: 50%;
+      padding: 8px 15px;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo-image {
+      width: 120px;
+      height: auto;
+      margin: 0 10px;
+    }
+
+    .copyright {
+      text-align: left;
+      padding: 15px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .footer-grid {
+        flex-direction: column;
+      }
+
+      .footer-section {
+        margin-bottom: 20px;
+      }
+
+      .logo-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .logo-image {
+        margin: 10px 0;
+      }
     }
   </style>
 </head>
 
-<bod class="overflow-x-hidden" style="min-width: 20em;">
+<body class="overflow-x-hidden" style="min-width: 20em;">
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
@@ -223,7 +417,7 @@ session_start(); ?>
     }
   </script>
   <br />
-  <di id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
     <div id="carouselExampleCaptions" class="carousel slide">
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -337,196 +531,185 @@ session_start(); ?>
       </button>
     </div>
     </div>
-    </body>
     <br />
-    <!-- Feedback Section start-->
-    <section class="feedback-section">
-      <div class="feedback-container">
-        <h2 class="feedback-title">Feedback</h2>
-        <p class="feedback-description">We value your feedback! Please let us know your thoughts about our services.</p>
-        <form action="feedback.php" method="POST" class="feedback-form">
-          <div class="input-container">
-            <input type="text" id="email" placeholder="Email" required style="background-color: #f0f0f0;" />
-            <label for="username">Email</label>
+
+    <!-- feed start -->
+    <div class="feedback-container">
+      <div class="feedback-form">
+        <div class="form-left">
+          <h2>Feedback</h2>
+          <textarea class="feedback-textarea" rows="10" cols="70" placeholder="Write your Feedback here" style="color:rgb(17, 17, 17);"></textarea>
+        </div>
+
+        <div class="form-right">
+          <h2>Rate Us</h2>
+          <input type="hidden" id="rating-value" name="rating-value" value="0">
+          <div class="stars">
+            <span class="star" data-rating="1" style="height: 50px;
+      width: 50px;">★</span>
+            <span class="star" data-rating="2" style="height: 50px;
+      width: 50px;">★</span>
+            <span class="star" data-rating="3" style="height: 50px;
+      width: 50px;">★</span>
+            <span class="star" data-rating="4" style="height: 50px;
+      width: 50px;">★</span>
+            <span class="star" data-rating="5" style="height: 50px;
+      width: 50px;">★</span>
           </div>
-          <div class="input-container">
-            <input type="text" id="name" placeholder="Name" required style="background-color: #f0f0f0;" />
-            <label for="username">Name</label>
+
+
+          <div class="input-container" style="background-color: #0066CC">
+            <input type="text" class="form-input" id="email" placeholder="Email" required style="background-color: #0066CC;" />
+            <label for="username" style="color: #FFFFFF;">Email</label>
           </div>
-          <textarea name="message" class="feedbackText" rows="10" cols="70" placeholder="Write Your Feedback Here" required></textarea>
-          <button type="submit">Submit</button>
-        </form>
+          <div class="input-container" style="background-color: #0066CC">
+            <input type="text" class="form-input" id="name" placeholder="Name" required style="background-color: #0066CC;" />
+            <label for="username" style="color: #FFFFFF;">Name</label>
+          </div>
+          <button class="submit-btn">Submit</button>
+        </div>
       </div>
-    </section>
-    <!-- Feedback Section end-->
+    </div>
+
+    <script>
+      // Star rating functionality
+      const stars = document.querySelectorAll('.star');
+      const ratingValue = document.getElementById('rating-value');
+
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          const rating = star.getAttribute('data-rating');
+          ratingValue.value = rating;
+
+          // Update visual appearance
+          stars.forEach(s => {
+            const starRating = s.getAttribute('data-rating');
+            if (starRating <= rating) {
+              s.classList.add('active');
+            } else {
+              s.classList.remove('active');
+            }
+          });
+        });
+      });
+
+      // Reset stars when clicking below 1
+      document.querySelector('.stars').addEventListener('click', (e) => {
+        if (!e.target.classList.contains('star')) {
+          stars.forEach(s => s.classList.remove('active'));
+          ratingValue.value = 0;
+        }
+      });
+    </script>
+    <!-- feed end -->
+     <br style="height: 10px;"/>
     <!--==================== FOOTER AREA ====================-->
-    <footer>
-      <div class="overlay" style="background-color: #0669ff;">
-        <!--Start mg-footer-widget-area-->
-        <div class="mg-footer-widget-area">
-          <div class="container-fluid">
-            <div class="row">
-              <div id="block-76" class="col-md-4 rotateInDownLeft animated mg-widget widget_block">
-                <ul>
-                  <li style="font-style:normal;font-weight:700" class="has-medium-font-size"><strong>VISIT US</strong></li>
-
-
-                  <li> D. Fandiño Street, Poblacion 3, Alaminos, Laguna </li>
-                  <!-- /wp:list-item -->
-
-                  <div id="wrapper-9cd199b9cc5410cd3b1ad21cab2e54d3">
-                    <div id="map-9cd199b9cc5410cd3b1ad21cab2e54d3"></div>
-                    <script>
-                      (function() {
-                        var setting = {
-                          "query": "Alaminos Municipal Hall, Alaminos, Laguna, Philippines",
-                          "width": 611,
-                          "height": 251,
-                          "satellite": true,
-                          "zoom": 14,
-                          "placeId": "ChIJK-BKkxFovTMRCHKdGJxYv5Q",
-                          "cid": "0x94bf589c189d7208",
-                          "coords": [14.0653171, 121.246531],
-                          "cityUrl": "/philippines/tagaytay-city-33123",
-                          "cityAnchorText": "Map of Tagaytay City, Calabarzon, Philippines",
-                          "lang": "us",
-                          "queryString": "Alaminos Municipal Hall, Alaminos, Laguna, Philippines",
-                          "centerCoord": [14.0653171, 121.246531],
-                          "id": "map-9cd199b9cc5410cd3b1ad21cab2e54d3",
-                          "embed_id": "1118305"
-                        };
-                        var d = document;
-                        var s = d.createElement('script');
-                        s.src = 'https://1map.com/js/script-for-user.js?embed_id=1118305';
-                        s.async = true;
-                        s.onload = function(e) {
-                          window.OneMap.initMap(setting)
-                        };
-                        var to = d.getElementsByTagName('script')[0];
-                        to.parentNode.insertBefore(s, to);
-                      })();
-                    </script><a href="https://1map.com/map-embed">1 Map</a>
-                  </div>
-
-              </div>
-              <div id="block-77" class="col-md-4 rotateInDownLeft animated mg-widget widget_block">
-                <ul>
-                  <li style="font-style:normal;font-weight:700" class="has-medium-font-size"><strong>ABOUT US</strong></li>
-
-
-
-                  <li>Alaminos, officially the&nbsp;<strong>Municipality of Alaminos</strong>&nbsp;(<a href="https://en.wikipedia.org/wiki/Tagalog_language">Tagalog</a>:&nbsp;<em>Bayan ng Alaminos</em>), is a 3rd class&nbsp;<a href="https://en.wikipedia.org/wiki/Municipality_of_the_Philippines">municipality</a>&nbsp;in the&nbsp;<a href="https://en.wikipedia.org/wiki/Philippine_Province">province</a>&nbsp;of&nbsp;<a href="https://en.wikipedia.org/wiki/Laguna_(province)">Laguna</a>,&nbsp;<a href="https://en.wikipedia.org/wiki/Philippines">Philippines</a>.&nbsp;</li>
-
-
-
-                  <li>According to the 2020 census, it has a population of 51,619 people. </li>
-                </ul>
-
-                <figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="600" height="164" src="https://alaminoslaguna.com/wp-content/uploads/2024/06/Screenshot-2024-06-04-215715.png" alt="" class="wp-image-4054" srcset="https://i0.wp.com/alaminoslaguna.com/wp-content/uploads/2024/06/Screenshot-2024-06-04-215715.png?w=600&amp;ssl=1 600w, https://i0.wp.com/alaminoslaguna.com/wp-content/uploads/2024/06/Screenshot-2024-06-04-215715.png?resize=150%2C41&amp;ssl=1 150w, https://i0.wp.com/alaminoslaguna.com/wp-content/uploads/2024/06/Screenshot-2024-06-04-215715.png?resize=80%2C22&amp;ssl=1 80w" sizes="auto, (max-width: 600px) 100vw, 600px" /></figure>
-              </div>
-              <div id="block-56" class="col-md-4 rotateInDownLeft animated mg-widget widget_block">
-                <ul class="wp-block-list">
-                  <li style="font-style:normal;font-weight:700" class="has-medium-font-size"><strong>GOVERNMENT LINKS</strong></li>
-
-
-
-                  <li><a href="https://www.gov.ph/" data-type="link" data-id="https://www.gov.ph/">About Gov PH</a></li>
-
-
-
-                  <li><a href="https://pbbm.com.ph/">The President</a></li>
-
-
-
-                  <li><a href="https://op-proper.gov.ph/">Office of the President </a></li>
-
-
-
-                  <li><a href="https://www.ovp.gov.ph/">Office of the Vice President </a></li>
-
-
-
-                  <li><a href="https://legacy.senate.gov.ph/">Senate of the Philippines</a></li>
-
-
-
-                  <li><a href="https://www.congress.gov.ph/">House of Representatives</a></li>
-
-
-
-                  <li></li>
-                </ul>
-              </div>
-              <div id="block-79" class="col-md-4 rotateInDownLeft animated mg-widget widget_block widget_text">
-                <p>© 2024 <strong>Alaminos Laguna</strong>. All Rights Reserved.</p>
-              </div>
+    <footer class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h2>VISIT US</h2>
+          <p>D. Fandiño Street, Poblacion 3, Alaminos, Laguna</p>
+          <div class="map-container">
+            <!-- Map placeholder -  map embed -->
+            <div id="wrapper-9cd199b9cc5410cd3b1ad21cab2e54d3">
+              <div id="map-9cd199b9cc5410cd3b1ad21cab2e54d3"></div>
+              <script>
+                (function() {
+                  var setting = {
+                    "query": "Alaminos Laguna, Alaminos, Laguna, Philippines",
+                    "width": 400,
+                    "height": 200,
+                    "satellite": true,
+                    "zoom": 12,
+                    "placeId": "ChIJKQ0PkhFovTMRfhLklyI_di8",
+                    "cid": "0x2f763f2297e4127e",
+                    "coords": [14.0651171, 121.2462164],
+                    "cityUrl": "/philippines/tagaytay-city-33123",
+                    "cityAnchorText": "Map of Tagaytay City, Calabarzon, Philippines",
+                    "lang": "us",
+                    "queryString": "Alaminos Laguna, Alaminos, Laguna, Philippines",
+                    "centerCoord": [14.0651171, 121.2462164],
+                    "id": "map-9cd199b9cc5410cd3b1ad21cab2e54d3",
+                    "embed_id": "1214998"
+                  };
+                  var d = document;
+                  var s = d.createElement('script');
+                  s.src = 'https://1map.com/js/script-for-user.js?embed_id=1214998';
+                  s.async = true;
+                  s.onload = function(e) {
+                    window.OneMap.initMap(setting)
+                  };
+                  var to = d.getElementsByTagName('script')[0];
+                  to.parentNode.insertBefore(s, to);
+                })();
+              </script>
             </div>
-            <!--/row-->
           </div>
-          <!--/container-->
+
+          <!-- Logo images added here -->
+          <div class="logo-container">
+            <img src="./img/aics-logo.ico" alt="Logo 1" class="logo-image">
+            <img src="./img/Alaminos_Laguna_seal_logo.ico" alt="Logo 2" class="logo-image">
+          </div>
         </div>
-        <!--End mg-footer-widget-area-->
-        <!--Start mg-footer-widget-area-->
-        <div class="mg-footer-bottom-area">
-          <div class="container-fluid">
-            <div class="divide-line"></div>
-            <div class="row align-items-center">
-              <!--col-md-4-->
-              <div class="col-md-6">
-                <span class="navbar-brand"><img width="260" height="260" src="https://alaminoslaguna.com/wp-content/uploads/2023/08/cropped-cropped-cropped-Alaminos_Laguna_seal_logo.png" class="custom-logo" alt="" decoding="async" srcset="https://i0.wp.com/alaminoslaguna.com/wp-content/uploads/2023/08/cropped-cropped-cropped-Alaminos_Laguna_seal_logo.png?w=260&amp;ssl=1 260w, https://i0.wp.com/alaminoslaguna.com/wp-content/uploads/2023/08/cropped-cropped-cropped-Alaminos_Laguna_seal_logo.png?resize=150%2C150&amp;ssl=1 150w, https://i0.wp.com/alaminoslaguna.com/wp-content/uploads/2023/08/cropped-cropped-cropped-Alaminos_Laguna_seal_logo.png?resize=80%2C80&amp;ssl=1 80w" sizes="(max-width: 260px) 100vw, 260px" /></span>
-                <div class="site-branding-text">
-                  <p class="site-title-footer"> <a href="https://alaminoslaguna.com/" rel="home">Alaminos, Laguna</a></p>
-                  <p class="site-description-footer">The Town of CoRambLan Festival</p>
-                </div>
-              </div>
 
+        <div class="footer-section">
+          <h2>ABOUT US</h2>
+          <p>Alaminos, officially the <strong>Municipality of Alaminos</strong> (Tagalog: <em>Bayan ng Alaminos</em>), is a 1st class municipality in the province of Laguna, Philippines.</p>
+          <p>According to the 2020 census, it has a population of 51,619 people.</p>
 
-              <div class="col-md-6 text-right text-xs">
-
-                <ul class="mg-social">
-                  <li> <a href="https://www.facebook.com/KuyaGlenn.Official"><span class="icon-soci facebook"><i class="fab fa-facebook"></i></span>
-                    </a></li>
-
-                  <li><a target="_blank" href="#">
-                      <span class="icon-soci linkedin"><i class="fab fa-linkedin"></i></span></a></li>
-
-                  <li><a href="#"><span class="icon-soci instagram"><i class="fab fa-instagram"></i></span>
-                    </a></li>
-
-                </ul>
-
-
-              </div>
-              <!--/col-md-4-->
-
-            </div>
-            <!--/row-->
-          </div>
-          <!--/container-->
+          <table class="info-table">
+            <tr>
+              <th>Country</th>
+              <td>Philippines</td>
+            </tr>
+            <tr>
+              <th>Province</th>
+              <td>Laguna</td>
+            </tr>
+            <tr>
+              <th>Elevation</th>
+              <td>121 m (397 ft)</td>
+            </tr>
+            <tr>
+              <th>Founded</th>
+              <td>1873</td>
+            </tr>
+            <tr>
+              <th>Lowest elevation</th>
+              <td>59 m (194 ft)</td>
+            </tr>
+            <tr>
+              <th>Region</th>
+              <td>Calabazon</td>
+            </tr>
+            <tr>
+              <th>Highest elevation</th>
+              <td>543 m (1,781 ft)</td>
+            </tr>
+            <tr>
+              <th>District</th>
+              <td>3rd district</td>
+            </tr>
+          </table>
         </div>
-        <!--End mg-footer-widget-area-->
 
-        <div class="mg-footer-copyright">
-          <div class="container-fluid">
-            <div class="row">
-
-              <div class="col-md-12 text-xs text-center">
-                <p>
-                  <a href="https://wordpress.org/">
-                    Proudly powered by WordPress </a>
-                  <span class="sep"> | </span>
-                  Theme: Newsup by <a href="https://themeansar.com/" rel="designer">Themeansar</a>.
-                </p>
-              </div>
-
-
-            </div>
-          </div>
+        <div class="footer-section">
+          <h2>GOVERNMENT LINKS</h2>
+          <a href="https://www.gov.ph/">About Gov PH</a>
+          <a href="https://pbbm.com.ph/">The President</a>
+          <a href="https://op-proper.gov.ph/">Office of the President</a>
+          <a href="https://www.ovp.gov.ph/">Office of the Vice President</a>
+          <a href="https://legacy.senate.gov.ph/">Senate of the Philippines</a>
+          <a href="https://www.congress.gov.ph/">House of Representatives</a>
+          <a href="https://alaminoslaguna.com/">Alaminos, Laguna</a>
         </div>
       </div>
-      <!--/overlay-->
+
+      <div class="copyright">
+        © 2025 Alaminos Laguna All Rights Reserved.
+      </div>
     </footer>
-    <!--/footer-->
     <!-- Footer Section end-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

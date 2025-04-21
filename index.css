@@ -1,6 +1,7 @@
 :root{
     --primary-dark: #000133;
-    --primary-color: #0347FF;
+    --primary-color: #0347ff;
+    --primary-light: #f0f0f0;
 }
 body {
     background-color: var(--primary-dark);

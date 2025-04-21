@@ -13,6 +13,99 @@ if (empty($_SESSION)) { ?>
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="nav.css">
         <link rel="stylesheet" href="login.css">
+        <style>
+
+            #logoLog {
+                width: 60px;
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                margin: auto;
+            }
+
+            .login-container {
+                background-color: #e0e0e0;
+                padding: 30px;
+                border-radius: 10px;
+                width: 320px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .login-heading {
+                text-align: left;
+                margin-bottom: 20px;
+                font-size: 24px;
+                color: #333;
+            }
+
+            .logoLog {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                margin: 0 auto 20px;
+                background-color: #ddd;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+
+            .form-input {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: white;
+            }
+
+            .remember-me {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+                color: #333;
+            }
+
+            .remember-me input {
+                margin-right: 5px;
+            }
+
+            .login-btn {
+                width: 100%;
+                padding: 10px;
+                background-color: #0066CC;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            .login-btn:hover {
+                background-color: #0055aa;
+            }
+
+            .register-section {
+                text-align: center;
+            }
+
+            .register-btn {
+                width: 100%;
+                padding: 10px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 5px;
+            }
+
+            .register-btn:hover {
+                background-color: #218838;
+            }
+        </style>
     </head>
 
     <body class="overflow-x-hidden" style="min-width: 50em;">
@@ -45,13 +138,13 @@ if (empty($_SESSION)) { ?>
                                     <hr class="dropdown-divider">
                                 </li>
                                 <?php if (empty($_SESSION['userid'])) {
-                                ?>
+                                    ?>
                                     <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                             data-bs-target="#staticBackdrop01">
                                             Create Application
                                         </button>
                                     </li>
-                                    <?php } else {
+                                <?php } else {
                                     $userid = $_SESSION['userid'];
                                     $rows = [];
                                     $sql = "SELECT Document_Type 
@@ -65,51 +158,53 @@ if (empty($_SESSION)) { ?>
                                         if (in_array("Valid ID", $rows)) {
                                             if (in_array("Birth Certificate", $rows) || in_array("Marriage Certificate", $rows)) {
                                                 if (in_array("Referral Letter", $rows)) {
-                                    ?>
-                                                    <li><a class="dropdown-item" href="application.php">Create Application</a></li><?php
-                                                                                                                                } else {
-                                                                                                                                    $modaltext = "Referral Letter";
-                                                                                                                                    ?>
+                                                    ?>
+                                                    <li><a class="dropdown-item" href="application.php">Create Application</a></li>
+                                                    <?php
+                                                } else {
+                                                    $modaltext = "Referral Letter";
+                                                    ?>
                                                     <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop02">
                                                             Create Application
                                                         </button>
                                                     </li><?php
-                                                                                                                                }
-                                                                                                                            } else {
-                                                                                                                                $modaltext = "Birth Certificate or Marriage Certificate";
-                                                            ?>
+                                                }
+                                            } else {
+                                                $modaltext = "Birth Certificate or Marriage Certificate";
+                                                ?>
                                                 <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#staticBackdrop02">
                                                         Create Application
                                                     </button>
                                                 </li><?php
-                                                                                                                            }
-                                                                                                                        } else {
-                                                                                                                            $modaltext = "Valid ID";
-                                                        ?>
+                                            }
+                                        } else {
+                                            $modaltext = "Valid ID";
+                                            ?>
                                             <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                                     data-bs-target="#staticBackdrop02">
                                                     Create Application
                                                 </button>
                                             </li><?php
-                                                                                                                        }
-                                                                                                                    } else {
-                                                                                                                        $modaltext = "Barangay Indigency";
-                                                    ?>
+                                        }
+                                    } else {
+                                        $modaltext = "Barangay Indigency";
+                                        ?>
                                         <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
                                                 data-bs-target="#staticBackdrop02">
                                                 Create Application
                                             </button>
                                         </li><?php
-                                                                                                                    }
-                                                                                                                } ?>
+                                    }
+                                } ?>
                             </ul>
                         </li>
                     </ul>
                     <div class="search-container">
                         <form class="d-flex m-auto" role="search">
-                            <input class="form-control me-2 searchbar" type="search" placeholder="Search" aria-label="Search">
+                            <input class="form-control me-2 searchbar" type="search" placeholder="Search"
+                                aria-label="Search">
                             <button class="btn btn-outline-light searchbtn" type="submit">Search</button>
                         </form>
                     </div>
@@ -148,9 +243,11 @@ if (empty($_SESSION)) { ?>
             </div>
         </nav>
         <div class="container-fluid">
-            <div class="d-flex flex-column justify-content-center align-items-center mt-5">
-                <form method="POST">
+        <h1 class="text-left">Login</h1>
+            <div class="d-flex flex-column justify-content-center align-items-center mt-2">
+                <form method="POST" class="logbox">
                     <div class="mb-3">
+                        <img src="./img/aics-logo.ico" alt="AICS LOGO" id="logoLog">
                         <label for="account" class="form-label">Username or Email</label>
                         <input type="text" class="form-control" placeholder="Enter Username/Email" name="account"
                             maxlength="25" required>
@@ -160,11 +257,17 @@ if (empty($_SESSION)) { ?>
                         <input type="password" class="form-control" placeholder="Enter Password" name="password"
                             maxlength="15" required>
                     </div>
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
                     <div class="mb-3 justify-content-center align-items-center d-flex">
                         <button type="submit" name="loginForm" class="btn btn-primary">Submit</button>
                     </div>
-                    <p>Go to <a href="register.php">Sign up</a> or <a href="index.php">homepage</a></p>
+                    <p class="text-center">Don't have an account? </p>
+                    <p class="text-center"><a href="register.php">Sign up</a> or Go to <a href="index.php">homepage</a></p>
                 </form>
+
                 <?php if (isset($_POST['loginForm'])) {
                     $account = $_POST['account'];
                     $password = $_POST['password'];
@@ -185,26 +288,54 @@ if (empty($_SESSION)) { ?>
                                 <script>
                                     window.location.href = 'administration.php'
                                 </script> <?php
-                                        } else { ?>
+                            } else { ?>
                                 <script>
                                     window.location.href = 'index.php'
                                 </script> <?php
-                                            $_SESSION['userid'] = $userid;
-                                        }
-                                    } else { ?>
-                            <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Password.</p><?php }
-                                                                                                                    } else { ?>
-                        <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Username.</p><?php }
-                                                                                                                }
-                                                                                                                $conn->close() ?>
+                                $_SESSION['userid'] = $userid;
+                            }
+                        } else { ?>
+                            <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Password.</p>
+                        <?php }
+                    } else { ?>
+                        <p class="text-danger justify-content-center align-items-center d-flex">Incorrect Username.</p>
+                    <?php }
+                }
+                $conn->close() ?>
             </div>
         </div>
+        <!-- <div class="login-container">
+            <h1 class="login-heading">Log In</h1>
+
+            <div class="logoLog">
+                <img src="https://via.placeholder.com/100" alt="Logo">
+            </div>
+
+            <form>
+                <input type="text" class="form-input" placeholder="Username or Email">
+                <input type="password" class="form-input" placeholder="Password">
+
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+
+                <button type="submit" class="login-btn">Log In</button>
+
+                <div class="register-section">
+                    <p>No Account?</p>
+                    <button type="button" class="register-btn">Register</button>
+                </div>
+            </form>
+        </div> -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
     </body>
 
     </html>
-<?php } else { ?> <script>
+<?php } else { ?>
+    <script>
         window.location.href = 'index.php'
-    </script><?php }
+    </script>
+<?php }

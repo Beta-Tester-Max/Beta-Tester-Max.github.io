@@ -1,7 +1,15 @@
-html, body {
-    height: 100%;
-    margin: 0; 
-  }
+:root {
+  --primary-dark: #000133;
+  --primary-color: #0347ff;
+  --primary-light: #f0f0f0;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   background: linear-gradient(rgba(0, 1, 51, 0.65), rgba(0, 1, 51, 0.65)),
     url("https://raw.githubusercontent.com/Beta-Tester-Max/Beta-Tester-Max.github.io/refs/heads/FE/img/bg1.png");
@@ -10,4 +18,26 @@ body {
   background-repeat: no-repeat;
   color: white;
   position: relative;
+}
+
+.text-left {
+  font-size: 2.5em;
+  text-align: left;
+  margin-top: 20px;
+  /* display: flex;
+  justify-content: start; */
+}
+
+.logbox {
+  background-color: #e0e0e0;
+  padding: 30px;
+  border-radius: 10px;
+  width: 320px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+label{
+  color: black;
+}
+.text-center {
+  color: black;
 }

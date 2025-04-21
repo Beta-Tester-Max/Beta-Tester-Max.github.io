@@ -2,7 +2,7 @@
 session_start();
 if (empty($_SESSION['userid'])) {
     session_destroy();
-    session_start();?>
+    session_start(); ?>
     <!doctype html>
     <html lang="en">
 
@@ -77,9 +77,9 @@ if (empty($_SESSION['userid'])) {
                                             <p class="p-1 border border-primary-subtle bg-primary-subtle rounded-start-pill"
                                                 style="height: 2em;">+63</p>
                                             <input class="p-2 border border-secondary-subtle rounded-end-pill" type="tel"
-                                                placeholder="0XXX-XXX-XXXX"
-                                                pattern="0[8-9][0-9]{2}-[0-9]{3}-[0-9]{4}" name="phoneno"
-                                                id="phoneno" maxlength="13" style="height: 2em; width: 11em;" required>
+                                                placeholder="0XXX-XXX-XXXX" pattern="0[8-9][0-9]{2}-[0-9]{3}-[0-9]{4}"
+                                                name="phoneno" id="phoneno" maxlength="13" style="height: 2em; width: 11em;"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="mt-3">
@@ -343,7 +343,7 @@ if (empty($_SESSION['userid'])) {
                             $username = $_POST['username'];
                             $email = $_POST['email'];
                             $bday = $_POST['bday'];
-                            $password = $_POST['password'];
+                            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
                             $sex = ucwords(strtolower($_POST['sex']));
                             $phoneno = $_POST['phoneno'];
                             $civilstatus = $_POST['civilstatus'];
@@ -356,33 +356,61 @@ if (empty($_SESSION['userid'])) {
                             $region = $_POST['region'];
                             $zipcode = $_POST['zipcode'];
 
-                            $sql = "SELECT * FROM register_tbl where username = '$username'";
-                            $result = mysqli_query($conn, $sql);
-
-                            if (mysqli_num_rows($result) == 0) {
-                                $sql = "INSERT INTO register_tbl (Username, Email, Password)
-                                VALUES ('$username', '$email', '$password')";
-                                if (mysqli_query($conn, $sql)) {
-                                    $sql = "SELECT User_ID From register_tbl where Username = '$username'";
-                                    $result = mysqli_query($conn, $sql);
-                                    if ($row = mysqli_fetch_assoc($result)) {
-                                        $userid = $row['User_ID'];
-                                        $sql = "INSERT INTO userinfo_tbl (User_ID, Fname, Mname, Lname, Birth_Date, Sex, Contact_Number, Civil_Status, Religion, Nationality)
-                                        VALUES ('$userid', '$fname', '$mname', '$lname', '$bday', '$sex', '$phoneno', '$civilstatus', '$religion', '$nationality')";
-                                        if (mysqli_query($conn, $sql)) {
-                                            $sql = "INSERT INTO address_tbl (User_ID, Street_Address, Barangay, CityorMunicipality, Province, Region, Zip_Code)
-                                                    VALUES ('$userid', '$streetaddress', '$barangay', '$cityormuni', '$province', '$region', '$zipcode')";
-                                            if (mysqli_query($conn, $sql)) {
-                                                $_SESSION['userid'] = $userid ?>
-                                                <script>window.location.href = "index.php"</script><?php }
-                                        }
+                            try {
+                                $pdo->beginTransaction();
+                            
+                                $sql = $pdo->prepare("SELECT User_ID FROM register_tbl WHERE Username = :username OR Email = :email");
+                                $sql->bindParam(":username", $username, PDO::PARAM_STR);
+                                $sql->bindParam(":email", $email, PDO::PARAM_STR);
+                                $sql->execute();
+                            
+                                if ($sql->rowCount() > 0) {
+                                    echo "<p class='text-danger justify-content-center align-items-center d-flex'>Username or Email Already Exists.</p>";
+                                } else {
+                                    $sql = $pdo->prepare("INSERT INTO register_tbl (Username, Email, Password) VALUES (:username, :email, :password)");
+                                    $sql->bindParam(":username", $username, PDO::PARAM_STR);
+                                    $sql->bindParam(":email", $email, PDO::PARAM_STR);
+                                    $sql->bindParam(":password", $password, PDO::PARAM_STR);
+                            
+                                    if ($sql->execute()) {
+                                        $userid = $pdo->lastInsertId();
+                            
+                                        $sql = $pdo->prepare("INSERT INTO userinfo_tbl (User_ID, Fname, Mname, Lname, Birth_Date, Sex, Contact_Number, Civil_Status, Religion, Nationality)
+                                                              VALUES (:userid, :fname, :mname, :lname, :bday, :sex, :phoneno, :civilstatus, :religion, :nationality)");
+                                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                        $sql->bindParam(":fname", $fname, PDO::PARAM_STR);
+                                        $sql->bindParam(":mname", $mname, PDO::PARAM_STR);
+                                        $sql->bindParam(":lname", $lname, PDO::PARAM_STR);
+                                        $sql->bindParam(":bday", $bday, PDO::PARAM_STR);
+                                        $sql->bindParam(":sex", $sex, PDO::PARAM_STR);
+                                        $sql->bindParam(":phoneno", $phoneno, PDO::PARAM_STR);
+                                        $sql->bindParam(":civilstatus", $civilstatus, PDO::PARAM_STR);
+                                        $sql->bindParam(":religion", $religion, PDO::PARAM_STR);
+                                        $sql->bindParam(":nationality", $nationality, PDO::PARAM_STR);
+                                        $sql->execute();
+                            
+                                        $sql = $pdo->prepare("INSERT INTO address_tbl (User_ID, Street_Address, Barangay, CityorMunicipality, Province, Region, Zip_Code)
+                                                              VALUES (:userid, :streetaddress, :barangay, :cityormuni, :province, :region, :zipcode)");
+                                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                        $sql->bindParam(":streetaddress", $streetaddress, PDO::PARAM_STR);
+                                        $sql->bindParam(":barangay", $barangay, PDO::PARAM_STR);
+                                        $sql->bindParam(":cityormuni", $cityormuni, PDO::PARAM_STR);
+                                        $sql->bindParam(":province", $province, PDO::PARAM_STR);
+                                        $sql->bindParam(":region", $region, PDO::PARAM_STR);
+                                        $sql->bindParam(":zipcode", $zipcode, PDO::PARAM_INT);
+                                        $sql->execute();
+                            
+                                        $pdo->commit();
+                                        $_SESSION['userid'] = $userid;
+                                        echo "<script>window.location.href = 'index.php';</script>";
                                     }
                                 }
-                            } else { ?>
-                                <p class="text-danger justify-content-center align-items-center d-flex">Username Already Exists.</p><?php
+                            } catch (PDOException $e) {
+                                $pdo->rollBack();
+                                echo "<script>alert('Database error: " . addslashes($e->getMessage()) . "');</script>";
                             }
-                        }
-                        $conn->close() ?>
+                            $sql = null;
+                        } ?>
                     </div>
                 </div>
             </div>
@@ -393,5 +421,5 @@ if (empty($_SESSION['userid'])) {
     </body>
 
     </html>
-<?php } else {?>
+<?php } else { ?>
     <script>window.location.href = 'index.php'</script><?php }

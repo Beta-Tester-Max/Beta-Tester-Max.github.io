@@ -32,11 +32,13 @@ if (empty($_SESSION['userid'])) { ?>
                 );
                 foreach ($assistancetype as $at) {
                     $rows = [];
-                    $sql = "SELECT Document_Type
+                    $sql = $pdo->prepare("SELECT Document_Type
                             FROM requirements_tbl 
-                            where User_ID = '$userid' AND Status = 'Validated'";
-                    $result = mysqli_query($conn, $sql);
-                    while ($row = mysqli_fetch_array($result)) {
+                            where User_ID = :userid AND Status = 'Validated'");
+                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                    $sql->execute();
+                    $row = $sql->fetch(PDO::FETCH_ASSOC);
+                    while ($row) {
                         $rows[] = $row['Document_Type'];
                     }
                     if ($at === "Transportation Assistance") {

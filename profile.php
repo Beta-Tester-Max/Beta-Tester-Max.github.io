@@ -1,11 +1,8 @@
 <?php include "connect.php";
 session_start();
-if (empty($_SESSION['userid'])) { ?>
+if (empty($_SESSION["userid"])) { ?>
     <script>window.location.href = "logout.php";</script><?php } else {
-    $userid = $_SESSION['userid'];
-    unset($_SESSION['assistancetype']);
-    unset($_SESSION['appid']);
-    unset($_SESSION['goback']);
+    $userid = $_SESSION["userid"];
 } ?>
 <!doctype html>
 <html lang="en">
@@ -23,31 +20,41 @@ if (empty($_SESSION['userid'])) { ?>
             <div class="col-1"></div>
             <div class="col-4 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5">
                 <?php
-                if (isset($_SESSION['userid'])) {
-                    $sql = "SELECT t2.Fname, t2.Mname, t2.Lname, t1.Username, t1.Profile_Pic, t1.Email FROM register_tbl As t1, userinfo_tbl AS t2 where t1.User_ID = '$userid' AND t2.User_ID = '$userid'";
-                    $result = mysqli_query($conn, $sql);
-                    $row = mysqli_fetch_assoc($result); ?>
-                    <img class="border rounded shadow p-2 mb-5" style="width: 10em; height: 10em;"
-                        src="<?php echo (empty($row['Profile_Pic'])) ? "placeholderprofilepic.png" : "file/" . $row['Profile_Pic'] ?>">
-                    <h3><b><?php echo $row['Fname'] ?>     <?php echo $row['Mname'] ?>     <?php echo $row['Lname'] ?></b></h3>
-                    <h3><i><?php echo $row['Username'] ?></i></h3>
-                    <h3><?php echo $row['Email'] ?></h3>
-                    <a class="btn btn-primary btn-lg mt-3 mb-2" href="profileeditor.php">Edit Profile</a>
-                    <p>Go to <a href="index.php">Home</a>.</p>
-                <?php } ?>
+                if (isset($_SESSION["userid"])) {
+                    $sql = $pdo->prepare("SELECT t2.Fname, t2.Mname, t2.Lname, t1.Username, t1.Profile_Pic, t1.Email FROM register_tbl As t1, userinfo_tbl AS t2 where t1.User_ID = :userid AND t2.User_ID = :userid");
+                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                    $sql->execute();
+                    $row = $sql->fetch(PDO::FETCH_ASSOC);
+                    if ($row) {
+                        ?>
+                        <img class="border rounded shadow p-2 mb-5" style="width: 10em; height: 10em;"
+                            src="<?php echo (empty($row["Profile_Pic"])) ? "placeholderprofilepic.png" : "file/" . $row["Profile_Pic"] ?>">
+                        <h3><b><?php echo htmlspecialchars($row["Fname"], ENT_QUOTES, 'UTF-8') ?>
+                                <?php echo htmlspecialchars($row["Mname"], ENT_QUOTES, 'UTF-8') ?>
+                                <?php echo htmlspecialchars($row["Lname"], ENT_QUOTES, 'UTF-8') ?></b></h3>
+                        <h3><i><?php echo htmlspecialchars($row["Username"], ENT_QUOTES, 'UTF-8') ?></i></h3>
+                        <h3><?php echo htmlspecialchars($row["Email"], ENT_QUOTES, 'UTF-8') ?></h3>
+                        <a class="btn btn-primary btn-lg mt-3 mb-2" href="profileeditor.php">Edit Profile</a>
+                        <p>Go to <a href="index.php">Home</a>.</p>
+                    <?php }
+                } ?>
             </div>
             <div class="col-2"></div>
             <div class="col-4 d-flex flex-column justify-content-center align-items-center border rounded shadow p-5">
-                <?php if (isset($_SESSION['userid'])) {
-                    $sql = "SELECT * FROM address_tbl where User_ID = '$userid'";
-                    $result = mysqli_query($conn, $sql);
-                    $row = mysqli_fetch_assoc($result); ?>
-                    <h2><b>Address</b></h2>
-                    <div class="d-flex justify-content-center align-items-center text-center">
-                        <p><?php echo $row['Street_Address'] . "&nbsp;" . $row['Barangay'] . "&nbsp;" . $row['CityorMunicipality'] . ",&nbsp;" . $row['Province'] ?>
-                        </p>
-                    </div>
-                <?php } ?>
+                <?php if (isset($_SESSION["userid"])) {
+                    $sql = $pdo->prepare("SELECT * FROM address_tbl where User_ID = :userid");
+                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                    $sql->execute();
+                    $row = $sql->fetch(PDO::FETCH_ASSOC);
+                    if ($row) {
+                        ?>
+                        <h2><b>Address</b></h2>
+                        <div class="d-flex justify-content-center align-items-center text-center">
+                            <p><?php echo htmlspecialchars($row["Street_Address"], ENT_QUOTES, 'UTF-8') . "&nbsp;" . htmlspecialchars($row["Barangay"], ENT_QUOTES, 'UTF-8') . "&nbsp;" . htmlspecialchars($row["CityorMunicipality"], ENT_QUOTES, 'UTF-8') . ",&nbsp;" . htmlspecialchars($row["Province"], ENT_QUOTES, 'UTF-8') ?>
+                            </p>
+                        </div>
+                    <?php }
+                } ?>
             </div>
             <div class="col-1"></div>
         </div>
@@ -59,13 +66,13 @@ if (empty($_SESSION['userid'])) { ?>
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="grid text-center">
                         <?php $assistancetype = array(
-                            'Transportation Assistance' => 'traAss',
-                            'Medical Assistance' => 'medAss',
-                            'Burial Assistance' => 'burAss',
-                            'Educational Assistance' => 'eduAss',
-                            'Food Assistance' => 'fooAss',
-                            'Cash Relief Assistance' => 'casAss',
-                            'Psychosocial Support' => 'psySup',
+                            "Transportation Assistance" => 'traAss',
+                            "Medical Assistance" => 'medAss',
+                            "Burial Assistance" => 'burAss',
+                            "Educational Assistance" => 'eduAss',
+                            "Food Assistance" => 'fooAss',
+                            "Cash Relief Assistance" => 'casAss',
+                            "Psychosocial Support" => 'psySup',
                         );
                         foreach ($assistancetype as $at => $id) { ?>
                             <button type="submit" class="btn btn-primary m-1" data-bs-toggle="modal"
@@ -91,7 +98,10 @@ if (empty($_SESSION['userid'])) { ?>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php
+                                                    <?php if (isset($_POST["fileopener"])) {
+                                                        $_SESSION["file"] = $_POST["file"] ?>
+                                                        <script>window.location.href = "pdfdisplayer.php"</script>
+                                                    <?php }
                                                     if ($at === "Psychosocial Support") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -110,27 +120,31 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Emergency Certificate"
                                                             ]
                                                         );
-                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
-                                                            $doclist = $doctype['Required'][$i];
+                                                        for ($i = 0; $i < count($doctype["Required"]); $i++) {
+                                                            $doclist = $doctype["Required"][$i];
                                                             ?>
                                                             <tr>
-                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
-                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
+                                                                        style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -138,7 +152,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -156,10 +170,11 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : ''; ?>
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -168,26 +183,22 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
                                                                                             name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            required><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
@@ -207,29 +218,34 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
-                                                        for ($i = 0; $i < count($doctype['Optional']); $i++) {
-                                                            $doclist = $doctype['Optional'][$i];
+                                                            <?php
+                                                        }
+                                                        for ($i = 0; $i < count($doctype["Optional"]); $i++) {
+                                                            $doclist = $doctype["Optional"][$i];
                                                             ?>
                                                             <tr>
                                                                 <td class="text-start"><?php echo $doclist ?> <i
                                                                         class="text-secondary" style="font-size: .8em;">Optional</i>
                                                                 </td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID, ReasonFR
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -237,14 +253,14 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
                                                                                 <div>
                                                                                     <input class="form-control" type="file"
                                                                                         id="formFile" name="file"
-                                                                                        accept="application/pdf" required>
+                                                                                        accept="application/pdf">
                                                                                 </div>
                                                                                 <input type="hidden" name="fileid"
                                                                                     value="<?php echo $fileid ?>">
@@ -254,6 +270,12 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -262,37 +284,29 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
-                                                                                            name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            name="reason" disabled
+                                                                                            readonly><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
                                                                                 <div class="mb-3">
                                                                                     <input class="form-control" type="file"
                                                                                         id="formFile" name="file"
-                                                                                        accept="application/pdf" required>
+                                                                                        accept="application/pdf">
                                                                                 </div>
                                                                                 <input type="hidden" name="importance" value="Optional">
                                                                                 <input type="hidden" name="docname"
@@ -305,7 +319,8 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
+                                                            <?php
+                                                        }
                                                     } elseif ($at === "Transportation Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -320,27 +335,31 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Birth Certificate"
                                                             ]
                                                         );
-                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
-                                                            $doclist = $doctype['Required'][$i];
+                                                        for ($i = 0; $i < count($doctype["Required"]); $i++) {
+                                                            $doclist = $doctype["Required"][$i];
                                                             ?>
                                                             <tr>
-                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
-                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
+                                                                        style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -348,7 +367,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -366,10 +385,11 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : ''; ?>
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -378,30 +398,22 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
                                                                                             name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            required><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
@@ -421,7 +433,8 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
+                                                            <?php
+                                                        }
                                                     } elseif ($at === "Medical Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -441,27 +454,31 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Birth Certificate"
                                                             ]
                                                         );
-                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
-                                                            $doclist = $doctype['Required'][$i];
+                                                        for ($i = 0; $i < count($doctype["Required"]); $i++) {
+                                                            $doclist = $doctype["Required"][$i];
                                                             ?>
                                                             <tr>
-                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
-                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
+                                                                        style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -469,7 +486,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -486,6 +503,12 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -494,30 +517,22 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
                                                                                             name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            required><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
@@ -537,7 +552,8 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
+                                                            <?php
+                                                        }
                                                     } elseif ($at === "Burial Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -554,27 +570,31 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Outstanding Payer Certificate"
                                                             ]
                                                         );
-                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
-                                                            $doclist = $doctype['Required'][$i];
+                                                        for ($i = 0; $i < count($doctype["Required"]); $i++) {
+                                                            $doclist = $doctype["Required"][$i];
                                                             ?>
                                                             <tr>
-                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
-                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
+                                                                        style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -582,7 +602,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -599,6 +619,12 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -607,30 +633,22 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
                                                                                             name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            required><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
@@ -650,7 +668,8 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
+                                                            <?php
+                                                        }
                                                     } elseif ($at === "Educational Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -666,38 +685,31 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Medical Certificate"
                                                             ]
                                                         );
-                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
-                                                            $doclist = htmlspecialchars($doctype['Required'][$i]);
+                                                        for ($i = 0; $i < count($doctype["Required"]); $i++) {
+                                                            $doclist = $doctype["Required"][$i];
                                                             ?>
                                                             <tr>
-                                                                <td class="text-start"><?php
-                                                                switch ($doclist) {
-                                                                    case 'Enrollment Assessment From':
-                                                                        echo $doclist . "(Certified True Copy)";
-                                                                        break;
-                                                                    case 'Grades':
-                                                                        echo $doclist . "(Certified True Copy)";
-                                                                        break;
-                                                                    default:
-                                                                        echo $doclist;
-                                                                }
-                                                                ?> <i class="text-danger"
-                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
+                                                                        style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -705,7 +717,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -722,6 +734,12 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -730,30 +748,22 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
                                                                                             name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            required><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
@@ -773,29 +783,34 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
-                                                        for ($i = 0; $i < count($doctype['Optional']); $i++) {
-                                                            $doclist = $doctype['Optional'][$i];
+                                                            <?php
+                                                        }
+                                                        for ($i = 0; $i < count($doctype["Optional"]); $i++) {
+                                                            $doclist = $doctype["Optional"][$i];
                                                             ?>
                                                             <tr>
                                                                 <td class="text-start"><?php echo $doclist ?> <i
                                                                         class="text-secondary" style="font-size: .8em;">Optional</i>
                                                                 </td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID, ReasonFR
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -803,14 +818,14 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
                                                                                 <div>
                                                                                     <input class="form-control" type="file"
                                                                                         id="formFile" name="file"
-                                                                                        accept="application/pdf" required>
+                                                                                        accept="application/pdf">
                                                                                 </div>
                                                                                 <input type="hidden" name="fileid"
                                                                                     value="<?php echo $fileid ?>">
@@ -820,6 +835,12 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -828,37 +849,29 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
-                                                                                            name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            name="reason" disabled
+                                                                                            readonly><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
                                                                                 <div class="mb-3">
                                                                                     <input class="form-control" type="file"
                                                                                         id="formFile" name="file"
-                                                                                        accept="application/pdf" required>
+                                                                                        accept="application/pdf">
                                                                                 </div>
                                                                                 <input type="hidden" name="importance" value="Optional">
                                                                                 <input type="hidden" name="docname"
@@ -871,7 +884,8 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
+                                                            <?php
+                                                        }
                                                     } elseif ($at === "Food Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -886,27 +900,31 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Medical Referral"
                                                             ]
                                                         );
-                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
-                                                            $doclist = $doctype['Required'][$i];
+                                                        for ($i = 0; $i < count($doctype["Required"]); $i++) {
+                                                            $doclist = $doctype["Required"][$i];
                                                             ?>
                                                             <tr>
-                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
-                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
+                                                                        style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -914,7 +932,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -931,6 +949,12 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -939,30 +963,22 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
                                                                                             name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            required><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
@@ -982,29 +998,34 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
-                                                        for ($i = 0; $i < count($doctype['Optional']); $i++) {
-                                                            $doclist = $doctype['Optional'][$i];
+                                                            <?php
+                                                        }
+                                                        for ($i = 0; $i < count($doctype["Optional"]); $i++) {
+                                                            $doclist = $doctype["Optional"][$i];
                                                             ?>
                                                             <tr>
                                                                 <td class="text-start"><?php echo $doclist ?> <i
                                                                         class="text-secondary" style="font-size: .8em;">Optional</i>
                                                                 </td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID, ReasonFR
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -1012,14 +1033,14 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
                                                                                 <div>
                                                                                     <input class="form-control" type="file"
                                                                                         id="formFile" name="file"
-                                                                                        accept="application/pdf" required>
+                                                                                        accept="application/pdf">
                                                                                 </div>
                                                                                 <input type="hidden" name="fileid"
                                                                                     value="<?php echo $fileid ?>">
@@ -1029,6 +1050,12 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
@@ -1037,37 +1064,29 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                         style="height: 2.3em; width: 6em;"
                                                                                         name="fileopener">Open File</button>
                                                                                 </form>
-                                                                                </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
-                                                                                            name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            name="reason" disabled
+                                                                                            readonly><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
                                                                                 <div class="mb-3">
                                                                                     <input class="form-control" type="file"
                                                                                         id="formFile" name="file"
-                                                                                        accept="application/pdf" required>
+                                                                                        accept="application/pdf">
                                                                                 </div>
                                                                                 <input type="hidden" name="importance" value="Optional">
                                                                                 <input type="hidden" name="docname"
@@ -1080,7 +1099,8 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
+                                                            <?php
+                                                        }
                                                     } elseif ($at === "Cash Relief Assistance") {
                                                         $doctype = array(
                                                             "Required" => [
@@ -1095,27 +1115,31 @@ if (empty($_SESSION['userid'])) { ?>
                                                                 "Medical Referral"
                                                             ]
                                                         );
-                                                        for ($i = 0; $i < count($doctype['Required']); $i++) {
-                                                            $doclist = $doctype['Required'][$i];
+                                                        for ($i = 0; $i < count($doctype["Required"]); $i++) {
+                                                            $doclist = $doctype["Required"][$i];
                                                             ?>
                                                             <tr>
-                                                                <td class="text-start"><?php echo $doclist ?> <i class="text-danger"
-                                                                        style="font-size: .8em;">Required</i></td>
+                                                                <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
+                                                                        style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -1123,7 +1147,7 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -1140,38 +1164,36 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
                                                                                         name="file">
                                                                                     <button class="btn btn-primary shadow" type="submit"
                                                                                         style="height: 2.3em; width: 6em;"
-                                                                                        name="editRequirements">Open File</button>
-                                                                                </form>
+                                                                                        name="fileopener">Open File</button>
                                                                                 </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
                                                                                             name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            required><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
@@ -1191,29 +1213,34 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
-                                                        for ($i = 0; $i < count($doctype['Optional']); $i++) {
-                                                            $doclist = $doctype['Optional'][$i];
+                                                            <?php
+                                                        }
+                                                        for ($i = 0; $i < count($doctype["Optional"]); $i++) {
+                                                            $doclist = $doctype["Optional"][$i];
                                                             ?>
                                                             <tr>
                                                                 <td class="text-start"><?php echo $doclist ?> <i
                                                                         class="text-secondary" style="font-size: .8em;">Optional</i>
                                                                 </td>
                                                                 <?php
-                                                                $sql = "SELECT Status, File_ID, ReasonFR
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID
                                                                         FROM requirements_tbl
-                                                                        where User_ID = '$userid' AND Document_type = '$doclist'";
-                                                                $result = mysqli_query($conn, $sql);
-                                                                $row = mysqli_fetch_assoc($result);
-                                                                $fileid = (isset($row['File_ID'])) ? $row['File_ID'] : ""; ?>
+                                                                        where User_ID = :userid AND Document_type = :doctype");
+                                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                                $sql->bindParam(":doctype", $doclist, PDO::PARAM_STR);
+                                                                $sql->execute();
+                                                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                $status = (isset($row["Status"])) ? htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $reason = (isset($row["ReasonFR"])) ? htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8') : "";
+                                                                $fileid = (isset($row["File_ID"])) ? $row["File_ID"] : ""; ?>
                                                                 <td class="text-center">
-                                                                    <?php if (isset($row['Status']) && $row['Status'] === "Validated") { ?>
+                                                                    <?php if (isset($status) && $status === "Validated") { ?>
                                                                         <img src="img/validated.png" alt="Validated" title="Validated"
                                                                             style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Unvalidated") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Unvalidated") { ?>
                                                                         <img src="img/unvalidated.png" alt="Unvalidated"
                                                                             title="Unvalidated" style="width: 1.5em; height: 1.5em;">
-                                                                    <?php } elseif (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                    <?php } elseif (isset($status) && $status === "Rejected") { ?>
                                                                         <img src="img/reject.png" alt="Rejected" title="Rejected"
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } else { ?>
@@ -1221,14 +1248,14 @@ if (empty($_SESSION['userid'])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($row['File_ID'])) { ?>
+                                                                <td><?php if (isset($fileid)) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
                                                                                 <div>
                                                                                     <input class="form-control" type="file"
                                                                                         id="formFile" name="file"
-                                                                                        accept="application/pdf" required>
+                                                                                        accept="application/pdf">
                                                                                 </div>
                                                                                 <input type="hidden" name="fileid"
                                                                                     value="<?php echo $fileid ?>">
@@ -1238,45 +1265,43 @@ if (empty($_SESSION['userid'])) { ?>
                                                                                     type="submit" style="height: 2.3em;"
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
+                                                                            <?php
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                                                            $sql->execute();
+                                                                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+                                                                            $file = (isset($row["File_Name"])) ? htmlspecialchars($row["File_Name"], ENT_QUOTES, 'UTF-8') : ""; ?>
                                                                             <div>
                                                                                 <form class="me-2" method="POST">
                                                                                     <input type="hidden" value="<?php echo $file ?>"
                                                                                         name="file">
                                                                                     <button class="btn btn-primary shadow" type="submit"
                                                                                         style="height: 2.3em; width: 6em;"
-                                                                                        name="editRequirements">Open File</button>
-                                                                                </form>
+                                                                                        name="fileopener">Open File</button>
                                                                                 </form>
                                                                             </div>
-                                                                            <?php if (isset($row['Status']) && $row['Status'] === "Rejected") { ?>
+                                                                            <?php if (isset($status) && $status === "Rejected") { ?>
                                                                                 <div>
                                                                                     <div class="form-floating">
                                                                                         <textarea class="form-control"
                                                                                             placeholder="State your reason here"
                                                                                             id="floatingTextarea" style="height: 10em"
-                                                                                            name="reason" disabled readonly
-                                                                                            required><?php echo $row['ReasonFR'] ?></textarea>
+                                                                                            name="reason" disabled
+                                                                                            readonly><?php echo $reason ?></textarea>
                                                                                         <label for="floatingTextarea">Reason</label>
                                                                                     </div>
                                                                                 </div><?php }
-                                                                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                                                                            $result = mysqli_query($conn, $sql);
-                                                                            $row = mysqli_fetch_assoc($result);
-                                                                            $file = (isset($row['File_Name'])) ? $row['File_Name'] : '';
                                                                             ?>
 
                                                                         </div>
-                                                                        <?php if (isset($_POST['fileopener'])) {
-                                                                            $_SESSION['file'] = $_POST['file'] ?>
-                                                                            <script>window.location.href = "pdfdisplayer.php"</script>
-                                                                        <?php }
+                                                                        <?php
                                                                 } else { ?>
                                                                         <form method="POST" enctype="multipart/form-data">
                                                                             <div class="d-flex">
                                                                                 <div class="mb-3">
                                                                                     <input class="form-control" type="file"
                                                                                         id="formFile" name="file"
-                                                                                        accept="application/pdf" required>
+                                                                                        accept="application/pdf">
                                                                                 </div>
                                                                                 <input type="hidden" name="importance" value="Optional">
                                                                                 <input type="hidden" name="docname"
@@ -1289,7 +1314,8 @@ if (empty($_SESSION['userid'])) { ?>
                                                                     <?php } ?>
                                                                 </td>
                                                             </tr>
-                                                        <?php }
+                                                            <?php
+                                                        }
                                                     }
                                                     ?>
                                                 </tbody>
@@ -1299,86 +1325,150 @@ if (empty($_SESSION['userid'])) { ?>
                                 </div>
                             </div>
                         <?php }
-                        if (isset($_POST['editRequirements'])) {
-                            $documenttype = $_POST['docname'];
-                            $fileid = $_POST['fileid'];
-                            $sql = "SELECT File_Name FROM file_tbl where File_ID = '$fileid'";
-                            $result = mysqli_query($conn, $sql);
-                            $row = mysqli_fetch_assoc($result);
-                            $oldfile = $row["File_Name"];
-                            $deletedfilename = $fileid . "_deleted_" . $oldfile;
-                            rename("file/" . $oldfile, "file/deletedfile/" . $deletedfilename);
-                            $doc = str_replace(" ", "_", $documenttype);
-                            $file = htmlspecialchars($_FILES['file']['name']);
-                            $extension = pathinfo($file, PATHINFO_EXTENSION);
-                            $newfile = $userid . "_" . $doc . "." . $extension;
-                            $location = "file/" . $newfile;
-                            $sql = "UPDATE file_tbl
-                                SET File_Name = '$deletedfilename',
-                                is_deleted = '1'
-                                where User_ID = '$userid'
-                                AND File_ID = '$fileid'";
-                            mysqli_query($conn, $sql);
-                            if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
-                                $sql = "INSERT INTO file_tbl (User_ID, File_Name)
-                                            VALUES ('$userid', '$newfile')";
-                                if (mysqli_query($conn, $sql)) {
-                                    $sql = "SELECT File_ID FROM file_tbl where FIle_Name = '$newfile'";
-                                    $result = mysqli_query($conn, $sql);
-                                    if ($row = mysqli_fetch_assoc($result)) {
-                                        $newfileid = $row["File_ID"];
-                                        $sql = "UPDATE requirements_tbl
-                                            SET File_ID = '$newfileid',
-                                            Status = 'Unvalidated'
-                                            where User_ID = '$userid'
-                                            AND Document_Type = '$documenttype'";
-                                        mysqli_query($conn, $sql);
-                                        ?>
-                                        <script>alert("Files Updated Successfully.")
-                                            window.location.href = "profile.php"
-                                        </script><?php
-                                    } else { ?>
-                                        <script>alert("Unable to fetch File ID.")</script>
-                                    <?php }
-                                } else { ?>
-                                    <script>alert("Error in Inserting File into the Database.")</script>
-                                <?php }
-                            } else { ?>
-                                <script>alert("Error in Moving File.")</script>
-                            <?php }
+                        if (isset($_POST["editRequirements"])) {
+                            $fileid = $_POST["fileid"];
+
+                            try {
+                                $pdo->beginTransaction();
+                                $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                $sql->execute();
+                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+                                if ($row) {
+                                    $oldfile = $row["File_Name"];
+                                    $deletedfilename = $fileid . "_deleted_" . $oldfile;
+                                    rename("file/" . $oldfile, "file/deletedfile/" . $deletedfilename);
+
+                                    $sql = $pdo->prepare("UPDATE file_tbl
+                                                            SET File_Name = :deletedfile,
+                                                            is_deleted = '1'
+                                                            where User_ID = :userid
+                                                            AND File_ID = :fileid");
+                                    $sql->bindParam(":deletedfile", $deletedfilename, PDO::PARAM_STR);
+                                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                    $sql->bindParam(":fileid", $fileid, PDO::PARAM_STR);
+
+                                    if ($sql->execute()) {
+                                        $doc = str_replace(" ", "_", $_POST["docname"]);
+                                        $file = $_FILES["file"]["name"];
+                                        $fileSize = $_FILES["file"]["size"];
+                                        $tmpName = $_FILES["file"]["tmp_name"];
+                                        $extension = pathinfo($file, PATHINFO_EXTENSION);
+
+                                        $maxFileSize = 5 * 1024 * 1024;
+                                        if ($fileSize > $maxFileSize) {
+                                            die("File is too large. Maximum size allowed is 5MB.");
+                                        }
+
+                                        $fileType = mime_content_type($tmpName);
+                                        if ($fileType !== "application/pdf") {
+                                            die("Invalid file type. Only PDF files are allowed.");
+                                        }
+
+                                        $newFileName = $userid . "_" . $doc . "." . $extension;
+                                        $uploadDir = "file/";
+                                        $filePath = $uploadDir . $newFileName;
+
+                                        if (move_uploaded_file($tmpName, $filePath)) {
+                                            $sql = $pdo->prepare("INSERT INTO files_tbl (File_Name) VALUES (:filename)");
+                                            $sql->bindParam(":filename", $newFileName, PDO::PARAM_STR);
+                                            $sql->execute();
+
+                                            $pdo->commit();
+                                            ?>
+                                            <script>
+                                                alert("File Updated Successfully.")
+                                                window.location.href = "profile.php"
+                                            </script>
+                                            <?php
+
+                                        } else {
+                                            ?>
+                                            <script>
+                                                alert("Error Uploading File.")
+                                                window.location.href = "profile.php"
+                                            </script>
+                                            <?php
+                                        }
+                                    }
+                                }
+                            } catch (PDOException $e) {
+                                $pdo->rollBack()
+                                    ?>
+                                <script>
+                                    alert("Error Uploading File: <?php echo $e->getMessage() ?>")
+                                    window.location.href = "profile.php"
+                                </script>
+                                <?php
+                            }
+                            $sql = null;
                         }
-                        if (isset($_POST['uploadRequirements'])) {
-                            $importance = $_POST['importance'];
-                            $documenttype = $_POST['docname'];
-                            $doc = str_replace(" ", "_", $documenttype);
-                            $file = htmlspecialchars($_FILES['file']['name']);
+                        if (isset($_POST["uploadRequirements"])) {
+                            $importance = $_POST["importance"];
+                            $documenttype = $_POST["docname"];
+                            $doc = str_replace(" ", "_", $_POST["docname"]);
+                            $file = $_FILES["file"]["name"];
+                            $fileSize = $_FILES["file"]["size"];
+                            $tmpName = $_FILES["file"]["tmp_name"];
                             $extension = pathinfo($file, PATHINFO_EXTENSION);
-                            $newfile = $userid . "_" . $doc . "." . $extension;
-                            $location = "file/" . $newfile;
-                            $sql = "INSERT INTO file_tbl (User_ID, File_Name)
-                                    VALUES ('$userid', '$newfile')";
-                            mysqli_query($conn, $sql);
-                            if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
-                                $sql = "SELECT File_ID FROM file_tbl where File_Name = '$newfile'";
-                                $result = mysqli_query($conn, $sql);
-                                if ($row = mysqli_fetch_assoc($result)) {
-                                    $fileid = $row["File_ID"];
-                                    $sql = "INSERT INTO requirements_tbl (User_ID, Document_Type, File_ID, Importance)
-                                VALUES ('$userid', '$documenttype', '$fileid', '$importance')";
-                                    if (mysqli_query($conn, $sql)) {
+                            $newFileName = $userid . "_" . $doc . "." . $extension;
+                            $uploadDir = "file/";
+                            $filePath = $uploadDir . $newFileName;
+
+                            $maxFileSize = 5 * 1024 * 1024;
+                            if ($fileSize > $maxFileSize) {
+                                die("File is too large. Maximum size allowed is 5MB.");
+                            }
+
+                            $fileType = mime_content_type($tmpName);
+                            if ($fileType !== "application/pdf") {
+                                die("Invalid file type. Only PDF files are allowed.");
+                            }
+
+                            try {
+                                $pdo->beginTransaction();
+                                $sql = $pdo->prepare("INSERT INTO file_tbl (User_ID, File_Name) VALUES (:userid, :filename)");
+                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                $sql->bindParam(":filename", $newFileName, PDO::PARAM_STR);
+                                $sql->execute();
+
+                                if (move_uploaded_file($tmpName, $filePath)) {
+                                    $fileid = $pdo->lastInsertId();
+
+                                    $sql = $pdo->prepare("INSERT INTO requirements_tbl (User_ID, Document_Type, File_ID, Importance)
+                                    VALUES (:userid, :doctype, :fileid, :importance)");
+                                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                    $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                    $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                    $sql->bindParam(":importance", $importance, PDO::PARAM_STR);
+
+                                    if ($sql->execute()) {
+                                        $pdo->commit();
                                         ?>
                                         <script>alert("Files Uploaded Successfully.")
                                             window.location.href = "profile.php"
                                         </script><?php
                                     } else { ?>
-                                        <script>alert("Error in upon sending in Database.")</script>
+                                        <script>alert("Error in upon sending in Database.")
+                                            window.location.href = "profile.php"
+                                        </script>
                                     <?php }
                                 } else { ?>
-                                    <script>alert("Error in locating File ID.")</script>
+                                    <script>alert("Error in Moving File.")
+                                        window.location.href = "profile.php"
+                                    </script>
                                 <?php }
-                            } else { ?>
-                                <script>alert("Error in Moving File.")</script>
-                            <?php }
+                            } catch (PDOException $e) {
+                                $pdo->rollBack()
+                                    ?>
+                                <script>
+                                    alert("Error Uploading File: <?php echo $e->getMessage() ?>")
+                                    window.location.href = "profile.php"
+                                </script>
+                                <?php
+                            }
+                            $sql = null;
                         } ?>
                     </div>
                 </div>
@@ -1399,41 +1489,51 @@ if (empty($_SESSION['userid'])) { ?>
                     </tr>
                     </thead>
                     <tbody>
-                        <?php $sql = "SELECT Application_ID, Assistance_Type, Status, Date_Submitted 
+                        <?php $sql = $pdo->prepare("SELECT Application_ID, Assistance_Type, Status, Date_Submitted 
                                 FROM application_tbl 
-                                where User_ID = '$userid' 
+                                where User_ID = :userid 
                                 AND is_deleted = 0 
-                                AND status = 'Pending'";
-                        $result = mysqli_query($conn, $sql);
-                        while ($row = mysqli_fetch_array($result)) { ?>
+                                AND status = 'Pending'");
+                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                        $sql->execute();
+
+                        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            $appid = htmlspecialchars($row["Application_ID"], ENT_QUOTES, 'UTF-8');
+                            $assType = htmlspecialchars($row["Assistance_Type"], ENT_QUOTES, 'UTF-8');
+                            $status = htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8');
+                            $dateSub = htmlspecialchars($row["Date_Submitted"], ENT_QUOTES, 'UTF-8');
+                            ?>
                             <tr>
-                                <th><?php echo $row['Assistance_Type'] ?></th>
-                                <th class="text-center text-warning"><?php echo $row['Status'] ?></th>
-                                <th class="text-center"><?php echo $row['Date_Submitted'] ?></th>
+                                <th><?php echo $assType ?></th>
+                                <th class="text-center text-warning"><?php echo $status ?></th>
+                                <th class="text-center"><?php echo $dateSub ?></th>
                                 <th class="d-flex">
                                     <form method="POST">
-                                        <input type="hidden" name="asstype" value="<?php echo $row['Assistance_Type'] ?>">
-                                        <input type="hidden" name="appid" value="<?php echo $row['Application_ID'] ?>">
                                         <button type="submit" name="editForm" class="btn btn-primary me-1">Edit</button>
                                     </form>
-                                    <?php if (isset($_POST['editForm'])) {
-                                        $_SESSION['appid'] = $_POST['appid'];
-                                        $_SESSION['assistancetype'] = $_POST['asstype'];
-                                        $_SESSION['goback'] = "profile.php#pending";
+                                    <?php if (isset($_POST["editForm"])) {
+                                        $_SESSION["appid"] = $appid;
+                                        $_SESSION["assistancetype"] = $assType;
+                                        $_SESSION["goback"] = "profile.php#pending";
                                         ?>
                                         <script>window.location.href = "applicationeditor.php"</script><?php
                                     } ?>
                                     <form method="POST">
                                         <button type="submit" name="deleteForm" class="btn btn-danger">Delete</button>
                                     </form>
-                                    <?php if (isset($_POST['deleteForm'])) {
-                                        $appid = $row['Application_ID'];
-                                        $sql = "UPDATE application_tbl
+                                    <?php if (isset($_POST["deleteForm"])) {
+
+                                        $sql = $pdo->prepare("UPDATE application_tbl
                                                 SET is_deleted = 1
-                                                where Application_ID = '$appid'";
-                                        mysqli_query($conn, $sql);
+                                                where Application_ID = :appid");
+                                        $sql->bindParam(":appid", $appid, PDO::PARAM_INT);
+                                        $sql->execute();
+                                        $pdo->commit();
                                         ?>
-                                        <script>window.location.href = "profile.php"</script><?php
+                                        <script>alert("Application has been removed.")
+                                            window.location.href = "profile.php"
+                                        </script>
+                                        <?php
                                     } ?>
                                 </th>
                             </tr>
@@ -1457,23 +1557,30 @@ if (empty($_SESSION['userid'])) { ?>
                     </tr>
                     </thead>
                     <tbody>
-                        <?php $sql = "SELECT Assistance_Type, Status, Date_Submitted, Date_ApporRej, ReasonFR
+                        <?php $sql = $pdo->prepare("SELECT Assistance_Type, Status, Date_ApporRej, ReasonFR
                                 FROM application_tbl
-                                where User_ID = '$userid' 
+                                where User_ID = :userid
                                 AND is_deleted = '0' 
-                                AND NOT Status = 'Pending'";
-                        $result = mysqli_query($conn, $sql);
-                        while ($row = mysqli_fetch_array($result)) { ?>
+                                AND NOT Status = 'Pending'");
+                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                        $sql->execute();
+
+                        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            $assType = htmlspecialchars($row["Assistance_Type"], ENT_QUOTES, 'UTF-8');
+                            $status = htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8');
+                            $dateAoR = htmlspecialchars($row["Date_ApporRej"], ENT_QUOTES, 'UTF-8');
+                            $reason = htmlspecialchars($row["ReasonFR"], ENT_QUOTES, 'UTF-8');
+                            ?>
                             <tr>
-                                <th class="text-center"><?php echo $row['Assistance_Type'] ?></th>
-                                <?php if ($row['Status'] == "Approved") { ?>
-                                    <th class="text-center text-success"><?php echo $row['Status'] ?></th>
+                                <th class="text-center"><?php echo $assType ?></th>
+                                <?php if ($status == "Approved") { ?>
+                                    <th class="text-center text-success"><?php echo $status ?></th>
                                 <?php } else { ?>
-                                    <th class="text-center text-danger"><?php echo $row['Status'] ?></th>
+                                    <th class="text-center text-danger"><?php echo $status ?></th>
                                 <?php } ?>
-                                <th><?php echo (empty($row['ReasonFR'])) ? "This Application Has Been Approved" : $row['ReasonFR'] ?>
+                                <th><?php echo (empty($reason)) ? "This Application Has Been Approved" : $reason ?>
                                 </th>
-                                <th class="text-center"><?php echo $row['Date_ApporRej'] ?></th>
+                                <th class="text-center"><?php echo $dateAoR ?></th>
                             </tr>
                         <?php } ?>
                     </tbody>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Case Study</title>
+    <script src="https://cdn.tiny.cloud/1/2p6x6kev9coy7umz12rv8ijd0q0zse0mbqdj9t38ao5tqt06/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Your Case Study</h1>
+        <form id="caseStudyForm" method="POST" action="generate_doc.php">
+            <label for="caseStudyContent">Enter your case study content below:</label>
+            <textarea id="caseStudyContent" name="content"></textarea>
+            <button type="submit">Generate Word Document</button>
+        </form>
+    </div>
+
+    <script>
+        tinymce.init({
+            selector: '#caseStudyContent',
+            plugins: 'lists link image',
+            toolbar: 'fontselect fontsizeselect | bold italic underline | alignleft aligncenter alignright | bullist numlist',
+            menubar: false
+        });
+    </script>
+</body>
+</html>

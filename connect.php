@@ -2,10 +2,9 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "aics database";
+$dbname = "aics_db";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+

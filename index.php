@@ -17,8 +17,8 @@ if (isset($_SESSION['userid'])) {
     <link rel="stylesheet" href="index.css">
     <style>
         .logo {
-            height: 2em;
-            width: 2em;
+            height: 1.5em;
+            width: 1.5em;
         }
 
         * {
@@ -227,7 +227,7 @@ if (isset($_SESSION['userid'])) {
 </head>
 
 <body class="overflow-x-hidden" style="min-width: 20em;">
-    <nav class="navbar navbar-expand-lg">
+    <nav class="sticky-top navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img class="logo" src="./img/AICS150.png" alt="AICS">
@@ -818,13 +818,49 @@ if (isset($_SESSION['userid'])) {
                         </ul>
                     </li>
                 </ul>
-                <div class="search-container">
-                    <form class="d-flex m-auto" role="search">
-                        <input class="form-control me-2 searchbar" type="search" placeholder="Search"
-                            aria-label="Search">
-                        <button class="btn btn-outline-light searchbtn" type="submit">Search</button>
-                    </form>
+                <!-- search start -->
+                <div class="search-cont">
+                    <div class="search-container">
+                        <input type="text" placeholder="Search..." class="search-input">
+                        <button class="search-button" onclick="toggleSearch()">
+                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
+                <script>
+                    function toggleSearch() {
+                        const searchInput = document.querySelector('.search-input');
+
+                        if (window.innerWidth <= 768) {
+                            if (searchInput.style.width === '200px') {
+                                searchInput.style.width = '0';
+                                searchInput.style.padding = '0';
+                                searchInput.style.opacity = '0';
+                            } else {
+                                searchInput.style.width = '200px';
+                                searchInput.style.padding = '10px 15px';
+                                searchInput.style.opacity = '1';
+                            }
+                        }
+                    }
+
+                    // Reset search bar on window resize
+                    window.addEventListener('resize', function() {
+                        const searchInput = document.querySelector('.search-input');
+                        if (window.innerWidth > 768) {
+                            searchInput.style.width = '100%';
+                            searchInput.style.padding = '10px 15px';
+                            searchInput.style.opacity = '1';
+                        } else {
+                            searchInput.style.width = '0';
+                            searchInput.style.padding = '0';
+                            searchInput.style.opacity = '0';
+                        }
+                    });
+                </script>
+                <!-- search end -->
                 <?php if (empty($_SESSION['userid'])) { ?>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -1016,23 +1052,33 @@ if (isset($_SESSION['userid'])) {
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 5"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5" aria-label="Slide 6"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"
+                    aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"
+                    aria-label="Slide 5"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5"
+                    aria-label="Slide 6"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="6"
+                    aria-label="Slide 7"></button>
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="./img/trans slider.png" class="d-block w-100" alt="Transportation Assistance">
                     <div class="carousel-caption d-none d-md-block">
                         <h3>Transportation Assistance</h3>
-                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of low income</p>
+                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of
+                            low income</p>
                         <p class="text-start">2. Medical Certificate referral (for medical transport request)</p>
-                        <p class="text-start">3. Death Certificate or Medical Report of a Relative (for family emergency)</p>
-                        <p class="text-start">4. Police Report or legal documents (for cases of abuse, transferring or court related cases).</p>
+                        <p class="text-start">3. Death Certificate or Medical Report of a Relative (for family
+                            emergency)</p>
+                        <p class="text-start">4. Police Report or legal documents (for cases of abuse, transferring or
+                            court related cases).</p>
                         <p class="text-start">5. ID of authorized representative and Authorization Letter</p>
                         <p class="text-start">6. ID of patient</p>
                         <p class="text-start">7. Proof of Relationship (Birth Certificate, Marriage Certificate)</p>
@@ -1042,24 +1088,30 @@ if (isset($_SESSION['userid'])) {
                     <img src="./img/food slider.png" class="d-block w-100" alt="Food Assistance">
                     <div class="carousel-caption d-none d-md-block">
                         <h3>Food Assistance</h3>
-                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of low income</p>
+                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of
+                            low income</p>
                         <p class="text-start">2. Valid ID (Photocopy)</p>
                         <p class="text-start">3. Marriage Certificate or Birth Certificate</p>
-                        <p class="text-start">4. Disaster Certificate (if applicable for calamity affected individual)</p>
-                        <p class="text-start">5. Medical Certificate or Referral (if applicable for malnourished individual or those with health conditions requiring food aid)</p>
+                        <p class="text-start">4. Disaster Certificate (if applicable for calamity affected individual)
+                        </p>
+                        <p class="text-start">5. Medical Certificate or Referral (if applicable for malnourished
+                            individual or those with health conditions requiring food aid)</p>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="./img/medical slider.png" class="d-block w-100" alt="Medical Assistance">
                     <div class="carousel-caption d-none d-md-block">
                         <h3>Medical Assistance</h3>
-                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of low income</p>
-                        <p class="text-start">2. Original or Certified True Copy of Latest Medical Certificate or Clinical Abstract</p>
+                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of
+                            low income</p>
+                        <p class="text-start">2. Original or Certified True Copy of Latest Medical Certificate or
+                            Clinical Abstract</p>
                         <p class="text-start">3. Hospital Billing Statement for Hospitalization or procedure</p>
                         <p class="text-start">4. Pharmacy Quotation for required medications.</p>
                         <p class="text-start">5. Laboratory/ Diagnostic request for test and imaging</p>
                         <p class="text-start">6. Original Official Receipts</p>
-                        <p class="text-start">7. Original or Certified True Copy of Certification of outstanding debts or Payable Obligations </p>
+                        <p class="text-start">7. Original or Certified True Copy of Certification of outstanding debts
+                            or Payable Obligations </p>
                         <p class="text-start">8. ID of authorized representative and Authorization Letter)</p>
                         <p class="text-start">9. ID of patient</p>
                         <p class="text-start">10. Proof of Relationship (Birth Certificate, Marriage Certificate)</p>
@@ -1069,18 +1121,21 @@ if (isset($_SESSION['userid'])) {
                     <img src="./img/Cash slider.png" class="d-block w-100" alt="Cash Relief Assistance">
                     <div class="carousel-caption d-none d-md-block">
                         <h3>Cash Relief Assistance</h3>
-                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of low income</p>
+                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of
+                            low income</p>
                         <p class="text-start">2. Valid ID (Photocopy)</p>
                         <p class="text-start">3. Marriage Certificate or Birth Certificate</p>
                         <p class="text-start">4. Incident Report from BFP, LGU or disaster response agency.</p>
-                        <p class="text-start">5. Medical Certificate (if the applicant or a family member was injured in the disaster)</p>
+                        <p class="text-start">5. Medical Certificate (if the applicant or a family member was injured in
+                            the disaster)</p>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="./img/Bur slider.png" class="d-block w-100" alt="Burial Assistance">
                     <div class="carousel-caption d-none d-md-block">
                         <h3>Burial Assistance</h3>
-                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay proving financial incapacity</p>
+                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay proving
+                            financial incapacity</p>
                         <p class="text-start">2. Death Certificate </p>
                         <p class="text-start">3. Funeral Contract</p>
                         <p class="text-start">4. Original or certified true copy of Official Receipt</p>
@@ -1088,40 +1143,52 @@ if (isset($_SESSION['userid'])) {
                         <p class="text-start">6. ID of expired person</p>
                         <p class="text-start">7. Proof of Relationship (Birth Certificate) Photocopy</p>
                         <p class="text-start">8. Marriage Contract and Authorization Letter</p>
-                        <p class="text-start">9. Certification of Outstanding Debts or Payable Obligations (Original or Certified True Copy)</p>
+                        <p class="text-start">9. Certification of Outstanding Debts or Payable Obligations (Original or
+                            Certified True Copy)</p>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="./img/edu slider.png" class="d-block w-100" alt="Educational Assistance">
                     <div class="carousel-caption d-none d-md-block">
                         <h3>Educational Assistance</h3>
-                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay proving financial incapacity</p>
-                        <p class="text-start">2. Certified True Copy of Enrollment Assessment Form or Certificate of Enrollment</p>
+                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay proving
+                            financial incapacity</p>
+                        <p class="text-start">2. Certified True Copy of Enrollment Assessment Form or Certificate of
+                            Enrollment</p>
                         <p class="text-start">3. School ID of the student/ Beneficiary (Photocopy)</p>
                         <p class="text-start">4. Certified True Copy of Grades signed by the authorized personnel</p>
-                        <p class="text-start">5. Medical Certificate (if applicable for HIV and other health related cases)</p>
-                        <p class="text-start">6. Police Report/ Social Worker’s Assessment (for abuse and displacement cases)</p>
+                        <p class="text-start">5. Medical Certificate (if applicable for HIV and other health related
+                            cases)</p>
+                        <p class="text-start">6. Police Report/ Social Worker’s Assessment (for abuse and displacement
+                            cases)</p>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="./img/Psych slider.png" class="d-block w-100" alt="Psychosocial Support">
                     <div class="carousel-caption d-none d-md-block">
                         <h3>Psychosocial Support</h3>
-                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of low income</p>
+                        <p class="text-start">1. Updated Original Certificate of Indigency from Barangay with proof of
+                            low income</p>
                         <p class="text-start">2. Valid ID (Photocopy)</p>
                         <p class="text-start">3. Marriage Certificate or Birth Certificate</p>
-                        <p class="text-start">4. Referral Letter from Social Worker, Barangay Officer, or Mental Health Professional</p>
-                        <p class="text-start">5. Medical or Psychological Report (if applicable, for cases related to diagnosed mental health conditions)</p>
-                        <p class="text-start">6. Police or Legal Report (if applicable, for cases involving abuse, violence, or exploitation)</p>
-                        <p class="text-start">7. Original or Certified True Copy of Certification of outstanding debts or Payable Obligations </p>
+                        <p class="text-start">4. Referral Letter from Social Worker, Barangay Officer, or Mental Health
+                            Professional</p>
+                        <p class="text-start">5. Medical or Psychological Report (if applicable, for cases related to
+                            diagnosed mental health conditions)</p>
+                        <p class="text-start">6. Police or Legal Report (if applicable, for cases involving abuse,
+                            violence, or exploitation)</p>
+                        <p class="text-start">7. Original or Certified True Copy of Certification of outstanding debts
+                            or Payable Obligations </p>
                     </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>

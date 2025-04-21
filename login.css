@@ -28,7 +28,7 @@ body {
 }
 
 .logbox {
-  background-color:var(--primary-light);
+  background-color:#FFFFFF;
   padding: 30px;
   border-radius: 10px;
   width: 320px;
@@ -40,24 +40,41 @@ body {
 label {
   color: black;
 }
-.form-label {
-    position: absolute;
-    left: 50px;
-    top: 65px;
-    background-color: var(--primary-light);
-    padding: 0px 5px;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-input:focus+label {
-    transform: translateY(-25px);
-    color: var(--primary-dark);
-}
-input:focus + .form-label,
-input:not(:placeholder-shown) + .form-label {
-  transform: translateY(-20px);
-  font-size: 12px;
-  color: var(--primary-dark);
-}
 .text-center {
   color: black;
 }
+/* Login */
+.input-container {
+    position: relative;
+    margin: 20px 0;
+    background-color: #0066CC;
+  }
+  
+  .input-container input {
+    width: 100%;
+    padding: 12px 8px;
+    font-size: 16px;
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+    border-color: #0c0b0b;
+  }
+  
+  .input-container label {
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    color: #0066CC;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.2s ease all;
+  }
+  
+  .input-container input:focus + label,
+  .input-container input:not(:placeholder-shown) + label {
+    top: -8px;
+    left: 8px;
+    font-size: 12px;
+    color: #0c0b0b;
+    background: #ffffff;
+    padding: 0 4px;
+  }

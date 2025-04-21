@@ -27,7 +27,7 @@ if (empty($_SESSION['userid'])) {
     </head>
 
     <body class="overflow-x-hidden" style="min-width: 50em;">
-        <nav class="navbar navbar-expand-lg">
+        <nav class="sticky-top navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
                     <img class="logo" src="./img/AICS150.png" alt="AICS">
@@ -40,7 +40,7 @@ if (empty($_SESSION['userid'])) {
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#">Home</a>
+                            <a class="nav-link" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">About</a>
@@ -618,13 +618,49 @@ if (empty($_SESSION['userid'])) {
                             </ul>
                         </li>
                     </ul>
+                    <!-- search start -->
+                <div class="search-cont">
                     <div class="search-container">
-                        <form class="d-flex m-auto" role="search">
-                            <input class="form-control me-2 searchbar" type="search" placeholder="Search"
-                                aria-label="Search">
-                            <button class="btn btn-outline-light searchbtn" type="submit">Search</button>
-                        </form>
+                        <input type="text" placeholder="Search..." class="search-input">
+                        <button class="search-button" onclick="toggleSearch()">
+                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                            </svg>
+                        </button>
                     </div>
+                </div>
+                <script>
+                    function toggleSearch() {
+                        const searchInput = document.querySelector('.search-input');
+
+                        if (window.innerWidth <= 768) {
+                            if (searchInput.style.width === '200px') {
+                                searchInput.style.width = '0';
+                                searchInput.style.padding = '0';
+                                searchInput.style.opacity = '0';
+                            } else {
+                                searchInput.style.width = '200px';
+                                searchInput.style.padding = '10px 15px';
+                                searchInput.style.opacity = '1';
+                            }
+                        }
+                    }
+
+                    // Reset search bar on window resize
+                    window.addEventListener('resize', function() {
+                        const searchInput = document.querySelector('.search-input');
+                        if (window.innerWidth > 768) {
+                            searchInput.style.width = '100%';
+                            searchInput.style.padding = '10px 15px';
+                            searchInput.style.opacity = '1';
+                        } else {
+                            searchInput.style.width = '0';
+                            searchInput.style.padding = '0';
+                            searchInput.style.opacity = '0';
+                        }
+                    });
+                </script>
+                <!-- search end -->
                     <?php if (empty($_SESSION['userid'])) { ?>
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li class="nav-item">
@@ -662,17 +698,27 @@ if (empty($_SESSION['userid'])) {
             <div class="d-flex flex-column justify-content-center align-items-center mt-2">
                 <form method="POST" class="logbox">
                     <div class="mb-3">
-                    <h1 class="textHead">Login</h1>
+                        <h1 class="textHead">Login</h1>
                         <img src="./img/AICS150.png" alt="AICS LOGO" id="logoLog">
-                        <label for="account" class="form-label">Username or Email</label>
+                        <!-- <label for="account" class="form-label">Username or Email</label>
                         <input type="text" class="form-control" placeholder="Enter Username/Email" name="account"
-                            maxlength="25" required>
+                            maxlength="25" required> -->
                     </div>
-                    <div class="mb-3">
+                    <div class="input-container" style="background-color: #FFFFFF">
+                        <input type="text" class="form-input" id="email" placeholder="Email" required
+                            style="background-color: #FFFFFF;" />
+                        <label for="account" style="color: #0c0b0b;">Email</label>
+                    </div>
+                    <div class="input-container" style="background-color: #FFFFFF">
+                        <input type="password" class="form-input" id="password" placeholder="Password" name="password" required
+                            style="background-color: #FFFFFF;" />
+                        <label for="Password" style="color: #0c0b0b;">Password</label>
+                    </div>
+                    <!-- <div class="mb-3">
                         <label for="Password" class="form-label">Password</label>
                         <input type="password" class="form-control" placeholder="Enter Password" name="password"
                             maxlength="15" required>
-                    </div>
+                    </div> -->
                     <div class="remember-me">
                         <input type="checkbox" id="remember">
                         <label for="remember">Remember me</label>

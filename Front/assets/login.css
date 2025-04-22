@@ -1,0 +1,80 @@
+:root {
+    --primary-dark: #000133;
+    --primary-color: #0347ff;
+    --primary-light: #f0f0f0;
+  }
+  
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  body {
+    background: linear-gradient(rgba(0, 1, 51, 0.65), rgba(0, 1, 51, 0.65)),
+      url("https://raw.githubusercontent.com/Beta-Tester-Max/Beta-Tester-Max.github.io/refs/heads/FE/img/bg1.png");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    color: white;
+    position: relative;
+  }
+  
+  .textHead {
+    text-align: left;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .logbox {
+    background-color:#FFFFFF;
+    padding: 30px;
+    border-radius: 10px;
+    width: 320px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .form-control {
+      background-color: var(--primary-light);
+  }
+  label {
+    color: black;
+  }
+  .text-center {
+    color: black;
+  }
+  /* Login */
+  .input-container {
+      position: relative;
+      margin: 20px 0;
+      background-color: #0066CC;
+    }
+    
+    .input-container input {
+      width: 100%;
+      padding: 12px 8px;
+      font-size: 16px;
+      border: 1px solid #ffffff;
+      border-radius: 6px;
+      border-color: #0c0b0b;
+    }
+    
+    .input-container label {
+      position: absolute;
+      top: 12px;
+      left: 8px;
+      color: #0066CC;
+      font-size: 16px;
+      pointer-events: none;
+      transition: 0.2s ease all;
+    }
+    
+    .input-container input:focus + label,
+    .input-container input:not(:placeholder-shown) + label {
+      top: -8px;
+      left: 8px;
+      font-size: 12px;
+      color: #0c0b0b;
+      background: #ffffff;
+      padding: 0 4px;
+    }

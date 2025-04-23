@@ -7,6 +7,6 @@ if (isset($_SESSION['file'])) {
     header("Content-Transfer-Encoding: binary");
     header("Accept-Ranges: bytes");
     @readfile($file);
-} else { ?>
+} elseif (empty($_SESSION['file'])) { ?>
     <script>window.location.href = "logout.php"</script>
 <?php }

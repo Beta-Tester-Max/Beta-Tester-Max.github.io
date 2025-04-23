@@ -278,8 +278,8 @@ try {
                                         where User_ID = :userid AND Status = 'Validated'");
                                     $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
                                     $sql->execute();
-                                    $row = $sql->fetch(PDO::FETCH_ASSOC);
-                                    while ($row) {
+                                    $data = $sql->fetchAll();
+                                    foreach ($data as $row) {
                                         $rows[] = $row["Document_Type"];
                                     }
                                     if (in_array("Barangay Indigency", $rows)) {

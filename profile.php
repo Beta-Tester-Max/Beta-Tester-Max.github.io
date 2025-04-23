@@ -13,7 +13,20 @@ if (empty($_SESSION["userid"])) { ?>
     <title>Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        @media (max-width: 991px) {
+                .modal-lg {
+                    min-width: 800px !important;
+                }
+            }
 
+            @media (max-width: 767px) {
+                .modal-xl {
+                    min-width: 1140px !important;
+                }
+            }
+    </style>
+</head>
 <body class="overflow-x-hidden" style="min-width: 50em;">
     <div class="container-fluid ">
         <div class="row d-flex justify-content-center align-items-center my-5">
@@ -81,7 +94,7 @@ if (empty($_SESSION["userid"])) { ?>
                             </button>
                             <div class="modal fade" id="<?php echo $id ?>" aria-hidden="true"
                                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalToggleLabel"><?php echo $at ?>
@@ -152,7 +165,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -170,7 +183,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -228,7 +241,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                         class="text-secondary" style="font-size: .8em;">Optional</i>
                                                                 </td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -253,7 +266,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -271,7 +284,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -342,7 +355,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                 <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
                                                                         style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -367,7 +380,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -385,7 +398,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -461,7 +474,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                 <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
                                                                         style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -486,7 +499,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -504,7 +517,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -577,7 +590,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                 <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
                                                                         style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -602,7 +615,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -620,7 +633,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -692,7 +705,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                 <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
                                                                         style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -717,7 +730,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -735,7 +748,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -793,7 +806,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                         class="text-secondary" style="font-size: .8em;">Optional</i>
                                                                 </td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -818,7 +831,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -836,7 +849,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -907,7 +920,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                 <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
                                                                         style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -932,7 +945,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -950,7 +963,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -1008,7 +1021,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                         class="text-secondary" style="font-size: .8em;">Optional</i>
                                                                 </td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -1033,7 +1046,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -1051,7 +1064,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -1122,7 +1135,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                 <td class="text-start"><?php echo $doclist ?> <b class="text-danger"
                                                                         style="font-size: .8em;">Required</b></td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -1147,7 +1160,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -1165,7 +1178,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -1223,7 +1236,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                         class="text-secondary" style="font-size: .8em;">Optional</i>
                                                                 </td>
                                                                 <?php
-                                                                $sql = $pdo->prepare("SELECT Status, File_ID
+                                                                $sql = $pdo->prepare("SELECT Status, File_ID, ReasonFR
                                                                         FROM requirements_tbl
                                                                         where User_ID = :userid AND Document_type = :doctype");
                                                                 $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
@@ -1248,7 +1261,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                             style="width: 1.5em; height: 1.5em;">
                                                                     <?php } ?>
                                                                 </td>
-                                                                <td><?php if (isset($fileid)) { ?>
+                                                                <td><?php if (empty($fileid) == false) { ?>
                                                                         <div class="d-flex">
                                                                             <form class="d-flex me-2" method="POST"
                                                                                 enctype="multipart/form-data">
@@ -1266,7 +1279,7 @@ if (empty($_SESSION["userid"])) { ?>
                                                                                     name="editRequirements">Edit</button>
                                                                             </form>
                                                                             <?php
-                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+                                                                            $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid AND is_deleted = '0'");
                                                                             $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                                                             $sql->execute();
                                                                             $row = $sql->fetch(PDO::FETCH_ASSOC);
@@ -1330,77 +1343,143 @@ if (empty($_SESSION["userid"])) { ?>
 
                             try {
                                 $pdo->beginTransaction();
-                                $sql = $pdo->prepare("SELECT File_Name FROM file_tbl where File_ID = :fileid");
+
+                                $sql = $pdo->prepare("SELECT Requirements_ID FROM requirements_tbl WHERE File_ID = :fileid");
+                                $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                $sql->execute();
+                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+                                $reqid = $row['Requirements_ID'];
+
+                                $sql = $pdo->prepare("SELECT File_Name FROM file_tbl WHERE File_ID = :fileid");
                                 $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                 $sql->execute();
                                 $row = $sql->fetch(PDO::FETCH_ASSOC);
 
                                 if ($row) {
                                     $oldfile = $row["File_Name"];
+                                    $oldlocation = "file/" . $oldfile;
                                     $deletedfilename = $fileid . "_deleted_" . $oldfile;
-                                    rename("file/" . $oldfile, "file/deletedfile/" . $deletedfilename);
+                                    $newlocation = "file/deletedfile/" . $deletedfilename;
+                                    rename($oldlocation, $newlocation);
 
                                     $sql = $pdo->prepare("UPDATE file_tbl
-                                                            SET File_Name = :deletedfile,
-                                                            is_deleted = '1'
-                                                            where User_ID = :userid
-                                                            AND File_ID = :fileid");
+                                                                SET File_Name = :deletedfile,
+                                                                    is_deleted = '1'
+                                                                WHERE File_ID = :fileid AND User_ID = :userid");
                                     $sql->bindParam(":deletedfile", $deletedfilename, PDO::PARAM_STR);
+                                    $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
                                     $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
-                                    $sql->bindParam(":fileid", $fileid, PDO::PARAM_STR);
+                                    $sql->execute();
 
-                                    if ($sql->execute()) {
-                                        $doc = str_replace(" ", "_", $_POST["docname"]);
-                                        $file = $_FILES["file"]["name"];
-                                        $fileSize = $_FILES["file"]["size"];
-                                        $tmpName = $_FILES["file"]["tmp_name"];
-                                        $extension = pathinfo($file, PATHINFO_EXTENSION);
+                                    $doc = str_replace(" ", "_", $_POST["docname"]);
+                                    $file = $_FILES["file"]["name"];
+                                    $fileSize = $_FILES["file"]["size"];
+                                    $tmpName = $_FILES["file"]["tmp_name"];
+                                    $extension = pathinfo($file, PATHINFO_EXTENSION);
+                                    $maxFileSize = 5 * 1024 * 1024;
 
-                                        $maxFileSize = 5 * 1024 * 1024;
-                                        if ($fileSize > $maxFileSize) {
-                                            die("File is too large. Maximum size allowed is 5MB.");
-                                        }
-
-                                        $fileType = mime_content_type($tmpName);
-                                        if ($fileType !== "application/pdf") {
-                                            die("Invalid file type. Only PDF files are allowed.");
-                                        }
-
-                                        $newFileName = $userid . "_" . $doc . "." . $extension;
-                                        $uploadDir = "file/";
-                                        $filePath = $uploadDir . $newFileName;
-
-                                        if (move_uploaded_file($tmpName, $filePath)) {
-                                            $sql = $pdo->prepare("INSERT INTO files_tbl (File_Name) VALUES (:filename)");
-                                            $sql->bindParam(":filename", $newFileName, PDO::PARAM_STR);
-                                            $sql->execute();
-
-                                            $pdo->commit();
-                                            ?>
-                                            <script>
-                                                alert("File Updated Successfully.")
-                                                window.location.href = "profile.php"
-                                            </script>
-                                            <?php
-
-                                        } else {
-                                            ?>
-                                            <script>
-                                                alert("Error Uploading File.")
-                                                window.location.href = "profile.php"
-                                            </script>
-                                            <?php
-                                        }
+                                    if ($fileSize > $maxFileSize) {
+                                        $pdo->rollBack();
+                                        ?>
+                                        <script>
+                                            alert("File is too large. Maximum size allowed is 5MB.");
+                                            window.location.href = "profile.php";
+                                        </script>
+                                        <?php
+                                        exit();
                                     }
-                                }
-                            } catch (PDOException $e) {
-                                $pdo->rollBack()
+
+                                    $fileType = mime_content_type($tmpName);
+                                    if ($fileType !== "application/pdf") {
+                                        $pdo->rollBack();
+                                        ?>
+                                        <script>
+                                            alert("Invalid file type. Only PDF files are allowed.");
+                                            window.location.href = "profile.php";
+                                        </script>
+                                        <?php
+                                        exit();
+                                    }
+
+                                    $newFileName = $userid . "_" . $doc . "." . $extension;
+                                    $uploadDir = "file/";
+                                    $filePath = $uploadDir . $newFileName;
+
+                                    if (move_uploaded_file($tmpName, $filePath)) {
+                                        $sql = $pdo->prepare("INSERT INTO file_tbl (User_ID, File_Name) VALUES (:userid, :filename)");
+                                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                        $sql->bindParam(":filename", $newFileName, PDO::PARAM_STR);
+
+                                        if ($sql->execute()) {
+                                            $newfileid = $pdo->lastInsertId();
+
+                                            $sql = $pdo->prepare("UPDATE requirements_tbl
+                                                                        SET File_ID = :fileid,
+                                                                        Status = 'Unvalidated',
+                                                                        ReasonFR = ''
+                                                                        where Requirements_ID = :reqid");
+                                            $sql->bindParam(":fileid", $newfileid, PDO::PARAM_INT);
+                                            $sql->bindParam(":reqid", $reqid, PDO::PARAM_INT);
+
+                                            if ($sql->execute()) {
+
+                                                $pdo->commit();
+                                                ?>
+                                                <script>
+                                                    alert("File Updated Successfully.");
+                                                    window.location.href = "profile.php";
+                                                </script>
+                                                <?php
+                                            } else {
+                                                $pdo->rollBack();
+                                                ?>
+                                                <script>
+                                                    alert("Error Updating Requirements.");
+                                                    window.location.href = "profile.php";
+                                                </script>
+                                                <?php
+                                            }
+                                        } else {
+                                            $pdo->rollBack();
+                                            ?>
+                                            <script>
+                                                alert("Error Updating File.");
+                                                window.location.href = "profile.php";
+                                            </script>
+                                            <?php
+                                            exit();
+                                        }
+                                    } else {
+                                        $pdo->rollBack();
+                                        ?>
+                                        <script>
+                                            alert("Error moving the uploaded file.");
+                                            window.location.href = "profile.php";
+                                        </script>
+                                        <?php
+                                        exit();
+                                    }
+                                } else {
+                                    $pdo->rollBack();
                                     ?>
+                                    <script>
+                                        alert("Old file not found.");
+                                        window.location.href = "profile.php";
+                                    </script>
+                                    <?php
+                                    exit();
+                                }
+
+                            } catch (PDOException $e) {
+                                $pdo->rollBack();
+                                ?>
                                 <script>
-                                    alert("Error Uploading File: <?php echo $e->getMessage() ?>")
-                                    window.location.href = "profile.php"
+                                    alert("Error: <?php echo $e->getMessage() ?>");
+                                    window.location.href = "profile.php";
                                 </script>
                                 <?php
+                                exit();
                             }
                             $sql = null;
                         }
@@ -1418,55 +1497,67 @@ if (empty($_SESSION["userid"])) { ?>
 
                             $maxFileSize = 5 * 1024 * 1024;
                             if ($fileSize > $maxFileSize) {
-                                die("File is too large. Maximum size allowed is 5MB.");
-                            }
-
-                            $fileType = mime_content_type($tmpName);
-                            if ($fileType !== "application/pdf") {
-                                die("Invalid file type. Only PDF files are allowed.");
-                            }
-
-                            try {
-                                $pdo->beginTransaction();
-                                $sql = $pdo->prepare("INSERT INTO file_tbl (User_ID, File_Name) VALUES (:userid, :filename)");
-                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
-                                $sql->bindParam(":filename", $newFileName, PDO::PARAM_STR);
-                                $sql->execute();
-
-                                if (move_uploaded_file($tmpName, $filePath)) {
-                                    $fileid = $pdo->lastInsertId();
-
-                                    $sql = $pdo->prepare("INSERT INTO requirements_tbl (User_ID, Document_Type, File_ID, Importance)
-                                    VALUES (:userid, :doctype, :fileid, :importance)");
-                                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
-                                    $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
-                                    $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
-                                    $sql->bindParam(":importance", $importance, PDO::PARAM_STR);
-
-                                    if ($sql->execute()) {
-                                        $pdo->commit();
-                                        ?>
-                                        <script>alert("Files Uploaded Successfully.")
-                                            window.location.href = "profile.php"
-                                        </script><?php
-                                    } else { ?>
-                                        <script>alert("Error in upon sending in Database.")
-                                            window.location.href = "profile.php"
-                                        </script>
-                                    <?php }
-                                } else { ?>
-                                    <script>alert("Error in Moving File.")
-                                        window.location.href = "profile.php"
-                                    </script>
-                                <?php }
-                            } catch (PDOException $e) {
-                                $pdo->rollBack()
-                                    ?>
+                                ?>
                                 <script>
-                                    alert("Error Uploading File: <?php echo $e->getMessage() ?>")
+                                    alert("File is too large. Maximum size allowed is 5MB.")
                                     window.location.href = "profile.php"
                                 </script>
                                 <?php
+                            } else {
+
+                                $fileType = mime_content_type($tmpName);
+                                if ($fileType !== "application/pdf") {
+                                    ?>
+                                    <script>
+                                        alert("Invalid file type. Only PDF files are allowed.")
+                                        window.location.href = "profile.php"
+                                    </script>
+                                    <?php
+                                } else {
+
+                                    try {
+                                        $pdo->beginTransaction();
+                                        $sql = $pdo->prepare("INSERT INTO file_tbl (User_ID, File_Name) VALUES (:userid, :filename)");
+                                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                        $sql->bindParam(":filename", $newFileName, PDO::PARAM_STR);
+                                        $sql->execute();
+
+                                        if (move_uploaded_file($tmpName, $filePath)) {
+                                            $fileid = $pdo->lastInsertId();
+
+                                            $sql = $pdo->prepare("INSERT INTO requirements_tbl (User_ID, Document_Type, File_ID, Importance)
+                                    VALUES (:userid, :doctype, :fileid, :importance)");
+                                            $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                            $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                            $sql->bindParam(":fileid", $fileid, PDO::PARAM_INT);
+                                            $sql->bindParam(":importance", $importance, PDO::PARAM_STR);
+
+                                            if ($sql->execute()) {
+                                                $pdo->commit();
+                                                ?>
+                                                <script>alert("Files Uploaded Successfully.")
+                                                    window.location.href = "profile.php"
+                                                </script><?php
+                                            } else { ?>
+                                                <script>alert("Error in upon sending in Database.")
+                                                    window.location.href = "profile.php"
+                                                </script>
+                                            <?php }
+                                        } else { ?>
+                                            <script>alert("Error in Moving File.")
+                                                window.location.href = "profile.php"
+                                            </script>
+                                        <?php }
+                                    } catch (PDOException $e) {
+                                        $pdo->rollBack()
+                                            ?>
+                                        <script>
+                                            alert("Error Uploading File: <?php echo $e->getMessage() ?>")
+                                            window.location.href = "profile.php"
+                                        </script>
+                                        <?php
+                                    }
+                                }
                             }
                             $sql = null;
                         } ?>
@@ -1496,17 +1587,17 @@ if (empty($_SESSION["userid"])) { ?>
                                 AND status = 'Pending'");
                         $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
                         $sql->execute();
-
-                        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        $data = $sql->fetchAll();
+                        foreach ($data as $row) {
                             $appid = htmlspecialchars($row["Application_ID"], ENT_QUOTES, 'UTF-8');
                             $assType = htmlspecialchars($row["Assistance_Type"], ENT_QUOTES, 'UTF-8');
                             $status = htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8');
                             $dateSub = htmlspecialchars($row["Date_Submitted"], ENT_QUOTES, 'UTF-8');
                             ?>
                             <tr>
-                                <th><?php echo $assType ?></th>
-                                <th class="text-center text-warning"><?php echo $status ?></th>
-                                <th class="text-center"><?php echo $dateSub ?></th>
+                                <th class="align-middle"><?php echo $assType ?></th>
+                                <th class="text-center text-warning align-middle"><?php echo $status ?></th>
+                                <th class="text-center align-middle"><?php echo $dateSub ?></th>
                                 <th class="d-flex">
                                     <form method="POST">
                                         <button type="submit" name="editForm" class="btn btn-primary me-1">Edit</button>
@@ -1564,8 +1655,8 @@ if (empty($_SESSION["userid"])) { ?>
                                 AND NOT Status = 'Pending'");
                         $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
                         $sql->execute();
-
-                        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        $data = $sql->fetchAll();
+                        foreach ($data as $row) {
                             $assType = htmlspecialchars($row["Assistance_Type"], ENT_QUOTES, 'UTF-8');
                             $status = htmlspecialchars($row["Status"], ENT_QUOTES, 'UTF-8');
                             $dateAoR = htmlspecialchars($row["Date_ApporRej"], ENT_QUOTES, 'UTF-8');

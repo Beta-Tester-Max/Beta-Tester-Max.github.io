@@ -1,17 +1,16 @@
-<!doctype html>
 <?php include "connect.php";
 session_start();
-if (empty($_SESSION['userid'])) { ?>
+if (empty($_SESSION["userid"])) { ?>
     <script>window.location.href = "logout.php";</script><?php
 } else {
-    $userid = $_SESSION['userid'];
+    $userid = $_SESSION["userid"];
 }
-if (empty($_SESSION['assistancetype'])) {
+if (empty($_SESSION["assistancetype"])) {
     ?>
     <script>window.location.href = "index.php"</script>
     <?php
 } else {
-    $assistancetype = $_SESSION['assistancetype'];
+    $assistancetype = $_SESSION["assistancetype"];
 }
 ?>
 <!doctype html>
@@ -39,15 +38,17 @@ if (empty($_SESSION['assistancetype'])) {
                     <h3><?php echo $assistancetype ?> <b>Application Form</b></h3>
                 </div>
                 <form method="POST">
-                    <?php $sql = "SELECT t1.Fname, t1.Mname, t1.Lname, t1.Birth_Date, t1.Civil_Status, t1.Contact_Number,
+                    <?php $sql = $pdo->prepare("SELECT t1.Fname, t1.Mname, t1.Lname, t1.Birth_Date, t1.Civil_Status, t1.Contact_Number,
                                     t2.Email,
                                     t3.Address_ID, t3.Street_Address, t3.Barangay, t3.CityorMunicipality, t3.Province
                                     FROM userinfo_tbl AS t1, 
                                     register_tbl AS t2,
                                     address_tbl AS t3
-                                    where t1.User_ID = '$userid' AND t2.User_ID = '$userid' AND t3.User_ID = '$userid'";
-                    $result = mysqli_query($conn, $sql);
-                    $row = mysqli_fetch_assoc($result);
+                                    where t1.User_ID = :userid AND t2.User_ID = :userid AND t3.User_ID = :userid");
+                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $row = sanitize($result);
                     $address = $row["Address_ID"];
                     ?>
                     <div class="row">
@@ -117,12 +118,16 @@ if (empty($_SESSION['assistancetype'])) {
                                         <select class="form-select" id="file01" name="file01" required>
                                             <option value="">Select a Document Type</option>
                                             <?php $documenttype = "Barangay Indigency";
-                                            $sql = "SELECT File_ID
+                                            $sql = $pdo->prepare("SELECT File_ID
                                                     FROM requirements_tbl 
-                                                    where User_ID = '$userid' 
-                                                    AND Document_Type = '$documenttype' AND Status = 'Validated'";
-                                            $result = mysqli_query($conn, $sql);
-                                            while ($row = mysqli_fetch_array($result)) {
+                                                    where User_ID = :userid 
+                                                    AND Document_Type = :doctype AND Status = 'Validated'");
+                                            $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                            $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                            $sql->execute();
+                                            $data = $sql->fetchall();
+                                            $result = sanitize($data);
+                                            foreach ($result as $row) {
                                                 ?>
                                                 <option value="<?php echo $row['File_ID']; ?>">
                                                     <?php echo $documenttype ?>
@@ -136,30 +141,40 @@ if (empty($_SESSION['assistancetype'])) {
                                             <option value="">Select a Document Type</option>
                                             <?php if ($assistancetype === "Medical Assistance" || $assistancetype === "Educational Assistance") {
                                                 $documenttype1 = ($assistancetype === "Medical Assistance") ? "Medical Certificate" : "Enrollment Assessment Form";
-                                                $documenttype2 = ($assistancetype === "Medical Assistance") ? "Clinical Abstact" : "Certificate of Enrollment";
-                                                $sql = "SELECT Document_Type, File_ID
+                                                $documenttype2 = ($assistancetype === "Medical Assistance") ? "Clinical Abstract" : "Certificate of Enrollment";
+                                                $sql = $pdo->prepare("SELECT Document_Type, File_ID
                                                                 FROM requirements_tbl 
-                                                                where User_ID = '$userid' 
+                                                                where User_ID = :userid 
                                                                 AND Status = 'Validated'
-                                                                AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                $result = mysqli_query($conn, $sql);
+                                                                AND (Document_Type = :doctype1 OR Document_Type = :doctype2)");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype1", $documenttype1, PDO::PARAM_STR);
+                                                $sql->bindParam(":doctype2", $documenttype2, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchall();
+                                                $result = sanitize($data);
                                             } else {
-                                                switch ($documenttype) {
+                                                switch ($assistancetype) {
                                                     case "Transportation Assistance":
                                                         $documenttype = "Medical Certificate Referral";
-                                                    break;
+                                                        break;
                                                     case "Burial Assistance":
                                                         $documenttype = "Death Certificate";
-                                                    break;
+                                                        break;
                                                     default:
                                                         $documenttype = "Valid ID";
                                                 }
-                                            $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
-                                            $result = mysqli_query($conn, $sql);}
-                                            while ($row = mysqli_fetch_array($result)) {
+                                                $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                FROM requirements_tbl 
+                                                where User_ID = :userid 
+                                                AND Document_Type = :doctype AND Status = 'Validated'");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchall();
+                                                $result = sanitize($data);
+                                            }
+                                            foreach ($result as $row) {
                                                 ?>
                                                 <option value="<?php echo $row['File_ID'] ?>">
                                                     <?php echo $row['Document_Type'] ?>
@@ -183,11 +198,15 @@ if (empty($_SESSION['assistancetype'])) {
                                                         $documenttype = "School ID";
                                                         break;
                                                 }
-                                                $sql = "SELECT Document_Type, File_ID
-                                                                FROM requirements_tbl 
-                                                                where User_ID = '$userid' AND Status = 'Validated'
-                                                                AND Document_Type = '$documenttype'";
-                                                $result = mysqli_query($conn, $sql);
+                                                $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                FROM requirements_tbl 
+                                                where User_ID = :userid 
+                                                AND Document_Type = :doctype AND Status = 'Validated'");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchAll();
+                                                $result = sanitize($data);
                                             } else {
                                                 if ($assistancetype === "Transportation Assistance") {
                                                     $documenttype1 = "Death Certificate";
@@ -196,13 +215,19 @@ if (empty($_SESSION['assistancetype'])) {
                                                     $documenttype1 = "Birth Certificate";
                                                     $documenttype2 = "Marriage Certificate";
                                                 }
-                                                $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                $result = mysqli_query($conn, $sql);
+                                                $sql = $pdo->prepare("SELECT Document_Type, File_ID
+                                                                FROM requirements_tbl 
+                                                                where User_ID = :userid 
+                                                                AND Status = 'Validated'
+                                                                AND (Document_Type = :doctype1 OR Document_Type = :doctype2)");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype1", $documenttype1, PDO::PARAM_STR);
+                                                $sql->bindParam(":doctype2", $documenttype2, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchAll();
+                                                $result = sanitize($data);
                                             }
-                                            while ($row = mysqli_fetch_array($result)) {
+                                            foreach ($result as $row) {
                                                 ?>
                                                 <option value="<?php echo $row['File_ID'] ?>">
                                                     <?php echo $row['Document_Type'] ?>
@@ -243,12 +268,16 @@ if (empty($_SESSION['assistancetype'])) {
                                                         ;
                                                         break;
                                                 }
-                                                $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
-                                                $result = mysqli_query($conn, $sql);
-                                                while ($row = mysqli_fetch_array($result)) {
+                                                $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                FROM requirements_tbl 
+                                                where User_ID = :userid 
+                                                AND Document_Type = :doctype AND Status = 'Validated'");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchAll();
+                                                $result = sanitize($data);
+                                                foreach ($result as $row) {
                                                     ?>
                                                     <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
@@ -267,11 +296,15 @@ if (empty($_SESSION['assistancetype'])) {
                                                 <option value="">Select a Document Type</option>
                                                 <?php if ($assistancetype === "Transportation Assistance" || $assistancetype === "Burial Assistance" || $assistancetype === "Educational Assistance") {
                                                     $documenttype = ($assistancetype === "Educational Assistance") ? "Medical Certificate" : "Representative Valid ID";
-                                                    $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' 
-                                                            AND Document_Type = '$documenttype' AND Status = 'Validated'";
-                                                    $result = mysqli_query($conn, $sql);
+                                                    $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                    FROM requirements_tbl 
+                                                    where User_ID = :userid 
+                                                    AND Document_Type = :doctype AND Status = 'Validated'");
+                                                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                    $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                    $sql->execute();
+                                                    $data = $sql->fetchAll();
+                                                    $result = sanitize($data);
                                                 } else {
                                                     if ($assistancetype === "Medical Assistance") {
                                                         $documenttype1 = "Laboratory Request";
@@ -283,13 +316,19 @@ if (empty($_SESSION['assistancetype'])) {
                                                         $documenttype1 = "Medical Certificate";
                                                         $documenttype2 = "Medical Referral";
                                                     }
-                                                    $sql = "SELECT Document_Type, File_ID
-                                                    FROM requirements_tbl 
-                                                    where User_ID = '$userid' AND Status = 'Validated' 
-                                                    AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                    $result = mysqli_query($conn, $sql);
+                                                    $sql = $pdo->prepare("SELECT Document_Type, File_ID
+                                                                FROM requirements_tbl 
+                                                                where User_ID = :userid 
+                                                                AND Status = 'Validated'
+                                                                AND (Document_Type = :doctype1 OR Document_Type = :doctype2)");
+                                                    $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                    $sql->bindParam(":doctype1", $documenttype1, PDO::PARAM_STR);
+                                                    $sql->bindParam(":doctype2", $documenttype2, PDO::PARAM_STR);
+                                                    $sql->execute();
+                                                    $data = $sql->fetchAll();
+                                                    $result = sanitize($data);
                                                 }
-                                                while ($row = mysqli_fetch_array($result)) {
+                                                foreach ($result as $row) {
                                                     ?>
                                                     <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
@@ -313,20 +352,30 @@ if (empty($_SESSION['assistancetype'])) {
                                                     <?php if ($assistancetype === "Educational Assistance" || $assistancetype === "Psychosocial Support") {
                                                         $documenttype1 = "Police Report";
                                                         $documenttype2 = htmlspecialchars(($assistancetype === "Educational Assistance") ? "Social Worker's Assessment" : "Legal Report");
-                                                        $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                        $result = mysqli_query($conn, $sql);
+                                                        $sql = $pdo->prepare("SELECT Document_Type, File_ID
+                                                                FROM requirements_tbl 
+                                                                where User_ID = :userid 
+                                                                AND Status = 'Validated'
+                                                                AND (Document_Type = :doctype1 OR Document_Type = :doctype2)");
+                                                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                        $sql->bindParam(":doctype1", $documenttype1, PDO::PARAM_STR);
+                                                        $sql->bindParam(":doctype2", $documenttype2, PDO::PARAM_STR);
+                                                        $sql->execute();
+                                                        $data = $sql->fetchAll();
+                                                        $result = sanitize($data);
                                                     } else {
                                                         $documenttype = ($assistancetype === "Medical Assistance") ? "Official Receipts" : "Valid ID";
-                                                        $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND Document_Type = '$documenttype'";
-                                                        $result = mysqli_query($conn, $sql);
+                                                        $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                                                    FROM requirements_tbl 
+                                                                                    where User_ID = :userid 
+                                                                                    AND Document_Type = :doctype AND Status = 'Validated'");
+                                                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                        $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                        $sql->execute();
+                                                        $data = $sql->fetchAll();
+                                                        $result = sanitize($data);
                                                     }
-                                                    while ($row = mysqli_fetch_array($result)) {
+                                                    foreach ($result as $row) {
                                                         ?>
                                                         <option value="<?php echo $row['File_ID'] ?>">
                                                             <?php echo $row['Document_Type'] ?>
@@ -347,11 +396,15 @@ if (empty($_SESSION['assistancetype'])) {
                                                     <option value="">Select a Document Type</option>
                                                     <?php if ($assistancetype === "Medical Assistance") {
                                                         $documenttype = "Outstanding Payer Certificate";
-                                                        $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND Document_Type = '$documenttype'";
-                                                        $result = mysqli_query($conn, $sql);
+                                                        $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                        FROM requirements_tbl 
+                                                        where User_ID = :userid 
+                                                        AND Document_Type = :doctype AND Status = 'Validated'");
+                                                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                        $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                        $sql->execute();
+                                                        $data = $sql->fetchAll();
+                                                        $result = sanitize($data);
                                                     } else {
                                                         if ($assistancetype === "Psychosocial Support") {
                                                             $documenttype1 = "Disaster Certificate";
@@ -360,13 +413,19 @@ if (empty($_SESSION['assistancetype'])) {
                                                             $documenttype1 = "Birth Certificate";
                                                             $documenttype2 = "Marriage Certificate";
                                                         }
-                                                        $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                        $result = mysqli_query($conn, $sql);
+                                                        $sql = $pdo->prepare("SELECT Document_Type, File_ID
+                                                                FROM requirements_tbl 
+                                                                where User_ID = :userid 
+                                                                AND Status = 'Validated'
+                                                                AND (Document_Type = :doctype1 OR Document_Type = :doctype2)");
+                                                        $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                        $sql->bindParam(":doctype1", $documenttype1, PDO::PARAM_STR);
+                                                        $sql->bindParam(":doctype2", $documenttype2, PDO::PARAM_STR);
+                                                        $sql->execute();
+                                                        $data = $sql->fetchAll();
+                                                        $result = sanitize($data);
                                                     }
-                                                    while ($row = mysqli_fetch_array($result)) {
+                                                    foreach ($result as $row) {
                                                         ?>
                                                         <option value="<?php echo $row['File_ID'] ?>">
                                                             <?php echo $row['Document_Type'] ?>
@@ -381,12 +440,16 @@ if (empty($_SESSION['assistancetype'])) {
                                             <select class="form-select" id="file08" name="file08" required>
                                                 <option value="">Select a Document Type</option>
                                                 <?php $documenttype = ($assistancetype === "Medical Assistance") ? "Representative Valid ID" : "Marriage Contract";
-                                                $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND Document_Type = '$documenttype'";
-                                                $result = mysqli_query($conn, $sql);
-                                                while ($row = mysqli_fetch_array($result)) {
+                                                $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                FROM requirements_tbl 
+                                                where User_ID = :userid 
+                                                AND Document_Type = :doctype AND Status = 'Validated'");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchAll();
+                                                $result = sanitize($data);
+                                                foreach ($result as $row) {
                                                     ?>
                                                     <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
@@ -401,12 +464,16 @@ if (empty($_SESSION['assistancetype'])) {
                                             <select class="form-select" id="file09" name="file09" required>
                                                 <option value="">Select a Document Type</option>
                                                 <?php $documenttype = "Authorization Letter";
-                                                $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND Document_Type = '$documenttype'";
-                                                $result = mysqli_query($conn, $sql);
-                                                while ($row = mysqli_fetch_array($result)) {
+                                                $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                FROM requirements_tbl 
+                                                where User_ID = :userid 
+                                                AND Document_Type = :doctype AND Status = 'Validated'");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchAll();
+                                                $result = sanitize($data);
+                                                foreach ($result as $row) {
                                                     ?>
                                                     <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
@@ -421,12 +488,16 @@ if (empty($_SESSION['assistancetype'])) {
                                             <select class="form-select" id="file10" name="file10" required>
                                                 <option value="">Select a Document Type</option>
                                                 <?php $documenttype = ($assistancetype === "Medical Assistance") ? "Valid ID" : "Outstanding Payer Certificate";
-                                                $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND Document_Type = '$documenttype'";
-                                                $result = mysqli_query($conn, $sql);
-                                                while ($row = mysqli_fetch_array($result)) {
+                                                $sql = $pdo->prepare("SELECT File_ID, Document_Type
+                                                FROM requirements_tbl 
+                                                where User_ID = :userid 
+                                                AND Document_Type = :doctype AND Status = 'Validated'");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype", $documenttype, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchAll();
+                                                $result = sanitize($data);
+                                                foreach ($result as $row) {
                                                     ?>
                                                     <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
@@ -447,12 +518,18 @@ if (empty($_SESSION['assistancetype'])) {
                                                 <option value="">Select a Document Type</option>
                                                 <?php $documenttype1 = "Birth Certificate";
                                                 $documenttype2 = "Marriage Certificate";
-                                                $sql = "SELECT Document_Type, File_ID
-                                                            FROM requirements_tbl 
-                                                            where User_ID = '$userid' AND Status = 'Validated'
-                                                            AND (Document_Type = '$documenttype1' OR Document_Type = '$documenttype2')";
-                                                $result = mysqli_query($conn, $sql);
-                                                while ($row = mysqli_fetch_array($result)) {
+                                                $sql = $pdo->prepare("SELECT Document_Type, File_ID
+                                                                FROM requirements_tbl 
+                                                                where User_ID = :userid 
+                                                                AND Status = 'Validated'
+                                                                AND (Document_Type = :doctype1 OR Document_Type = :doctype2)");
+                                                $sql->bindParam(":userid", $userid, PDO::PARAM_INT);
+                                                $sql->bindParam(":doctype1", $documenttype1, PDO::PARAM_STR);
+                                                $sql->bindParam(":doctype2", $documenttype2, PDO::PARAM_STR);
+                                                $sql->execute();
+                                                $data = $sql->fetchAll();
+                                                $result = sanitize($data);
+                                                foreach ($result as $row) {
                                                     ?>
                                                     <option value="<?php echo $row['File_ID'] ?>">
                                                         <?php echo $row['Document_Type'] ?>
@@ -478,7 +555,7 @@ if (empty($_SESSION['assistancetype'])) {
                     $civsta = $_POST['civilstatus'];
                     $phoneno = $_POST['phoneno'];
                     $email = $_POST['email'];
-                    $reason = htmlspecialchars($_POST['reason']);
+                    $reason = $_POST['reason'];
                     $req1 = $_POST['file01'];
                     $req2 = $_POST['file02'];
                     $req3 = $_POST['file03'];
@@ -491,11 +568,42 @@ if (empty($_SESSION['assistancetype'])) {
                     $req10 = $_POST['file10'];
                     $req11 = $_POST['file11'];
                     $date = date('Y-m-d');
-                    $sql = "INSERT INTO application_tbl (User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type, Civil_Status, Contact_Number, Email, Reason, Req1, Req2, req3, req4, req5, req6, req7, req8, req9, req10, req11, Date_Submitted)
-                                    VALUES('$userid', '$fullname', '$bday', '$address', '$assistancetype', '$civsta', '$phoneno', '$email', '$reason', '$req1', '$req2', '$req3', '$req4', '$req5', '$req6', '$req7', '$req8', '$req9', '$req10', '$req11', '$date')";
-                    if ($result = mysqli_query($conn, $sql)) {
+                    $sql = $pdo->prepare("INSERT INTO application_tbl (
+                        User_ID, Full_Name, Birth_Date, Address_ID, Assistance_Type,
+                        Civil_Status, Contact_Number, Email, Reason, Req1, Req2,
+                        req3, req4, req5, req6, req7, req8, req9, req10, req11,
+                        Date_Submitted
+                    ) VALUES (
+                        :userid, :fullname, :bday, :address, :assistancetype,
+                        :civsta, :phoneno, :email, :reason, :req1, :req2,
+                        :req3, :req4, :req5, :req6, :req7, :req8, :req9, :req10, :req11,
+                        :date
+                    )");
+
+                    $sql->bindParam(':userid', $userid, PDO::PARAM_INT);
+                    $sql->bindParam(':fullname', $fullname, PDO::PARAM_STR);
+                    $sql->bindParam(':bday', $bday, PDO::PARAM_STR);
+                    $sql->bindParam(':address', $address, PDO::PARAM_INT);
+                    $sql->bindParam(':assistancetype', $assistancetype, PDO::PARAM_STR);
+                    $sql->bindParam(':civsta', $civsta, PDO::PARAM_STR);
+                    $sql->bindParam(':phoneno', $phoneno, PDO::PARAM_STR);
+                    $sql->bindParam(':email', $email, PDO::PARAM_STR);
+                    $sql->bindParam(':reason', $reason, PDO::PARAM_STR);
+                    $sql->bindParam(':req1', $req1, PDO::PARAM_INT);
+                    $sql->bindParam(':req2', $req2, PDO::PARAM_INT);
+                    $sql->bindParam(':req3', $req3, PDO::PARAM_INT);
+                    $sql->bindParam(':req4', $req4, PDO::PARAM_INT);
+                    $sql->bindParam(':req5', $req5, PDO::PARAM_INT);
+                    $sql->bindParam(':req6', $req6, PDO::PARAM_INT);
+                    $sql->bindParam(':req7', $req7, PDO::PARAM_INT);
+                    $sql->bindParam(':req8', $req8, PDO::PARAM_INT);
+                    $sql->bindParam(':req9', $req9, PDO::PARAM_INT);
+                    $sql->bindParam(':req10', $req10, PDO::PARAM_INT);
+                    $sql->bindParam(':req11', $req11, PDO::PARAM_INT);
+                    $sql->bindParam(':date', $date, PDO::PARAM_STR);
+                    if ($sql->execute()) {
                         unset($_SESSION['assistancetype']);
-                        unset($_SESSION['goback'])?>
+                        unset($_SESSION['goback']) ?>
                         <script>alert("Your Application has been Submitted.")
                             window.location.href = "profile.php"</script><?php
                     }

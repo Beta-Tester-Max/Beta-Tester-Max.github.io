@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2025 at 11:00 AM
+-- Generation Time: Apr 25, 2025 at 07:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,8 +18,35 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `aics database`
+-- Database: `aics_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `access_control_tbl`
+--
+
+CREATE TABLE `access_control_tbl` (
+  `ID` int(11) NOT NULL,
+  `Access_Level` varchar(10) NOT NULL,
+  `Mod1` tinyint(1) NOT NULL DEFAULT 0,
+  `Mod2` tinyint(1) NOT NULL DEFAULT 0,
+  `Access_Control` tinyint(1) NOT NULL DEFAULT 0,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `access_control_tbl`
+--
+
+INSERT INTO `access_control_tbl` (`ID`, `Access_Level`, `Mod1`, `Mod2`, `Access_Control`, `is_deleted`) VALUES
+(1, 'Admin', 1, 1, 1, 0),
+(6, 'User', 0, 0, 0, 0),
+(7, 'Mod', 1, 1, 0, 1),
+(8, 'Mod', 1, 1, 0, 0),
+(9, 'Validator', 1, 0, 0, 0),
+(10, 'Staff', 0, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -43,9 +70,8 @@ CREATE TABLE `address_tbl` (
 --
 
 INSERT INTO `address_tbl` (`Address_ID`, `User_ID`, `Street_Address`, `Barangay`, `CityorMunicipality`, `Province`, `Region`, `Zip_Code`) VALUES
-(2, 20, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001),
-(3, 22, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001),
-(4, 23, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001);
+(6, 25, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001),
+(7, 26, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001);
 
 -- --------------------------------------------------------
 
@@ -99,6 +125,14 @@ CREATE TABLE `file_tbl` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `file_tbl`
+--
+
+INSERT INTO `file_tbl` (`File_ID`, `User_ID`, `File_Name`, `TimeStamp`, `is_deleted`) VALUES
+(32, 25, '25_Barangay_Indigency.pdf', '2025-04-24 01:14:15', 0),
+(33, 26, '26_Barangay_Indigency.pdf', '2025-04-24 01:17:55', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -112,22 +146,6 @@ CREATE TABLE `messages_tbl` (
   `Message` text NOT NULL,
   `Timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `messages_tbl`
---
-
-INSERT INTO `messages_tbl` (`Message_ID`, `Sender_ID`, `Reciever_ID`, `Message`, `Timestamp`) VALUES
-(39, 22, 20, 'Hello How Are You', '2025-04-04 08:02:41'),
-(40, 22, 20, 'Have u been well?', '2025-04-04 08:02:54'),
-(41, 20, 22, 'Ive been fine', '2025-04-04 08:03:18'),
-(42, 20, 22, 'Thank you', '2025-04-04 08:03:24'),
-(43, 20, 22, 'U?', '2025-04-04 08:03:33'),
-(44, 22, 20, 'Im doing fine as well', '2025-04-04 08:04:06'),
-(45, 22, 20, 'thank you', '2025-04-04 08:04:11'),
-(46, 22, 20, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2025-04-04 08:04:51'),
-(47, 20, 22, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2025-04-04 08:06:06'),
-(48, 23, 20, 'hello im new here', '2025-04-08 01:15:56');
 
 -- --------------------------------------------------------
 
@@ -150,10 +168,9 @@ CREATE TABLE `register_tbl` (
 --
 
 INSERT INTO `register_tbl` (`User_ID`, `Username`, `Profile_Pic`, `Email`, `Password`, `Access_Level`, `Timestamp`) VALUES
-(1, 'Admin', '', '', '123', 'Admin', '0000-00-00 00:00:00'),
-(20, 'Test', '', '1234@gmail.com', '123', 'User', '2025-04-03 07:10:26'),
-(22, 'hello', '', 'jduser@gmail.com', '123', 'User', '2025-04-04 08:02:03'),
-(23, 'air_jane', '', 'airjane@gmail.com', '123', 'User', '2025-04-08 01:15:07');
+(1, 'Admin', '', '', '$2y$10$HXSTS5yRlEgMCXk7OWmiJufCx56XUkHA6lA.hcR.WoP.PRQZU8rl.', 'Admin', '0000-00-00 00:00:00'),
+(25, 'Test', '', 'jduser@gmail.com', '$2y$10$VxV2sngnEWpjPyUUH2Ilie8bIOh/CJC91701qKrWNumRzQdXh8cvq', 'User', '2025-04-24 01:13:37'),
+(26, 'ph', '', 'ph@gmail.com', '$2y$10$Fo1h2cEQUkLRLOmWjEGi0.EDTRMtRRidEYe.RHt9ZVV/6wV5oaHc6', 'User', '2025-04-24 01:16:09');
 
 -- --------------------------------------------------------
 
@@ -171,6 +188,14 @@ CREATE TABLE `requirements_tbl` (
   `ReasonFR` text NOT NULL,
   `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `requirements_tbl`
+--
+
+INSERT INTO `requirements_tbl` (`Requirements_ID`, `User_ID`, `Document_Type`, `File_ID`, `Importance`, `Status`, `ReasonFR`, `TimeStamp`) VALUES
+(107, 25, 'Barangay Indigency', 32, 'Required', 'Unvalidated', '', '2025-04-24 01:14:15'),
+(108, 26, 'Barangay Indigency', 33, 'Required', 'Unvalidated', '', '2025-04-24 01:17:55');
 
 -- --------------------------------------------------------
 
@@ -197,14 +222,18 @@ CREATE TABLE `userinfo_tbl` (
 --
 
 INSERT INTO `userinfo_tbl` (`UserInfo_ID`, `User_ID`, `Fname`, `Mname`, `Lname`, `Birth_Date`, `Sex`, `Contact_Number`, `Civil_Status`, `Religion`, `Nationality`) VALUES
-(1, 1, 'Admin', '', '', '0000-00-00', '', '0000-000-0000', '', '', ''),
-(7, 20, 'John', '', 'Doe', '2001-11-24', 'm', '0912-345-6789', 'Single', 'Roman Catholic', 'filipino'),
-(8, 22, 'John', 'Mod', 'Owner', '2025-04-14', 'm', '0987-654-3210', 'Single', 'Roman Catholic', 'filipino'),
-(9, 23, 'Jane', '', 'Air', '2001-11-24', 'F', '0912-345-6789', 'Single', 'Roman Catholic', 'filipino');
+(11, 25, 'John', 'T', 'Doe', '2025-04-09', 'M', '0888-888-8888', 'Single', 'Roman Catholic', 'filipino'),
+(12, 26, 'Place', '', 'Holder', '2025-04-07', 'M', '0987-654-3210', 'Single', 'Roman Catholic', 'filipino');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `access_control_tbl`
+--
+ALTER TABLE `access_control_tbl`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `address_tbl`
@@ -273,10 +302,16 @@ ALTER TABLE `userinfo_tbl`
 --
 
 --
+-- AUTO_INCREMENT for table `access_control_tbl`
+--
+ALTER TABLE `access_control_tbl`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `address_tbl`
 --
 ALTER TABLE `address_tbl`
-  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `application_tbl`
@@ -288,7 +323,7 @@ ALTER TABLE `application_tbl`
 -- AUTO_INCREMENT for table `file_tbl`
 --
 ALTER TABLE `file_tbl`
-  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `messages_tbl`
@@ -300,19 +335,19 @@ ALTER TABLE `messages_tbl`
 -- AUTO_INCREMENT for table `register_tbl`
 --
 ALTER TABLE `register_tbl`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `requirements_tbl`
 --
 ALTER TABLE `requirements_tbl`
-  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `Requirements_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `userinfo_tbl`
 --
 ALTER TABLE `userinfo_tbl`
-  MODIFY `UserInfo_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `UserInfo_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables

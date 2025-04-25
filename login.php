@@ -1,8 +1,6 @@
 <?php include 'connect.php';
 session_start();
-if (empty($_SESSION['userid'])) {
-    session_destroy();
-    session_start(); ?>
+if (empty($_SESSION['userid'])) { ?>
     <!doctype html>
     <html lang="en">
 
@@ -14,7 +12,7 @@ if (empty($_SESSION['userid'])) {
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
 
-    <body class="overflow-x-hidden" style="min-width: 50em;">
+    <body class="overflow-x-hidden" style="min-width: 100%;">
         <div class="container-fluid">
             <div class="d-flex flex-column justify-content-center align-items-center mt-5">
                 <form method="POST">
@@ -33,6 +31,26 @@ if (empty($_SESSION['userid'])) {
                     </div>
                     <p>Go to <a href="register.php">Sign up</a> or <a href="index.php">homepage</a></p>
                 </form>
+
+                <?php
+                $encrypted = $_GET['data'] ?? '';
+                $decrypted = decrypt($encrypted);
+
+                parse_str($decrypted, $data);
+
+                $lF = $data['lF'] ?? 0;
+
+                if ($lF === "iP") {
+                    ?>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <p class="text-danger">Incorrect Password</p>
+                    </div>
+                <?php } elseif ($lF === "iU") { ?>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <p class="text-danger">Incorrect Username</p>
+                    </div>
+                <?php } ?>
+
                 <?php if (isset($_POST['loginForm'])) {
                     $account = $_POST['account'];
                     $password = $_POST['password'];
@@ -41,26 +59,68 @@ if (empty($_SESSION['userid'])) {
                         $sql = $pdo->prepare("SELECT User_ID, Password, Access_Level FROM register_tbl where Username = :account OR Email = :account");
                         $sql->bindParam(":account", $account, PDO::PARAM_STR);
                         $sql->execute();
-                        $row = $sql->fetch(PDO::FETCH_ASSOC);
 
-                        if ($row && password_verify($password, $row["Password"])) {
-                            if ($row["Access_Level"] === "Admin") { 
-                                $_SESSION['authority'] = $row['Access_Level'];
-                                ?>
-                                <script>
-                                    window.location.href = "administration.php"
-                                </script>
-                            <?php } else {
-                                $_SESSION["userid"] = $row["User_ID"] ?>
-                                <script>
-                                    window.location.href = "index.php"
-                                </script>
-                            <?php }
+                        if ($sql->rowCount() > 0) {
+                            $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+                            if (password_verify($password, $row["Password"])) {
+                                $userid = $row['User_ID'];
+                                $aL = $row['Access_Level'];
+
+                                $sql = $pdo->prepare("SELECT * FROM access_control_tbl WHERE Access_Level = :al");
+                                $sql->bindParam(":al", $aL, PDO::PARAM_STR);
+                                $sql->execute();
+                                $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+                                $m1 = $row['Mod1'];
+                                $m2 = $row['Mod2'];
+                                $ac = $row['Access_Control'];
+
+                                if ($m1 || $m2 || $ac) {
+                                    $_SESSION['authority'] = $aL;
+
+                                    header('Location: administration.php');
+                                    exit;
+                                } else {
+                                    $_SESSION["userid"] = $userid;
+
+                                    header('Location: index.php');
+                                    exit;
+                                }
+                            } else {
+                                $lF = "iP";
+
+                                $data = http_build_query([
+                                    'lF' => $lF,
+                                ]);
+
+                                $encrypted = encrypt($data);
+
+                                header('Location: login.php?data=' . urlencode($encrypted) . '');
+                                exit;
+                            }
+                        } else {
+                            $lF = "iU";
+
+                            $data = http_build_query([
+                                'lF' => $lF,
+                            ]);
+
+                            $encrypted = encrypt($data);
+
+                            header('Location: login.php?data=' . urlencode($encrypted) . '');
+                            exit;
                         }
                     } catch (PDOException $e) {
-                        echo "<script>alert('Database error: " . addslashes($e->getMessage()) . "');</script>";
+                        ?>
+                        <script>
+                            alert('Database error: <?php echo addslashes($e->getMessage()) ?>');
+                        </script>
+                        <?php
+
+                        header('Location: index.php');
+                        exit;
                     }
-                    $sql = null;
                 } ?>
             </div>
         </div>

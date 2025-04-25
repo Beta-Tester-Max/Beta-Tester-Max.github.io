@@ -14,7 +14,7 @@ if (empty($_SESSION['userid'])) {
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
 
-    <body class="p-0 m-0 overflow-x-hidden" style="min-width: 50em;">
+    <body class="p-0 m-0 overflow-x-hidden" style="min-width: 100%;">
         <div class="container-fluid">
             <div class="row m-5">
                 <div class="col-12">
@@ -402,7 +402,7 @@ if (empty($_SESSION['userid'])) {
                             
                                         $pdo->commit();
                                         $_SESSION['userid'] = $userid;
-                                        echo "<script>window.location.href = 'index.php';</script>";
+                                        echo "<script>alert('Registration Successful!'); window.location.href = 'index.php';</script>";
                                     }
                                 }
                             } catch (PDOException $e) {

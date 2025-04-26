@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0a1929;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .greeting {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .action-button {
+            background-color: #2f3a46;
+            border-radius: 10px;
+            padding: 30px 15px;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .action-button:hover {
+            background-color: #3a4753;
+        }
+        
+        .action-button .icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .action-button p {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="greeting">
+                <i class="fas fa-user"></i>
+                <span>Hi, Juan Dela Cruz</span>
+            </div>
+            <div class="header-icons">
+                <div class="icon-button">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="icon-button">
+                    <i class="fas fa-info"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="buttons-container">
+            <a href="track.html" class="action-button">
+                <div class="icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <p>Track Application</p>
+            </a>
+            
+            <a href="apply.html" class="action-button">
+                <div class="icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <p>Apply for Assistance</p>
+            </a>
+            
+            <a href="connect.html" class="action-button">
+                <div class="icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <p>Connect to MSWD</p>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Add click event listeners to the buttons
+        document.querySelectorAll('.action-button').forEach(button => {
+            button.addEventListener('click', function() {
+                console.log('Button clicked:', this.querySelector('p').textContent);
+            });
+        });
+        
+        // Info icon tooltip
+        document.querySelectorAll('.icon-button')[1].addEventListener('mouseover', function() {
+            this.setAttribute('title', 'Additional information');
+        });
+        
+        // Clock icon tooltip
+        document.querySelectorAll('.icon-button')[0].addEventListener('mouseover', function() {
+            this.setAttribute('title', 'View history');
+        });
+    </script>
+</body>
+</html>

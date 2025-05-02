@@ -3,14 +3,18 @@
   --primary-color: #0347ff;
   --primary-light: #f0f0f0;
 }
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 body {
+  font-family: 'Montserrat', sans-serif;
   background-color: var(--primary-dark);
   color: white;
+  
 }
 .aics {
   color: #fff5f5;
   text-align: center;
-  font-family: "Inter-Regular", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 128px;
   font-weight: 400;
   padding: 20px;
@@ -20,7 +24,7 @@ body {
 .brief-desc  {
   color: #ffffff;
   text-align: center;
-  font-family: "Inter-Regular", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 18px;
   font-weight: 400;
   padding: 20px;
@@ -45,9 +49,6 @@ body {
 }
 /* annex end */
 /* carousel 1 start */
-@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
-@import url('https://fonts.cdnfonts.com/css/poppins');
-
 .banner {
   width: 100%;
   height: 100vh;
@@ -190,7 +191,7 @@ body {
 .description-box {
   margin-top: 350px; 
   text-align: left; 
-  font-family: "Poppins", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 18px;
   color: white;
   background-color: var(--primary-color);
@@ -214,6 +215,9 @@ body {
 .description-box.active {
   display: block; 
 }
+#description-text {
+  font-family: 'Montserrat', sans-serif;
+}
 /* desc carousel 1 end */
 /* carousel 2 start */
 .carousel-inner {
@@ -223,10 +227,10 @@ body {
   width: 100%;
 }
 .carousel-item {
-  display: none; /* Hide all carousel items */
+  display: none; 
 }
 .carousel-item.active {
-  display: flex; /* Show only the active carousel item */
+  display: flex; 
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -242,6 +246,9 @@ body {
   max-width: 60%;
   padding: 20px;
   color: white;
+}
+.text-start, h3 {
+  font-family: 'Montserrat', sans-serif;
 }
 @media (max-width: 768px) {
   .carousel-item {
@@ -276,6 +283,7 @@ body {
   top: 12px;
   left: 8px;
   color: #0066CC;
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   pointer-events: none;
   transition: 0.2s ease all;
@@ -285,6 +293,7 @@ body {
 .input-container input:not(:placeholder-shown) + label {
   top: -8px;
   left: 8px;
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   color: #fffefe;
   background: #0066CC;
@@ -293,10 +302,10 @@ body {
 /* feedback end */
 /* footer start */
 * {
+  font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
 
 .footer-container {
@@ -317,6 +326,7 @@ body {
 }
 
 .footer-section h2 {
+  font-family: 'Montserrat', sans-serif;
   font-size: 22px;
   margin-bottom: 15px;
   border-bottom: 1px solid #fff;

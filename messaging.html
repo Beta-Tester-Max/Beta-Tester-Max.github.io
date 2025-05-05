@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect to MSWD</title>
+    <link rel="icon" type="image/x-icon" href="./assets/img/AICS150.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/messaging.css">
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="home-icon">
+                <a href="index.html"><i class="fas fa-home"></i></a>
+            </div>
+            
+            <div class="greeting">
+                <i class="fas fa-user"></i>
+                <span>Hi, Juan Dela Cruz</span>
+            </div>
+            
+            <div class="info-icon">
+                <i class="fas fa-info"></i>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3>MSWD</h3>
+            </div>
+            
+            <div class="chat-box" id="chatBox">
+                <!-- Messages will appear here -->
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Write a message">
+                <button class="send-button" id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Get DOM elements
+        const chatBox = document.getElementById('chatBox');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        // Function to add message to chat
+        function addMessage(text, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.marginBottom = '10px';
+            
+            if (isUser) {
+                messageDiv.style.textAlign = 'right';
+                messageDiv.innerHTML = `
+                    <div style="display: inline-block; background-color: #0066ff; padding: 10px; border-radius: 10px; max-width: 80%;">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                messageDiv.style.textAlign = 'left';
+                messageDiv.innerHTML = `
+                    <div style="display: inline-block; background-color: #3498db; padding: 10px; border-radius: 10px; max-width: 80%;">
+                        ${text}
+                    </div>
+                `;
+            }
+            
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        // Event listener for send button
+        sendButton.addEventListener('click', function() {
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                messageInput.value = '';
+                
+                // Simulate response from MSWD
+                setTimeout(() => {
+                    const responses = [
+                        "Thank you for contacting us. How can we assist you today?",
+                        "We're here to help. Please let us know your concern.",
+                        "Your message has been received. We'll get back to you shortly.",
+                        "How can we assist you with our services?"
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage(randomResponse, false);
+                }, 1000);
+            }
+        });
+        
+        // Event listener for Enter key
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+        
+        // Info icon tooltip
+        document.querySelector('.info-icon').addEventListener('mouseover', function() {
+            this.setAttribute('title', 'Additional information');
+        });
+    </script>
+</body>
+</html>

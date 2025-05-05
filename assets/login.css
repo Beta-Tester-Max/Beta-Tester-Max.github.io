@@ -33,9 +33,12 @@ body {
   background-color: #ffffff;
   padding: 30px;
   border-radius: 10px;
-  width: 380px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
 }
+
 .form-control {
   background-color: var(--primary-light);
 }
@@ -51,7 +54,7 @@ label {
 .input-container {
   position: relative;
   margin: 20px 0;
-  background-color: #0066cc;
+  background:-color #0066cc;
 }
 
 .input-container input {
@@ -83,4 +86,22 @@ label {
   color: #0c0b0b;
   background: #ffffff;
   padding: 0 4px;
+}
+
+
+@media (max-width: 768px) {
+  .logbox {
+    padding: 20px;
+  }
+  .input-container input {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .textHead {
+    font-size: 28px;
+  }
+  #logoLog {
+    width: 50px;
+    height: 50px;
+  }
 }

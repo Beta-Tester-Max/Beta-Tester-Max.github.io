@@ -18,12 +18,13 @@
     font-family: 'Montserrat', sans-serif;
 }
 .search-cont {
-    width: 577px;
+    width: 100%;
+    max-width: 577px;
     height: 35px;
     position: static;
-  }
+}
  
-  .search-container {
+.search-container {
     position: relative;
     width: 100%;
     max-width: 500px;
@@ -70,5 +71,17 @@
         transform: none;
         top: auto;
         right: auto;
+    }
+   
+    .navbar-nav {
+        width: 100%;
+    }
+   
+    .dropdown-menu {
+        width: 100%;
+    }
+    .dropdown-item {
+        display: block;
+        text-align: center;
     }
 }

@@ -93,7 +93,7 @@ label {
   .logbox {
     padding: 20px;
   }
-  .input-container input {
+  .input-container input label{
     padding: 10px;
     font-size: 14px;
   }

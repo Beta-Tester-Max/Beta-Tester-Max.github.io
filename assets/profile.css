@@ -60,3 +60,14 @@ body {
     margin: 0;
     font-size: 16px;
 }
+
+@media (max-width: 600px) {
+    .buttons-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .action-button {
+        width: 100%;
+    }
+}

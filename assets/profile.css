@@ -96,4 +96,7 @@ body {
   .action-button {
     width: 250px;
   }
+  .greeting {
+    font-size: 18px;
+  }
 }

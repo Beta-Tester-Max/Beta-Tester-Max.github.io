@@ -97,10 +97,10 @@ body {
     width: 250px;
   }
   .greeting {
-    font-size: 18px;
+    font-size: 16px;
   }
   .info-icon, .history-icon {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;;
   }
 }

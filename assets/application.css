@@ -1,0 +1,12 @@
+:root {
+    --primary-dark: #000133;
+    --primary-color: #0347ff;
+    --primary-light: #f0f0f0;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--primary-dark);
+    color: white;
+  }

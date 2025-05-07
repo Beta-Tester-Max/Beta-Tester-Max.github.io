@@ -3,130 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application Submission</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    <title>AICS - Application Tracking System</title>
+    <link rel="icon" type="image/x-icon" href="./assets/img/AICS150.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet" />
+   <link rel="stylesheet" href="./assets/administration.css">
+   <style>.category-dropdown {
+    margin-bottom: 20px;
+}
 
-        body {
-            background-color: #f5f5f5;
-        }
+#category-select {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    width: 250px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+}
 
-        .header {
-            background-color: #1a365d;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .container {
-            background-color: #e9f2ff;
-            padding: 20px;
-            margin-top: 10px;
-        }
-
-        .success-message {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .checkmark {
-            color: #009933;
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
-
-        .details-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .detail-box {
-            background-color: white;
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        .detail-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .detail-content {
-            color: #666;
-        }
-
-        .document-link {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .document-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+#category-select option {
+    background-color: #0d2140;
+    color: white;
+}</style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            <i class="fas fa-home"></i>
-            <span>AICS</span>
-        </div>
-        <div class="user-info">
-            <div class="user-profile">
-                <i class="fas fa-user"></i>
-                <span>Juan dela Cruz</span>
-            </div>
-            <i class="fas fa-cog"></i>
-        </div>
-    </div>
-
     <div class="container">
-        <div class="success-message">
-            <i class="fas fa-check-circle checkmark"></i>
-            <h2>APPLICATION SUBMITTED</h2>
-            <p>Your application has been successfully submitted</p>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i><img src="./assets/img/AICS150.png" alt="AICS LOGO"></i>
+                <span>AICS</span>
+            </div>
+            <ul class="menu">
+                <li class="menu-item active">
+                    <i><img src="./assets/img/Dashboard.png" alt=""></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="menu-item">
+                    <i><img src="./assets/img/Application.png" alt=""></i>
+                    <span>Applications</span>
+                </li>
+                <li class="menu-item">
+                    <i><img src="./assets/img/Report.png" alt=""></i>
+                    <span>Reports</span>
+                </li>
+                <li class="menu-item">
+                    <i><img src="./assets/img/Settings.png" alt=""></i>
+                    <span>Settings</span>
+                </li>
+                <li class="menu-item">
+                    <i><img src="./assets/img/Notification.png" alt=""></i>
+                    <span>Notifications</span>
+                </li>
+            </ul>
         </div>
-
-        <div class="details-grid">
-            <div class="detail-box">
-                <div class="detail-title">Assistance Type</div>
-                <div class="detail-content">Medical Assistance</div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="category-dropdown">
+                    <select id="category-select">
+                        <option value="all">All Categories</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="food">Food</option>
+                        <option value="medical">Medical</option>
+                        <option value="burial">Burial</option>
+                        <option value="cash-relief">Cash Relief</option>
+                        <option value="educational">Educational</option>
+                        <option value="psychosocial">Psychosocial Support</option>
+                    </select>
+                </div>
+                <div class="header-right">
+                    <div class="admin-info">
+                        <i class="fas fa-user"></i>
+                        <span>Admin MSWD</span>
+                    </div>
+                </div>
             </div>
-            <div class="detail-box">
-                <div class="detail-title">Financial Information</div>
-                <div class="detail-content">₱10,000</div>
+            
+            <!-- Statistics Cards -->
+            <div class="stats-container">
+                <div class="stat-card total">
+                    <div class="stat-value">200</div>
+                    <div class="stat-label">Total Applications</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-value">90</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-value">100</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
             </div>
-            <div class="detail-box">
-                <div class="detail-title">Applicant Information</div>
-                <div class="detail-content">Juan dela Cruz<br>San Benito Alaminos, Laguna</div>
-            </div>
-            <div class="detail-box">
-                <div class="detail-title">Documents</div>
-                <a href="#" class="document-link">Medical Certificate.pdf</a>
+            
+            <!-- Applications Sections -->
+            <div class="applications-container">
+                <!-- Recent Applications -->
+                <div class="applications-column">
+                    <h3 class="section-title">Recent Applications</h3>
+                    <ul class="application-list">
+                        <li class="application-item">
+                            <div class="application-name">Miguel Santos<br>San Agustin</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br>San Andres</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Tomás Rivera<br>San Gregorio</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Lorna Garcia<br>San Benito</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Elena Cruz<br>San Isidro</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Alberto Ramos<br>San Juan</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Teresa Nuevo<br>San Miguel</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Daniel Flores<br>San Roque</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Luz Hernandez<br>San Simon</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Ernesto Salazar<br>Palma I</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br>San Andres</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Tomás Rivera<br>San Gregorio</div>
+                            <button class="application-action">View</button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Pending Applications -->
+                <div class="applications-column">
+                    <h3 class="section-title">Pending Applications</h3>
+                    <ul class="application-list">
+                        <li class="application-item">
+                            <div class="application-name">Miguel Santos<br>San Agustin</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br>San Andres</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Tomás Rivera<br>San Gregorio</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Lorna Garcia<br>San Benito</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Elena Cruz<br>San Isidro</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Alberto Ramos<br>San Juan</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Teresa Nuevo<br>San Miguel</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Daniel Flores<br>San Roque</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Luz Hernandez<br>San Simon</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Ernesto Salazar<br>Palma I</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Miguel Santos<br>San Agustin</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br>San Andres</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Interview Schedule -->
+                <div class="applications-column">
+                    <h3 class="section-title">Subject for Interview</h3>
+                    <ul class="application-list">
+                        <li class="application-item">
+                            <div class="application-name">Miguel Santos<br>San Agustin</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br>San Andres</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Tomás Rivera<br>San Gregorio</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Lorna Garcia<br>San Benito</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Elena Cruz<br>San Isidro</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Alberto Ramos<br>San Juan</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Teresa Nuevo<br>San Miguel</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Daniel Flores<br>San Roque</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Luz Hernandez<br>San Simon</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Ernesto Salazar<br>Palma I</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Miguel Santos<br>San Agustin</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br>San Andres</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+    
+    <script>
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        document.querySelectorAll('.application-action').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.textContent;
+                const name = this.parentElement.querySelector('.application-name').textContent.split('\n')[0];
+                console.log(`${action} action for ${name}`);
+            });
+        });
+    </script>
 </body>
 </html>

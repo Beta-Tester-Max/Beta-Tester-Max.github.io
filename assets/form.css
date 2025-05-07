@@ -1,0 +1,120 @@
+:root {
+    --primary-dark: #000133;
+    --primary-color: #0347ff;
+    --primary-light: #f0f0f0;
+  }
+  @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #000033;
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #000033;
+}
+
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin-right: 10px;
+    background-color: #000033;
+}
+option {
+    background-color: #000033;
+    color: white;
+}
+
+input[type="text"] {
+    padding: 5px;
+    width: 95%;
+    margin-bottom: 10px;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: white;
+}
+
+select {
+    width: 100%;
+    padding: 5px;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: white;
+}
+
+.form-header {
+    margin: 20px 0 10px 0;
+    font-weight: bold;
+    border: white 1px solid;
+    padding: 5px;
+}
+
+.family-composition-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.family-composition-table th {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+}
+
+.family-composition-table td {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.delete-icon {
+    color: red;
+    cursor: pointer;
+}
+
+.relationship-options {
+    font-size: 12px;
+    color: #999;
+    margin-left: 200px;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #333;
+}
+
+.add-member {
+    margin-top: 10px;
+    text-align: center;
+}
+.birthdate-picker {
+    background-color: var(--primary-dark);
+    color: white;
+ }

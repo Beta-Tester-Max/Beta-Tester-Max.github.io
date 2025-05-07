@@ -1,296 +1,634 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AICS - Application Tracking System</title>
     <link rel="icon" type="image/x-icon" href="./assets/img/AICS150.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet" />
-   <link rel="stylesheet" href="./assets/administration.css">
-   <style>.category-dropdown {
-    margin-bottom: 20px;
-}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/administration.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Montserrat", sans-serif;
+      }
 
-#category-select {
-    padding: 8px 15px;
-    border-radius: 5px;
-    border: none;
-    width: 250px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 20px;
-}
+      body {
+        background-color: #0a1929;
+        color: white;
+      }
 
-#category-select option {
-    background-color: #0d2140;
-    color: white;
-}</style>
-</head>
-<body>
+      .container {
+        display: flex;
+        position: relative;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 220px;
+        background-color: #0d2140;
+        height: 100vh;
+        padding: 20px 0;
+        position: fixed;
+        z-index: 100;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .sidebar.hide {
+        transform: translateX(-100%);
+      }
+
+      .logo {
+        padding: 10px 20px;
+        font-size: 24px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo i {
+        background-color: rgba(255, 255, 255, 0.2);
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .menu {
+        margin-top: 30px;
+        list-style: none;
+      }
+
+      .menu-item {
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .menu-item:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .menu-item.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-left: 3px solid #00c853;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        margin-left: 220px;
+        padding: 20px;
+        transition: margin-left 0.3s ease;
+      }
+
+      /* Hamburger Menu */
+      .menu-toggle {
+        display: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        cursor: pointer;
+        z-index: 101;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+      }
+
+      .category {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 8px 15px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .admin-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .admin-info i {
+        width: 35px;
+        height: 35px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Statistics Cards */
+      .stats-container {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .stat-card {
+        flex: 1;
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100px;
+      }
+
+      .stat-card.total {
+        background-color: #0066ff;
+      }
+
+      .stat-card.approved {
+        background-color: #00c853;
+      }
+
+      .stat-card.pending {
+        background-color: #ffeb3b;
+        color: #333;
+      }
+
+      .stat-card.rejected {
+        background-color: #f44336;
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 14px;
+        opacity: 0.8;
+      }
+
+      /* Applications Sections */
+      .applications-container {
+        display: flex;
+        gap: 20px;
+      }
+
+      .applications-column {
+        flex: 1;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .application-list {
+        list-style: none;
+      }
+
+      .application-item {
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .application-name {
+        font-size: 14px;
+      }
+
+      .application-action {
+        background-color: #ffeb3b;
+        color: #333;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      /* Media Queries */
+      @media (max-width: 992px) {
+        .applications-container {
+          flex-direction: column;
+        }
+        .applications-column {
+          margin-bottom: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: flex;
+        }
+        .sidebar {
+          transform: translateX(-100%);
+          position: fixed;
+          height: 100%;
+          width: 220px;
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .main-content {
+          margin-left: 0;
+        }
+        .logo span,
+        .menu-item span {
+          display: none;
+        }
+        .menu-item {
+          justify-content: center;
+          padding: 15px 0;
+        }
+        .logo img {
+          margin-left: 0;
+        }
+        .stats-container {
+          flex-wrap: wrap;
+        }
+        .stat-card {
+          flex: 0 0 calc(50% - 7.5px);
+          margin-bottom: 15px;
+        }
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .header-left,
+        .header-right {
+          margin-bottom: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .stat-card {
+          flex: 0 0 100%;
+        }
+        .category {
+          width: 100%;
+        }
+        #category-select {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
     <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="logo">
-                <i><img src="./assets/img/AICS150.png" alt="AICS LOGO"></i>
-                <span>AICS</span>
+      <!-- Hamburger Menu for Mobile -->
+      <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo">
+          <i><img src="./assets/img/AICS150.png" alt="AICS LOGO" /></i>
+          <span>AICS</span>
+        </div>
+        <ul class="menu">
+          <li class="menu-item active">
+            <i><img src="./assets/img/Dashboard.png" alt="" /></i>
+            <span>Dashboard</span>
+          </li>
+          <li class="menu-item">
+            <i><img src="./assets/img/Application.png" alt="" /></i>
+            <span>Applications</span>
+          </li>
+          <li class="menu-item">
+            <i><img src="./assets/img/Report.png" alt="" /></i>
+            <span>Reports</span>
+          </li>
+          <li class="menu-item">
+            <i><img src="./assets/img/Settings.png" alt="" /></i>
+            <span>Settings</span>
+          </li>
+          <li class="menu-item">
+            <i><img src="./assets/img/Notification.png" alt="" /></i>
+            <span>Notifications</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="header">
+          <div class="header-left">
+            <div class="category-dropdown">
+              <select id="category-select">
+                <option value="all">All Categories</option>
+                <option value="transportation">Transportation</option>
+                <option value="food">Food</option>
+                <option value="medical">Medical</option>
+                <option value="burial">Burial</option>
+                <option value="cash-relief">Cash Relief</option>
+                <option value="educational">Educational</option>
+                <option value="psychosocial">Psychosocial Support</option>
+              </select>
             </div>
-            <ul class="menu">
-                <li class="menu-item active">
-                    <i><img src="./assets/img/Dashboard.png" alt=""></i>
-                    <span>Dashboard</span>
-                </li>
-                <li class="menu-item">
-                    <i><img src="./assets/img/Application.png" alt=""></i>
-                    <span>Applications</span>
-                </li>
-                <li class="menu-item">
-                    <i><img src="./assets/img/Report.png" alt=""></i>
-                    <span>Reports</span>
-                </li>
-                <li class="menu-item">
-                    <i><img src="./assets/img/Settings.png" alt=""></i>
-                    <span>Settings</span>
-                </li>
-                <li class="menu-item">
-                    <i><img src="./assets/img/Notification.png" alt=""></i>
-                    <span>Notifications</span>
-                </li>
+          </div>
+          <div class="header-right">
+            <div class="admin-info">
+              <i class="fas fa-user"></i>
+              <span>Admin MSWD</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-container">
+          <div class="stat-card total">
+            <div class="stat-value">200</div>
+            <div class="stat-label">Total Applications</div>
+          </div>
+          <div class="stat-card approved">
+            <div class="stat-value">90</div>
+            <div class="stat-label">Approved</div>
+          </div>
+          <div class="stat-card pending">
+            <div class="stat-value">100</div>
+            <div class="stat-label">Pending</div>
+          </div>
+          <div class="stat-card rejected">
+            <div class="stat-value">10</div>
+            <div class="stat-label">Rejected</div>
+          </div>
+        </div>
+
+        <!-- Applications Sections -->
+        <div class="applications-container">
+          <!-- Recent Applications -->
+          <div class="applications-column">
+            <h3 class="section-title">Recent Applications</h3>
+            <ul class="application-list">
+              <li class="application-item">
+                <div class="application-name">
+                  Miguel Santos<br />San Agustin
+                </div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Rafael Dizon<br />San Andres</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">
+                  Tomás Rivera<br />San Gregorio
+                </div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Lorna Garcia<br />San Benito</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Elena Cruz<br />San Isidro</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Alberto Ramos<br />San Juan</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Teresa Nuevo<br />San Miguel</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Daniel Flores<br />San Roque</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Luz Hernandez<br />San Simon</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Ernesto Salazar<br />Palma I</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Rafael Dizon<br />San Andres</div>
+                <button class="application-action">View</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">
+                  Tomás Rivera<br />San Gregorio
+                </div>
+                <button class="application-action">View</button>
+              </li>
             </ul>
+          </div>
+
+          <!-- Pending Applications -->
+          <div class="applications-column">
+            <h3 class="section-title">Pending Applications</h3>
+            <ul class="application-list">
+              <li class="application-item">
+                <div class="application-name">
+                  Miguel Santos<br />San Agustin
+                </div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Rafael Dizon<br />San Andres</div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">
+                  Tomás Rivera<br />San Gregorio
+                </div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Lorna Garcia<br />San Benito</div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Elena Cruz<br />San Isidro</div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Alberto Ramos<br />San Juan</div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Teresa Nuevo<br />San Miguel</div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Daniel Flores<br />San Roque</div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Luz Hernandez<br />San Simon</div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Ernesto Salazar<br />Palma I</div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">
+                  Miguel Santos<br />San Agustin
+                </div>
+                <button class="application-action">Review</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Rafael Dizon<br />San Andres</div>
+                <button class="application-action">Review</button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Interview Schedule -->
+          <div class="applications-column">
+            <h3 class="section-title">Subject for Interview</h3>
+            <ul class="application-list">
+              <li class="application-item">
+                <div class="application-name">
+                  Miguel Santos<br />San Agustin
+                </div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Rafael Dizon<br />San Andres</div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">
+                  Tomás Rivera<br />San Gregorio
+                </div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Lorna Garcia<br />San Benito</div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Elena Cruz<br />San Isidro</div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Alberto Ramos<br />San Juan</div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Teresa Nuevo<br />San Miguel</div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Daniel Flores<br />San Roque</div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Luz Hernandez<br />San Simon</div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Ernesto Salazar<br />Palma I</div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">
+                  Miguel Santos<br />San Agustin
+                </div>
+                <button class="application-action">Schedule</button>
+              </li>
+              <li class="application-item">
+                <div class="application-name">Rafael Dizon<br />San Andres</div>
+                <button class="application-action">Schedule</button>
+              </li>
+            </ul>
+          </div>
         </div>
-        
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <div class="category-dropdown">
-                    <select id="category-select">
-                        <option value="all">All Categories</option>
-                        <option value="transportation">Transportation</option>
-                        <option value="food">Food</option>
-                        <option value="medical">Medical</option>
-                        <option value="burial">Burial</option>
-                        <option value="cash-relief">Cash Relief</option>
-                        <option value="educational">Educational</option>
-                        <option value="psychosocial">Psychosocial Support</option>
-                    </select>
-                </div>
-                <div class="header-right">
-                    <div class="admin-info">
-                        <i class="fas fa-user"></i>
-                        <span>Admin MSWD</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Statistics Cards -->
-            <div class="stats-container">
-                <div class="stat-card total">
-                    <div class="stat-value">200</div>
-                    <div class="stat-label">Total Applications</div>
-                </div>
-                <div class="stat-card approved">
-                    <div class="stat-value">90</div>
-                    <div class="stat-label">Approved</div>
-                </div>
-                <div class="stat-card pending">
-                    <div class="stat-value">100</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card rejected">
-                    <div class="stat-value">10</div>
-                    <div class="stat-label">Rejected</div>
-                </div>
-            </div>
-            
-            <!-- Applications Sections -->
-            <div class="applications-container">
-                <!-- Recent Applications -->
-                <div class="applications-column">
-                    <h3 class="section-title">Recent Applications</h3>
-                    <ul class="application-list">
-                        <li class="application-item">
-                            <div class="application-name">Miguel Santos<br>San Agustin</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Tomás Rivera<br>San Gregorio</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Lorna Garcia<br>San Benito</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Elena Cruz<br>San Isidro</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Alberto Ramos<br>San Juan</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Teresa Nuevo<br>San Miguel</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Daniel Flores<br>San Roque</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Luz Hernandez<br>San Simon</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Ernesto Salazar<br>Palma I</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action">View</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Tomás Rivera<br>San Gregorio</div>
-                            <button class="application-action">View</button>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Pending Applications -->
-                <div class="applications-column">
-                    <h3 class="section-title">Pending Applications</h3>
-                    <ul class="application-list">
-                        <li class="application-item">
-                            <div class="application-name">Miguel Santos<br>San Agustin</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Tomás Rivera<br>San Gregorio</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Lorna Garcia<br>San Benito</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Elena Cruz<br>San Isidro</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Alberto Ramos<br>San Juan</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Teresa Nuevo<br>San Miguel</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Daniel Flores<br>San Roque</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Luz Hernandez<br>San Simon</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Ernesto Salazar<br>Palma I</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Miguel Santos<br>San Agustin</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action">Review</button>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Interview Schedule -->
-                <div class="applications-column">
-                    <h3 class="section-title">Subject for Interview</h3>
-                    <ul class="application-list">
-                        <li class="application-item">
-                            <div class="application-name">Miguel Santos<br>San Agustin</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Tomás Rivera<br>San Gregorio</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Lorna Garcia<br>San Benito</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Elena Cruz<br>San Isidro</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Alberto Ramos<br>San Juan</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Teresa Nuevo<br>San Miguel</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Daniel Flores<br>San Roque</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Luz Hernandez<br>San Simon</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Ernesto Salazar<br>Palma I</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Miguel Santos<br>San Agustin</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                        <li class="application-item">
-                            <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action">Schedule</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    
+
     <script>
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
+      document.querySelectorAll(".menu-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          document
+            .querySelectorAll(".menu-item")
+            .forEach((i) => i.classList.remove("active"));
+          this.classList.add("active");
         });
-        
-        document.querySelectorAll('.application-action').forEach(button => {
-            button.addEventListener('click', function() {
-                const action = this.textContent;
-                const name = this.parentElement.querySelector('.application-name').textContent.split('\n')[0];
-                console.log(`${action} action for ${name}`);
-            });
+      });
+
+      document.querySelectorAll(".application-action").forEach((button) => {
+        button.addEventListener("click", function () {
+          const action = this.textContent;
+          const name = this.parentElement
+            .querySelector(".application-name")
+            .textContent.split("\n")[0];
+          console.log(`${action} action for ${name}`);
         });
+      });
+
+      // Sidebar toggle functionality
+      const menuToggle = document.querySelector(".menu-toggle");
+      const sidebar = document.querySelector(".sidebar");
+
+      menuToggle.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
+      });
+
+      // Close sidebar when clicking outside
+      document.addEventListener("click", function (event) {
+        if (
+          !sidebar.contains(event.target) &&
+          !menuToggle.contains(event.target) &&
+          sidebar.classList.contains("active")
+        ) {
+          sidebar.classList.remove("active");
+        }
+      });
     </script>
-</body>
+  </body>
 </html>

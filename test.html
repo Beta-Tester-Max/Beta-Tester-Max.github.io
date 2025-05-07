@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submission</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #1a365d;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .container {
+            background-color: #e9f2ff;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .checkmark {
+            color: #009933;
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .detail-box {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .detail-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .detail-content {
+            color: #666;
+        }
+
+        .document-link {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .document-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-home"></i>
+            <span>AICS</span>
+        </div>
+        <div class="user-info">
+            <div class="user-profile">
+                <i class="fas fa-user"></i>
+                <span>Juan dela Cruz</span>
+            </div>
+            <i class="fas fa-cog"></i>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="success-message">
+            <i class="fas fa-check-circle checkmark"></i>
+            <h2>APPLICATION SUBMITTED</h2>
+            <p>Your application has been successfully submitted</p>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-box">
+                <div class="detail-title">Assistance Type</div>
+                <div class="detail-content">Medical Assistance</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-title">Financial Information</div>
+                <div class="detail-content">₱10,000</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-title">Applicant Information</div>
+                <div class="detail-content">Juan dela Cruz<br>San Benito Alaminos, Laguna</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-title">Documents</div>
+                <a href="#" class="document-link">Medical Certificate.pdf</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

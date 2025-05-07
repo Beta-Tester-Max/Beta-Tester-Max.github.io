@@ -176,7 +176,6 @@ button:hover {
     .input-container label {
         font-size: 12px;
     }
-    /* Responsive table styles */
     .family-composition-table {
         display: block;
         overflow-x: auto;

@@ -2,8 +2,10 @@
     --primary-dark: #000133;
     --primary-color: #0347ff;
     --primary-light: #f0f0f0;
-  }
-  @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
 body {
     font-family: "Montserrat", sans-serif;
     background-color: #000033;
@@ -41,6 +43,7 @@ h2 {
     margin-right: 10px;
     background-color: #000033;
 }
+
 option {
     background-color: #000033;
     color: white;
@@ -114,11 +117,13 @@ button:hover {
     margin-top: 10px;
     text-align: center;
 }
+
 .birthdate-picker {
     background-color: var(--primary-dark);
     color: white;
- }
- @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .form-row {
         flex-direction: column;
     }
@@ -135,19 +140,19 @@ button:hover {
     }
     .family-composition-table {
         font-size: 12px;
-    }  
+    }
     .form-header {
         font-size: 16px;
     }
     .form-container {
         padding: 10px;
-    }   
+    }
     .form-section {
         margin-bottom: 10px;
     }
     .form-row {
         margin-bottom: 5px;
-    }   
+    }
     .form-group {
         margin-right: 0;
         margin-bottom: 5px;
@@ -170,5 +175,11 @@ button:hover {
     }
     .input-container label {
         font-size: 12px;
+    }
+    /* Responsive table styles */
+    .family-composition-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 }

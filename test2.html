@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AICS - Application Tracking System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Montserrat", sans-serif;
+        }
+
+        body {
+            background-color: #0a1929;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: #0d2140;
+            height: 100vh;
+            padding: 20px 0;
+            position: fixed;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar.hide {
+            transform: translateX(-100%);
+        }
+
+        .logo {
+            padding: 10px 20px;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu {
+            margin-top: 30px;
+            list-style: none;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left: 3px solid #00c853;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Hamburger Menu for Mobile */
+        .menu-toggle {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .category-dropdown {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-info i {
+            width: 35px;
+            height: 35px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Statistics Cards */
+        .stats-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Applications Sections */
+        .applications-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .applications-column {
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .application-list {
+            list-style: none;
+        }
+
+        .application-item {
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .application-name {
+            font-size: 14px;
+        }
+
+        .application-action {
+            background-color: #ffeb3b;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                width: 220px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-item span {
+                display: none;
+            }
+
+            .menu-item {
+                justify-content: center;
+                padding: 15px 0;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .category-dropdown {
+                order: 1;
+                margin: 0 auto;
+            }
+
+            .admin-info {
+                order: 2;
+                margin-left: auto;
+            }
+
+            .menu-toggle {
+                order: 0;
+            }
+
+            .stat-card {
+                flex: 0 0 100%;
+                margin-bottom: 10px;
+            }
+
+            .applications-container {
+                flex-direction: column;
+            }
+
+            .applications-column {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hamburger Menu for Mobile -->
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar hide">
+            <div class="logo">
+                <i><img src="./assets/img/AICS150.png" alt="AICS LOGO" /></i>
+                <span>AICS</span>
+            </div>
+            <ul class="menu">
+                <li class="menu-item active">
+                    <i><img src="./assets/img/Dashboard.png" alt="" /></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="menu-item">
+                    <i><img src="./assets/img/Application.png" alt="" /></i>
+                    <span>Applications</span>
+                </li>
+                <li class="menu-item">
+                    <i><img src="./assets/img/Report.png" alt="" /></i>
+                    <span>Reports</span>
+                </li>
+                <li class="menu-item">
+                    <i><img src="./assets/img/Settings.png" alt="" /></i>
+                    <span>Settings</span>
+                </li>
+                <li class="menu-item">
+                    <i><img src="./assets/img/Notification.png" alt="" /></i>
+                    <span>Notifications</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="category-dropdown">
+                    <select id="category-select">
+                        <option value="all">All Categories</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="food">Food</option>
+                        <option value="medical">Medical</option>
+                        <option value="burial">Burial</option>
+                        <option value="cash-relief">Cash Relief</option>
+                        <option value="educational">Educational</option>
+                        <option value="psychosocial">Psychosocial Support</option>
+                    </select>
+                </div>
+                <div class="admin-info">
+                    <i class="fas fa-user"></i>
+                    <span>Admin MSWD</span>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-container">
+                <div class="stat-card" style="background-color: #0066ff;">
+                    <div class="stat-value">200</div>
+                    <div class="stat-label">Total Applications</div>
+                </div>
+                <div class="stat-card" style="background-color: #00c853;">
+                    <div class="stat-value">90</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-card" style="background-color: #ffeb3b; color: #333;">
+                    <div class="stat-value">100</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card" style="background-color: #f44336;">
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+            <!-- Applications Sections -->
+            <div class="applications-container">
+                <!-- Recent Applications -->
+                <div class="applications-column">
+                    <h3 class="section-title">Recent Applications</h3>
+                    <ul class="application-list">
+                        <li class="application-item">
+                            <div class="application-name">
+                                Miguel Santos<br />San Agustin
+                            </div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br />San Andres</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">
+                                Tomás Rivera<br />San Gregorio
+                            </div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Lorna Garcia<br />San Benito</div>
+                            <button class="application-action">View</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Elena Cruz<br />San Isidro</div>
+                            <button class="application-action">View</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pending Applications -->
+                <div class="applications-column">
+                    <h3 class="section-title">Pending Applications</h3>
+                    <ul class="application-list">
+                        <li class="application-item">
+                            <div class="application-name">
+                                Miguel Santos<br />San Agustin
+                            </div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br />San Andres</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">
+                                Tomás Rivera<br />San Gregorio
+                            </div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Lorna Garcia<br />San Benito</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Elena Cruz<br />San Isidro</div>
+                            <button class="application-action">Review</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Interview Schedule -->
+                <div class="applications-column">
+                    <h3 class="section-title">Subject for Interview</h3>
+                    <ul class="application-list">
+                        <li class="application-item">
+                            <div class="application-name">
+                                Miguel Santos<br />San Agustin
+                            </div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Rafael Dizon<br />San Andres</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">
+                                Tomás Rivera<br />San Gregorio
+                            </div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Lorna Garcia<br />San Benito</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                        <li class="application-item">
+                            <div class="application-name">Elena Cruz<br />San Isidro</div>
+                            <button class="application-action">Schedule</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle functionality
+        const menuToggle = document.querySelector(".menu-toggle");
+        const sidebar = document.querySelector(".sidebar");
+
+        menuToggle.addEventListener("click", function () {
+            sidebar.classList.toggle("active");
+            sidebar.classList.toggle("hide");
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener("click", function (event) {
+            if (
+                !sidebar.contains(event.target) &&
+                !menuToggle.contains(event.target) &&
+                sidebar.classList.contains("active")
+            ) {
+                sidebar.classList.remove("active");
+                sidebar.classList.add("hide");
+            }
+        });
+    </script>
+</body>
+</html>

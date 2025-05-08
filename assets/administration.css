@@ -52,6 +52,7 @@ body {
     padding: 15px 20px;
     display: flex;
     align-items: center;
+    text-align: center;
     gap: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -62,8 +63,9 @@ body {
 }
 
 .menu-item.active {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-left: 3px solid #00c853;
+    outline: navajowhite;
+    border: 1px solid #f4f8f6;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 
@@ -242,6 +244,20 @@ body {
     background-color: #0d2140;
     color: white;
 }
+span {
+    font-size: 14px;
+    color: white;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    padding: 5px 10px;
+}
+#category-select:focus {
+    outline: navajowhite;
+    border: 1px solid #f4f8f6;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
 /* Media Queries */
 @media (max-width: 992px) {
     .applications-container {

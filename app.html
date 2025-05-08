@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AICS - Application</title>
+    <link rel="icon" type="image/x-icon" href="./assets/img/AICS150.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/administration.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i><img src="./assets/img/AICS150.png" alt="AICS LOGO"></i>
+                <span>AICS</span>
+            </div>
+            <ul class="menu">
+                <li class="menu-item">
+                    <i><img src="./assets/img/Dashboard.png" alt=""></i>
+                    <span>Dashboard</span>
+                </li>
+                <a href="app.html"></a>
+                <li class="menu-item active">
+                    <i><img src="./assets/img/Application.png" alt=""></i>
+                    <span>Applications</span>
+                </li>
+                </a>
+                <a href="report.html">
+                    <li class="menu-item">
+                        <i><img src="./assets/img/Report.png" alt=""></i>
+                        <span>Reports</span>
+                    </li>
+                </a>
+                <a href="setting.html">
+                    <li class="menu-item">
+                        <i><img src="./assets/img/Settings.png" alt=""></i>
+                        <span>Settings</span>
+                    </li>
+                </a>
+                <a href="notification.html">
+                    <li class="menu-item">
+                        <i><img src="./assets/img/Notification.png" alt=""></i>
+                        <span>Notifications</span>
+                    </li>
+                </a>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="category-dropdown">
+                    <select id="category-select">
+                        <option value="all">All Categories</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="food">Food</option>
+                        <option value="medical">Medical</option>
+                        <option value="burial">Burial</option>
+                        <option value="cash-relief">Cash Relief</option>
+                        <option value="educational">Educational</option>
+                        <option value="psychosocial">Psychosocial Support</option>
+                    </select>
+                </div>
+                <div class="header-right">
+                    <div class="admin-info">
+                        <i class="fas fa-user"></i>
+                        <span>Admin MSWD</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-container">
+                <div class="stat-card total">
+                    <div class="stat-value">200</div>
+                    <div class="stat-label">Total Applications</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-value">90</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-value">100</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function () {
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.application-action').forEach(button => {
+            button.addEventListener('click', function () {
+                const action = this.textContent;
+                const name = this.parentElement.querySelector('.application-name').textContent.split('\n')[0];
+                console.log(`${action} action for ${name}`);
+            });
+        });
+    </script>
+</body>
+
+</html>

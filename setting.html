@@ -23,34 +23,34 @@
             <ul class="menu">
                 <a href="administration.html">
                     <li class="menu-item">
-                      <i><img src="./assets/img/Dashboard.png" alt="" /></i>
-                      <span>Dashboard</span>
+                        <i><img src="./assets/img/Dashboard.png" alt="" /></i>
+                        <span>Dashboard</span>
                     </li>
-                  </a>
-                  <a href="app.html">
+                </a>
+                <a href="app.html">
                     <li class="menu-item">
-                      <i><img src="./assets/img/Application.png" alt="" /></i>
-                      <span>Applications</span>
+                        <i><img src="./assets/img/Application.png" alt="" /></i>
+                        <span>Applications</span>
                     </li>
-                  </a>
-                  <a href="report.html">
+                </a>
+                <a href="report.html">
                     <li class="menu-item">
-                      <i><img src="./assets/img/Report.png" alt="" /></i>
-                      <span>Reports</span>
+                        <i><img src="./assets/img/Report.png" alt="" /></i>
+                        <span>Reports</span>
                     </li>
-                  </a>
-                  <a href="setting.html">
+                </a>
+                <a href="setting.html">
                     <li class="menu-item active">
-                      <i><img src="./assets/img/Settings.png" alt="" /></i>
-                      <span>Settings</span>
+                        <i><img src="./assets/img/Settings.png" alt="" /></i>
+                        <span>Settings</span>
                     </li>
-                  </a>
-                  <a href="notification.html">
+                </a>
+                <a href="notification.html">
                     <li class="menu-item">
-                      <i><img src="./assets/img/Notification.png" alt="" /></i>
-                      <span>Notifications</span>
+                        <i><img src="./assets/img/Notification.png" alt="" /></i>
+                        <span>Notifications</span>
                     </li>
-                  </a>
+                </a>
             </ul>
         </div>
 
@@ -78,8 +78,8 @@
             </div>
         </div>
     </div>
-     <!-- Settings Content -->
-     <div class="set-content">
+    <!-- Settings Content -->
+    <div class="set-content">
         <!-- Manage User Roles -->
         <h2 class="section-title">Manage User Roles</h2>
         <div class="table-container">
@@ -126,7 +126,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <!-- Activity Log -->
         <h2 class="section-title">Activity Log</h2>
         <div class="table-container">
@@ -172,7 +172,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <!-- Budget Allocation -->
         <h2 class="section-title">Budget Allocation</h2>
         <div class="table-container">
@@ -231,33 +231,91 @@
                 </tbody>
             </table>
         </div>
+        <!-- Applicant Verification -->
+        <h2 class="section-title">Applicant Verification</h2>
+        <div class="table-container">
+            <table class="budget-table">
+                <thead>
+                    <tr>
+                        <th>Applicants</th>
+                        <th>Verified Account</th>
+                        <th>Recent Application</th>
+                        <th>Approved Application</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Juan Dela Cruz</td>
+                        <td><a href="#" class="add-link">View Profile</a></td>
+                        <td>Medical</td>
+                        <td>Medical</td>
+                    </tr>
+                    <tr>
+                        <td>Pedro Penduko</td>
+                        <td><a href="#" class="add-link">View Profile</a></td>
+                        <td>Transportation</td>
+                        <td>Psychosocial</td>
+                    </tr>
+                    <tr>
+                        <td>Maria Sinukuan</td>
+                        <td><a href="#" class="add-link">View Profile</a></td>
+                        <td>Burial</td>
+                        <td>Medical</td>
+                    </tr>
+                    <tr>
+                        <td>Rigor Dimaguiba</td>
+                        <td><a href="#" class="add-link">View Profile</a></td>
+                        <td>Cash Relief</td>
+                        <td>Burial</td>
+                    </tr>
+                    <tr>
+                        <td>Ricardo Dalisay</td>
+                        <td><a href="#" class="add-link">View Profile</a></td>
+                        <td>Food</td>
+                        <td>Educational</td>
+                    </tr>
+                    <tr>
+                        <td>Miguelito Guerrero</td>
+                        <td><a href="#" class="add-link">View Profile</a></td>
+                        <td>Educational</td>
+                        <td>Transportation</td>
+                    </tr>
+                    <tr>
+                        <td>Crisostomo Ibarra</td>
+                        <td><a href="#" class="add-link">View Profile</a></td>
+                        <td>Psychosocial</td>
+                        <td>Food</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add click event listeners to buttons
-        const actionButtons = document.querySelectorAll('.action-btn');
-        actionButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const action = this.textContent;
-                const row = this.closest('tr');
-                const name = row.cells[0].textContent;
-                alert(`${action} for ${name}`);
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add click event listeners to buttons
+            const actionButtons = document.querySelectorAll('.action-btn');
+            actionButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const action = this.textContent;
+                    const row = this.closest('tr');
+                    const name = row.cells[0].textContent;
+                    alert(`${action} for ${name}`);
+                });
+            });
+
+            // Add click event listeners to add links
+            const addLinks = document.querySelectorAll('.add-link');
+            addLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const assistanceType = this.closest('tr').cells[0].textContent;
+                    alert(`Add budget for ${assistanceType}`);
+                });
             });
         });
-        
-        // Add click event listeners to add links
-        const addLinks = document.querySelectorAll('.add-link');
-        addLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const assistanceType = this.closest('tr').cells[0].textContent;
-                alert(`Add budget for ${assistanceType}`);
-            });
-        });
-    });
-</script>
+    </script>
 
     <script>
         document.querySelectorAll('.menu-item').forEach(item => {

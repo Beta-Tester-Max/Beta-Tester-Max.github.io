@@ -2,6 +2,8 @@
 .main-content {
     flex: 1;
     display: flex;
+    margin-left: 220px;
+    padding: 20px;
 }
 .chats-list {
     width: 200px;

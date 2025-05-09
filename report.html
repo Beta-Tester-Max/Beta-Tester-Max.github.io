@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/administration.css">
+    <link rel="stylesheet" href="./assets/rep.css">
 </head>
 
 <body>
@@ -22,39 +23,39 @@
             <ul class="menu">
                 <a href="administration.html">
                     <li class="menu-item">
-                      <i><img src="./assets/img/Dashboard.png" alt="" /></i>
-                      <span>Dashboard</span>
+                        <i><img src="./assets/img/Dashboard.png" alt="" /></i>
+                        <span>Dashboard</span>
                     </li>
-                  </a>
-                  <a href="app.html">
+                </a>
+                <a href="app.html">
                     <li class="menu-item">
-                      <i><img src="./assets/img/Application.png" alt="" /></i>
-                      <span>Applications</span>
+                        <i><img src="./assets/img/Application.png" alt="" /></i>
+                        <span>Applications</span>
                     </li>
-                  </a>
-                  <a href="report.html">
+                </a>
+                <a href="report.html">
                     <li class="menu-item active">
-                      <i><img src="./assets/img/Report.png" alt="" /></i>
-                      <span>Reports</span>>
+                        <i><img src="./assets/img/Report.png" alt="" /></i>
+                        <span>Reports</span>
                     </li>
-                  </a>
-                  <a href="setting.html">
+                </a>
+                <a href="setting.html">
                     <li class="menu-item">
-                      <i><img src="./assets/img/Settings.png" alt="" /></i>
-                      <span>Settings</span>
+                        <i><img src="./assets/img/Settings.png" alt="" /></i>
+                        <span>Settings</span>
                     </li>
-                  </a>
-                  <a href="notification.html">
+                </a>
+                <a href="notification.html">
                     <li class="menu-item">
-                      <i><img src="./assets/img/Notification.png" alt="" /></i>
-                      <span>Notifications</span>
+                        <i><img src="./assets/img/Notification.png" alt="" /></i>
+                        <span>Notifications</span>
                     </li>
-                  </a>
+                </a>
             </ul>
         </div>
 
         <!-- Main Content -->
-        <div class="main-content">
+        <div class="main">
             <div class="header">
                 <div class="category-dropdown">
                     <select id="category-select">
@@ -76,30 +77,67 @@
                 </div>
             </div>
 
-            <!-- Statistics Cards -->
-            <div class="stats-container">
-                <div class="stat-card total">
-                    <div class="stat-value">200</div>
-                    <div class="stat-label">Total Applications</div>
-                </div>
-                <div class="stat-card approved">
-                    <div class="stat-value">90</div>
-                    <div class="stat-label">Approved</div>
-                </div>
-                <div class="stat-card pending">
-                    <div class="stat-value">100</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card rejected">
-                    <div class="stat-value">10</div>
-                    <div class="stat-label">Rejected</div>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="rep-content">
+        <div class="report-card">
+            <div class="report-header">
+                <div class="report-icon">📋</div>
+                <div class="report-title">Report Generation</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Type of Assistance:</label>
+                <select class="form-select">
+                    <option>Medical Assistance</option>
+                    <option>Financial Assistance</option>
+                    <option>Educational Assistance</option>
+                    <option>Housing Assistance</option>
+                    <option>Others</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Date Range</label>
+                <div class="date-range">
+                    <input type="date" class="date-input">
+                    <span>⏵</span>
+                    <input type="date" class="date-input">
                 </div>
             </div>
 
+            <div class="form-checkbox">
+                <input type="checkbox" id="detailed-info">
+                <label for="detailed-info">Include detailed information</label>
+            </div>
 
+            <button class="generate-btn">Generate Report</button>
         </div>
     </div>
-    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the generate button
+            const generateBtn = document.querySelector('.generate-btn');
+
+            // Add click event listener
+            generateBtn.addEventListener('click', function () {
+                // Get form values
+                const assistanceType = document.querySelector('.form-select').value;
+                const startDate = document.querySelector('.date-range input:first-child').value;
+                const endDate = document.querySelector('.date-range input:last-child').value;
+                const includeDetails = document.getElementById('detailed-info').checked;
+
+                // Create a simple alert showing the report generation
+                alert(`Generating ${assistanceType} report from ${startDate} to ${endDate}${includeDetails ? ' with detailed information' : ''}`);
+
+                // Here you would typically make an API call to generate the actual report
+                // This is just a placeholder for demonstration purposes
+            });
+        });
+    </script>
 
     <script>
         document.querySelectorAll('.menu-item').forEach(item => {

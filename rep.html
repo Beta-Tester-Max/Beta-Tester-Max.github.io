@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Generation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #0a1027;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #ddd;
+            border-radius: 50%;
+        }
+        
+        .container {
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 200px;
+            background-color: #0a1027;
+            color: white;
+            padding: 20px 0;
+            height: calc(100vh - 50px);
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .nav-item.active {
+            background-color: #1a1f3a;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .report-card {
+            background-color: #1a1f3a;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+        }
+        
+        .report-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .report-icon {
+            font-size: 24px;
+        }
+        
+        .report-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-select, .form-input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+        
+        .date-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .date-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            position: relative;
+        }
+        
+        .calendar-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7a7cc0;
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .generate-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        .generate-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">AICS</div>
+        <div class="admin-info">
+            <div class="admin-icon"></div>
+            <span>Admin MSWD</span>
+        </div>
+    </div>
+    
+    <!-- Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="nav-item">
+                <div class="nav-icon">📊</div>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">📋</div>
+                <span>Applications</span>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">📊</div>
+                <span>Reports</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">⚙️</div>
+                <span>Settings</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">🔔</div>
+                <span>Notifications</span>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="report-card">
+                <div class="report-header">
+                    <div class="report-icon">📋</div>
+                    <div class="report-title">Report Generation</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Type of Assistance:</label>
+                    <select class="form-select">
+                        <option>Medical Assistance</option>
+                        <option>Financial Assistance</option>
+                        <option>Educational Assistance</option>
+                        <option>Housing Assistance</option>
+                        <option>Others</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Date Range</label>
+                    <div class="date-range">
+                        <input type="date" class="date-input">
+                        <span>⏵</span>
+                        <input type="date" class="date-input">
+                    </div>
+                </div>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="detailed-info">
+                    <label for="detailed-info">Include detailed information</label>
+                </div>
+                
+                <button class="generate-btn">Generate Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the generate button
+            const generateBtn = document.querySelector('.generate-btn');
+            
+            // Add click event listener
+            generateBtn.addEventListener('click', function() {
+                // Get form values
+                const assistanceType = document.querySelector('.form-select').value;
+                const startDate = document.querySelector('.date-range input:first-child').value;
+                const endDate = document.querySelector('.date-range input:last-child').value;
+                const includeDetails = document.getElementById('detailed-info').checked;
+                
+                // Create a simple alert showing the report generation
+                alert(`Generating ${assistanceType} report from ${startDate} to ${endDate}${includeDetails ? ' with detailed information' : ''}`);
+                
+                // Here you would typically make an API call to generate the actual report
+                // This is just a placeholder for demonstration purposes
+            });
+        });
+    </script>
+</body>
+</html>

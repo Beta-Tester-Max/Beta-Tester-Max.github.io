@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/administration.css">
+    <link rel="stylesheet" href="./assets/notif.css">
 </head>
 
 <body>
@@ -20,34 +21,36 @@
                 <span>AICS</span>
             </div>
             <ul class="menu">
-                <li class="menu-item">
-                    <i><img src="./assets/img/Dashboard.png" alt=""></i>
-                    <span>Dashboard</span>
-                </li>
-                <a href="app.html">
+                <a href="administration.html">
                     <li class="menu-item">
-                        <i><img src="./assets/img/Application.png" alt=""></i>
-                        <span>Applications</span>
+                      <i><img src="./assets/img/Dashboard.png" alt="" /></i>
+                      <span>Dashboard</span>
                     </li>
-                </a>
-                <a href="report.html">
+                  </a>
+                  <a href="app.html">
                     <li class="menu-item">
-                        <i><img src="./assets/img/Report.png" alt=""></i>
-                        <span>Reports</span>
+                      <i><img src="./assets/img/Application.png" alt="" /></i>
+                      <span>Applications</span>
                     </li>
-                </a>
-                <a href="setting.html">
+                  </a>
+                  <a href="report.html">
                     <li class="menu-item">
-                        <i><img src="./assets/img/Settings.png" alt=""></i>
-                        <span>Settings</span>
+                      <i><img src="./assets/img/Report.png" alt="" /></i>
+                      <span>Reports</span>>
                     </li>
-                </a>
-                <a href="notification.html">
+                  </a>
+                  <a href="setting.html">
+                    <li class="menu-item">
+                      <i><img src="./assets/img/Settings.png" alt="" /></i>
+                      <span>Settings</span>
+                    </li>
+                  </a>
+                  <a href="notification.html">
                     <li class="menu-item active">
-                        <i><img src="./assets/img/Notification.png" alt=""></i>
-                        <span>Notifications</span>
+                      <i><img src="./assets/img/Notification.png" alt="" /></i>
+                      <span>Notifications</span>
                     </li>
-                </a>
+                  </a>
             </ul>
         </div>
 
@@ -73,30 +76,44 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Statistics Cards -->
-            <div class="stats-container">
-                <div class="stat-card total">
-                    <div class="stat-value">200</div>
-                    <div class="stat-label">Total Applications</div>
-                </div>
-                <div class="stat-card approved">
-                    <div class="stat-value">90</div>
-                    <div class="stat-label">Approved</div>
-                </div>
-                <div class="stat-card pending">
-                    <div class="stat-value">100</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card rejected">
-                    <div class="stat-value">10</div>
-                    <div class="stat-label">Rejected</div>
-                </div>
-            </div>
-
-
         </div>
     </div>
+    <!-- Chat content -->
+    <div class="main-content">
+        <!-- Chats list -->
+        <div class="chats-list">
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            <div class="chat-item">Applicant Chats</div>
+            
+        </div>
+        
+        <!-- Chat window -->
+        <div class="chat-window">
+            <div class="chat-header">
+                <div class="admin-icon"></div>
+                <span>Juan Dela Cruz</span>
+            </div>
+            <div class="chat-content">
+                <div class="message received">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+                <div class="message sent">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" class="message-input" placeholder="Write a message">
+                <button class="send-btn">&#10148;</button>
+            </div>
+        </div>
     </div>
 
     <script>

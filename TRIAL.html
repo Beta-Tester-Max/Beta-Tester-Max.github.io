@@ -201,13 +201,13 @@
           <h3>Font Options</h3>
           <select onchange="applyFontSize(this)">
             <option value="">Font Size</option>
-            <option value="8pt">8 pt</option>
-            <option value="10pt">10 pt</option>
-            <option value="12pt">12 pt</option>
-            <option value="14pt">14 pt</option>
-            <option value="18pt">18 pt</option>
-            <option value="24pt">24 pt</option>
-            <option value="36pt">36 pt</option>
+            <option value="8px">8 pt</option>
+            <option value="10px">10 pt</option>
+            <option value="12px">12 pt</option>
+            <option value="14px">14 pt</option>
+            <option value="18px">18 pt</option>
+            <option value="24px">24 pt</option>
+            <option value="36px">36 pt</option>
           </select>
           <select onchange="applyFontFamily(this)">
             <option value="">Font Family</option>
@@ -257,24 +257,6 @@
         select.selectedIndex = select.findIndexOfOption(fontFamily);
         focusEditor();
       }
-
-      function applyFontSize(select) {
-        const fontSize = select.value;
-        if (!fontSize) return;
-        document.execCommand("fontSize", false, fontSize);
-        select.selectedIndex = select.findIndexOfOption(fontSize);
-        focusEditor();
-      }
-
-      // Add this method to find the index of the option with a specific value
-      HTMLSelectElement.prototype.findIndexOfOption = function (value) {
-        for (let i = 0; i < this.options.length; i++) {
-          if (this.options[i].value === value) {
-            return i;
-          }
-        }
-        return -1;
-      };
 
       function focusEditor() {
         const editor = document.getElementById("editor");

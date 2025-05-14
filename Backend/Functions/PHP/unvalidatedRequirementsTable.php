@@ -17,38 +17,37 @@ if (isset($_SESSION['unvalidatedA'])) {
                         <th scope="col">Document Description</th>
                         <th scope="col">Document</th>
                         <th class="text-center" scope="col">Date Submitted</th>
-                        <th scope="col">Action</th>
+                        <th class="text-center" scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (isset($_SESSION['unvalidatedR' . $id])) {
                         foreach ($_SESSION['unvalidatedR' . $id] as $r) {
-                            $d = $_SESSION['desc' . $r['Document_ID'] ?? ""] ?? "";
-                            $f = $_SESSION['file' . $r['File_ID'] ?? ""] ?? "";
+                            $reqid = $r['Account_Requirement_ID'] ?? "";
+                            $d = $_SESSION['uDesc' . $r['Document_ID'] ?? ""] ?? "";
+                            $f = $_SESSION['uFile' . $r['File_ID'] ?? ""] ?? "";
                             $t = $r['Date_Submitted'] ?? "";
                             ?>
                             <tr>
                                 <td class="align-middle"><?php echo $d ?></td>
-                                <td>
-                                    <form method="POST" action="../Functions/PHP/fileOpener.php">
+                                <td class="align-middle">
+                                    <form method="POST" target="_blank" action="../Functions/PHP/fileOpener.php">
                                         <input type="hidden" value="<?php echo $f ?>" name="file" required>
                                         <input type="hidden" name="fileOpen" required>
                                         <button type="submit">Open File</button>
                                     </form>
                                 </td>
                                 <td class="align-middle text-center"><?php echo $t ?></td>
-                                <td class="d-flex">
-                                    <form method="POST" action="../Functions/PHP/validate.php">
-                                        <input type="hidden" value="<?php echo $r['Document_ID'] ?? "" ?>" name="document" required>
-                                        <input type="hidden" value="<?php echo $id ?>" name="id" required>
+                                <td class="align-middle">
+                                    <form class="m-1" method="POST" action="../Functions/PHP/validate.php">
+                                        <input type="hidden" value="<?php echo $reqid?>" name="id" required>
                                         <input type="hidden" name="validate" required>
                                         <button type="submit" class="me-1">Validate</button>
                                     </form>
-                                    <form method="POST" action="../Functions/PHP/toReject.php">
+                                    <form class="m-1" method="POST" action="../Functions/PHP/toReject.php">
                                         <input type="hidden" value="requirementsValidate.php" name="from" required>
                                         <input type="hidden" value="requirement" name="table" required>
-                                        <input type="hidden" value="<?php echo $r['Document_ID'] ?? "" ?>" name="document" required>
-                                        <input type="hidden" value="<?php echo $id ?>" name="id" required>
+                                        <input type="hidden" value="<?php echo $reqid?>" name="id" required>
                                         <input type="hidden" name="reject" required>
                                         <button type="submit">Reject</button>
                                     </form>

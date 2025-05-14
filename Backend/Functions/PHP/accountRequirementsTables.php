@@ -37,24 +37,32 @@ if (isset($_SESSION['Assistance'])) {
                                     $ars = $ar['Status'] ?? "";
                                     $ard = $ar['Document_ID'] ?? "";
                                     $arid = $ar['Account_Requirement_ID'] ?? "";
-                                    $arr = $ar['Reason'] ?? "";
+                                    $arr = $ar['ReasonFR'] ?? "";
                                     ?>
                                     <td class="text-center align-middle"><?php echo $ars; ?></td>
                                     <td class="text-center align-middle">
-                                        <form method="POST" enctype="multipart/form-data" action="Functions/PHP/editRequirement.php">
-                                            <input type="file" id="formFile" name="file" accept="application/pdf" required>
-                                            <input type="hidden" name="arid" value="<?php echo $arid ?>" required>
-                                            <input type="hidden" name="fid" value="<?php echo $arf ?>" required>
-                                            <input type="hidden" name="document" value="<?php echo $ard ?>" required>
-                                            <input type="hidden" name="editRequirement" required>
-                                            <button type="submit">Edit</button>
-                                        </form>
                                         <?php
-                                        if ($ars === 'Rejected') {
+                                        if ($ars === 'Validated') {
                                             ?>
-                                            <hr>
-                                            <p><b>Reason: </b><?php echo $arr?></p>
+                                            <p class="text-secondary"><i>No Action Needed</i></p>
                                             <?php
+                                        } else {
+                                            ?>
+                                            <form method="POST" enctype="multipart/form-data" action="Functions/PHP/editRequirement.php">
+                                                <input type="file" id="formFile" name="file" accept="application/pdf" required>
+                                                <input type="hidden" name="arid" value="<?php echo $arid ?>" required>
+                                                <input type="hidden" name="fid" value="<?php echo $arf ?>" required>
+                                                <input type="hidden" name="document" value="<?php echo $ard ?>" required>
+                                                <input type="hidden" name="editRequirement" required>
+                                                <button type="submit">Edit</button>
+                                            </form>
+                                            <?php
+                                            if ($ars === 'Rejected') {
+                                                ?>
+                                                <hr>
+                                                <p><b>Reason: </b><?php echo $arr ?></p>
+                                                <?php
+                                            }
                                         }
                                         ?>
                                     </td>

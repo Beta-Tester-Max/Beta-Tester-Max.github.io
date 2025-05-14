@@ -58,10 +58,10 @@ include "../Functions/PHP/forAdmin.php"
     </div>
 
     <script>
-        let aT = <?php echo json_encode($_SESSION['aT'] ?? "") ?>;
-        let rT = <?php echo json_encode($_SESSION['rT'] ?? "") ?>;
+        let aT = <?php echo json_encode($_SESSION['aTR'] ?? "") ?>;
+        let dT = <?php echo json_encode($_SESSION['rT'] ?? "") ?>;
     </script>
-    <script src="../Functions/JS/validateScript.js"></script>
+    <script src="../Functions/JS/voaScript.js"></script>
     <script src="https://kit.fontawesome.com/7961b8f896.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"

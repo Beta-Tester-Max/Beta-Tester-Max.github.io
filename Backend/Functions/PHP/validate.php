@@ -4,7 +4,6 @@ session_start();
 
 if (isset($_POST['validate'])) {
     $a = $_POST['id'];
-    $doc = $_POST['document'];
     $d = date("Y/m/d");
 
     try {
@@ -13,8 +12,7 @@ if (isset($_POST['validate'])) {
         $sql = $pdo->prepare("UPDATE tbl_account_requirements
             SET Status = 'Validated',
             Date_Reviewed = :d
-            WHERE Account_ID = :a AND Document_ID = :doc");
-        $sql->bindParam(":d", $d, PDO::PARAM_STR);
+            WHERE Account_Requirement_ID = :a");;
         $sql->bindParam(":a", $a, PDO::PARAM_INT);
         $sql->bindParam(":doc", $doc, PDO::PARAM_INT);
 

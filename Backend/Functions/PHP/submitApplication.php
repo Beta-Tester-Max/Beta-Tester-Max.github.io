@@ -8,8 +8,7 @@ if (isset($_POST['submitApp'])) {
     $h = $_POST['helpee'];
     $rp = $_POST['rep'];
     $r = $_POST['reason'];
-    $aF = array();
-    
+
     if (isset($as) || !empty($as)) {
         $appA = $as ?? "";
         $aF = array();
@@ -31,46 +30,26 @@ if (isset($_POST['submitApp'])) {
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             $data = sanitize($result);
             if (!empty($data['File_ID'])) {
-                $aF[] = $data['File_ID'] ?? "";
+                if (empty($aF)) {
+                    $aF = $data['File_ID'] ?? "";
+                } else {
+                    $aF .= ", " . $data['File_ID'] ?? "";
+                }
             }
         }
     }
-     
-    $f = $aF[0] ?? "";
-    $f1 = $aF[1] ?? "";
-    $f2 = $aF[2] ?? "";
-    $f3 = $aF[3] ?? "";
-    $f4 = $aF[4] ?? "";
-    $f5 = $aF[5] ?? "";
-    $f6 = $aF[6] ?? "";
-    $f7 = $aF[7] ?? "";
-    $f8 = $aF[8] ?? "";
-    $f9 = $aF[9] ?? "";
-    $f10 = $aF[10] ?? "";
-
-
 
     try {
         $pdo->beginTransaction();
 
-        $sql = $pdo->prepare("INSERT INTO tbl_applications (Account_ID, Assistance_ID, Beneficiary, Representative, Reason, File_1, File_2, File_3, File_4, File_5, File_6, File_7, File_8, File_9, File_10, File_11)
-        VALUES (:a, :as, :h, :rp, :r, :f, :f1, :f2, :f3, :f4, :f5, :f6, :f7, :f8, :f9, :f10)");
+        $sql = $pdo->prepare("INSERT INTO tbl_applications (Account_ID, Assistance_ID, Beneficiary, Representative, Reason, Files)
+        VALUES (:a, :as, :h, :rp, :r, :f)");
         $sql->bindParam(":a", $a, PDO::PARAM_INT);
         $sql->bindParam(":as", $as, PDO::PARAM_INT);
         $sql->bindParam(":h", $h, PDO::PARAM_INT);
         $sql->bindParam(":rp", $rp, PDO::PARAM_INT);
-        $sql->bindParam(":r", $r, PDO::PARAM_INT);
-        $sql->bindParam(":f", $f, PDO::PARAM_INT);
-        $sql->bindParam(":f1", $f1, PDO::PARAM_INT);
-        $sql->bindParam(":f2", $f2, PDO::PARAM_INT);
-        $sql->bindParam(":f3", $f3, PDO::PARAM_INT);
-        $sql->bindParam(":f4", $f4, PDO::PARAM_INT);
-        $sql->bindParam(":f5", $f5, PDO::PARAM_INT);
-        $sql->bindParam(":f6", $f6, PDO::PARAM_INT);
-        $sql->bindParam(":f7", $f7, PDO::PARAM_INT);
-        $sql->bindParam(":f8", $f8, PDO::PARAM_INT);
-        $sql->bindParam(":f9", $f9, PDO::PARAM_INT);
-        $sql->bindParam(":f10", $f10, PDO::PARAM_INT);
+        $sql->bindParam(":r", $r, PDO::PARAM_STR);
+        $sql->bindParam(":f", $aF, PDO::PARAM_STR);
 
         if ($sql->execute()) {
             $pdo->commit();

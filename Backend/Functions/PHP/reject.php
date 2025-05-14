@@ -3,10 +3,9 @@ require_once "connect.php";
 session_start();
 
 if (isset($_POST['rejection'])) {
-    $a = $_POST['id'];
+    $id = $_POST['id'];
     $t = $_POST['table'];
     $r = $_POST['reason'];
-    $doc = $_POST['document'];
     $d = date("Y/m/d");
     $path = $_POST['from'];
 
@@ -14,18 +13,21 @@ if (isset($_POST['rejection'])) {
         $pdo->beginTransaction();
 
         if ($t === 'requirement') {
-            $sql = $pdo->prepare("UPDATE tbl_account_requirements
+            $table = 'tbl_account_requirements';
+            $tid = "Account_Requirement_ID";
+        } elseif ($t === 'application') {
+            $table = 'tbl_applications';
+            $tid = "Application_ID";
+        }
+        
+            $sql = $pdo->prepare("UPDATE $table
             SET Status = 'Rejected',
-            Reason = :r,
+            ReasonFR = :r,
             Date_Reviewed = :d
-            WHERE Account_ID = :a AND Document_ID = :doc");
+            WHERE $tid = :a");
             $sql->bindParam(":r", $r, PDO::PARAM_STR);
             $sql->bindParam(":d", $d, PDO::PARAM_STR);
-            $sql->bindParam(":a", $a, PDO::PARAM_INT);
-            $sql->bindParam(":doc", $doc, PDO::PARAM_INT);
-        } elseif ($t === 'application') {
-
-        }
+            $sql->bindParam(":a", $id, PDO::PARAM_INT);
 
         if ($sql->execute()) {
             $pdo->commit();
@@ -55,7 +57,7 @@ if (isset($_POST['rejection'])) {
         $_SESSION['Alert'] = "Conenction Error: " . $e->getMessage();
         $_SESSION['Path'] = "../../Admin/$path";
 
-            header('Location: ../../Admin/adminDashboard.php');
+        header('Location: ../../Admin/adminDashboard.php');
         exit;
     }
 } else {

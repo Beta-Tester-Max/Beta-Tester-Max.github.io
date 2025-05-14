@@ -24,6 +24,8 @@ include "../Functions/PHP/forAdmin.php"
                 <a href="addDocumentsForm.php">Add Documents</a>
                 <a href="addRequirementsForm.php">Add Requirements</a>
                 <a href="requirementsValidate.php">Validate Requirements</a>
+                <a href="applicationsApproval.php">Applications Approval</a>
+                <a href="displayApplicationHistory.php">Applications History</a>
                 <a href="../Functions/PHP/logout.php">Logout</a>
 
             </div>

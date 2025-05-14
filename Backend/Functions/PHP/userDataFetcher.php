@@ -55,7 +55,8 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $sql->bindParam(":d", $did, PDO::PARAM_INT);
             $sql->bindParam(":a", $a, PDO::PARAM_INT);
             $sql->execute();
-            $_SESSION['accountRequirements' . $did] = sanitize($sql->fetchAll());
+            $data = sanitize($sql->fetchAll());
+            $_SESSION['accountRequirements' . $did] = $data;
         }
 
         $sql = $pdo->query("SELECT * FROM tbl_assistance");

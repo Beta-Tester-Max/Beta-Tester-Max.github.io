@@ -1,17 +1,17 @@
 <?php
 if (isset($_SESSION['unvalidatedA'])) {
-    $aT = array();
+    $aTR = array();
     foreach ($_SESSION['unvalidatedA'] as $a) {
         $id = $a['Account_ID'] ?? "";
         $fn = $_SESSION['unvalidatedF'.$id] ?? "";
         ?>
             <tr>
                 <td class="align-middle text-center"><?php echo $fn?></td>
-                <td><button type="button" id="aT<?php echo $id?>">View</button></td>
+                <td><button type="button" id="aTR<?php echo $id?>">View</button></td>
             </tr>
         <?php
-        $aT[] = "aT".$id;
+        $aTR[] = "aTR".$id;
     }
-    $_SESSION['aT'] = $aT;
+    $_SESSION['aTR'] = $aTR;
 }
 ?>

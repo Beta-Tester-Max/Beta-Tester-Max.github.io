@@ -1,16 +1,17 @@
-<form method="POST" style="margin-bottom: 10px;">
-    <input type="text1" value="test" name="value1">
-    <input type="text2" value="test" name="value2">
-    <input type="text3" value="test" name="value3">
-    <input type="hidden" name="testForm">
-    <button type="submit">submit</button>
-</form>
-
 <?php
-$row = array();
+$arr = ["mass", "as", "hero", "superhero"];
 
-$row['time'] = 'day';
+usort($arr, function ($a, $b) {
+    return strlen($a) > strlen($b);
+});
 
-echo $row['time'];
+for ($i = 0; $i < count($arr); $i++) {
+    for ($j = $i + 1; $j < count($arr); $j++) {
+        if (str_contains($arr[$j], $arr[$i])) {
+            $r[] = $arr[$i] ?? "";
+        }
+    }
+}
+var_dump($r);
 
 ?>

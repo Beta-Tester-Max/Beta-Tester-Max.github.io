@@ -3,380 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AICS - Manage User Roles</title>
+    <title>Case Study Word Editor</title>
+    <script src="https://apps.microsoft.com/office-js-dist/office-js/office.js"></script>
     <style>
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        
-        body {
             background-color: #f5f5f5;
         }
         
         .header {
-            background-color: #0a1027;
+            background-color: #2b2b5c;
             color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .admin-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .admin-icon {
-            width: 24px;
-            height: 24px;
-            background-color: #ddd;
-            border-radius: 50%;
-        }
-        
-        .container {
-            display: flex;
-        }
-        
-        .sidebar {
-            width: 200px;
-            background-color: #0a1027;
-            color: white;
-            padding: 20px 0;
-            height: calc(100vh - 50px);
-        }
-        
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            gap: 10px;
-            cursor: pointer;
-        }
-        
-        .nav-item.active {
-            background-color: #1a1f3a;
-        }
-        
-        .nav-icon {
-            width: 20px;
+            padding: 10px 20px;
             text-align: center;
         }
         
-        .main-content {
-            flex: 1;
+        .editor-container {
+            display: flex;
             padding: 20px;
+            gap: 20px;
         }
         
-        .section-title {
-            margin: 20px 0 10px 0;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        
-        .table-container {
-            background-color: #a7a9ab;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #777;
-        }
-        
-        th {
-            background-color: #888;
-            color: white;
-        }
-        
-        .tbl-row {
+        .editor {
+            flex: 1;
             background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
-        .tbl-row:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        
-        .status-inactive {
-            color: #777;
-        }
-        
-        .status-active {
-            color: #006600;
-        }
-        
-        .action-btn {
-            background-color: #7a7cc0;
-            color: white;
-            border: none;
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 5px 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .text-input {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+            margin-top: 10px;
+        }
+        
+        .toolbars {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-right: 20px;
+            width: 250px;
+        }
+        
+        .toolbar-section {
+            margin-bottom: 15px;
+        }
+        
+        .toolbar-section h3 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .toolbar-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .toolbar-button {
+            padding: 5px 10px;
+            background-color: #eaeaea;
+            border: 1px solid #ccc;
             border-radius: 3px;
             cursor: pointer;
             font-size: 12px;
         }
         
-        .action-btn:hover {
-            background-color: #6a6eb0;
+        .toolbar-button:hover {
+            background-color: #d8d8d8;
         }
-        
-        .budget-table {
+
+        .format-controls {
+            margin-top: 20px;
+        }
+
+        input, select {
+            margin: 5px 0;
             width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .budget-table th, .budget-table td {
-            padding: 10px 15px;
-            text-align: left;
-            border-bottom: 1px solid #777;
-        }
-        
-        .budget-table th {
-            background-color: #888;
-            color: white;
-        }
-        
-        .add-link {
-            color: #006600;
-            text-decoration: none;
-            font-size: 12px;
-            padding: 3px 6px;
-            border: 1px solid #006600;
+            padding: 5px;
+            border: 1px solid #ddd;
             border-radius: 3px;
+        }
+
+        .content-preview {
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 200px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
-        <div class="logo">AICS</div>
-        <div class="admin-info">
-            <div class="admin-icon"></div>
-            <span>Admin MSWD</span>
-        </div>
+        <h1>Case Study Word Editor</h1>
     </div>
     
-    <!-- Container -->
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="nav-item">
-                <div class="nav-icon">📊</div>
-                <span>Dashboard</span>
+    <div class="editor-container">
+        <div class="toolbars">
+            <div class="toolbar-section">
+                <h3>Home</h3>
+                <div class="toolbar-buttons">
+                    <button class="toolbar-button" id="bold">Bold</button>
+                    <button class="toolbar-button" id="italic">Italic</button>
+                    <button class="toolbar-button" id="underline">Underline</button>
+                    <button class="toolbar-button" id="fontSize">Font Size</button>
+                    <button class="toolbar-button" id="fontColor">Font Color</button>
+                </div>
             </div>
-            <div class="nav-item">
-                <div class="nav-icon">📋</div>
-                <span>Applications</span>
+            
+            <div class="toolbar-section">
+                <h3>Insert</h3>
+                <div class="toolbar-buttons">
+                    <button class="toolbar-button" id="insertText">Insert Text</button>
+                    <button class="toolbar-button" id="insertParagraph">Insert Paragraph</button>
+                    <button class="toolbar-button" id="insertTable">Table</button>
+                    <button class="toolbar-button" id="insertPicture">Picture</button>
+                    <button class="toolbar-button" id="insertLink">Link</button>
+                </div>
             </div>
-            <div class="nav-item">
-                <div class="nav-icon">📊</div>
-                <span>Reports</span>
+            
+            <div class="toolbar-section">
+                <h3>Review</h3>
+                <div class="toolbar-buttons">
+                    <button class="toolbar-button" id="checkSpelling">Check Spelling</button>
+                    <button class="toolbar-button" id="checkGrammar">Check Grammar</button>
+                </div>
             </div>
-            <div class="nav-item active">
-                <div class="nav-icon">⚙️</div>
-                <span>Settings</span>
-            </div>
-            <div class="nav-item">
-                <div class="nav-icon">🔔</div>
-                <span>Notifications</span>
+            
+            <div class="toolbar-section">
+                <h3>Format</h3>
+                <div class="format-controls">
+                    <select id="fontFamily">
+                        <option value="Arial">Arial</option>
+                        <option value="Calibri">Calibri</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                    </select>
+                    <select id="paragraphStyle">
+                        <option value="Normal">Normal</option>
+                        <option value="Heading 1">Heading 1</option>
+                        <option value="Heading 2">Heading 2</option>
+                        <option value="Heading 3">Heading 3</option>
+                    </select>
+                    <input type="text" id="highlightColor" placeholder="Highlight Color (hex code)">
+                </div>
             </div>
         </div>
         
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Manage User Roles -->
-            <h2 class="section-title">Manage User Roles</h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="tbl-row">
-                            <td>Maria Penduko</td>
-                            <td>Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Maria Jaurigue</td>
-                            <td>Admin</td>
-                            <td class="status-active">Active</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Mario Dela Cruz</td>
-                            <td>Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Ricardo Dalsay</td>
-                            <td>Semi-Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Set as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Lola Besyang</td>
-                            <td>Semi-Admin</td>
-                            <td class="status-active">Active</td>
-                            <td><button class="action-btn">Set as Admin</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="editor" id="word-editor">
+            <div class="editor-header">
+                <div class="editor-title">Document Editor</div>
+                <div class="editor-controls">
+                    <button class="toolbar-button" id="saveDoc">Save</button>
+                    <button class="toolbar-button" id="previewDoc">Preview</button>
+                </div>
             </div>
-            
-            <!-- Activity Log -->
-            <h2 class="section-title">Activity Log</h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date & Time</th>
-                            <th>Admin Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 09:30am</td>
-                            <td>Maria Simukuan</td>
-                            <td>Review Application</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 10:30am</td>
-                            <td>Maria Penduko</td>
-                            <td>Review Application</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 10:45am</td>
-                            <td>Maria Jaurigue</td>
-                            <td>Schedule Application</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 10:50am</td>
-                            <td>Mario Dela Cruz</td>
-                            <td>Send Notifications</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 11:00am</td>
-                            <td>Ricardo Dalsay</td>
-                            <td>Review Application</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/0223 11:30am</td>
-                            <td>Lola Besyang</td>
-                            <td>Modify Settings</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Budget Allocation -->
-            <h2 class="section-title">Budget Allocation</h2>
-            <div class="table-container">
-                <table class="budget-table">
-                    <thead>
-                        <tr>
-                            <th>Assistance</th>
-                            <th>Allocated Budget (₱)</th>
-                            <th>Utilized Budget</th>
-                            <th>Remaining Budget</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Medical</td>
-                            <td>5,000,000.00</td>
-                            <td>3,750,000.00</td>
-                            <td>1,250,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Burial</td>
-                            <td>2,000,000.00</td>
-                            <td>1,500,000.00</td>
-                            <td>500,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Transportation</td>
-                            <td>1,000,000.00</td>
-                            <td>450,000.00</td>
-                            <td>550,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Educational</td>
-                            <td>4,000,000.00</td>
-                            <td>3,100,000.00</td>
-                            <td>900,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Food</td>
-                            <td>3,000,000.00</td>
-                            <td>2,600,000.00</td>
-                            <td>400,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Psychosocial</td>
-                            <td>1,500,000.00</td>
-                            <td>950,000.00</td>
-                            <td>550,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Cash Relief</td>
-                            <td>3,500,000.00</td>
-                            <td>2,200,000.00</td>
-                            <td>1,300,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <textarea class="text-input" id="text-input" placeholder="Type your document content here..."></textarea>
+            <div class="content-preview" id="content-preview">
+                <p>Your document content will appear here</p>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add click event listeners to buttons
-            const actionButtons = document.querySelectorAll('.action-btn');
-            actionButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const action = this.textContent;
-                    const row = this.closest('tr');
-                    const name = row.cells[0].textContent;
-                    alert(`${action} for ${name}`);
-                });
-            });
-            
-            // Add click event listeners to add links
-            const addLinks = document.querySelectorAll('.add-link');
-            addLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const assistanceType = this.closest('tr').cells[0].textContent;
-                    alert(`Add budget for ${assistanceType}`);
-                });
-            });
-        });
-    </script>
+    
+    
 </body>
 </html>

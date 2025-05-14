@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/administration.css">
     <style>
-        /* Modal Styles */
+        /* Additional Styles for Modal */
         .modal {
             display: none;
             position: fixed;
@@ -161,7 +161,7 @@
         </div>
         
         <!-- Main Content -->
-        <div class="main-content">
+        <div class="main">
             <div class="header">
                 <div class="category-dropdown">
                     <select id="category-select">
@@ -211,27 +211,27 @@
                     <ul class="application-list">
                         <li class="application-item">
                             <div class="application-name">Miguel Santos<br>San Agustin</div>
-                            <button class="application-action view-btn">View</button>
+                            <button class="application-action">View</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action review-btn">Review</button>
+                            <button class="application-action">View</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Tomás Rivera<br>San Gregorio</div>
-                            <button class="application-action schedule-btn">Schedule</button>
+                            <button class="application-action">View</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Lorna Garcia<br>San Benito</div>
-                            <button class="application-action view-btn">View</button>
+                            <button class="application-action">View</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Elena Cruz<br>San Isidro</div>
-                            <button class="application-action review-btn">Review</button>
+                            <button class="application-action">View</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Alberto Ramos<br>San Juan</div>
-                            <button class="application-action schedule-btn">Schedule</button>
+                            <button class="application-action">View</button>
                         </li>
                     </ul>
                 </div>
@@ -242,15 +242,15 @@
                     <ul class="application-list">
                         <li class="application-item">
                             <div class="application-name">Miguel Santos<br>San Agustin</div>
-                            <button class="application-action review-btn">Review</button>
+                            <button class="application-action">Review</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action review-btn">Review</button>
+                            <button class="application-action">Review</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Tomás Rivera<br>San Gregorio</div>
-                            <button class="application-action review-btn">Review</button>
+                            <button class="application-action">Review</button>
                         </li>
                     </ul>
                 </div>
@@ -261,15 +261,15 @@
                     <ul class="application-list">
                         <li class="application-item">
                             <div class="application-name">Miguel Santos<br>San Agustin</div>
-                            <button class="application-action schedule-btn">Schedule</button>
+                            <button class="application-action">Schedule</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Rafael Dizon<br>San Andres</div>
-                            <button class="application-action schedule-btn">Schedule</button>
+                            <button class="application-action">Schedule</button>
                         </li>
                         <li class="application-item">
                             <div class="application-name">Tomás Rivera<br>San Gregorio</div>
-                            <button class="application-action schedule-btn">Schedule</button>
+                            <button class="application-action">Schedule</button>
                         </li>
                     </ul>
                 </div>
@@ -317,10 +317,8 @@
         const modal = document.getElementById('applicationModal');
         const closeBtn = document.querySelector('.close');
         const viewButtons = document.querySelectorAll('.view-btn');
-        const reviewButtons = document.querySelectorAll('.review-btn');
-        const scheduleButtons = document.querySelectorAll('.schedule-btn');
 
-        // Open modal for view, review, and schedule actions
+        // Open modal for view actions
         document.querySelectorAll('.application-action').forEach(button => {
             button.addEventListener('click', function() {
                 const name = this.parentElement.querySelector('.application-name').textContent.split('\n')[0];

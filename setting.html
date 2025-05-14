@@ -291,10 +291,9 @@
         </div>
     </div>
 
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Add click event listeners to buttons
+            // Add click event listeners to action buttons
             const actionButtons = document.querySelectorAll('.action-btn');
             actionButtons.forEach(button => {
                 button.addEventListener('click', function () {
@@ -305,31 +304,32 @@
                 });
             });
 
-            // Add click event listeners to add links
-            const addLinks = document.querySelectorAll('.add-link');
-            addLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const assistanceType = this.closest('tr').cells[0].textContent;
-                    alert(`Add budget for ${assistanceType}`);
-                });
+            // Add click event listeners to view profile links
+            const viewProfileLinks = document.querySelectorAll('tbody a.add-link');
+            viewProfileLinks.forEach(link => {
+                if (link.textContent === 'View Profile') {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const applicantName = this.closest('tr').cells[0].textContent;
+                        alert(`Viewing profile for ${applicantName}`);
+                    });
+                } else if (link.textContent === '+add') {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const assistanceType = this.closest('tr').cells[0].textContent;
+                        alert(`Add budget for ${assistanceType}`);
+                    });
+                }
             });
         });
     </script>
 
     <script>
+        // Menu item selection
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', function () {
                 document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
-            });
-        });
-
-        document.querySelectorAll('.application-action').forEach(button => {
-            button.addEventListener('click', function () {
-                const action = this.textContent;
-                const name = this.parentElement.querySelector('.application-name').textContent.split('\n')[0];
-                console.log(`${action} action for ${name}`);
             });
         });
     </script>

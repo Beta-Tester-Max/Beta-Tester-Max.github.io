@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Word Editor</title>
+    <link rel="icon" type="image/x-icon" href="./assets/img/AICS150.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+
+      .header {
+        background-color: #000133;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+      }
+
+      .editor-container {
+        display: flex;
+        padding: 20px;
+        gap: 20px;
+      }
+
+      .toolbars {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        width: 250px;
+      }
+
+      .toolbar-section {
+        margin-bottom: 15px;
+      }
+
+      .toolbar-section h3 {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .toolbar-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .toolbar-button {
+        padding: 5px 10px;
+        background-color: #eaeaea;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .toolbar-button:hover {
+        background-color: #d8d8d8;
+      }
+
+      .toolbar-button.active {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+      }
+
+      select {
+        margin: 5px 0;
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+      }
+
+      .editor {
+        flex: 1;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .content-preview {
+        min-height: 300px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      body.dark-mode {
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      body.dark-mode .toolbars {
+        background-color: #333;
+        border-color: #555;
+        color: white;
+      }
+
+      body.dark-mode .toolbar-button {
+        background-color: #444;
+        border-color: #666;
+        color: white;
+      }
+
+      body.dark-mode .toolbar-button:hover {
+        background-color: #555;
+      }
+
+      body.dark-mode .editor {
+        background-color: #1e1e1e;
+        border-color: #444;
+        color: white;
+      }
+
+      body.dark-mode .content-preview {
+        background-color: #2c2c2c;
+        border-color: #444;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Simple Case Study Word Editor</h1>
+    </div>
+    <div class="editor-container">
+      <div class="toolbars">
+        <div class="toolbar-section">
+          <h3>Formatting</h3>
+          <div class="toolbar-buttons">
+            <button
+              class="toolbar-button"
+              onclick="execCommandWithToggle(this, 'bold')"
+            >
+              Bold
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommandWithToggle(this, 'italic')"
+            >
+              Italic
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommandWithToggle(this, 'underline')"
+            >
+              Underline
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar-section">
+          <h3>Alignment</h3>
+          <div class="toolbar-buttons">
+            <button class="toolbar-button" onclick="execCommand('justifyLeft')">
+              Left
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommand('justifyCenter')"
+            >
+              Center
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommand('justifyRight')"
+            >
+              Right
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar-section">
+          <h3>Lists & Actions</h3>
+          <div class="toolbar-buttons">
+            <button
+              class="toolbar-button"
+              onclick="execCommand('insertUnorderedList')"
+            >
+              • Bullet List
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommand('insertOrderedList')"
+            >
+              1. Numbered List
+            </button>
+            <button class="toolbar-button" onclick="execCommand('undo')">
+              Undo
+            </button>
+            <button class="toolbar-button" onclick="execCommand('redo')">
+              Redo
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar-section">
+          <h3>Font Options</h3>
+          <select onchange="applyFontSize(this)">
+            <option value="">Font Size</option>
+            <option value="8pt">8 pt</option>
+            <option value="10pt">10 pt</option>
+            <option value="12pt">12 pt</option>
+            <option value="14pt">14 pt</option>
+            <option value="18pt">18 pt</option>
+            <option value="24pt">24 pt</option>
+            <option value="36pt">36 pt</option>
+          </select>
+          <select onchange="applyFontFamily(this)">
+            <option value="">Font Family</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Poppins">Poppins</option>
+            <option value="Montserrat">Montserrat</option>
+          </select>
+        </div>
+
+        <div class="toolbar-section format-controls">
+          <button class="toolbar-button" onclick="saveContent()">Save</button>
+          <label>
+            <input
+              type="checkbox"
+              id="darkModeToggle"
+              onchange="toggleDarkMode()"
+            />
+            Dark Mode
+          </label>
+        </div>
+      </div>
+
+      <div class="editor">
+        <div
+          id="editor"
+          contenteditable="true"
+          class="content-preview"
+          aria-placeholder="Start typing here..."
+        >
+          <label for="editor">Start typing here...</label>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function execCommand(command) {
+        document.execCommand(command, false, null);
+        focusEditor();
+      }
+
+      function execCommandWithToggle(button, command) {
+        document.execCommand(command, false, null);
+        button.classList.toggle("active");
+        focusEditor();
+      }
+
+      function applyFontFamily(select) {
+        const fontFamily = select.value;
+        if (!fontFamily) return;
+        document.execCommand("fontName", false, fontFamily);
+        select.selectedIndex = select.findIndexOfOption(fontFamily);
+        focusEditor();
+      }
+
+      function applyFontSize(select) {
+        const ptSize = select.value;
+        if (!ptSize) return;
+
+        const selection = window.getSelection();
+        if (!selection.rangeCount) return;
+        const range = selection.getRangeAt(0);
+
+        if (selection.isCollapsed) {
+          const span = document.createElement("span");
+          span.style.fontSize = ptSize;
+          span.appendChild(document.createTextNode("\u200B")); 
+          range.insertNode(span);
+
+          
+          range.setStart(span.firstChild, 1);
+          range.setEnd(span.firstChild, 1);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        } else {
+          const span = document.createElement("span");
+          span.style.fontSize = ptSize;
+          try {
+            range.surroundContents(span);
+          } catch (e) {
+            alert("Unable to apply font size. Try selecting a simpler range.");
+          }
+        }
+
+        select.selectedIndex = select.findIndexOfOption(ptSize);
+        focusEditor();
+      }
+
+      HTMLSelectElement.prototype.findIndexOfOption = function (value) {
+        for (let i = 0; i < this.options.length; i++) {
+          if (this.options[i].value === value) {
+            return i;
+          }
+        }
+        return -1;
+      };
+
+      function focusEditor() {
+        const editor = document.getElementById("editor");
+        editor.focus();
+      }
+
+      function saveContent() {
+        const content = document.getElementById("editor").innerHTML;
+        const blob = new Blob([content], { type: "text/html" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "document.html";
+        link.click();
+      }
+
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+      }
+
+      const editor = document.getElementById("editor");
+      const label = editor.querySelector("label");
+      const initialHTML = editor.innerHTML;
+
+      editor.addEventListener("input", function () {
+        if (this.innerHTML !== initialHTML && label) {
+          label.style.display = "none";
+        }
+      });
+
+      editor.addEventListener("focus", function () {
+        if (this.innerHTML === initialHTML) {
+          const range = document.createRange();
+          const selection = window.getSelection();
+          range.selectNodeContents(this);
+          range.collapse(false);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      });
+    </script>
+  </body>
+</html>

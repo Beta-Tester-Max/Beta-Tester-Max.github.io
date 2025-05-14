@@ -78,6 +78,7 @@
             </div>
         </div>
     </div>
+
     <!-- Chat content -->
     <div class="main-content">
         <!-- Chats list -->
@@ -92,7 +93,6 @@
             <div class="chat-item">Applicant Chats</div>
             <div class="chat-item">Applicant Chats</div>
             <div class="chat-item">Applicant Chats</div>
-            
         </div>
         
         <!-- Chat window -->
@@ -101,7 +101,8 @@
                 <div class="admin-icon"></div>
                 <span>Juan Dela Cruz</span>
             </div>
-            <div class="chat-content">
+            <div class="chat-content" id="chatContent">
+                <!-- Existing messages -->
                 <div class="message received">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </div>
@@ -110,28 +111,58 @@
                 </div>
             </div>
             <div class="chat-footer">
-                <input type="text" class="message-input" placeholder="Write a message">
-                <button class="send-btn">&#10148;</button>
+                <input type="text" class="message-input" id="messageInput" placeholder="Write a message">
+                <button class="send-btn" id="sendButton">&#10148;</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Get DOM elements
+        const chatContent = document.getElementById('chatContent');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        // Function to add message to chat
+        function addMessage(text, isSent) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.marginBottom = '10px';
+            
+            if (isSent) {
+                messageDiv.className = 'message sent';
+            } else {
+                messageDiv.className = 'message received';
+            }
+            
+            messageDiv.textContent = text;
+            
+            chatContent.appendChild(messageDiv);
+            chatContent.scrollTop = chatContent.scrollHeight;
+        }
+        
+        // Event listener for send button
+        sendButton.addEventListener('click', function() {
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                messageInput.value = '';
+            }
+        });
+        
+        // Event listener for Enter key
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+        
+        // Menu item selection
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', function () {
                 document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
             });
         });
-
-        document.querySelectorAll('.application-action').forEach(button => {
-            button.addEventListener('click', function () {
-                const action = this.textContent;
-                const name = this.parentElement.querySelector('.application-name').textContent.split('\n')[0];
-                console.log(`${action} action for ${name}`);
-            });
-        });
     </script>
 </body>
-
 </html>

@@ -14,7 +14,7 @@
       }
 
       .header {
-        background-color: #2b2b5c;
+        background-color: #000133;
         color: white;
         padding: 10px 20px;
         text-align: center;
@@ -135,28 +135,69 @@
         <div class="toolbar-section">
           <h3>Formatting</h3>
           <div class="toolbar-buttons">
-            <button class="toolbar-button" onclick="execCommandWithToggle(this, 'bold')">Bold</button>
-            <button class="toolbar-button" onclick="execCommandWithToggle(this, 'italic')">Italic</button>
-            <button class="toolbar-button" onclick="execCommandWithToggle(this, 'underline')">Underline</button>
+            <button
+              class="toolbar-button"
+              onclick="execCommandWithToggle(this, 'bold')"
+            >
+              Bold
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommandWithToggle(this, 'italic')"
+            >
+              Italic
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommandWithToggle(this, 'underline')"
+            >
+              Underline
+            </button>
           </div>
         </div>
 
         <div class="toolbar-section">
           <h3>Alignment</h3>
           <div class="toolbar-buttons">
-            <button class="toolbar-button" onclick="execCommand('justifyLeft')">Left</button>
-            <button class="toolbar-button" onclick="execCommand('justifyCenter')">Center</button>
-            <button class="toolbar-button" onclick="execCommand('justifyRight')">Right</button>
+            <button class="toolbar-button" onclick="execCommand('justifyLeft')">
+              Left
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommand('justifyCenter')"
+            >
+              Center
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommand('justifyRight')"
+            >
+              Right
+            </button>
           </div>
         </div>
 
         <div class="toolbar-section">
           <h3>Lists & Actions</h3>
           <div class="toolbar-buttons">
-            <button class="toolbar-button" onclick="execCommand('insertUnorderedList')">• Bullet List</button>
-            <button class="toolbar-button" onclick="execCommand('insertOrderedList')">1. Numbered List</button>
-            <button class="toolbar-button" onclick="execCommand('undo')">Undo</button>
-            <button class="toolbar-button" onclick="execCommand('redo')">Redo</button>
+            <button
+              class="toolbar-button"
+              onclick="execCommand('insertUnorderedList')"
+            >
+              • Bullet List
+            </button>
+            <button
+              class="toolbar-button"
+              onclick="execCommand('insertOrderedList')"
+            >
+              1. Numbered List
+            </button>
+            <button class="toolbar-button" onclick="execCommand('undo')">
+              Undo
+            </button>
+            <button class="toolbar-button" onclick="execCommand('redo')">
+              Redo
+            </button>
           </div>
         </div>
 
@@ -187,15 +228,24 @@
         <div class="toolbar-section format-controls">
           <button class="toolbar-button" onclick="saveContent()">Save</button>
           <label>
-            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" />
+            <input
+              type="checkbox"
+              id="darkModeToggle"
+              onchange="toggleDarkMode()"
+            />
             Dark Mode
           </label>
         </div>
       </div>
 
       <div class="editor">
-        <div id="editor" contenteditable="true" class="content-preview">
-          Start typing here...
+        <div
+          id="editor"
+          contenteditable="true"
+          class="content-preview"
+          aria-placeholder="Start typing here..."
+        >
+          <label for="editor">Start typing here...</label>
         </div>
       </div>
     </div>
@@ -231,10 +281,10 @@
         if (selection.isCollapsed) {
           const span = document.createElement("span");
           span.style.fontSize = ptSize;
-          span.appendChild(document.createTextNode("\u200B")); // zero-width space
+          span.appendChild(document.createTextNode("\u200B")); 
           range.insertNode(span);
 
-          // Move cursor inside the new span
+          
           range.setStart(span.firstChild, 1);
           range.setEnd(span.firstChild, 1);
           selection.removeAllRanges();
@@ -279,6 +329,27 @@
       function toggleDarkMode() {
         document.body.classList.toggle("dark-mode");
       }
+
+      const editor = document.getElementById("editor");
+      const label = editor.querySelector("label");
+      const initialHTML = editor.innerHTML;
+
+      editor.addEventListener("input", function () {
+        if (this.innerHTML !== initialHTML && label) {
+          label.style.display = "none";
+        }
+      });
+
+      editor.addEventListener("focus", function () {
+        if (this.innerHTML === initialHTML) {
+          const range = document.createRange();
+          const selection = window.getSelection();
+          range.selectNodeContents(this);
+          range.collapse(false);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      });
     </script>
   </body>
 </html>

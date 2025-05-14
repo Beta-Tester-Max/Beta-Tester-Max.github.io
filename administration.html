@@ -14,6 +14,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./assets/administration.css" />
+    <link rel="stylesheet" href="./assets/mod.css" />
   </head>
   <body>
     <div class="container">
@@ -288,6 +289,33 @@
       </div>
     </div>
 
+     <!-- Modal -->
+    <div class="modal" id="applicationModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <div class="applicant-info">
+                    <div class="applicant-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="applicant-details">
+                        <h3>Miguel Santos</h3>
+                        <p>San Agustin</p>
+                    </div>
+                </div>
+                <div class="application-category">Medical Assistance</div>
+            </div>
+            <div class="modal-body">
+                <p>Reason: I am deeply in debt because my sibling got sick. I have no relatives who can help, all my possessions are gone, my parents have passed away, and I am also currently undergoing intense medical treatment.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="reject-btn">REJECT</button>
+                <button class="approve-btn">APPROVE</button>
+            </div>
+            <button class="view-btn">View Application</button>
+        </div>
+    </div>
+    
     <script>
       document.querySelectorAll(".menu-item").forEach((item) => {
         item.addEventListener("click", function () {
@@ -307,6 +335,54 @@
           console.log(`${action} action for ${name}`);
         });
       });
+
+       // Modal functionality
+        const modal = document.getElementById('applicationModal');
+        const closeBtn = document.querySelector('.close');
+        const viewButtons = document.querySelectorAll('.view-btn');
+
+        // Open modal for view actions
+        document.querySelectorAll('.application-action').forEach(button => {
+            button.addEventListener('click', function() {
+                const name = this.parentElement.querySelector('.application-name').textContent.split('\n')[0];
+                const category = this.parentElement.querySelector('.application-name').textContent.split('\n')[1];
+                
+                // Update modal content based on the selected application
+                document.querySelector('.applicant-details h3').textContent = name;
+                document.querySelector('.applicant-details p').textContent = category;
+                
+                // Show modal
+                modal.style.display = 'block';
+            });
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Action buttons in modal
+        document.querySelector('.reject-btn').addEventListener('click', function() {
+            console.log('Application rejected');
+            modal.style.display = 'none';
+        });
+
+        document.querySelector('.approve-btn').addEventListener('click', function() {
+            console.log('Application approved');
+            modal.style.display = 'none';
+        });
+
+        document.querySelector('.view-btn').addEventListener('click', function() {
+            console.log('View application details');
+            modal.style.display = 'none';
+        });
     </script>
   </body>
 </html>

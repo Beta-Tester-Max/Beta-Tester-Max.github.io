@@ -1,0 +1,107 @@
+:root {
+  --primary-dark: #000133;
+  --primary-color: #0347ff;
+  --primary-light: #f0f0f0;
+}
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: linear-gradient(rgba(0, 1, 51, 0.65), rgba(0, 1, 51, 0.65)),
+    url("https://raw.githubusercontent.com/Beta-Tester-Max/Beta-Tester-Max.github.io/refs/heads/FE/img/bg1.png");
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  color: white;
+  position: relative;
+  font-family: "Montserrat", sans-serif;
+}
+
+.textHead {
+  text-align: left;
+  margin-bottom: 20px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 36px;
+  color: #333;
+}
+
+.logbox {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.form-control {
+  background-color: var(--primary-light);
+}
+label {
+  color: black;
+  font-family: "Montserrat", sans-serif;
+}
+.text-center {
+  color: black;
+  font-family: "Montserrat", sans-serif;
+}
+/* Login */
+.input-container {
+  position: relative;
+  margin: 20px 0;
+  background:-color #0066cc;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 12px 8px;
+  font-size: 16px;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  border-color: #0c0b0b;
+}
+
+.input-container label {
+  position: absolute;
+  top: 12px;
+  left: 8px;
+  color: #0066cc;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  color: #0c0b0b;
+  background: #ffffff;
+  padding: 0 4px;
+}
+
+
+@media (max-width: 768px) {
+  .logbox {
+    padding: 20px;
+  }
+  .input-container input label{
+    padding: 10px;
+    font-size: 14px;
+  }
+  .textHead {
+    font-size: 28px;
+  }
+  #logoLog {
+    width: 50px;
+    height: 50px;
+  }
+}

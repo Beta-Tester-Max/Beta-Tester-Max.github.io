@@ -1,0 +1,130 @@
+
+.main-content {
+    flex: 1;
+    display: flex;
+    margin-left: 220px;
+    padding: 20px;
+}
+.chats-list {
+    width: 200px;
+    background-color: #76787a;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.chat-item {
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 8px 0;
+}
+
+.chat-item:hover {
+    background-color: #999;
+}
+
+.chat-window {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    width: 900px;
+    height: 600px;
+}
+
+.chat-header {
+    background-color: #2B2465;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #806DEB;
+}
+
+.message {
+    margin-bottom: 20px;
+    max-width: 60%;
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.message.received {
+    background-color: #C3BDBD;
+    color: black;
+    border-top-left-radius: 0;
+}
+
+.message.sent {
+    background-color: #2B2465;
+    color: white;
+    margin-left: auto;
+    border-top-right-radius: 0;
+}
+
+.chat-footer {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    background-color: #ffffff;
+}
+
+.message-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #333;
+    color: white;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.message-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.send-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #0a1027;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.send-btn:hover {
+    background-color: #1a2037;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+    }
+    
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .chats-list {
+        width: 100%;
+    }
+}

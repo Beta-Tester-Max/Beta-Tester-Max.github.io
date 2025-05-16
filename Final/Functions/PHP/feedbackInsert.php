@@ -7,8 +7,8 @@ session_start();
 
 if (isset($_POST['feedback'])) {
     $m = $_POST['message'] ?? "";
-    $r = intval($_POST['rating']) ?? "";
-    $e = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL) ?? "";
+    $r = intval(trim($_POST['rating'])) ?? "";
+    $e = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL) ?? "";
     $n = $_POST['name'] ?? "";
 
     if (empty($m)) {
@@ -19,6 +19,12 @@ if (isset($_POST['feedback'])) {
         exit;
     } elseif (strlen($m) > 1000) {
         $_SESSION['Alert'] = "Feedback Message must not exceed 1000 characters!";
+        $_SESSION['Path'] = "../../index.php";
+
+        header('Location: ../../index.php');
+        exit;
+    } elseif (strlen(trim($m)) < 10) {
+        $_SESSION['Alert'] = "Feedback Message must not be shorter than 10 characters! Space not included.";
         $_SESSION['Path'] = "../../index.php";
 
         header('Location: ../../index.php');
@@ -47,6 +53,12 @@ if (isset($_POST['feedback'])) {
 
         header('Location: ../../index.php');
         exit;
+    } elseif (strlen($e) < 3) {
+        $_SESSION['Alert'] = "Email must not be shorter than 3 characters! Space not included.";
+        $_SESSION['Path'] = "../../index.php";
+
+        header('Location: ../../index.php');
+        exit;
     } elseif (!filter_var($e, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['Alert'] = "Invalid Email";
         $_SESSION['Path'] = "../../index.php";
@@ -61,6 +73,12 @@ if (isset($_POST['feedback'])) {
         exit;
     } elseif (strlen($n) > 50) {
         $_SESSION['Alert'] = "Name must not exceed 50 characters";
+        $_SESSION['Path'] = "../../index.php";
+
+        header('Location: ../../index.php');
+        exit;
+    } elseif (strlen(trim($n)) < 3) {
+        $_SESSION['Alert'] = "Name must not shorter than 3 characters! Space not included";
         $_SESSION['Path'] = "../../index.php";
 
         header('Location: ../../index.php');

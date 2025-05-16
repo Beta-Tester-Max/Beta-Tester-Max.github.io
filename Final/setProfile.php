@@ -1,3 +1,8 @@
+<?php
+session_start();
+include "Functions/PHP/userDataFetcher.php";
+include "Functions/PHP/forUser.php"
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +18,7 @@
     <style>
         input[type="date"] {
             background-color: #000033;
-            color:rgba(255, 255, 255, 0.46);
+            color: rgba(255, 255, 255, 0.46);
             border: 1px solid #ffffff;
             padding-left: 2.5em;
             padding-right: 1.5em;
@@ -27,78 +32,22 @@
             padding: 3px;
             cursor: pointer;
         }
+
+        .close {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1.5em;
+        }
+
+        .close:hover {
+            color:rgb(216, 9, 9);
+        }
     </style>
 </head>
 
 <body>
-    <form method="POST" action="Functions/PHP/setProfileInsert.php">
-        <div class="container">
-            <h2>Kindly Complete your profile so you can apply for assistance</h2>
-
-            <div class="form-container" style="padding-bottom: 0;">
-                <div class="form-section">
-                    <div class="form-header">Family Information</div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <input type="text" placeholder="Family Name" name="fN" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" pattern="^(0|[1-9]|1[0-9]|20)$" title="Enter a number between 0 and 20"
-                                placeholder="Number of Family Members" id="fMC">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <div class="form-header">Address</div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <input type="text" placeholder="House No." name="hN" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Street" name="s" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Barangay" name="b" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="City" name="c" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Province" name="p" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <input type="text" placeholder="Region" name="r" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Zip Code" name="zC" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <div class="form-header">Family Composition</div>
-
-                    <div id="allMembers"></div>
-
-                    <input type="hidden" id="count" name="count">
-
-                    <div class="add-member" style="display: flex;justify-content: end">
-                        <button type="button" id="aM">Add Member</button>
-                    </div>
-
-                    <div class="add-member">
-                        <input type="hidden" name="setProfile">
-                        <button type="submit" style="font-size: 20px; padding: .5em;">Set Profile</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+    
+    <?php include "Functions/PHP/hasFamilySetProfile.php"?>
 
     <script src="Functions/JS/setProfileScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

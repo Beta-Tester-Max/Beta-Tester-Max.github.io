@@ -472,7 +472,7 @@ include "Functions/PHP/adminLoggedIn.php"
         <div class="form-left">
           <h2>Feedback</h2>
           <textarea class="feedback-textarea" rows="10" cols="70" placeholder="Write your Feedback here"
-            style="color: rgb(17, 17, 17)" required id="fM" name="message" maxlength="1000"></textarea>
+            style="color: rgb(17, 17, 17)" required id="fM" name="message" minlength="10" maxlength="1000"></textarea>
         </div>
 
         <div class="form-right">
@@ -488,12 +488,12 @@ include "Functions/PHP/adminLoggedIn.php"
 
           <div class="input-container" style="background-color: #0066cc">
             <input type="email" class="form-input" id="email" placeholder="" required
-              style="background-color: #0066cc; color: #ffffff;" maxlength="50" name="email">
+              style="background-color: #0066cc; color: #ffffff;" minlength="3" maxlength="50" name="email">
             <label for="username" style="color: #ffffff">Email</label>
           </div>
           <div class="input-container" style="background-color: #0066cc">
             <input type="text" class="form-input" id="name" placeholder="" required
-              style="background-color: #0066cc; color: #ffffff;" maxlength="50" name="name">
+              style="background-color: #0066cc; color: #ffffff;" minlength="3" maxlength="50" name="name">
             <label for="username" style="color: #ffffff">Name</label>
           </div>
           <input type="hidden" name="feedback">

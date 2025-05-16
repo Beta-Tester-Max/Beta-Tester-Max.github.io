@@ -5,6 +5,7 @@ include "Functions/PHP/forUser.php"
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,13 +16,14 @@ include "Functions/PHP/forUser.php"
     <link rel="stylesheet" href="./assets/profile.css">
     <link rel="stylesheet" href="./assets/style.css">
     <script>
-       window.addEventListener('load', function() {
-            setTimeout(function() {
+        window.addEventListener('load', function () {
+            setTimeout(function () {
                 document.querySelector('.loader').style.display = 'none';
             }, 3000);
         });
     </script>
 </head>
+
 <body class="loaded">
     <div class="loader">
         <div class="loader-container">
@@ -34,39 +36,27 @@ include "Functions/PHP/forUser.php"
             <div class="dot right-dot"></div>
         </div>
     </div>
-    
+
     <div class="container">
         <div class="header">
             <div class="greeting">
                 <i><img src="./assets/img/User Male.png" alt=""></i>
-                <span>Hi, Juan Dela Cruz</span>
+                <span><?php include "Functions/PHP/showUsername.php"?></span>
             </div>
-            <div class="info-icon">
-                <i class="fas fa-info"></i>
-            </div>
+            <a href="index.php" class="info-icon" style="text-decoration: none; color: #ffffff; font-size: 1.5em;">
+                <i class="fa-solid fa-xmark"></i>
+            </a>
         </div>
-        
+
         <div class="buttons-container">
-            <a href="setProfile.php" class="action-button">
-                <i><img src="./assets/img/Edit Property.png" alt=""></i>
-                <p>Complete your<br>Profile to Apply</p>
-            </a>
 
-            <a href="setProfile.php" class="action-button">
-                <i><img src="./assets/img/requirements.png" alt="" style="width: 100px; height: auto;"></i>
-                <p>Complete your<br>Requirements to Apply</p>
-            </a>
+            <?php include "Functions/PHP/hasFamilyProfile.php" ?>
 
-            <a href="setProfile.php" class="action-button">
-                <i><img src="./assets/img/app.png" alt="" style="width: 100px; height: auto;"></i>
-                <p>Start Creating<br>Applications</p>
-            </a>
-            
             <a href="quali.html" class="action-button">
                 <i><img src="./assets/img/Open Book.png" alt=""></i>
                 <p>Read the<br>Qualification</p>
             </a>
-            
+
             <a href="messaging.html" class="action-button">
                 <i><img src="./assets/img/Messaging.png" alt=""></i>
                 <p>Connect<br>to MSWD</p>
@@ -74,4 +64,5 @@ include "Functions/PHP/forUser.php"
         </div>
     </div>
 </body>
+
 </html>

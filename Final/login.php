@@ -56,12 +56,12 @@ include "Functions/PHP/adminLoggedIn.php"
                 </div>
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="text" class="form-input" id="email" placeholder="" required
-                        style="background-color: #ffffff" name="account" maxlength="50">
+                        style="background-color: #ffffff" name="account" minlength="3" maxlength="50">
                     <label for="account" style="color: #0c0b0b">Email or Username</label>
                 </div>
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="password" class="form-input" id="password" placeholder=""
-                        required style="background-color: #ffffff" name="pass" maxlength="15">
+                        required style="background-color: #ffffff" name="pass" pattern="[^' ']+" minlength="8" maxlength="15">
                     <label for="Password" style="color: #0c0b0b">Password</label>
                 </div>
 

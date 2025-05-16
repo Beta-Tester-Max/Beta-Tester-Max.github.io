@@ -18,6 +18,12 @@ if (isset($_POST['login'])) {
 
         header('Location: ../../index.php');
         exit;
+    } elseif (strlen(trim($a)) < 3) {
+        $_SESSION['Alert'] = "Account must not be shorter than 3 characters! Space not included.";
+        $_SESSION['Path'] = "../../login.php";
+
+        header('Location: ../../index.php');
+        exit;
     } elseif (empty($p)) {
         $_SESSION['Alert'] = "Password Missing!";
         $_SESSION['Path'] = "../../login.php";

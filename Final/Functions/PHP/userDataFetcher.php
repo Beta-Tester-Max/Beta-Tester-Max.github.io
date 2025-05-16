@@ -14,33 +14,33 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
 
         $_SESSION['Account'] = $data;
 
-        // $sql = $pdo->prepare("SELECT Family_ID FROM tbl_family WHERE Account_ID = :a");
-        // $sql->bindParam(":a", $a, PDO::PARAM_INT);
-        // $sql->execute();
-        // $result = $sql->fetch(PDO::FETCH_ASSOC);
-        // $data = sanitize($result);
+        $sql = $pdo->prepare("SELECT Family_ID FROM tbl_family WHERE Account_ID = :a");
+        $sql->bindParam(":a", $a, PDO::PARAM_INT);
+        $sql->execute();
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        $data = sanitize($result);
 
-        // $_SESSION['Family_ID'] = $data['Family_ID'];
+        $_SESSION['Family_ID'] = $data['Family_ID'];
 
-        // $sql = $pdo->prepare("SELECT * FROM tbl_family_composition WHERE Account_ID = :a");
-        // $sql->bindParam(":a", $a, PDO::PARAM_INT);
-        // $sql->execute();
-        // $result = $sql->fetchAll();
-        // $data = sanitize($result);
+        $sql = $pdo->prepare("SELECT * FROM tbl_family_composition WHERE Account_ID = :a");
+        $sql->bindParam(":a", $a, PDO::PARAM_INT);
+        $sql->execute();
+        $result = $sql->fetchAll();
+        $data = sanitize($result);
 
-        // $_SESSION['familyComp'] = $data;
-        // $_SESSION['hasFamily'] = ($sql->rowCount() > 0) ? 1 : 0;
+        $_SESSION['familyComp'] = $data;
+        $_SESSION['hasFamily'] = ($sql->rowCount() > 0) ? 1 : 0;
 
-        // foreach ($data as $fc) {
-        //     $u = $fc['User_ID'];
+        foreach ($data as $fc) {
+            $u = $fc['User_ID'];
 
-        //     $sql = $pdo->prepare("SELECT * FROM tbl_family_member WHERE User_ID = :u");
-        //     $sql->bindParam(":u", $u, PDO::PARAM_INT);
-        //     $sql->execute();
-        //     $result = $sql->fetchAll();
-        //     $data = sanitize($result);
-        //     $_SESSION['family'] = $data;
-        // }
+            $sql = $pdo->prepare("SELECT * FROM tbl_family_member WHERE User_ID = :u");
+            $sql->bindParam(":u", $u, PDO::PARAM_INT);
+            $sql->execute();
+            $result = $sql->fetchAll();
+            $data = sanitize($result);
+            $_SESSION['family'] = $data;
+        }
 
         // $sql = $pdo->query("SELECT * FROM tbl_documents");
         // $result = $sql->fetchAll();

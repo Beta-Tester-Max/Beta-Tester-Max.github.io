@@ -111,17 +111,17 @@ include "Functions/PHP/adminLoggedIn.php"
                 </div>
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="text" class="form-input" id="username" placeholder="" required
-                        style="background-color: #ffffff" max="50" name="username">
+                        style="background-color: #ffffff" minlength="3" maxlength="50" name="username">
                     <label for="account" style="color: #0c0b0b">Username</label>
                 </div>
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="email" class="form-input" id="email" placeholder="" required
-                        style="background-color: #ffffff" max="50" name="email">
+                        style="background-color: #ffffff" minlength="3" maxlength="50" name="email">
                     <label for="account" style="color: #0c0b0b">Email Address</label>
                 </div>
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="password" class="form-input" id="password" placeholder="" required
-                        style="background-color: #ffffff" max="15" name="pass">
+                        style="background-color: #ffffff" minlength="8" maxlength="15" name="pass">
                     <label for="Password" style="color: #0c0b0b">Password</label>
                 </div>
 

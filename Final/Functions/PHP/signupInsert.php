@@ -7,7 +7,7 @@ $inserted = false;
 if (isset($_POST['signup'])) {
     if (isset($_POST['consent']) && $_POST['consent'] === '1') {
         $u = $_POST['username'] ?? "";
-        $e = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL) ?? "";
+        $e = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL) ?? "";
         $password = $_POST['pass'] ?? "";
         
         if (empty($u)) {
@@ -22,6 +22,12 @@ if (isset($_POST['signup'])) {
 
             header('Location: ../../index.php');
             exit;
+        } elseif (strlen(trim($u)) < 3) {
+            $_SESSION['Alert'] = "Username must not be shorter than 3 characters! Space not included.";
+            $_SESSION['Path'] = "../../signup.php";
+
+            header('Location: ../../index.php');
+            exit;
         } elseif (empty($e)) {
             $_SESSION['Alert'] = "Missing Email!";
             $_SESSION['Path'] = "../../signup.php";
@@ -30,6 +36,12 @@ if (isset($_POST['signup'])) {
             exit;
         } elseif (strlen($e) > 50) {
             $_SESSION['Alert'] = "Email must not exceed 50 characters.";
+            $_SESSION['Path'] = "../../signup.php";
+
+            header('Location: ../../index.php');
+            exit;
+        } elseif (strlen($e) < 3) {
+            $_SESSION['Alert'] = "Email must not be shorter than 3 characters! Space not included.";
             $_SESSION['Path'] = "../../signup.php";
 
             header('Location: ../../index.php');

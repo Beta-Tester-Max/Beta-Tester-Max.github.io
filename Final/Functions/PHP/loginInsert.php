@@ -55,7 +55,7 @@ if (isset($_POST['login'])) {
                     // } else {
                     $_SESSION['Account_ID'] = $data['Account_ID'];
 
-                    header('Location: ../../index.php');
+                    header('Location: ../../profile.php');
                     exit;
                     // }
                 } else {

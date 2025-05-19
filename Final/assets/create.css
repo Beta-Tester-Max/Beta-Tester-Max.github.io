@@ -1,0 +1,15 @@
+:root {
+  --primary-dark: #000133;
+  --primary-color: #0347ff;
+  --primary-light: #f0f0f0;
+}
+body {
+  background-color: var(--primary-dark);
+  color: var(--primary-light);
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.form-border {
+  border: 2px solid #FFFFFF !important;
+}

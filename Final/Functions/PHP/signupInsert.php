@@ -164,7 +164,7 @@ if (isset($_POST['signup'])) {
 
             $_SESSION['Account_ID'] = $data['Account_ID'];
             $_SESSION['Alert'] = "Account Registered Successfully!";
-            $_SESSION['Path'] = "../../index.php";
+            $_SESSION['Path'] = "../../profile.php";
 
             header('Location: ../../index.php');
             exit;

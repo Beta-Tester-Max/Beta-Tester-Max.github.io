@@ -13,7 +13,7 @@ if (isset($_POST['setProfile'])) {
     $r = $_POST['r'] ?? "";
     $zc = intval(trim($_POST['zC'])) ?? "";
 
-    if (!empty($a)) {
+    if (empty($a)) {
         $_SESSION['Alert'] = "Missing Account ID!";
         $_SESSION['Path'] = "../../setProfile.php";
 
@@ -145,8 +145,8 @@ if (isset($_POST['setProfile'])) {
 
         header('Location: ../../index.php');
         exit;
-    } elseif (strlen(trim($r)) < 3) {
-        $_SESSION['Alert'] = "Region must not be shorter than 3 characters! Space not included.";
+    } elseif (strlen(trim($r)) < 1) {
+        $_SESSION['Alert'] = "Region must be atleast 1 character! Space not included.";
         $_SESSION['Path'] = "../../setProfile.php";
 
         header('Location: ../../index.php');
@@ -186,7 +186,7 @@ if (isset($_POST['setProfile'])) {
             $sql->bindParam(":hn", $hn, PDO::PARAM_INT);
             $sql->bindParam(":sn", $sn, PDO::PARAM_STR);
             $sql->bindParam(":b", $b, PDO::PARAM_STR);
-            $sql->bindParam(":com", $com, PDO::PARAM_STR);
+            $sql->bindParam(":com", $c, PDO::PARAM_STR);
             $sql->bindParam(":p", $p, PDO::PARAM_STR);
             $sql->bindParam(":r", $r, PDO::PARAM_STR);
             $sql->bindParam(":zc", $zc, PDO::PARAM_INT);

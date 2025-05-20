@@ -19,7 +19,7 @@ include "Functions/PHP/forUser.php"
         window.addEventListener('load', function () {
             setTimeout(function () {
                 document.querySelector('.loader').style.display = 'none';
-            }, 3000);
+            }, 1000);
         });
     </script>
 </head>

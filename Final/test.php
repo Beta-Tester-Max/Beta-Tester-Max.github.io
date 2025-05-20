@@ -7,62 +7,105 @@
 </form>
 <form method="POST" target="_blank" action="Functions/PHP/fileOpener.php"></form> -->
 
+if (isset($_POST["uploadRequirement"])) {
+    $a = $_SESSION['Account_ID'];
+    $d = $_POST['document'];
+    $f = $_FILES["file"]["name"];
+    $fS = $_FILES["file"]["size"];
+    $fTN = $_FILES["file"]["tmp_name"];
+    $e = pathinfo($f, PATHINFO_EXTENSION);
+    $nF = $a . "_" . $d . "." . $e;
+    $dir = "../../Files/";
+    $fP = $dir . $nF;
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    try {
+        $pdo->beginTransaction();
 
-<style>
-    .file-upload-wrapper {
-  position: relative;
-  overflow: hidden; /* To contain the custom button */
-  display: inline-block; /* Or block, as needed */
-}
+        $fsMB = ($fS / 1024) / 1024 . "MB";
+        $mFS = 5 * 1024 * 1024;
 
-.custom-file-upload {
-  /* Bootstrap's btn-dark class will handle the initial styling */
-}
+        if ($fS <= $mFS) {
+            $fT = mime_content_type($fTN);
 
-.custom-file-upload:hover {
-  background-color: #fff !important; /* White background on hover */
-  color: #000 !important;        /* Black text on hover */
-  border-color: #fff !important; /* Optional: Keep the border white on hover */
-}
+            if ($fT === "application/pdf") {
 
-#real-file-input {
-  position: absolute;
-  font-size: 999px;
-  opacity: 0;
-  right: 0;
-  top: 0;
-  cursor: pointer;
-}
+                $sql = $pdo->prepare("INSERT INTO tbl_files (Account_ID, File_Name) VALUES (:a, :f)");
+                $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                $sql->bindParam(":f", $nF, PDO::PARAM_STR);
 
-#file-name {
-  /* Added Bootstrap's margin utility class for spacing */
-}
-</style>
+                if ($sql->execute()) {
+                    $f = $pdo->lastInsertId();
 
-<div class="file-upload-wrapper">
-    <button type="button" class="custom-file-upload btn btn-dark">Choose File</button>
-    <input type="file" id="real-file-input" style="display: none;">
-</div>
+                    if (move_uploaded_file($fTN, $fP)) {
+                        $sql = $pdo->prepare("INSERT INTO tbl_account_requirements (Account_ID, Document_ID, File_ID)
+                                    VALUES (:a, :d, :f)");
+                        $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                        $sql->bindParam(":d", $d, PDO::PARAM_INT);
+                        $sql->bindParam(":f", $f, PDO::PARAM_INT);
 
+                        if ($sql->execute()) {
+                            $pdo->commit();
 
-<script>
-    const realFileInput = document.getElementById('real-file-input');
-    const customButton = document.querySelector('.custom-file-upload');
-    const fileNameSpan = document.getElementById('file-name');
+                            $_SESSION['Alert'] = "Requirement Submitted Successfully.";
+                            $_SESSION['Path'] = "../../profile.php";
 
-    customButton.addEventListener('click', () => {
-        realFileInput.click();
-    });
+                            header('Location: ../../index.php');
+                            exit;
+                        } else {
+                            $pdo->rollBack();
 
-    realFileInput.addEventListener('change', () => {
-        if (realFileInput.files && realFileInput.files.length > 0) {
-            fileNameSpan.textContent = realFileInput.files[0].name;
-            fileNameSpan.classList.remove('text-muted'); // Remove muted text when a file is chosen
+                            $_SESSION['Alert'] = "Error Moving File.";
+                            $_SESSION['Path'] = "../../profile.php";
+
+                            header('Location: ../../index.php');
+                            exit;
+                        }
+                    } else {
+                        $pdo->rollBack();
+
+                        $_SESSION['Alert'] = "Error Inserting Requirement.";
+                        $_SESSION['Path'] = "../../profile.php";
+
+                        header('Location: ../../index.php');
+                        exit;
+                    }
+                } else {
+                    $pdo->rollBack();
+
+                    $_SESSION['Alert'] = "Error Inserting File.";
+                    $_SESSION['Path'] = "../../profile.php";
+
+                    header('Location: ../../index.php');
+                    exit;
+                }
+            } else {
+                $pdo->rollBack();
+
+                $_SESSION['Alert'] = "Your File may look like a PDF but its not, Most Likely a dummy created to look like one which is not allowed.";
+                $_SESSION['Path'] = "../../profile.php";
+
+                header('Location: ../../index.php');
+                exit;
+            }
         } else {
-            fileNameSpan.textContent = 'No file chosen';
-            fileNameSpan.classList.add('text-muted');    // Add muted text when no file is chosen
+            $pdo->rollBack();
+
+            $_SESSION['Alert'] = "You File has a size of $fsMB and is way above the Max Allowed File Size which is 5MB.";
+            $_SESSION['Path'] = "../../profile.php";
+
+            header('Location: ../../index.php');
+            exit;
         }
-    });
-</script>
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+
+        $_SESSION['Alert'] = "Connection Error: " . $e->getMessage();
+        $_SESSION['Path'] = "../../profile.php";
+
+        header('Location: ../../index.php');
+        exit;
+    }
+} else {
+    header('Location: ../../index.php');
+    exit;
+}

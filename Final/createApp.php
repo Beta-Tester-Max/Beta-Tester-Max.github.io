@@ -2,7 +2,8 @@
 session_start();
 include "Functions/PHP/userDataFetcher.php";
 include "Functions/PHP/forUser.php";
-include "Functions/PHP/allowedToApply.php"
+include "Functions/PHP/ifSessionSD.php";
+include "Functions/PHP/hasFamilyCA.php"
   ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +18,7 @@ include "Functions/PHP/allowedToApply.php"
   <script src="https://kit.fontawesome.com/7961b8f896.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="./assets/create.css" />
   <style>
-    .close i{
+    .close i {
       transition: ease .5s;
     }
 
@@ -38,17 +39,18 @@ include "Functions/PHP/allowedToApply.php"
   </style>
 </head>
 
-<body class="overflow-x-hidden" style="min-width: 50em">
+<body class="overflow-x-hidden" style="min-width: 21.5em">
   <div class="container-fluid">
     <div class="row justify-content-md-center my-5">
       <div class="col-md-4 form-border rounded shadow p-0">
         <div class="d-flex justify-content-end me-2 mt-1">
-          <a class="text-decoration-none text-light fs-2 close" href="profile.php"><i class="fa-solid fa-circle-xmark"></i></a>
+          <a class="text-decoration-none text-light fs-2 close" href="profile.php"><i
+              class="fa-solid fa-circle-xmark"></i></a>
         </div>
 
-        <div class="d-flex flex-column justify-content-center align-items-center p-4">
+        <div class="d-flex flex-column justify-content-center align-items-center px-4 pb-5">
 
-          <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
+          <div class="d-flex flex-column justify-content-center align-items-center">
             <h3>Assistance Application Form</h3>
           </div>
           <form method="POST" action="Functions/PHP/appCred.php">
@@ -59,7 +61,7 @@ include "Functions/PHP/allowedToApply.php"
                     <div class="mt-3">
                       <label class="mb-1" for="asAp">Select Assitance:</label><br />
                       <select class="form-select" id="asAp" name="assistance" required>
-                        <?php include "Functions/PHP/eligibleApplication.php" ?>
+                        <?php include "Functions/PHP/assistanceSelect.php" ?>
                       </select>
                     </div>
                     <div class="mt-3">
@@ -80,9 +82,9 @@ include "Functions/PHP/allowedToApply.php"
                   <div class="col-md-auto">
                     <div class="mt-3">
                       <div class="form-floating">
-                        <textarea class="form-control" placeholder="State your reason here" id="floatingTextarea"
-                          style="height: 10em; width: 20em;" minlength="10" maxlength="1000" name="reason" required></textarea>
-                        <label for="floatingTextarea">Reason</label>
+                        <textarea class="form-control" placeholder="State your reason here" style="height: 200px;" cols="40" id="reason" minlength="10"
+                          maxlength="1000" name="reason" required></textarea>
+                        <label class="text-dark" for="reason">Reason</label>
                       </div>
                     </div>
                   </div>
@@ -91,7 +93,7 @@ include "Functions/PHP/allowedToApply.php"
               <div class="mt-4 d-flex justify-content-center align-items-center">
                 <input type="hidden" name="appCred">
                 <button type="submit" class="btn btn-outline-light submit">
-                  Next Documents ->
+                  Next Requirements <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
             </div>

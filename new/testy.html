@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barangay Benefits Management System</title>
+    <style>
+        :root {
+            --primary-color: #6c63ff;
+            --secondary-color: #f8f9fa;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-text: #666;
+            --border-radius: 10px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #8e44ad);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-header h2 {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #5a51d9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #ff5252;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-text);
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .flex-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .flex-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .flex-container {
+                flex-direction: column;
+            }
+            
+            .flex-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Barangay Benefits Management</h1>
+        <p>Efficiently manage senior citizens, PWDs, and children benefits</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Welcome, Administrator</h2>
+                <button class="btn btn-accent" onclick="logout()">Logout</button>
+            </div>
+            <div class="flex-container">
+                <button class="btn" onclick="showSection('add-person')">Add Person</button>
+                <button class="btn" onclick="showSection('view-list')">View Master List</button>
+                <button class="btn" onclick="showSection('update-date')">Update Payout Date</button>
+                <button class="btn btn-secondary" onclick="showSection('dashboard')">Dashboard</button>
+            </div>
+        </div>
+
+        <div id="dashboard" class="card">
+            <h2>Dashboard Overview</h2>
+            <div class="flex-container">
+                <div class="card" style="flex: 1;">
+                    <h3>Total Beneficiaries</h3>
+                    <p id="total-beneficiaries">0</p>
+                </div>
+                <div class="card" style="flex: 1;">
+                    <h3>Senior Citizens</h3>
+                    <p id="senior-count">0</p>
+                </div>
+                <div class="card" style="flex: 1;">
+                    <h3>Persons with Disabilities</h3>
+                    <p id="pwd-count">0</p>
+                </div>
+                <div class="card" style="flex: 1;">
+                    <h3>Children</h3>
+                    <p id="children-count">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-person" class="card hidden">
+            <h2>Add New Beneficiary</h2>
+            <form id="person-form">
+                <div class="flex-container">
+                    <div class="flex-item form-group">
+                        <label for="barangay">Barangay Name:</label>
+                        <input type="text" id="barangay" required>
+                    </div>
+                    <div class="flex-item form-group">
+                        <label for="category">Category:</label>
+                        <select id="category" required>
+                            <option value="senior_citizens">Senior Citizen</option>
+                            <option value="pwd">PWD</option>
+                            <option value="children">Child</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex-container">
+                    <div class="flex-item form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="flex-item form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" required>
+                    </div>
+                </div>
+                <div class="flex-container">
+                    <div class="flex-item form-group">
+                        <label for="contact">Contact Number:</label>
+                        <input type="text" id="contact">
+                    </div>
+                    <div class="flex-item form-group">
+                        <label for="payout-date">Payout Date:</label>
+                        <input type="date" id="payout-date" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Add Beneficiary</button>
+            </form>
+        </div>
+
+        <div id="view-list" class="card hidden">
+            <h2>View Beneficiaries</h2>
+            <div class="flex-container">
+                <div class="flex-item form-group">
+                    <input type="text" id="search-barangay" placeholder="Search Barangay..." style="width: 100%;">
+                </div>
+                <div class="flex-item form-group">
+                    <select id="search-category">
+                        <option value="all">All Categories</option>
+                        <option value="senior_citizens">Senior Citizens</option>
+                        <option value="pwd">PWDs</option>
+                        <option value="children">Children</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top: 1rem;">
+                <table id="beneficiaries-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Age</th>
+                            <th>Contact</th>
+                            <th>Payout Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="update-date" class="card hidden">
+            <h2>Update Payout Date</h2>
+            <div class="flex-container">
+                <div class="flex-item form-group">
+                    <input type="text" id="search-id" placeholder="Search by ID..." style="width: 100%;">
+                </div>
+                <button class="btn" onclick="searchById()">Search</button>
+            </div>
+            <div id="update-form-container" class="hidden">
+                <form id="update-form">
+                    <div class="flex-container">
+                        <div class="flex-item form-group">
+                            <label for="update-id">Person ID:</label>
+                            <input type="text" id="update-id" readonly>
+                        </div>
+                        <div class="flex-item form-group">
+                            <label for="update-name">Name:</label>
+                            <input type="text" id="update-name" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="update-date">New Payout Date:</label>
+                        <input type="date" id="update-date" required>
+                    </div>
+                    <button type="submit" class="btn">Update Payout Date</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let barangays = JSON.parse(localStorage.getItem('barangays')) || {};
+        const CATEGORY_MAP = {
+            senior_citizens: 'Senior Citizen',
+            pwd: 'PWD',
+            children: 'Child'
+        };
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.card').forEach(card => {
+                if (card.id !== 'dashboard' && card.id !== sectionId) {
+                    card.classList.add('hidden');
+                } else {
+                    card.classList.remove('hidden');
+                }
+            });
+        }
+
+        function generatePersonId(barangay, category) {
+            if (!barangays[barangay]) {
+                barangays[barangay] = {};
+            }
+            if (!barangays[barangay][category]) {
+                barangays[barangay][category] = {
+                    members: [],
+                    nextId: 1
+                };
+            }
+            
+            const nextId = barangays[barangay][category].nextId;
+            barangays[barangay][category].nextId++;
+            saveData();
+            
+            const categoryCode = category === 'senior_citizens' ? 'S' : 
+                                category === 'pwd' ? 'P' : 'C';
+            
+            return `${barangay}-${categoryCode}-${nextId.toString().padStart(3, '0')}`;
+        }
+
+        document.getElementById('person-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const barangay = document.getElementById('barangay').value.toUpperCase();
+            const category = document.getElementById('category').value;
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const contact = document.getElementById('contact').value;
+            const payoutDate = document.getElementById('payout-date').value;
+
+            const personId = generatePersonId(barangay, category);
+            const person = {
+                id: personId,
+                name,
+                age,
+                contact,
+                payoutDate,
+                category: category
+            };
+
+            if (!barangays[barangay][category].members) {
+                barangays[barangay][category].members = [];
+            }
+
+            barangays[barangay][category].members.push(person);
+            saveData();
+            updateDashboard();
+            alert(`Beneficiary added successfully! ID: ${personId}`);
+            this.reset();
+            showSection('dashboard');
+        });
+
+        function populateBeneficiariesTable() {
+            const tableBody = document.querySelector('#beneficiaries-table tbody');
+            tableBody.innerHTML = '';
+            
+            const barangayFilter = document.getElementById('search-barangay').value.toUpperCase();
+            const categoryFilter = document.getElementById('search-category').value;
+
+            let totalBeneficiaries = 0;
+            let seniorCount = 0;
+            let pwdCount = 0;
+            let childrenCount = 0;
+
+            for (const barangay in barangays) {
+                if (barangayFilter && !barangay.includes(barangayFilter)) continue;
+                
+                for (const category in barangays[barangay]) {
+                    const categoryData = barangays[barangay][category];
+                    if (!categoryData.members) continue;
+                    
+                    if (categoryFilter !== 'all' && category !== categoryFilter) continue;
+                    
+                    categoryData.members.forEach(member => {
+                        totalBeneficiaries++;
+                        
+                        if (category === 'senior_citizens') seniorCount++;
+                        else if (category === 'pwd') pwdCount++;
+                        else if (category === 'children') childrenCount++;
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${member.id}</td>
+                            <td>${member.name}</td>
+                            <td>${CATEGORY_MAP[category]}</td>
+                            <td>${member.age}</td>
+                            <td>${member.contact}</td>
+                            <td>${new Date(member.payoutDate).toLocaleDateString()}</td>
+                            <td>
+                                <button class="btn btn-secondary" onclick="viewDetails('${member.id}')">View</button>
+                                <button class="btn btn-accent" onclick="updatePayout('${member.id}')">Update Date</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+            }
+
+            document.getElementById('total-beneficiaries').textContent = totalBeneficiaries;
+            document.getElementById('senior-count').textContent = seniorCount;
+            document.getElementById('pwd-count').textContent = pwdCount;
+            document.getElementById('children-count').textContent = childrenCount;
+        }
+
+        function updatePayout(id) {
+            const [barangay, categoryCode, idNum] = id.split('-');
+            const category = categoryCode === 'S' ? 'senior_citizens' : 
+                           categoryCode === 'P' ? 'pwd' : 'children';
+            
+            if (!barangays[barangay] || !barangays[barangay][category]) return;
+            
+            const members = barangays[barangay][category].members;
+            const memberIndex = members.findIndex(m => m.id === id);
+            
+            if (memberIndex !== -1) {
+                const newDate = prompt("Enter new payout date (YYYY-MM-DD):", members[memberIndex].payoutDate);
+                if (newDate) {
+                    members[memberIndex].payoutDate = newDate;
+                    saveData();
+                    populateBeneficiariesTable();
+                    alert("Payout date updated successfully!");
+                }
+            }
+        }
+
+        function searchById() {
+            const id = document.getElementById('search-id').value.toUpperCase();
+            if (!id) return;
+            
+            document.getElementById('update-form-container').classList.remove('hidden');
+            
+            const [barangay, categoryCode, idNum] = id.split('-');
+            const category = categoryCode === 'S' ? 'senior_citizens' : 
+                           categoryCode === 'P' ? 'pwd' : 'children';
+            
+            if (!barangays[barangay] || !barangays[barangay][category]) {
+                alert("Record not found!");
+                return;
+            }
+            
+            const members = barangays[barangay][category].members;
+            const memberIndex = members.findIndex(m => m.id === id);
+            
+            if (memberIndex !== -1) {
+                const member = members[memberIndex];
+                document.getElementById('update-id').value = member.id;
+                document.getElementById('update-name').value = member.name;
+                document.getElementById('update-date').value = member.payoutDate;
+            } else {
+                alert("Beneficiary not found!");
+            }
+        }
+
+        function updateDashboard() {
+            populateBeneficiariesTable();
+        }
+
+        function saveData() {
+            localStorage.setItem('barangays', JSON.stringify(barangays));
+        }
+
+        document.getElementById('search-barangay').addEventListener('input', populateBeneficiariesTable);
+        document.getElementById('search-category').addEventListener('change', populateBeneficiariesTable);
+        document.getElementById('update-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('update-id').value;
+            const newDate = document.getElementById('update-date').value;
+            
+            const [barangay, categoryCode, idNum] = id.split('-');
+            const category = categoryCode === 'S' ? 'senior_citizens' : 
+                           categoryCode === 'P' ? 'pwd' : 'children';
+            
+            if (!barangays[barangay] || !barangays[barangay][category]) return;
+            
+            const members = barangays[barangay][category].members;
+            const memberIndex = members.findIndex(m => m.id === id);
+            
+            if (memberIndex !== -1) {
+                members[memberIndex].payoutDate = newDate;
+                saveData();
+                alert("Payout date updated successfully!");
+                document.getElementById('update-form-container').classList.add('hidden');
+                populateBeneficiariesTable();
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('barangays');
+            alert("Data cleared and logged out!");
+            window.location.reload();
+        }
+
+        // Initialize
+        updateDashboard();
+        showSection('dashboard');
+    </script>
+</body>
+</html>

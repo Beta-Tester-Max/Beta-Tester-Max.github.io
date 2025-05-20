@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barangay Benefits Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .container {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        #main-menu {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Barangay Benefits Management System</h1>
+    </header>
+
+    <div id="main-menu">
+        <button onclick="showSection('add-person')">Add Person</button>
+        <button onclick="showSection('view-list')">View Master List</button>
+        <button onclick="showSection('update-date')">Update Payout Date</button>
+        <button onclick="showSection('main-menu')">Main Menu</button>
+    </div>
+
+    <div id="add-person" class="container">
+        <h2>Add New Person</h2>
+        <form id="person-form">
+            <div class="form-group">
+                <label for="barangay">Barangay Name:</label>
+                <input type="text" id="barangay" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" required>
+                    <option value="senior_citizens">Senior Citizen</option>
+                    <option value="pwd">PWD</option>
+                    <option value="children">Child</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" required>
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact Number:</label>
+                <input type="text" id="contact">
+            </div>
+            <div class="form-group">
+                <label for="payout-date">Payout Date (YYYY-MM-DD):</label>
+                <input type="date" id="payout-date" required>
+            </div>
+            <button type="submit">Add Person</button>
+        </form>
+    </div>
+
+    <div id="view-list" class="container">
+        <h2>View Master List</h2>
+        <div class="form-group">
+            <label for="view-barangay">Barangay Name:</label>
+            <input type="text" id="view-barangay">
+        </div>
+        <div class="form-group">
+            <label for="view-category">Category:</label>
+            <select id="view-category">
+                <option value="senior_citizens">Senior Citizen</option>
+                <option value="pwd">PWD</option>
+                <option value="children">Child</option>
+            </select>
+        </div>
+        <button onclick="viewMasterList()">View List</button>
+        <div id="list-results"></div>
+    </div>
+
+    <div id="update-date" class="container">
+        <h2>Update Payout Date</h2>
+        <div class="form-group">
+            <label for="person-id">Person ID:</label>
+            <input type="text" id="person-id">
+        </div>
+        <div class="form-group">
+            <label for="new-date">New Payout Date (YYYY-MM-DD):</label>
+            <input type="date" id="new-date">
+        </div>
+        <button onclick="updatePayoutDate()">Update Date</button>
+        <div id="update-result"></div>
+    </div>
+
+    <script>
+        // Data storage
+        let barangays = JSON.parse(localStorage.getItem('barangays')) || {};
+        const CATEGORY_MAP = {
+            senior_citizens: 'S',
+            pwd: 'P',
+            children: 'C'
+        };
+        const REVERSE_CATEGORY_MAP = {S: 'senior_citizens', P: 'pwd', C: 'children'};
+
+        function showSection(id) {
+            document.querySelectorAll('.container').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function generatePersonId(barangay, category) {
+            if (!barangays[barangay]) {
+                barangays[barangay] = {};
+            }
+            if (!barangays[barangay][category]) {
+                barangays[barangay][category] = {
+                    members: [],
+                    nextId: 1
+                };
+            }
+            
+            const nextId = barangays[barangay][category].nextId;
+            barangays[barangay][category].nextId++;
+            saveData();
+            return `${barangay}-${CATEGORY_MAP[category]}-${nextId.toString().padStart(3, '0')}`;
+        }
+
+        document.getElementById('person-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const barangay = document.getElementById('barangay').value.toUpperCase();
+            const category = document.getElementById('category').value;
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const contact = document.getElementById('contact').value;
+            const payoutDate = document.getElementById('payout-date').value;
+
+            const personId = generatePersonId(barangay, category);
+            const person = {
+                id: personId,
+                name,
+                age,
+                contact,
+                payoutDate
+            };
+
+            if (!barangays[barangay][category].members) {
+                barangays[barangay][category].members = [];
+            }
+
+            barangays[barangay][category].members.push(person);
+            saveData();
+
+            alert(`Person added successfully! ID: ${personId}`);
+            this.reset();
+        });
+
+        function viewMasterList() {
+            const barangay = document.getElementById('view-barangay').value.toUpperCase();
+            const category = document.getElementById('view-category').value;
+
+            let html = `<table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Contact</th>
+                    <th>Payout Date</th>
+                </tr>`;
+
+            if (!barangays[barangay] || !barangays[barangay][category] || 
+                !barangays[barangay][category].members || 
+                barangays[barangay][category].members.length === 0) {
+                html += `<tr><td colspan="5">No records found</td></tr>`;
+            } else {
+                barangays[barangay][category].members.forEach(member => {
+                    html += `
+                    <tr>
+                        <td>${member.id}</td>
+                        <td>${member.name}</td>
+                        <td>${member.age}</td>
+                        <td>${member.contact}</td>
+                        <td>${member.payoutDate}</td>
+                    </tr>
+                    `;
+                });
+            }
+
+            html += `</table>`;
+            document.getElementById('list-results').innerHTML = html;
+        }
+
+        function updatePayoutDate() {
+            const personId = document.getElementById('person-id').value.toUpperCase();
+            const newDate = document.getElementById('new-date').value;
+
+            const parts = personId.split('-');
+            if (parts.length !== 3) {
+                document.getElementById('update-result').innerHTML = 'Invalid ID format!';
+                return;
+            }
+
+            const barangay = parts[0];
+            const category = REVERSE_CATEGORY_MAP[parts[1]];
+
+            if (!barangays[barangay] || !barangays[barangay][category]) {
+                document.getElementById('update-result').innerHTML = 'Record not found!';
+                return;
+            }
+
+            const members = barangays[barangay][category].members;
+            const foundIndex = members.findIndex(member => member.id === personId);
+            
+            if (foundIndex === -1) {
+                document.getElementById('update-result').innerHTML = 'Person not found!';
+                return;
+            }
+
+            members[foundIndex].payoutDate = newDate;
+            saveData();
+            document.getElementById('update-result').innerHTML = 'Payout date updated successfully!';
+        }
+
+        function saveData() {
+            localStorage.setItem('barangays', JSON.stringify(barangays));
+        }
+
+        // Initialize with main menu
+        showSection('main-menu');
+    </script>
+</body>
+</html>

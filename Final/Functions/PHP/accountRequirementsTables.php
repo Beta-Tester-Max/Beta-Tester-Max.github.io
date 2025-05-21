@@ -4,6 +4,9 @@ if (isset($_SESSION['sD']) && !empty($_SESSION['sD'])) {
     $an = $d['an'] ?? "";
     ?>
     <p class="text-center fs-4"><b><?php echo $an ?></b></p>
+
+    <?php include "Functions/PHP/ratesSelect.php"?>
+
     <table class="table table-dark table-striped-columns border border-dark">
         <thead>
             <tr class="table-active">

@@ -2,10 +2,10 @@
 if (isset($_SESSION['sD']) && !empty($_SESSION['sD'])) {
     $d = $_SESSION['sD'];
     
-    $a = $d['a'] ?? "";
+    $aid = $d['a'] ?? "";
     $h = $d['h'] ?? "";
     $rp = $d['rp'] ?? "";
-    $r = $d['r'] ?? "";
+    $re = $d['r'] ?? "";
     $an = $d['an'] ?? "";
 } else {
     header('Location: Functions/PHP/logout.php');

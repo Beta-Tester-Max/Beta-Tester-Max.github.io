@@ -2,7 +2,7 @@
 session_start();
 include "Functions/PHP/userDataFetcher.php";
 include "Functions/PHP/forUser.php";
-include "Functions/PHP/allowedToApply.php";
+include "Functions/PHP/hasFamilyCA.php";
 include "Functions/PHP/appCredFetcher.php"
   ?>
 <!DOCTYPE html>
@@ -44,16 +44,6 @@ include "Functions/PHP/appCredFetcher.php"
     .file:hover {
       transition: ease 1s;
     }
-
-    .importance {
-      width: 2em;
-      height: 2em;
-    }
-
-    .verHR {
-      height: 5em;
-      border-right: 2px #ffffff solid;
-    }
   </style>
 </head>
 
@@ -66,12 +56,12 @@ include "Functions/PHP/appCredFetcher.php"
               class="fa-solid fa-circle-xmark"></i></a>
         </div>
 
-        <div class="d-flex flex-column justify-content-center align-items-center p-4">
+        <div class="d-flex flex-column justify-content-center align-items-center px-4 pb-5">
 
-          <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
+          <div class="d-flex flex-column justify-content-center align-items-center">
             <h3>Files to Submit</h3>
           </div>
-          <form method="POST" action="Functions/PHP/createApplication.php">
+          <form method="POST" enctype="multipart/form-data" action="Functions/PHP/createApplication.php">
             <div class="row justify-content-md-center">
               <div class="col-md-auto">
 
@@ -79,11 +69,9 @@ include "Functions/PHP/appCredFetcher.php"
 
               </div>
               <div class="mt-4 d-flex justify-content-center align-items-center">
-                <button type="submit" class="btn btn-outline-light submit me-4" name="uploadDocuments">
-                  Upload Documents
-                </button>
-                <div class="verHR"></div>
-                <button type="submit" class="btn btn-outline-light submit ms-4" name="createApplication">
+                <?php include "Functions/PHP/appHiddenInputs.php"?>
+                <input type="hidden" name="createApplication">
+                <button type="submit" class="btn btn-outline-light submit ms-4">
                   Submit Application
                 </button>
               </div>

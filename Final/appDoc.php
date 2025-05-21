@@ -18,7 +18,7 @@ include "Functions/PHP/appCredFetcher.php"
   <script src="https://kit.fontawesome.com/7961b8f896.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="./assets/create.css" />
   <style>
-    .close i{
+    .close i {
       transition: ease .5s;
     }
 
@@ -47,7 +47,7 @@ include "Functions/PHP/appCredFetcher.php"
   </style>
 </head>
 
-<body class="overflow-x-hidden" style="min-width: 50em">
+<body class="overflow-x-hidden" style="min-width: 19.5em">
   <div class="container-fluid">
     <div class="row justify-content-md-center my-5">
       <div class="col-md-auto form-border rounded shadow p-0">
@@ -61,19 +61,32 @@ include "Functions/PHP/appCredFetcher.php"
           <div class="d-flex flex-column justify-content-center align-items-center">
             <h3>Files to Submit</h3>
           </div>
-          <form method="POST" enctype="multipart/form-data" action="Functions/PHP/createApplication.php">
+          <form class="px-4" method="POST" enctype="multipart/form-data" action="Functions/PHP/createApplication.php">
             <div class="row justify-content-md-center">
               <div class="col-md-auto">
 
-                <?php include "Functions/PHP/accountRequirementsTables.php" ?>
+                <div class="row justify-content-md-center">
+                  <div class="col-md-auto">
 
-              </div>
-              <div class="mt-4 d-flex justify-content-center align-items-center">
-                <?php include "Functions/PHP/appHiddenInputs.php"?>
-                <input type="hidden" name="createApplication">
-                <button type="submit" class="btn btn-outline-light submit ms-4">
-                  Submit Application
-                </button>
+                    <?php include "Functions/PHP/accountRequirementsTables.php" ?>
+
+                  </div>
+                </div>
+
+                <div class="row justify-content-md-center">
+                  <div class="col-md-auto">
+
+                    <div class="mt-4 d-flex justify-content-center align-items-center">
+                      <?php include "Functions/PHP/appHiddenInputs.php" ?>
+                      <input type="hidden" name="createApplication">
+                      <button type="submit" class="btn btn-outline-light submit ms-4">
+                        Submit Application
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
               </div>
             </div>
           </form>

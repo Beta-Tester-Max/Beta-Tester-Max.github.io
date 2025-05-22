@@ -20,12 +20,12 @@ if (!empty($_SESSION['Account'])) {
         </li>
     </ul>
 <?php } else { ?>
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex justify-content-center align-items-center">
         <li class="nav-item">
             <a class="nav-link" href="login.php">Login</a>
         </li>
         <li class="nav-item">
-            <p class="nav-link btn-secondary pe-none">or</p>
+            <a class="nav-link btn-secondary pe-none" aria-disabled="true">or</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="signup.php">Sign up</a>

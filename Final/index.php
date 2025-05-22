@@ -37,74 +37,10 @@ include "Functions/PHP/adminLoggedIn.php"
           <li class="nav-item">
             <a class="nav-link" href="#banner">About</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Assistance
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop01">
-                  Create Application
-                </button>
-              </li>
-
-              <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                  data-bs-target="#TransportationAssistance">
-                  Transportation Assistance
-                </button>
-              </li>
-
-              <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#MedicalAssistance">
-                  Medical Assistance
-                </button>
-              </li>
-
-              <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#BurialAssistance">
-                  Burial Assistance
-                </button>
-              </li>
-
-              <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                  data-bs-target="#EducationalAssistance">
-                  Educational Assistance
-                </button>
-              </li>
-
-              <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FoodAssistance">
-                  Food Assistance
-                </button>
-              </li>
-
-              <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                  data-bs-target="#CashReliefAssistance">
-                  Cash Relief Assistance
-                </button>
-              </li>
-
-              <li>
-                <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                  data-bs-target="#PsychosocialSupport">
-                  Psychosocial Support
-                </button>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <a class="dropdown-item" href="assistanceoptions.php">Create Application</a>
-              </li>
-            </ul>
-          </li>
         </ul>
         <!-- search start -->
         <div class="search-cont">
-          <div class="search-container">
+          <div class="search-container mb-0">
             <input type="text" placeholder="Search..." class="search-input" />
             <button class="search-button" onclick="toggleSearch()">
               <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -690,7 +626,7 @@ include "Functions/PHP/adminLoggedIn.php"
   </footer>
   <!-- Footer Section end-->
   <script>
-    let alertMessage = <?php echo json_encode($_SESSION['Alert']) ?? "" ?>;
+    let alertMessage = <?php echo json_encode($_SESSION['Alert'] ?? "")?>
   </script>
   <script src="Functions/JS/indexScript.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

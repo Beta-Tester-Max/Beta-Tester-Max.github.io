@@ -20,8 +20,8 @@ if (isset($_SESSION['rejectedApplications']) && !empty($_SESSION['rejectedApplic
                 $ds = $r['Date_Submitted'] ?? "";
                 $dr = $r['Date_Reviewed'] ?? "" ?>
                 <tr>
-                    <td class="text-center align-middle"><?php echo $rfr ?></td>
                     <td class="text-center align-middle"><?php echo $an ?></td>
+                    <td class="align-middle"><?php echo $rfr ?></td>
                     <td class="text-center text-danger align-middle"><?php echo $s ?></td>
                     <td class="text-center align-middle"><?php echo $ds ?></td>
                     <td class="text-center align-middle"><?php echo $dr ?></td>

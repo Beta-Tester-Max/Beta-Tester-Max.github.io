@@ -7,7 +7,7 @@ if (isset($_SESSION['pendingApplications']) && !empty($_SESSION['pendingApplicat
                 <th scope="col">Severity</th>
                 <th class="text-center" scope="col">Status</th>
                 <th class="text-center" scope="col">Date Submitted</th>
-                <th scope="col">Action</th>
+                <th class="text-center" scope="col">Action</th>
             </tr>
         </thead>
         <tbody class="table-light">
@@ -16,14 +16,19 @@ if (isset($_SESSION['pendingApplications']) && !empty($_SESSION['pendingApplicat
                 $st = $p['Status'] ?? "";
                 $aid = $p['Assistance_ID'] ?? "";
                 $an = $_SESSION['pAan' . $apid] ?? "";
-                $s = $_SESSION['pAs' . $apid] ?? ""; 
-                $ds = $p['Date_Submitted'] ?? ""?>
+                $s = $_SESSION['pAs' . $apid] ?? "";
+                $ds = $p['Date_Submitted'] ?? "" ?>
                 <tr>
-                    <td class="text-center align-middle"><?php echo $an?></td>
-                    <td class="align-middle"><?php echo $s?></td>
-                    <td class="text-center text-warning align-middle"><?php echo $st?></td>
-                    <td class="text-center align-middle"><?php echo $ds?></td>
-                    <td><button class="btn btn-danger">Delete</button></td>
+                    <td class="text-center align-middle"><?php echo $an ?></td>
+                    <td class="align-middle"><?php echo $s ?></td>
+                    <td class="text-center text-warning align-middle"><?php echo $st ?></td>
+                    <td class="text-center align-middle"><?php echo $ds ?></td>
+                    <td class="align-middle text-center">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#delCon<?php echo $apid ?>">
+                            Delete
+                        </button>
+                    </td>
                 </tr>
             <?php } ?>
         </tbody>

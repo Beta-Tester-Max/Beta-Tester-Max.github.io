@@ -34,23 +34,24 @@ include "Functions/PHP/forUser.php"
         </div>
     </div>
 
-    <?php include "Functions/PHP/recSubApp.php"?>
+    <?php include "Functions/PHP/recSubApp.php" ?>
 
     <div class="container history">
         <h3>Pending Applications</h3>
-        <?php include "Functions/PHP/pendingApplications.php"?>
+        <?php include "Functions/PHP/pendingApplications.php" ?>
+        <?php include "Functions/PHP/pAModal.php" ?>
 
     </div>
 
     <div class="container history">
         <h2 class="text-center mb-3"><b>Application History</b></h2>
         <h3>Approved Applications</h4>
-        <?php include "Functions/PHP/approvedApplications.php"?>
+            <?php include "Functions/PHP/approvedApplications.php" ?>
 
-        <hr>
+            <hr>
 
-        <h3>Rejected Applications</h4>
-        <?php include "Functions/PHP/rejectedApplications.php"?>
+            <h3>Rejected Applications</h4>
+                <?php include "Functions/PHP/rejectedApplications.php" ?>
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

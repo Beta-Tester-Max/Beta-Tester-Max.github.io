@@ -47,17 +47,17 @@ if (isset($_POST['login'])) {
                 $data = sanitize($result);
 
                 if (password_verify($p, $data['Password'])) {
-                    // if ($data['Access_Level'] === 'Admin') {
-                    //     $_SESSION['Authority'] = $data['Access_Level'];
+                    if ($data['Access_Level'] === 'Admin') {
+                        $_SESSION['Authority'] = $data['Access_Level'];
 
-                    //     header('Location: ../../Admin/adminDashboard.php');
-                    //     exit;
-                    // } else {
-                    $_SESSION['Account_ID'] = $data['Account_ID'];
+                        header('Location: ../../Admin/');
+                        exit;
+                    } else {
+                        $_SESSION['Account_ID'] = $data['Account_ID'];
 
-                    header('Location: ../../profile.php');
-                    exit;
-                    // }
+                        header('Location: ../../');
+                        exit;
+                    }
                 } else {
                     $_SESSION['Alert'] = "Incorrect Password!";
                     $_SESSION['Path'] = "../../login.php";
@@ -66,7 +66,7 @@ if (isset($_POST['login'])) {
                     exit;
                 }
             } else {
-                $_SESSION['Alert'] = "Incorrect Email or Username!";
+                $_SESSION['Alert'] = "Incorrect Email!";
                 $_SESSION['Path'] = "../../login.php";
 
                 header('Location: ../../index.php');

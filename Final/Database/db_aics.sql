@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 21, 2025 at 10:36 AM
+-- Generation Time: May 22, 2025 at 11:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,8 @@ CREATE TABLE `tbl_accounts` (
 --
 
 INSERT INTO `tbl_accounts` (`Account_ID`, `Username`, `Email`, `Password`, `Access_Level`, `TimeStamp`) VALUES
-(21, 'aa1', '1234@gmail.com', '$2y$10$Uf/9WAlj4dTpmEBmheYo9OXtOl.l.UM.CWYslG0O6G8oquxoOKml2', 'User', '2025-05-20 01:19:55');
+(1, 'Admin', '', '$2y$10$4EQwJIARDJjkesvHLmygse552iZeBpa8lF.2UVxpScgABFslgE9D2', 'Admin', '0000-00-00 00:00:00'),
+(24, 'aa1', '1234@gmail.com', '$2y$10$BK8n9P7/Li0S8sPcWtNhp.WlhUFJqSNhuC.TNXPcDTmB7WQUVjLnq', 'User', '2025-05-22 07:02:45');
 
 -- --------------------------------------------------------
 
@@ -66,7 +67,28 @@ CREATE TABLE `tbl_address` (
 --
 
 INSERT INTO `tbl_address` (`Address_ID`, `Account_ID`, `House_Number`, `Street_Name`, `Barangay`, `City_or_Municipality`, `Province`, `Region`, `Zip_Code`) VALUES
-(9, 21, 229, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001);
+(10, 24, 229, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_admin_token`
+--
+
+CREATE TABLE `tbl_admin_token` (
+  `Token_ID` int(11) NOT NULL,
+  `Key` varchar(255) NOT NULL,
+  `Token` varchar(255) NOT NULL,
+  `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_admin_token`
+--
+
+INSERT INTO `tbl_admin_token` (`Token_ID`, `Key`, `Token`, `TimeStamp`) VALUES
+(2, '4689ddK2E5', '$2y$10$p55B/NbT5qjAWCAauTo1hOjRFqntB9YL7ilKwRoHv3gkHhUWRKUPO', '2025-05-22 07:35:22'),
+(3, '33fc17EK15', '$2y$10$1kUwROrgl2CLBi/C2TAzde6C11XFYhAh5FGNCPIA0bmkQXBtaYX3O', '2025-05-22 07:37:29');
 
 -- --------------------------------------------------------
 
@@ -86,17 +108,19 @@ CREATE TABLE `tbl_applications` (
   `Date_Submitted` timestamp NOT NULL DEFAULT current_timestamp(),
   `ReasonFR` text DEFAULT NULL,
   `Date_Reviewed` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `Files` text NOT NULL
+  `Files` text NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_applications`
 --
 
-INSERT INTO `tbl_applications` (`Application_ID`, `Account_ID`, `Assistance_ID`, `Beneficiary`, `Representative`, `Severity`, `Reason`, `Status`, `Date_Submitted`, `ReasonFR`, `Date_Reviewed`, `Files`) VALUES
-(10018, 21, 5, 16, 16, 9, 'I\'m Hungry', 'Pending', '2025-05-21 08:09:26', NULL, NULL, '84, 85, 86'),
-(10019, 21, 5, 16, 17, 9, 'I\'m hungry Again', 'Approved', '2025-05-21 08:30:28', NULL, '2025-05-21 10:30:28', '87, 88, 89'),
-(10020, 21, 5, 16, 16, 9, 'I\'m hungry again twice now', 'Rejected', '2025-05-21 08:31:53', 'Not Good Enough', '2025-05-21 10:27:28', '90, 91, 92');
+INSERT INTO `tbl_applications` (`Application_ID`, `Account_ID`, `Assistance_ID`, `Beneficiary`, `Representative`, `Severity`, `Reason`, `Status`, `Date_Submitted`, `ReasonFR`, `Date_Reviewed`, `Files`, `is_deleted`) VALUES
+(10021, 24, 5, 18, 18, 9, 'Need Food Assistance', 'Pending', '2025-05-22 07:55:34', NULL, '2025-05-22 07:59:24', '95, 96, 97', 1),
+(10022, 24, 1, 18, 18, 1, 'zxczxczxcddawdsd', 'Pending', '2025-05-22 07:57:24', NULL, NULL, '98, 99, 100, 101, 102, 103, 104', 0),
+(10023, 24, 4, 18, 18, 8, 'dfffsdfdsfdsfdfs', 'Pending', '2025-05-22 08:01:59', NULL, NULL, '105, 106, 107, 108, 109', 0),
+(10024, 24, 5, 18, 18, 9, 'asjdliaskjldas', 'Pending', '2025-05-22 08:06:16', NULL, NULL, '110, 111, 112', 0);
 
 -- --------------------------------------------------------
 
@@ -206,7 +230,7 @@ CREATE TABLE `tbl_family` (
 --
 
 INSERT INTO `tbl_family` (`Family_ID`, `Account_ID`, `Family_Name`) VALUES
-(9, 21, 'Cruz');
+(10, 24, 'Cruz');
 
 -- --------------------------------------------------------
 
@@ -226,8 +250,7 @@ CREATE TABLE `tbl_family_composition` (
 --
 
 INSERT INTO `tbl_family_composition` (`Family_Composition_ID`, `Account_ID`, `Family_ID`, `User_ID`) VALUES
-(7, 21, 9, 16),
-(8, 21, 9, 17);
+(9, 24, 10, 18);
 
 -- --------------------------------------------------------
 
@@ -256,8 +279,7 @@ CREATE TABLE `tbl_family_member` (
 --
 
 INSERT INTO `tbl_family_member` (`User_ID`, `First_Name`, `Middle_Name`, `Last_Name`, `Email`, `Phone_Number`, `Birth_Day`, `Sex`, `Civil_Status`, `Educational_Attainment`, `Occupation`, `TimeStamp`, `is_deceased`) VALUES
-(16, 'John', 'Diaz', 'Doe', 'jd@gmail.com', '0999-999-9999', '1996-06-17', 'm', 'Single', '', '', '2025-05-20 01:32:28', 0),
-(17, 'Jane', 'Dhana', 'Doe', 'Jdhana@gmai.com', '0888-888-8888', '1996-08-21', 'f', 'Single', '', '', '2025-05-20 04:14:57', 0);
+(18, 'John', 'Diaz', 'Doe', 'jd@gmail.com', '0999-999-9999', '2000-02-24', 'm', 'Single', '', '', '2025-05-22 07:54:39', 0);
 
 -- --------------------------------------------------------
 
@@ -294,46 +316,24 @@ CREATE TABLE `tbl_files` (
 --
 
 INSERT INTO `tbl_files` (`File_ID`, `Account_ID`, `Requirement_ID`, `File_Name`, `TimeStamp`, `is_deleted`) VALUES
-(42, 21, 34, 'deleted_42_21_34.pdf', '2025-05-20 06:53:23', 1),
-(43, 21, 35, 'deleted_43_21_35.pdf', '2025-05-20 06:53:23', 1),
-(44, 21, 36, 'deleted_44_21_36.pdf', '2025-05-20 06:53:23', 1),
-(45, 21, 34, 'deleted_45_21_34.pdf', '2025-05-20 06:53:52', 1),
-(46, 21, 35, 'deleted_46_21_35.pdf', '2025-05-20 06:53:52', 1),
-(47, 21, 36, 'deleted_47_21_36.pdf', '2025-05-20 06:53:52', 1),
-(48, 21, 34, 'deleted_48_21_34.pdf', '2025-05-20 06:54:18', 1),
-(49, 21, 35, 'deleted_49_21_35.pdf', '2025-05-20 06:54:18', 1),
-(50, 21, 36, 'deleted_50_21_36.pdf', '2025-05-20 06:54:18', 1),
-(51, 21, 34, 'deleted_51_21_34.pdf', '2025-05-20 06:59:47', 1),
-(52, 21, 35, 'deleted_52_21_35.pdf', '2025-05-20 06:59:47', 1),
-(53, 21, 36, 'deleted_53_21_36.pdf', '2025-05-20 06:59:47', 1),
-(62, 21, 1, '21_1.pdf', '2025-05-20 07:02:45', 0),
-(63, 21, 2, '21_2.pdf', '2025-05-20 07:02:45', 0),
-(64, 21, 3, '21_3.pdf', '2025-05-20 07:02:45', 0),
-(65, 21, 4, '21_4.pdf', '2025-05-20 07:02:46', 0),
-(66, 21, 5, '21_5.pdf', '2025-05-20 07:02:46', 0),
-(67, 21, 6, '21_6.pdf', '2025-05-20 07:02:46', 0),
-(68, 21, 7, '21_7.pdf', '2025-05-20 07:02:46', 0),
-(72, 21, 34, 'deleted_72_21_34.pdf', '2025-05-21 05:51:18', 1),
-(73, 21, 35, 'deleted_73_21_35.pdf', '2025-05-21 05:51:18', 1),
-(74, 21, 36, 'deleted_74_21_36.pdf', '2025-05-21 05:51:18', 1),
-(75, 21, 34, 'deleted_75_21_34.pdf', '2025-05-21 06:59:45', 1),
-(76, 21, 35, 'deleted_76_21_35.pdf', '2025-05-21 06:59:45', 1),
-(77, 21, 36, 'deleted_77_21_36.pdf', '2025-05-21 06:59:45', 1),
-(78, 21, 34, 'deleted_78_21_34.pdf', '2025-05-21 07:05:51', 1),
-(79, 21, 35, 'deleted_79_21_35.pdf', '2025-05-21 07:05:51', 1),
-(80, 21, 36, 'deleted_80_21_36.pdf', '2025-05-21 07:05:51', 1),
-(81, 21, 34, 'deleted_81_21_34.pdf', '2025-05-21 07:22:37', 1),
-(82, 21, 35, 'deleted_82_21_35.pdf', '2025-05-21 07:22:37', 1),
-(83, 21, 36, 'deleted_83_21_36.pdf', '2025-05-21 07:22:37', 1),
-(84, 21, 34, 'deleted_84_21_34.pdf', '2025-05-21 08:09:26', 1),
-(85, 21, 35, 'deleted_85_21_35.pdf', '2025-05-21 08:09:26', 1),
-(86, 21, 36, 'deleted_86_21_36.pdf', '2025-05-21 08:09:26', 1),
-(87, 21, 34, 'deleted_87_21_34.pdf', '2025-05-21 08:30:28', 1),
-(88, 21, 35, 'deleted_88_21_35.pdf', '2025-05-21 08:30:28', 1),
-(89, 21, 36, 'deleted_89_21_36.pdf', '2025-05-21 08:30:28', 1),
-(90, 21, 34, '21_34.pdf', '2025-05-21 08:31:53', 0),
-(91, 21, 35, '21_35.pdf', '2025-05-21 08:31:53', 0),
-(92, 21, 36, '21_36.pdf', '2025-05-21 08:31:53', 0);
+(95, 24, 34, 'deleted_95_24_34.pdf', '2025-05-22 07:55:34', 1),
+(96, 24, 35, 'deleted_96_24_35.pdf', '2025-05-22 07:55:34', 1),
+(97, 24, 36, 'deleted_97_24_36.pdf', '2025-05-22 07:55:34', 1),
+(98, 24, 1, '24_1.pdf', '2025-05-22 07:57:24', 0),
+(99, 24, 2, '24_2.pdf', '2025-05-22 07:57:24', 0),
+(100, 24, 3, '24_3.pdf', '2025-05-22 07:57:24', 0),
+(101, 24, 4, '24_4.pdf', '2025-05-22 07:57:24', 0),
+(102, 24, 5, '24_5.pdf', '2025-05-22 07:57:24', 0),
+(103, 24, 6, '24_6.pdf', '2025-05-22 07:57:24', 0),
+(104, 24, 7, '24_7.pdf', '2025-05-22 07:57:24', 0),
+(105, 24, 28, '24_28.pdf', '2025-05-22 08:01:59', 0),
+(106, 24, 29, '24_29.pdf', '2025-05-22 08:01:59', 0),
+(107, 24, 30, '24_30.pdf', '2025-05-22 08:01:59', 0),
+(108, 24, 31, '24_31.pdf', '2025-05-22 08:01:59', 0),
+(109, 24, 33, '24_33.pdf', '2025-05-22 08:01:59', 0),
+(110, 24, 34, '24_34.pdf', '2025-05-22 08:06:16', 0),
+(111, 24, 35, '24_35.pdf', '2025-05-22 08:06:16', 0),
+(112, 24, 36, '24_36.pdf', '2025-05-22 08:06:16', 0);
 
 -- --------------------------------------------------------
 
@@ -454,6 +454,13 @@ ALTER TABLE `tbl_address`
   ADD KEY `Account>Address` (`Account_ID`);
 
 --
+-- Indexes for table `tbl_admin_token`
+--
+ALTER TABLE `tbl_admin_token`
+  ADD PRIMARY KEY (`Token_ID`),
+  ADD UNIQUE KEY `Key` (`Key`);
+
+--
 -- Indexes for table `tbl_applications`
 --
 ALTER TABLE `tbl_applications`
@@ -542,19 +549,25 @@ ALTER TABLE `tbl_requirements`
 -- AUTO_INCREMENT for table `tbl_accounts`
 --
 ALTER TABLE `tbl_accounts`
-  MODIFY `Account_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `Account_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `tbl_address`
 --
 ALTER TABLE `tbl_address`
-  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `tbl_admin_token`
+--
+ALTER TABLE `tbl_admin_token`
+  MODIFY `Token_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_applications`
 --
 ALTER TABLE `tbl_applications`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10021;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10025;
 
 --
 -- AUTO_INCREMENT for table `tbl_assistance`
@@ -578,19 +591,19 @@ ALTER TABLE `tbl_documents`
 -- AUTO_INCREMENT for table `tbl_family`
 --
 ALTER TABLE `tbl_family`
-  MODIFY `Family_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Family_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_family_composition`
 --
 ALTER TABLE `tbl_family_composition`
-  MODIFY `Family_Composition_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Family_Composition_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_family_member`
 --
 ALTER TABLE `tbl_family_member`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tbl_feedbacks`
@@ -602,7 +615,7 @@ ALTER TABLE `tbl_feedbacks`
 -- AUTO_INCREMENT for table `tbl_files`
 --
 ALTER TABLE `tbl_files`
-  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT for table `tbl_rates`

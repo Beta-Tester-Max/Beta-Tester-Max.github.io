@@ -66,7 +66,7 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $_SESSION['ratesCount' . $aid] = $sql->rowCount();
         }
 
-        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Pending'");
+        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Pending' AND is_deleted = 0");
         $result = $sql->fetchAll();
         $data = sanitize($result);
         $_SESSION['pendingApplications'] = $data;
@@ -91,7 +91,7 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $_SESSION['pAs'.$apid] = $data['Criteria'] ?? "";
         }
 
-        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Approved'");
+        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Approved' AND is_deleted = 0");
         $result = $sql->fetchAll();
         $data = sanitize($result);
         $_SESSION['approvedApplications'] = $data;
@@ -108,7 +108,7 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $_SESSION['aAan'.$apid] = $data['Assistance_Name'] ?? "";
         }
 
-        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Rejected'");
+        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Rejected' AND is_deleted = 0");
         $result = $sql->fetchAll();
         $data = sanitize($result);
         $_SESSION['rejectedApplications'] = $data;

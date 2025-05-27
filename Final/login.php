@@ -72,7 +72,7 @@ include "Functions/PHP/adminLoggedIn.php"
                 <div class="my-3 justify-content-center align-items-center d-flex">
                     <input type="hidden" name="login">
                     <button type="submit" class="btn btn-primary">
-                        Submit
+                        Login
                     </button>
                 </div>
                 <p class="text-center">Don't have an account?</p>

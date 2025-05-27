@@ -66,7 +66,9 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $_SESSION['ratesCount' . $aid] = $sql->rowCount();
         }
 
-        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Pending' AND is_deleted = 0");
+        $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Status = 'Pending' AND is_deleted = 0");
+        $sql->bindParam(":a", $a, PDO::PARAM_INT);
+        $sql->execute();
         $result = $sql->fetchAll();
         $data = sanitize($result);
         $_SESSION['pendingApplications'] = $data;
@@ -81,17 +83,19 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $sql->execute();
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             $data = sanitize($result);
-            $_SESSION['pAan'.$apid] = $data['Assistance_Name'] ?? "";
+            $_SESSION['pAan' . $apid] = $data['Assistance_Name'] ?? "";
 
             $sql = $pdo->prepare("SELECT Criteria FROM tbl_rates WHERE Rate_ID = :s");
             $sql->bindParam(":s", $s, PDO::PARAM_INT);
             $sql->execute();
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             $data = sanitize($result);
-            $_SESSION['pAs'.$apid] = $data['Criteria'] ?? "";
+            $_SESSION['pAs' . $apid] = $data['Criteria'] ?? "";
         }
 
-        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Approved' AND is_deleted = 0");
+        $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Status = 'Approved' AND is_deleted = 0");
+        $sql->bindParam(":a", $a, PDO::PARAM_INT);
+        $sql->execute();
         $result = $sql->fetchAll();
         $data = sanitize($result);
         $_SESSION['approvedApplications'] = $data;
@@ -105,10 +109,12 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $sql->execute();
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             $data = sanitize($result);
-            $_SESSION['aAan'.$apid] = $data['Assistance_Name'] ?? "";
+            $_SESSION['aAan' . $apid] = $data['Assistance_Name'] ?? "";
         }
 
-        $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Rejected' AND is_deleted = 0");
+        $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Status = 'Rejected' AND is_deleted = 0");
+        $sql->bindParam(":a", $a, PDO::PARAM_INT);
+        $sql->execute();
         $result = $sql->fetchAll();
         $data = sanitize($result);
         $_SESSION['rejectedApplications'] = $data;
@@ -122,7 +128,7 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $sql->execute();
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             $data = sanitize($result);
-            $_SESSION['rAan'.$apid] = $data['Assistance_Name'] ?? "";
+            $_SESSION['rAan' . $apid] = $data['Assistance_Name'] ?? "";
         }
 
     } catch (PDOException $e) {

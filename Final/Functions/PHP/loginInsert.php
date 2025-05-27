@@ -31,7 +31,7 @@ if (isset($_POST['login'])) {
         header('Location: ../../index.php');
         exit;
     } elseif (strlen($p) > 8 || strlen($p) > 15) {
-        $_SESSION['Alert'] = "Account must not be less than 8 charaters and must not exceed 15 charaters.";
+        $_SESSION['Alert'] = "Password must not be less than 8 charaters and must not exceed 15 charaters.";
         $_SESSION['Path'] = "../../login.php";
 
         header('Location: ../../index.php');
@@ -55,7 +55,7 @@ if (isset($_POST['login'])) {
                     } else {
                         $_SESSION['Account_ID'] = $data['Account_ID'];
 
-                        header('Location: ../../');
+                        header('Location: ../../profile.php');
                         exit;
                     }
                 } else {

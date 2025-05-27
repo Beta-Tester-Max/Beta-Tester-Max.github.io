@@ -21,10 +21,18 @@
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .header {
-        text-align: center;
-        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 3px solid #1b1b1b;
+    }
+    .logo1, .logo2 {
+        height: 80px;
+    }
+    .title-container {
+        text-align: center;
     }
     .header h2 {
         margin: 0;
@@ -50,7 +58,7 @@
     th, td {
         padding: 6px 8px;
         text-align: left;
-        border: 1px solid #ddd;
+        border: 1px solid #1b1b1b;
         font-size: 14px;
     }
     .section {
@@ -65,7 +73,7 @@
         text-align: center;
         margin-top: 30px;
         padding-top: 15px;
-        border-top: 1px solid #ddd;
+        border-top: 2px solid #1b1b1b;
         font-weight: bold;
     }
     .editable {
@@ -76,6 +84,9 @@
         cursor: pointer;
         min-width: 100px;
         display: inline-block;
+    }
+    .edited {
+        color: #000000 !important;
     }
     .save-print {
         margin-top: 40px;
@@ -104,12 +115,16 @@
 
 <div class="document">
     <div class="header">
-        <h3>Republic of the Philippines</h3>
-        <h3>MUNICIPAL SOCIAL WELFARE AND DEVELOPMENT OFFICE</h3>
-        <h4>Alaminos, Laguna</h4>
+        <img src="./assets/img/Alam150.png" alt="Alaminos Seal" class="logo1">
+        <div class="title-container">
+            <h3>Republic of the Philippines</h3>
+            <h3>MUNICIPAL SOCIAL WELFARE AND DEVELOPMENT OFFICE</h3>
+            <h4>Alaminos, Laguna</h4>
+        </div>
+        <img src="./assets/img/dswd-logo.png" alt="DSWD" class="logo2">
     </div>
 
-    <div class="date">April 15, 2025</div>
+    <div class="date"><span class="editable" contenteditable="true">April 15, 2025</span></div>
 
     <div class="title">
         SOCIAL CASE STUDY REPORT
@@ -203,7 +218,7 @@
         <h3 class="section-title">PROBLEM PRESENTED:</h3>
         <p>
             Client came to this office seeking for a Social Case Study Report for their request of 
-            financial/medical assistance from <span class="red-text">DOH-MAIP</span>.
+            financial/medical assistance from <span class="red-text editable" contenteditable="true">DOH-MAIP</span>.
         </p>
     </div>
 
@@ -224,7 +239,7 @@
         <h3 class="section-title">V. RECOMMENDATION:</h3>
         <p>
             In view of the foregoing facts stated above, the undersigned worker recommends the 
-            client for provision of financial/medical assistance from <span class="red-text">DOH-MAIP</span>. We 
+            client for provision of financial/medical assistance from <span class="red-text editable" contenteditable="true">DOH-MAIP</span>. We 
             continuously thank your good office for the unending support you extend to our needy 
             constituents.
         </p>
@@ -252,6 +267,27 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editableElements = document.querySelectorAll('.editable');
+        const originalValues = {};
+
+        editableElements.forEach(element => {
+            element.addEventListener('input', function() {
+                if (this.textContent.trim() !== originalValues[element]) {
+                    this.classList.add('edited');
+                } else {
+                    this.classList.remove('edited');
+                }
+            });
+
+            element.addEventListener('click', function() {
+                this.focus();
+            });
+
+            originalValues[element] = element.textContent.trim();
+        });
+    });
+
     function saveData() {
         const editableElements = document.querySelectorAll('.editable');
         const data = {};
@@ -272,6 +308,7 @@
                 const key = element.textContent.trim();
                 if (data[key]) {
                     element.textContent = data[key];
+                    element.classList.add('edited'); // Add edited class when loading saved data
                 }
             });
         }

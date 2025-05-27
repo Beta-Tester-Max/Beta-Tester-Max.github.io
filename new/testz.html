@@ -1,28 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Social Case Study Report</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Word Editor</title>
+    <link rel="icon" type="image/x-icon" href="./assets/img/AICS150.png" />
+    <title>Social Case Study Report</title>
 <style>
+    @media print {
+        body {
+            background-color: white !important;
+        }
+        .document {
+            box-shadow: none !important;
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            max-width: none !important;
+        }
+        .save-print {
+            display: none;
+        }
+    }
+
     body {
         font-family: 'Times New Roman', Times, serif;
         max-width: 900px;
         margin: 0 auto;
         padding: 20px;
-        background-color: #f9f9f9;
+        background-color: #000133;
     }
     .document {
         background-color: white;
         padding: 30px;
         border: 1px solid #ddd;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        width: 210mm;
+        height: 297mm;
+        margin: 0 auto;
     }
     .header {
-        text-align: center;
-        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 3px solid #1b1b1b;
+    }
+    .logo1, .logo2 {
+        height: 80px;
+    }
+    .title-container {
+        text-align: center;
     }
     .header h2 {
         margin: 0;
@@ -48,7 +77,7 @@
     th, td {
         padding: 6px 8px;
         text-align: left;
-        border: 1px solid #ddd;
+        border: 1px solid #1b1b1b;
         font-size: 14px;
     }
     .section {
@@ -63,7 +92,7 @@
         text-align: center;
         margin-top: 30px;
         padding-top: 15px;
-        border-top: 1px solid #ddd;
+        border-top: 2px solid #1b1b1b;
         font-weight: bold;
     }
     .editable {
@@ -74,6 +103,9 @@
         cursor: pointer;
         min-width: 100px;
         display: inline-block;
+    }
+    .edited {
+        color: #000000 !important;
     }
     .save-print {
         margin-top: 40px;
@@ -102,12 +134,16 @@
 
 <div class="document">
     <div class="header">
-        <h3>Republic of the Philippines</h3>
-        <h3>MUNICIPAL SOCIAL WELFARE AND DEVELOPMENT OFFICE</h3>
-        <h4>Alaminos, Laguna</h4>
+        <img src="./assets/img/Alam150.png" alt="Alaminos Seal" class="logo1">
+        <div class="title-container">
+            <h3>Republic of the Philippines</h3>
+            <h3>MUNICIPAL SOCIAL WELFARE AND DEVELOPMENT OFFICE</h3>
+            <h4>Alaminos, Laguna</h4>
+        </div>
+        <img src="./assets/img/dswd-logo.png" alt="DSWD" class="logo2">
     </div>
 
-    <div class="date">April 15, 2025</div>
+    <div class="date"><span class="editable" contenteditable="true">April 15, 2025</span></div>
 
     <div class="title">
         SOCIAL CASE STUDY REPORT
@@ -250,6 +286,27 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editableElements = document.querySelectorAll('.editable');
+        const originalValues = {};
+
+        editableElements.forEach(element => {
+            element.addEventListener('input', function() {
+                if (this.textContent.trim() !== originalValues[element]) {
+                    this.classList.add('edited');
+                } else {
+                    this.classList.remove('edited');
+                }
+            });
+
+            element.addEventListener('click', function() {
+                this.focus();
+            });
+
+            originalValues[element] = element.textContent.trim();
+        });
+    });
+
     function saveData() {
         const editableElements = document.querySelectorAll('.editable');
         const data = {};
@@ -270,6 +327,7 @@
                 const key = element.textContent.trim();
                 if (data[key]) {
                     element.textContent = data[key];
+                    element.classList.add('edited'); // Add edited class when loading saved data
                 }
             });
         }

@@ -15,17 +15,16 @@ if (isset($_SESSION['pA']) && !empty($_SESSION['pA'])) {
     }
     $ad = $_SESSION['pA_add' . $aid] ?? "";
     $address = $ad['House_Number'] . "&nbsp;" . $ad['Street_Name'] . "&nbsp;" . $ad['Barangay'] . "&nbsp;" . $ad['City_or_Municipality'] . ", " . $ad['Province'];
-    $reason = $p['Reason'] ?? "";
     ?>
     <li class="application-item">
       <div class="application-name">
-        <p class="app-name"><?php echo $fullname ?></p>
-        <p class="app-assistance"><?php echo $assistance ?></p>
-        <p class="app-address"><?php echo $address ?></p>
-        <p class="app-reason" style="display: none;">Reason: <?php echo $reason ?></p>
-        <p class="app-application" style="display: none;"><?php echo $aid ?></p>
+        <p><?php echo $fullname ?></p>
+        <p><?php echo $assistance ?></p>
+        <p><?php echo $address ?></p>
       </div>
-      <button class="application-action">Review</button>
+      <button type="button" class="application-action" data-bs-toggle="modal" data-bs-target="#application_<?php echo $aid?>">
+        Review
+      </button>
     </li>
     <?php
   }

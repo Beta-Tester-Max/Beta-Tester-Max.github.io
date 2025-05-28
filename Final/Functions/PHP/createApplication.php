@@ -1,5 +1,6 @@
 <?php
 require_once "connect.php";
+ini_set('session.cookie_httponly', 1);
 session_start();
 
 ini_set('display_errors', 1);
@@ -81,7 +82,25 @@ if (isset($_POST['createApplication'])) {
                         $arr['Criteria'] = $data['Criteria'] ?? "";
                         $arr['Cost'] = $data['Cost'] ?? "";
 
-                        if (empty($h) || empty($rp)) {
+                        if (empty($r)) {
+                            $pdo->rollBack();
+                            $_SESSION['Alert'] = "Missing Reason!";
+                            $_SESSION['Path'] = "../../appDoc.php";
+                            header('Location: ../../index.php');
+                            exit;
+                        } elseif (strlen(trim($r)) < 10) {
+                            $pdo->rollBack();
+                            $_SESSION['Alert'] = "Reason cannot be more less than 10 characters! Not including space.";
+                            $_SESSION['Path'] = "../../appDoc.php";
+                            header('Location: ../../index.php');
+                            exit;
+                        } elseif (strlen($r) > 1000) {
+                            $pdo->rollBack();
+                            $_SESSION['Alert'] = "Reason cannot be more than 1000 characters! Including space.";
+                            $_SESSION['Path'] = "../../appDoc.php";
+                            header('Location: ../../index.php');
+                            exit;
+                        } elseif (empty($h) || empty($rp)) {
                             $pdo->rollBack();
                             $_SESSION['Alert'] = "Missing Beneficiary or Representative or both!";
                             $_SESSION['Path'] = "../../appDoc.php";

@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php
+ini_set('session.cookie_httponly', 1); 
+session_start(); ?>
 <form method="POST" action="../Functions/PHP/createToken.php">
     <input type="hidden" name="createToken">
     <button type="submit">Generate Token</button>

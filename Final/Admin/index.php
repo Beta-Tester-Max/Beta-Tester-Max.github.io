@@ -1,4 +1,5 @@
 <?php
+ini_set('session.cookie_httponly', 1);
 session_start();
 include "../Functions/PHP/hasAuthority.php"
 ?>
@@ -52,7 +53,7 @@ include "../Functions/PHP/hasAuthority.php"
           </li>
         </a>
         <a style="text-decoration: none; color: #ffffff;" href="../Functions/PHP/logout.php">
-          <li class="menu-item">
+          <li class="ps-4 menu-item fs-4">
             <i class="fa-solid fa-house"></i>
             <span>Homepage</span>
           </li>

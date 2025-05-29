@@ -6,8 +6,15 @@
     <title>ABMS - Alaminos Beneficiary Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        @font-face {
+            font-family: 'Sharp Grotesk Pan Euro';
+            src: url('https://fonts.cdnfonts.com/css/sharp-grotesk-pan-euro') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         :root {
-            --primary-color: #1a73e8;
+            --primary-color: #FFE923;
             --secondary-color: #f2f2f2;
             --accent-color: #0d47a1;
             --danger-color: #d32f2f;
@@ -16,18 +23,20 @@
             --light-text: #666;
             --border-radius: 8px;
             --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --retro-border: 2px solid #333;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Sharp Grotesk Pan Euro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
             background-color: #f5f5f5;
             color: var(--text-color);
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M0 0h5v5H0zm5 5h5v5H5zm5 5h5v5H5zm5 5h5v5H5zm5 5h5v5H5z" fill="%23FFE923" opacity="0.1"/></svg>');
         }
 
         .container {
@@ -39,9 +48,10 @@
         /* Header Styles */
         header {
             background-color: var(--primary-color);
-            color: white;
+            color: #333;
             padding: 1rem 0;
             box-shadow: var(--box-shadow);
+            border-bottom: var(--retro-border);
         }
 
         .header-content {
@@ -51,8 +61,13 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #333;
+            text-shadow: 2px 2px 0 #000;
+            animation: pulse 2s infinite;
         }
 
         .user-menu {
@@ -71,6 +86,7 @@
             justify-content: center;
             color: var(--primary-color);
             font-weight: bold;
+            border: 2px solid #333;
         }
 
         /* Navigation Styles */
@@ -80,6 +96,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: var(--retro-border);
         }
 
         .nav-links {
@@ -91,6 +108,7 @@
             padding: 1rem 1.5rem;
             cursor: pointer;
             transition: background-color 0.3s;
+            border-right: 1px solid #ddd;
         }
 
         .nav-links li:hover, .nav-links li.active {
@@ -112,12 +130,15 @@
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             text-align: center;
+            border: var(--retro-border);
+            animation: fadeIn 1s ease-in;
         }
 
         .stat-card h3 {
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0 #000;
         }
 
         .stat-card p {
@@ -130,6 +151,7 @@
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             margin: 2rem 0;
+            border: var(--retro-border);
         }
 
         .alert-item {
@@ -148,6 +170,7 @@
             justify-content: center;
             border-radius: 50%;
             color: white;
+            border: 2px solid #333;
         }
 
         .danger {
@@ -165,6 +188,7 @@
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             margin-bottom: 2rem;
+            border: var(--retro-border);
         }
 
         .module-header {
@@ -172,6 +196,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1rem;
         }
 
         .search-bar {
@@ -181,18 +207,20 @@
 
         .search-bar input {
             padding: 0.6rem;
-            border: 1px solid #ddd;
+            border: var(--retro-border);
             border-radius: var(--border-radius);
             flex-grow: 1;
+            background-color: #f9f9f9;
         }
 
         .search-bar button {
             background-color: var(--primary-color);
-            color: white;
-            border: none;
+            color: #333;
+            border: var(--retro-border);
             padding: 0.6rem 1rem;
             border-radius: var(--border-radius);
             cursor: pointer;
+            font-family: 'Sharp Grotesk Pan Euro', sans-serif;
         }
 
         .beneficiary-list, .payout-list {
@@ -205,14 +233,22 @@
             background-color: var(--secondary-color);
             padding: 1rem;
             border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .beneficiary-card:hover, .payout-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .id-card {
             position: relative;
             background-color: white;
-            border: 2px solid var(--primary-color);
+            border: 3px solid var(--primary-color);
             padding: 1rem;
             margin-top: 1rem;
+            animation: slideIn 0.5s ease-out;
         }
 
         /* Modal Styles */
@@ -237,6 +273,8 @@
             border-radius: var(--border-radius);
             width: 90%;
             max-width: 600px;
+            border: var(--retro-border);
+            animation: scaleIn 0.5s ease-out;
         }
 
         .close-modal {
@@ -245,6 +283,8 @@
             right: 1rem;
             font-size: 1.5rem;
             cursor: pointer;
+            color: #666;
+            animation: blink 1s infinite;
         }
 
         /* Form Styles */
@@ -255,26 +295,34 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
+            font-weight: bold;
         }
 
         .form-group input, .form-group select {
             width: 100%;
             padding: 0.6rem;
-            border: 1px solid #ddd;
+            border: var(--retro-border);
             border-radius: var(--border-radius);
+            background-color: #f9f9f9;
         }
 
         .btn {
             padding: 0.6rem 1.2rem;
-            border: none;
+            border: var(--retro-border);
             border-radius: var(--border-radius);
             cursor: pointer;
             font-weight: bold;
+            font-family: 'Sharp Grotesk Pan Euro', sans-serif;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
         }
 
         .btn-primary {
             background-color: var(--primary-color);
-            color: white;
+            color: #333;
         }
 
         .btn-success {
@@ -291,6 +339,34 @@
             .beneficiary-list, .payout-list {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
     </style>
 </head>

@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barangay Benefits Management System</title>
+    <title>ABMS - Alaminos Beneficiary Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #6c63ff;
-            --secondary-color: #f8f9fa;
-            --accent-color: #ff6b6b;
+            --primary-color: #1a73e8;
+            --secondary-color: #f2f2f2;
+            --accent-color: #0d47a1;
+            --danger-color: #d32f2f;
+            --success-color: #388e3c;
             --text-color: #333;
             --light-text: #666;
-            --border-radius: 10px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         * {
@@ -23,518 +26,536 @@
         }
 
         body {
-            background-color: #f5f7fa;
+            background-color: #f5f5f5;
             color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary-color), #8e44ad);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: var(--box-shadow);
         }
 
         .container {
             max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .card {
-            background: white;
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Navigation Styles */
+        nav {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links li:hover, .nav-links li.active {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
-            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: var(--light-text);
+        }
+
+        .alerts {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 2rem 0;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        .alert-icon {
+            margin-right: 1rem;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+        }
+
+        .danger {
+            background-color: var(--danger-color);
+        }
+
+        .warning {
+            background-color: #ffa000;
+        }
+
+        /* Module Styles */
+        .module {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
             margin-bottom: 2rem;
         }
 
-        .card-header {
+        .module-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
         }
 
-        .card-header h2 {
-            color: var(--primary-color);
+        .search-bar {
+            display: flex;
+            gap: 10px;
         }
 
-        .btn {
+        .search-bar input {
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            flex-grow: 1;
+        }
+
+        .search-bar button {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 30px;
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #5a51d9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+        .beneficiary-list, .payout-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
 
-        .btn-secondary {
+        .beneficiary-card, .payout-card {
             background-color: var(--secondary-color);
-            color: var(--text-color);
+            padding: 1rem;
+            border-radius: var(--border-radius);
         }
 
-        .btn-secondary:hover {
-            background-color: #e9ecef;
+        .id-card {
+            position: relative;
+            background-color: white;
+            border: 2px solid var(--primary-color);
+            padding: 1rem;
+            margin-top: 1rem;
         }
 
-        .btn-accent {
-            background-color: var(--accent-color);
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
         }
 
-        .btn-accent:hover {
-            background-color: #ff5252;
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
         }
 
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Form Styles */
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: var(--light-text);
-            font-weight: 500;
         }
 
-        input, select {
+        .form-group input, .form-group select {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.6rem;
             border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
+            border-radius: var(--border-radius);
         }
 
-        input:focus, select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
-            min-width: 800px;
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
         }
 
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #eee;
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
         }
 
-        th {
-            background-color: var(--secondary-color);
-            color: var(--light-text);
-            font-weight: 600;
-        }
-
-        tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .flex-container {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .flex-item {
-            flex: 1;
-            min-width: 200px;
-        }
-
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .flex-container {
-                flex-direction: column;
+            .dashboard {
+                grid-template-columns: 1fr;
             }
             
-            .flex-item {
-                width: 100%;
+            .beneficiary-list, .payout-list {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <h1>Barangay Benefits Management</h1>
-        <p>Efficiently manage senior citizens, PWDs, and children benefits</p>
+        <div class="container header-content">
+            <div class="logo">ABMS</div>
+            <div class="user-menu">
+                <i class="fas fa-bell"></i>
+                <div class="user-avatar">A</div>
+            </div>
+        </div>
     </header>
 
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li class="active">Dashboard</li>
+                <li>Beneficiary Management</li>
+                <li>Payout Management</li>
+                <li>ID Generation</li>
+                <li>Reports</li>
+                <li>Settings</li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h2>Welcome, Administrator</h2>
-                <button class="btn btn-accent" onclick="logout()">Logout</button>
+        <!-- Dashboard Content -->
+        <div class="dashboard">
+            <div class="stat-card">
+                <h3>1,245</h3>
+                <p>Total Beneficiaries</p>
             </div>
-            <div class="flex-container">
-                <button class="btn" onclick="showSection('add-person')">Add Person</button>
-                <button class="btn" onclick="showSection('view-list')">View Master List</button>
-                <button class="btn" onclick="showSection('update-date')">Update Payout Date</button>
-                <button class="btn btn-secondary" onclick="showSection('dashboard')">Dashboard</button>
+            <div class="stat-card">
+                <h3>342</h3>
+                <p>Senior Citizens</p>
             </div>
-        </div>
-
-        <div id="dashboard" class="card">
-            <h2>Dashboard Overview</h2>
-            <div class="flex-container">
-                <div class="card" style="flex: 1;">
-                    <h3>Total Beneficiaries</h3>
-                    <p id="total-beneficiaries">0</p>
-                </div>
-                <div class="card" style="flex: 1;">
-                    <h3>Senior Citizens</h3>
-                    <p id="senior-count">0</p>
-                </div>
-                <div class="card" style="flex: 1;">
-                    <h3>Persons with Disabilities</h3>
-                    <p id="pwd-count">0</p>
-                </div>
-                <div class="card" style="flex: 1;">
-                    <h3>Children</h3>
-                    <p id="children-count">0</p>
-                </div>
+            <div class="stat-card">
+                <h3>189</h3>
+                <p>Persons with Disabilities</p>
             </div>
         </div>
 
-        <div id="add-person" class="card hidden">
-            <h2>Add New Beneficiary</h2>
-            <form id="person-form">
-                <div class="flex-container">
-                    <div class="flex-item form-group">
-                        <label for="barangay">Barangay Name:</label>
-                        <input type="text" id="barangay" required>
-                    </div>
-                    <div class="flex-item form-group">
-                        <label for="category">Category:</label>
-                        <select id="category" required>
-                            <option value="senior_citizens">Senior Citizen</option>
-                            <option value="pwd">PWD</option>
-                            <option value="children">Child</option>
-                        </select>
-                    </div>
+        <!-- Alerts Section -->
+        <div class="alerts">
+            <div class="alert-item">
+                <div class="alert-icon danger">
+                    <i class="fas fa-exclamation"></i>
                 </div>
-                <div class="flex-container">
-                    <div class="flex-item form-group">
-                        <label for="name">Full Name:</label>
-                        <input type="text" id="name" required>
-                    </div>
-                    <div class="flex-item form-group">
-                        <label for="age">Age:</label>
-                        <input type="number" id="age" required>
-                    </div>
-                </div>
-                <div class="flex-container">
-                    <div class="flex-item form-group">
-                        <label for="contact">Contact Number:</label>
-                        <input type="text" id="contact">
-                    </div>
-                    <div class="flex-item form-group">
-                        <label for="payout-date">Payout Date:</label>
-                        <input type="date" id="payout-date" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn">Add Beneficiary</button>
-            </form>
-        </div>
-
-        <div id="view-list" class="card hidden">
-            <h2>View Beneficiaries</h2>
-            <div class="flex-container">
-                <div class="flex-item form-group">
-                    <input type="text" id="search-barangay" placeholder="Search Barangay..." style="width: 100%;">
-                </div>
-                <div class="flex-item form-group">
-                    <select id="search-category">
-                        <option value="all">All Categories</option>
-                        <option value="senior_citizens">Senior Citizens</option>
-                        <option value="pwd">PWDs</option>
-                        <option value="children">Children</option>
-                    </select>
-                </div>
+                <p>5 pending verifications require immediate attention</p>
             </div>
-            <div style="margin-top: 1rem;">
-                <table id="beneficiaries-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Age</th>
-                            <th>Contact</th>
-                            <th>Payout Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Data will be populated here -->
-                    </tbody>
-                </table>
+            <div class="alert-item">
+                <div class="alert-icon warning">
+                    <i class="fas fa-info"></i>
+                </div>
+                <p>15 payouts scheduled for next week</p>
             </div>
         </div>
 
-        <div id="update-date" class="card hidden">
-            <h2>Update Payout Date</h2>
-            <div class="flex-container">
-                <div class="flex-item form-group">
-                    <input type="text" id="search-id" placeholder="Search by ID..." style="width: 100%;">
+        <!-- Beneficiary Management Module -->
+        <div class="module">
+            <div class="module-header">
+                <h2>Beneficiary Management</h2>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search by name or ID...">
+                    <button><i class="fas fa-search"></i></button>
                 </div>
-                <button class="btn" onclick="searchById()">Search</button>
             </div>
-            <div id="update-form-container" class="hidden">
-                <form id="update-form">
-                    <div class="flex-container">
-                        <div class="flex-item form-group">
-                            <label for="update-id">Person ID:</label>
-                            <input type="text" id="update-id" readonly>
-                        </div>
-                        <div class="flex-item form-group">
-                            <label for="update-name">Name:</label>
-                            <input type="text" id="update-name" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="update-date">New Payout Date:</label>
-                        <input type="date" id="update-date" required>
-                    </div>
-                    <button type="submit" class="btn">Update Payout Date</button>
-                </form>
+            <div class="beneficiary-list">
+                <div class="beneficiary-card">
+                    <h4>Maria Sanchez</h4>
+                    <p>Senior Citizen</p>
+                    <p>PhilSys ID: PH12345678</p>
+                    <button class="btn btn-primary" onclick="showBeneficiaryDetails()">View Details</button>
+                </div>
+                <div class="beneficiary-card">
+                    <h4>Carlos Ramirez</h4>
+                    <p>Person with Disability</p>
+                    <p>PhilSys ID: PH87654321</p>
+                    <button class="btn btn-primary">View Details</button>
+                </div>
+                <div class="beneficiary-card">
+                    <h4>Sofia Garcia</h4>
+                    <p>Child</p>
+                    <p>PhilSys ID: PH98765432</p>
+                    <button class="btn btn-primary">View Details</button>
+                </div>
+                <div class="beneficiary-card">
+                    <h4>Juan Perez</h4>
+                    <p>Senior Citizen</p>
+                    <p>PhilSys ID: PH19876543</p>
+                    <button class="btn btn-primary">View Details</button>
+                </div>
+            </div>
+            <button class="btn btn-success" onclick="openRegistrationModal()">Register New Beneficiary</button>
+        </div>
+
+        <!-- Payout Management Module -->
+        <div class="module">
+            <div class="module-header">
+                <h2>Payout Management</h2>
+                <button class="btn btn-success" onclick="openScheduleModal()">Schedule Payout</button>
+            </div>
+            <div class="payout-list">
+                <div class="payout-card">
+                    <h4>Senior Citizens Monthly Stipend</h4>
+                    <p>Date: June 15, 2023</p>
+                    <p>Status: <span style="color: green; font-weight: bold;">Completed</span></p>
+                    <p>Amount: ₱1,500</p>
+                </div>
+                <div class="payout-card">
+                    <h4>Disability Assistance</h4>
+                    <p>Date: June 20, 2023</p>
+                    <p>Status: <span style="color: orange; font-weight: bold;">Pending</span></p>
+                    <p>Amount: ₱2,000</p>
+                </div>
+                <div class="payout-card">
+                    <h4>Child Education Grant</h4>
+                    <p>Date: July 1, 2023</p>
+                    <p>Status: <span style="color: blue; font-weight: bold;">Scheduled</span></p>
+                    <p>Amount: ₱1,000</p>
+                </div>
+                <div class="payout-card">
+                    <h4>Medical Assistance</h4>
+                    <p>Date: June 25, 2023</p>
+                    <p>Status: <span style="color: green; font-weight: bold;">Completed</span></p>
+                    <p>Amount: ₱3,000</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ID Generation Module -->
+        <div class="module">
+            <div class="module-header">
+                <h2>ID Generation</h2>
+            </div>
+            <button class="btn btn-success">Generate New IDs</button>
+            <div class="id-card">
+                <h3>Maria Sanchez</h3>
+                <p>Senior Citizen</p>
+                <p>PhilSys ID: PH12345678</p>
             </div>
         </div>
     </div>
 
+    <!-- Beneficiary Registration Modal -->
+    <div class="modal" id="registrationModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('registrationModal')">&times;</span>
+            <h2>Register New Beneficiary</h2>
+            <form id="beneficiaryForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">Birthdate</label>
+                    <input type="date" id="birthdate" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Senior Citizen">Senior Citizen</option>
+                        <option value="PWD">Persons with Disability</option>
+                        <option value="Child">Child</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone">
+                </div>
+                <button type="submit" class="btn btn-primary">Register Beneficiary</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payout Schedule Modal -->
+    <div class="modal" id="scheduleModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('scheduleModal')">&times;</span>
+            <h2>Schedule New Payout</h2>
+            <form id="payoutForm">
+                <div class="form-group">
+                    <label for="beneficiary">Beneficiary</label>
+                    <select id="beneficiary" required>
+                        <option value="">Select Beneficiary</option>
+                        <option value="1">Maria Sanchez</option>
+                        <option value="2">Carlos Ramirez</option>
+                        <option value="3">Sofia Garcia</option>
+                        <option value="4">Juan Perez</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Scheduled Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Schedule Payout</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Data storage
-        let barangays = JSON.parse(localStorage.getItem('barangays')) || {};
-        const CATEGORY_MAP = {
-            senior_citizens: 'Senior Citizen',
-            pwd: 'PWD',
-            children: 'Child'
-        };
+        // Open registration modal
+        function openRegistrationModal() {
+            document.getElementById('registrationModal').style.display = 'block';
+        }
 
-        function showSection(sectionId) {
-            document.querySelectorAll('.card').forEach(card => {
-                if (card.id !== 'dashboard' && card.id !== sectionId) {
-                    card.classList.add('hidden');
-                } else {
-                    card.classList.remove('hidden');
-                }
+        // Open schedule modal
+        function openScheduleModal() {
+            document.getElementById('scheduleModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Show beneficiary details
+        function showBeneficiaryDetails() {
+            alert('Beneficiary details will be displayed here');
+        }
+
+        // Handle form submissions
+        document.getElementById('beneficiaryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Beneficiary registered successfully!');
+            closeModal('registrationModal');
+        });
+
+        document.getElementById('payoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Payout scheduled successfully!');
+            closeModal('scheduleModal');
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-links li').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('.nav-links li.active').classList.remove('active');
+                this.classList.add('active');
             });
-        }
-
-        function generatePersonId(barangay, category) {
-            if (!barangays[barangay]) {
-                barangays[barangay] = {};
-            }
-            if (!barangays[barangay][category]) {
-                barangays[barangay][category] = {
-                    members: [],
-                    nextId: 1
-                };
-            }
-            
-            const nextId = barangays[barangay][category].nextId;
-            barangays[barangay][category].nextId++;
-            saveData();
-            
-            const categoryCode = category === 'senior_citizens' ? 'S' : 
-                                category === 'pwd' ? 'P' : 'C';
-            
-            return `${barangay}-${categoryCode}-${nextId.toString().padStart(3, '0')}`;
-        }
-
-        document.getElementById('person-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const barangay = document.getElementById('barangay').value.toUpperCase();
-            const category = document.getElementById('category').value;
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const contact = document.getElementById('contact').value;
-            const payoutDate = document.getElementById('payout-date').value;
-
-            const personId = generatePersonId(barangay, category);
-            const person = {
-                id: personId,
-                name,
-                age,
-                contact,
-                payoutDate,
-                category: category
-            };
-
-            if (!barangays[barangay][category].members) {
-                barangays[barangay][category].members = [];
-            }
-
-            barangays[barangay][category].members.push(person);
-            saveData();
-            updateDashboard();
-            alert(`Beneficiary added successfully! ID: ${personId}`);
-            this.reset();
-            showSection('dashboard');
         });
-
-        function populateBeneficiariesTable() {
-            const tableBody = document.querySelector('#beneficiaries-table tbody');
-            tableBody.innerHTML = '';
-            
-            const barangayFilter = document.getElementById('search-barangay').value.toUpperCase();
-            const categoryFilter = document.getElementById('search-category').value;
-
-            let totalBeneficiaries = 0;
-            let seniorCount = 0;
-            let pwdCount = 0;
-            let childrenCount = 0;
-
-            for (const barangay in barangays) {
-                if (barangayFilter && !barangay.includes(barangayFilter)) continue;
-                
-                for (const category in barangays[barangay]) {
-                    const categoryData = barangays[barangay][category];
-                    if (!categoryData.members) continue;
-                    
-                    if (categoryFilter !== 'all' && category !== categoryFilter) continue;
-                    
-                    categoryData.members.forEach(member => {
-                        totalBeneficiaries++;
-                        
-                        if (category === 'senior_citizens') seniorCount++;
-                        else if (category === 'pwd') pwdCount++;
-                        else if (category === 'children') childrenCount++;
-                        
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${member.id}</td>
-                            <td>${member.name}</td>
-                            <td>${CATEGORY_MAP[category]}</td>
-                            <td>${member.age}</td>
-                            <td>${member.contact}</td>
-                            <td>${new Date(member.payoutDate).toLocaleDateString()}</td>
-                            <td>
-                                <button class="btn btn-secondary" onclick="viewDetails('${member.id}')">View</button>
-                                <button class="btn btn-accent" onclick="updatePayout('${member.id}')">Update Date</button>
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-                }
-            }
-
-            document.getElementById('total-beneficiaries').textContent = totalBeneficiaries;
-            document.getElementById('senior-count').textContent = seniorCount;
-            document.getElementById('pwd-count').textContent = pwdCount;
-            document.getElementById('children-count').textContent = childrenCount;
-        }
-
-        function updatePayout(id) {
-            const [barangay, categoryCode, idNum] = id.split('-');
-            const category = categoryCode === 'S' ? 'senior_citizens' : 
-                           categoryCode === 'P' ? 'pwd' : 'children';
-            
-            if (!barangays[barangay] || !barangays[barangay][category]) return;
-            
-            const members = barangays[barangay][category].members;
-            const memberIndex = members.findIndex(m => m.id === id);
-            
-            if (memberIndex !== -1) {
-                const newDate = prompt("Enter new payout date (YYYY-MM-DD):", members[memberIndex].payoutDate);
-                if (newDate) {
-                    members[memberIndex].payoutDate = newDate;
-                    saveData();
-                    populateBeneficiariesTable();
-                    alert("Payout date updated successfully!");
-                }
-            }
-        }
-
-        function searchById() {
-            const id = document.getElementById('search-id').value.toUpperCase();
-            if (!id) return;
-            
-            document.getElementById('update-form-container').classList.remove('hidden');
-            
-            const [barangay, categoryCode, idNum] = id.split('-');
-            const category = categoryCode === 'S' ? 'senior_citizens' : 
-                           categoryCode === 'P' ? 'pwd' : 'children';
-            
-            if (!barangays[barangay] || !barangays[barangay][category]) {
-                alert("Record not found!");
-                return;
-            }
-            
-            const members = barangays[barangay][category].members;
-            const memberIndex = members.findIndex(m => m.id === id);
-            
-            if (memberIndex !== -1) {
-                const member = members[memberIndex];
-                document.getElementById('update-id').value = member.id;
-                document.getElementById('update-name').value = member.name;
-                document.getElementById('update-date').value = member.payoutDate;
-            } else {
-                alert("Beneficiary not found!");
-            }
-        }
-
-        function updateDashboard() {
-            populateBeneficiariesTable();
-        }
-
-        function saveData() {
-            localStorage.setItem('barangays', JSON.stringify(barangays));
-        }
-
-        document.getElementById('search-barangay').addEventListener('input', populateBeneficiariesTable);
-        document.getElementById('search-category').addEventListener('change', populateBeneficiariesTable);
-        document.getElementById('update-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = document.getElementById('update-id').value;
-            const newDate = document.getElementById('update-date').value;
-            
-            const [barangay, categoryCode, idNum] = id.split('-');
-            const category = categoryCode === 'S' ? 'senior_citizens' : 
-                           categoryCode === 'P' ? 'pwd' : 'children';
-            
-            if (!barangays[barangay] || !barangays[barangay][category]) return;
-            
-            const members = barangays[barangay][category].members;
-            const memberIndex = members.findIndex(m => m.id === id);
-            
-            if (memberIndex !== -1) {
-                members[memberIndex].payoutDate = newDate;
-                saveData();
-                alert("Payout date updated successfully!");
-                document.getElementById('update-form-container').classList.add('hidden');
-                populateBeneficiariesTable();
-            }
-        });
-
-        function logout() {
-            localStorage.removeItem('barangays');
-            alert("Data cleared and logged out!");
-            window.location.reload();
-        }
-
-        // Initialize
-        //updateDashboard();
-        //showSection('dashboard');
     </script>
 </body>
 </html>

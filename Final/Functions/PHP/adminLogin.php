@@ -35,10 +35,22 @@ if (isset($_POST['adminLogin'])) {
             $tid = $data['Token_ID'] ?? "";
 
             if (password_verify($t, $token)) {
-                $_SESSION['Admin_ID'] = $tid;
-                $_SESSION['access'] = 1;
-                header('Location: ../../Admin/applications.php');
-                exit;
+                $sql = $pdo->prepare("SELECT * FROM tbl_admin_info WHERE Token_ID = :t");
+                $sql->bindParam(":t", $tid, PDO::PARAM_INT);
+                $sql->execute();
+
+                if ($sql->rowCount() > 0) {
+                    unset($_SESSION['Authority']);
+                    $_SESSION['Admin_ID'] = $tid;
+                    $_SESSION['access'] = 1;
+                    header('Location: ../../Admin/dashboard.php');
+                    exit;
+                } else {
+                    unset($_SESSION['Authority']);
+                    $_SESSION['Token_ID'] = $tid;
+                    header('Location: ../../Admin/setName.php');
+                    exit;
+                }
             } else {
                 $_SESSION['faL'] = "Incorrect Token!";
                 header('Location: ../../Admin/');

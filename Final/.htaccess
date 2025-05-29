@@ -1,0 +1,12 @@
+# Deny direct access to all .js files
+<Files "*.js">
+  Order Deny,Allow
+  Deny from all
+</Files>
+
+# Enable URL rewriting
+RewriteEngine On
+
+# Redirect any request for .js files to the logout page
+RewriteCond %{REQUEST_URI} \.js$ [NC]
+RewriteRule ^ /Function/PHP/logout.php [R=301,L]

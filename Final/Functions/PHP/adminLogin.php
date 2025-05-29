@@ -1,5 +1,6 @@
 <?php
 require_once "connect.php";
+ini_set('session.cookie_httponly', 1);
 session_start();
 
 if (isset($_POST['adminLogin'])) {
@@ -19,8 +20,11 @@ if (isset($_POST['adminLogin'])) {
         header('Location: ../../Admin/');
         exit;
     } elseif (strlen($t) !== 20) {
+        $_SESSION['faL'] = "Invalid Token Length";
+        header('Location: ../../Admin/');
+        exit;
     } else {
-        $sql = $pdo->prepare("SELECT Token FROM tbl_admin_token WHERE `Key` = :k");
+        $sql = $pdo->prepare("SELECT Token, Token_ID FROM tbl_admin_token WHERE `Key` = :k");
         $sql->bindParam(":k", $k, PDO::PARAM_STR);
         $sql->execute();
 
@@ -28,10 +32,12 @@ if (isset($_POST['adminLogin'])) {
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             $data = sanitize($result);
             $token = $data['Token'] ?? "";
+            $tid = $data['Token_ID'] ?? "";
 
             if (password_verify($t, $token)) {
+                $_SESSION['Admin_ID'] = $tid;
                 $_SESSION['access'] = 1;
-                header('Location: ../../Admin/dashboard.php');
+                header('Location: ../../Admin/applications.php');
                 exit;
             } else {
                 $_SESSION['faL'] = "Incorrect Token!";

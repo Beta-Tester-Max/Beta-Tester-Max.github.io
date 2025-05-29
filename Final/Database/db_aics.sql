@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2025 at 11:01 AM
+-- Generation Time: May 28, 2025 at 10:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_aics`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_access_control`
+--
+
+CREATE TABLE `tbl_access_control` (
+  `Access_ID` int(11) NOT NULL,
+  `Token_ID` int(11) NOT NULL,
+  `Role_Title` varchar(50) NOT NULL,
+  `Access` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -42,7 +55,8 @@ CREATE TABLE `tbl_accounts` (
 
 INSERT INTO `tbl_accounts` (`Account_ID`, `Username`, `Email`, `Password`, `Access_Level`, `TimeStamp`) VALUES
 (1, 'Admin', '', '$2y$10$4EQwJIARDJjkesvHLmygse552iZeBpa8lF.2UVxpScgABFslgE9D2', 'Admin', '0000-00-00 00:00:00'),
-(24, 'aa1', '1234@gmail.com', '$2y$10$BK8n9P7/Li0S8sPcWtNhp.WlhUFJqSNhuC.TNXPcDTmB7WQUVjLnq', 'User', '2025-05-22 07:02:45');
+(24, 'aa1', '1234@gmail.com', '$2y$10$BK8n9P7/Li0S8sPcWtNhp.WlhUFJqSNhuC.TNXPcDTmB7WQUVjLnq', 'User', '2025-05-22 07:02:45'),
+(26, 'aa2', 'Testacc@gmail.com', '$2y$10$wuNiXIGQjvRVq0AfnwRNAukE.XY0I.FOzDqDWWcIhWQkd0TblfTim', 'User', '2025-05-27 02:24:29');
 
 -- --------------------------------------------------------
 
@@ -67,7 +81,21 @@ CREATE TABLE `tbl_address` (
 --
 
 INSERT INTO `tbl_address` (`Address_ID`, `Account_ID`, `House_Number`, `Street_Name`, `Barangay`, `City_or_Municipality`, `Province`, `Region`, `Zip_Code`) VALUES
-(10, 24, 229, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001);
+(10, 24, 229, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001),
+(11, 26, 300, 'Purok 2', 'San Juan', 'Alaminos', 'Laguna', '4A', 4001);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_admin_info`
+--
+
+CREATE TABLE `tbl_admin_info` (
+  `Admin_ID` int(11) NOT NULL,
+  `Token_ID` int(11) NOT NULL,
+  `Access_ID` int(11) NOT NULL,
+  `Admin_Name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -88,7 +116,8 @@ CREATE TABLE `tbl_admin_token` (
 
 INSERT INTO `tbl_admin_token` (`Token_ID`, `Key`, `Token`, `TimeStamp`) VALUES
 (2, '4689ddK2E5', '$2y$10$p55B/NbT5qjAWCAauTo1hOjRFqntB9YL7ilKwRoHv3gkHhUWRKUPO', '2025-05-22 07:35:22'),
-(3, '33fc17EK15', '$2y$10$1kUwROrgl2CLBi/C2TAzde6C11XFYhAh5FGNCPIA0bmkQXBtaYX3O', '2025-05-22 07:37:29');
+(3, '33fc17EK15', '$2y$10$1kUwROrgl2CLBi/C2TAzde6C11XFYhAh5FGNCPIA0bmkQXBtaYX3O', '2025-05-22 07:37:29'),
+(4, 'c4EK51dadb', '$2y$10$vuhdvO07S7uuHQQ54EK6ce2rCIZ9kbPTvHE7hBrajd.Axvkw6zD3m', '2025-05-28 03:13:41');
 
 -- --------------------------------------------------------
 
@@ -118,9 +147,12 @@ CREATE TABLE `tbl_applications` (
 
 INSERT INTO `tbl_applications` (`Application_ID`, `Account_ID`, `Assistance_ID`, `Beneficiary`, `Representative`, `Severity`, `Reason`, `Status`, `Date_Submitted`, `ReasonFR`, `Date_Reviewed`, `Files`, `is_deleted`) VALUES
 (10021, 24, 5, 18, 18, 9, 'Need Food Assistance', 'Pending', '2025-05-22 07:55:34', NULL, '2025-05-22 07:59:24', '95, 96, 97', 1),
-(10022, 24, 1, 18, 18, 1, 'zxczxczxcddawdsd', 'Pending', '2025-05-22 07:57:24', NULL, NULL, '98, 99, 100, 101, 102, 103, 104', 0),
-(10023, 24, 4, 18, 18, 8, 'dfffsdfdsfdsfdfs', 'Pending', '2025-05-22 08:01:59', NULL, NULL, '105, 106, 107, 108, 109', 0),
-(10024, 24, 5, 18, 18, 9, 'asjdliaskjldas', 'Pending', '2025-05-22 08:06:16', NULL, NULL, '110, 111, 112', 0);
+(10022, 24, 1, 18, 18, 1, 'zxczxczxcddawdsd', 'Approved', '2025-05-22 07:57:24', NULL, '2025-05-28 02:35:51', '98, 99, 100, 101, 102, 103, 104', 0),
+(10023, 24, 4, 18, 18, 8, 'dfffsdfdsfdsfdfs', 'Rejected', '2025-05-22 08:01:59', 'Not Good Enough', '2025-05-28 03:09:53', '105, 106, 107, 108, 109', 0),
+(10024, 24, 5, 18, 18, 9, 'asjdliaskjldas', 'Pending', '2025-05-22 08:06:16', NULL, '2025-05-27 04:58:33', '110, 111, 112', 1),
+(10025, 26, 5, 19, 19, 9, 'I\'m Hungry', 'Pending', '2025-05-27 02:55:59', NULL, NULL, '113, 114, 115', 0),
+(10026, 26, 6, 19, 19, 10, 'I need money', 'Pending', '2025-05-27 02:58:40', NULL, NULL, '116, 117, 118, 119', 0),
+(10027, 24, 5, 18, 18, 9, 'I\'m Hungry', 'Pending', '2025-05-27 04:59:17', NULL, NULL, '120, 121, 122', 0);
 
 -- --------------------------------------------------------
 
@@ -230,7 +262,8 @@ CREATE TABLE `tbl_family` (
 --
 
 INSERT INTO `tbl_family` (`Family_ID`, `Account_ID`, `Family_Name`) VALUES
-(10, 24, 'Cruz');
+(10, 24, 'Cruz'),
+(11, 26, 'Doe');
 
 -- --------------------------------------------------------
 
@@ -250,7 +283,9 @@ CREATE TABLE `tbl_family_composition` (
 --
 
 INSERT INTO `tbl_family_composition` (`Family_Composition_ID`, `Account_ID`, `Family_ID`, `User_ID`) VALUES
-(9, 24, 10, 18);
+(9, 24, 10, 18),
+(10, 26, 11, 19),
+(11, 24, 10, 20);
 
 -- --------------------------------------------------------
 
@@ -279,7 +314,9 @@ CREATE TABLE `tbl_family_member` (
 --
 
 INSERT INTO `tbl_family_member` (`User_ID`, `First_Name`, `Middle_Name`, `Last_Name`, `Email`, `Phone_Number`, `Birth_Day`, `Sex`, `Civil_Status`, `Educational_Attainment`, `Occupation`, `TimeStamp`, `is_deceased`) VALUES
-(18, 'John', 'Diaz', 'Doe', 'jd@gmail.com', '0999-999-9999', '2000-02-24', 'm', 'Single', '', '', '2025-05-22 07:54:39', 0);
+(18, 'John', 'Diaz', 'Doe', 'jd@gmail.com', '0999-999-9999', '2000-02-24', 'm', 'Single', '', '', '2025-05-22 07:54:39', 0),
+(19, 'John', '', 'Doe', 'jduser@gmail.com', '0888-888-8888', '1992-08-26', 'm', 'Single', '', '', '2025-05-27 02:32:59', 0),
+(20, 'Jane', 'Dhana', 'Doe', '', '', '2025-05-22', 'f', 'Single', '', '', '2025-05-28 05:48:34', 0);
 
 -- --------------------------------------------------------
 
@@ -331,9 +368,19 @@ INSERT INTO `tbl_files` (`File_ID`, `Account_ID`, `Requirement_ID`, `File_Name`,
 (107, 24, 30, '24_30.pdf', '2025-05-22 08:01:59', 0),
 (108, 24, 31, '24_31.pdf', '2025-05-22 08:01:59', 0),
 (109, 24, 33, '24_33.pdf', '2025-05-22 08:01:59', 0),
-(110, 24, 34, '24_34.pdf', '2025-05-22 08:06:16', 0),
-(111, 24, 35, '24_35.pdf', '2025-05-22 08:06:16', 0),
-(112, 24, 36, '24_36.pdf', '2025-05-22 08:06:16', 0);
+(110, 24, 34, 'deleted_110_24_34.pdf', '2025-05-22 08:06:16', 1),
+(111, 24, 35, 'deleted_111_24_35.pdf', '2025-05-22 08:06:16', 1),
+(112, 24, 36, 'deleted_112_24_36.pdf', '2025-05-22 08:06:16', 1),
+(113, 26, 34, '26_34.pdf', '2025-05-27 02:55:59', 0),
+(114, 26, 35, '26_35.pdf', '2025-05-27 02:55:59', 0),
+(115, 26, 36, '26_36.pdf', '2025-05-27 02:55:59', 0),
+(116, 26, 39, '26_39.pdf', '2025-05-27 02:58:40', 0),
+(117, 26, 40, '26_40.pdf', '2025-05-27 02:58:40', 0),
+(118, 26, 41, '26_41.pdf', '2025-05-27 02:58:40', 0),
+(119, 26, 42, '26_42.pdf', '2025-05-27 02:58:40', 0),
+(120, 24, 34, '24_34.pdf', '2025-05-27 04:59:16', 0),
+(121, 24, 35, '24_35.pdf', '2025-05-27 04:59:17', 0),
+(122, 24, 36, '24_36.pdf', '2025-05-27 04:59:17', 0);
 
 -- --------------------------------------------------------
 
@@ -441,6 +488,14 @@ INSERT INTO `tbl_requirements` (`Requirement_ID`, `Assistance_ID`, `Document_ID`
 --
 
 --
+-- Indexes for table `tbl_access_control`
+--
+ALTER TABLE `tbl_access_control`
+  ADD PRIMARY KEY (`Access_ID`),
+  ADD UNIQUE KEY `Role` (`Role_Title`),
+  ADD KEY `AC>AT` (`Token_ID`);
+
+--
 -- Indexes for table `tbl_accounts`
 --
 ALTER TABLE `tbl_accounts`
@@ -452,6 +507,14 @@ ALTER TABLE `tbl_accounts`
 ALTER TABLE `tbl_address`
   ADD PRIMARY KEY (`Address_ID`),
   ADD KEY `Account>Address` (`Account_ID`);
+
+--
+-- Indexes for table `tbl_admin_info`
+--
+ALTER TABLE `tbl_admin_info`
+  ADD PRIMARY KEY (`Admin_ID`),
+  ADD KEY `Admin_Info>Admin_Token` (`Token_ID`),
+  ADD KEY `Admin_Info>Access_Control` (`Access_ID`);
 
 --
 -- Indexes for table `tbl_admin_token`
@@ -546,28 +609,40 @@ ALTER TABLE `tbl_requirements`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_access_control`
+--
+ALTER TABLE `tbl_access_control`
+  MODIFY `Access_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tbl_accounts`
 --
 ALTER TABLE `tbl_accounts`
-  MODIFY `Account_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `Account_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `tbl_address`
 --
 ALTER TABLE `tbl_address`
-  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `tbl_admin_info`
+--
+ALTER TABLE `tbl_admin_info`
+  MODIFY `Admin_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_admin_token`
 --
 ALTER TABLE `tbl_admin_token`
-  MODIFY `Token_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Token_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_applications`
 --
 ALTER TABLE `tbl_applications`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10025;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10028;
 
 --
 -- AUTO_INCREMENT for table `tbl_assistance`
@@ -591,19 +666,19 @@ ALTER TABLE `tbl_documents`
 -- AUTO_INCREMENT for table `tbl_family`
 --
 ALTER TABLE `tbl_family`
-  MODIFY `Family_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Family_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_family_composition`
 --
 ALTER TABLE `tbl_family_composition`
-  MODIFY `Family_Composition_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Family_Composition_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_family_member`
 --
 ALTER TABLE `tbl_family_member`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tbl_feedbacks`
@@ -615,7 +690,7 @@ ALTER TABLE `tbl_feedbacks`
 -- AUTO_INCREMENT for table `tbl_files`
 --
 ALTER TABLE `tbl_files`
-  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- AUTO_INCREMENT for table `tbl_rates`
@@ -634,10 +709,23 @@ ALTER TABLE `tbl_requirements`
 --
 
 --
+-- Constraints for table `tbl_access_control`
+--
+ALTER TABLE `tbl_access_control`
+  ADD CONSTRAINT `AC>AT` FOREIGN KEY (`Token_ID`) REFERENCES `tbl_admin_token` (`Token_ID`);
+
+--
 -- Constraints for table `tbl_address`
 --
 ALTER TABLE `tbl_address`
   ADD CONSTRAINT `Account>Address` FOREIGN KEY (`Account_ID`) REFERENCES `tbl_accounts` (`Account_ID`);
+
+--
+-- Constraints for table `tbl_admin_info`
+--
+ALTER TABLE `tbl_admin_info`
+  ADD CONSTRAINT `Admin_Info>Access_Control` FOREIGN KEY (`Access_ID`) REFERENCES `tbl_access_control` (`Access_ID`),
+  ADD CONSTRAINT `Admin_Info>Admin_Token` FOREIGN KEY (`Token_ID`) REFERENCES `tbl_admin_token` (`Token_ID`);
 
 --
 -- Constraints for table `tbl_applications`

@@ -1,5 +1,6 @@
 <?php
 require_once "connect.php";
+ini_set('session.cookie_httponly', 1);
 session_start();
 
 ini_set('display_errors', 1);
@@ -81,7 +82,25 @@ if (isset($_POST['createApplication'])) {
                         $arr['Criteria'] = $data['Criteria'] ?? "";
                         $arr['Cost'] = $data['Cost'] ?? "";
 
-                        if (empty($h) || empty($rp)) {
+                        if (empty($r)) {
+                            $pdo->rollBack();
+                            $_SESSION['Alert'] = "Missing Reason!";
+                            $_SESSION['Path'] = "../../appDoc.php";
+                            header('Location: ../../index.php');
+                            exit;
+                        } elseif (strlen(trim($r)) < 10) {
+                            $pdo->rollBack();
+                            $_SESSION['Alert'] = "Reason cannot be more less than 10 characters! Not including space.";
+                            $_SESSION['Path'] = "../../appDoc.php";
+                            header('Location: ../../index.php');
+                            exit;
+                        } elseif (strlen($r) > 1000) {
+                            $pdo->rollBack();
+                            $_SESSION['Alert'] = "Reason cannot be more than 1000 characters! Including space.";
+                            $_SESSION['Path'] = "../../appDoc.php";
+                            header('Location: ../../index.php');
+                            exit;
+                        } elseif (empty($h) || empty($rp)) {
                             $pdo->rollBack();
                             $_SESSION['Alert'] = "Missing Beneficiary or Representative or both!";
                             $_SESSION['Path'] = "../../appDoc.php";
@@ -191,9 +210,9 @@ if (isset($_POST['createApplication'])) {
                                                                         if (rename($ofdir, $nofdir)) {
 
                                                                             $sql = $pdo->prepare("UPDATE tbl_Files
-                                                                    SET is_deleted = 1,
-                                                                    File_Name = :fn
-                                                                    WHERE File_ID = :f");
+                                                                            SET is_deleted = 1,
+                                                                            File_Name = :fn
+                                                                            WHERE File_ID = :f");
                                                                             $sql->bindParam(":fn", $nof, PDO::PARAM_STR);
                                                                             $sql->bindParam(":f", $fid, PDO::PARAM_INT);
                                                                             $sql->execute();
@@ -265,6 +284,13 @@ if (isset($_POST['createApplication'])) {
                                             }
                                         }
 
+                                        $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Assistance_ID = :as AND is_deleted = 0");
+                                        $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                                        $sql->bindParam(":as", $aid, PDO::PARAM_INT);
+                                        $sql->execute();
+                                        
+                                        if ($sql->rowCount() === 0) {
+
                                         $sql = $pdo->prepare("INSERT INTO tbl_applications (Account_ID, Assistance_ID, Beneficiary, Representative, Severity, Reason, Files)
                                         VALUES (:a, :as, :h, :rp, :s, :r, :f)");
                                         $sql->bindParam(":a", $a, PDO::PARAM_INT);
@@ -280,10 +306,8 @@ if (isset($_POST['createApplication'])) {
 
                                             $_SESSION['recSubApp'] = $arr;
                                             unset($_SESSION['sD']);
-                                            $_SESSION['Alert'] = "Application Submitted Successfully!";
-                                            $_SESSION['Path'] = "../../application.php";
 
-                                            header('Location: ../../index.php');
+                                            header('Location: ../../application.php');
                                             exit;
                                         } else {
                                             $pdo->rollBack();
@@ -294,6 +318,15 @@ if (isset($_POST['createApplication'])) {
                                             header('Location: ../../index.php');
                                             exit;
                                         }
+                                    } else {
+                                            $pdo->rollBack();
+
+                                            $_SESSION['Alert'] = "You already have a pending application of this type of assistance.";
+                                            $_SESSION['Path'] = "../../appDoc.php";
+
+                                            header('Location: ../../index.php');
+                                            exit;
+                                    }
                                     } else {
                                         $pdo->rollBack();
                                         $_SESSION['Alert'] = "Couldn't Fetch Requirements.";

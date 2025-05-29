@@ -1,71 +1,188 @@
 <?php
 require_once "connect.php";
 
-if (isset($_SESSION['Authority']) && !empty($_SESSION['Authority'])) {
-    try {
-        $sql = $pdo->query("SELECT * FROM tbl_availability");
-        $result = $sql->fetchAll();
-        $_SESSION['Availability'] = sanitize($result);
+if (isset($_SESSION['access']) && !empty($_SESSION['access']) && $_SESSION['access'] === 1) {
+    if (isset($_SESSION['Admin_ID']) && !empty($_SESSION['Admin_ID'])) {
+        $a = $_SESSION['Admin_ID'] ?? "";
 
-        $sql = $pdo->query("SELECT * FROM tbl_assistance");
-        $result = $sql->fetchAll();
-        $_SESSION['Assistance'] = sanitize($result);
+        try {
 
-        $sql = $pdo->query("SELECT * FROM tbl_documents");
-        $result = $sql->fetchAll();
-        $data = sanitize($result);
-        $_SESSION['Documents'] = $data;
-
-        $sql = $pdo->query("SELECT DISTINCT Account_ID FROM tbl_applications WHERE Status = 'Pending'");
-        $result = $sql->fetchAll();
-        $data = sanitize($result);
-        $_SESSION['pendingA'] = $data;
-        foreach ($data as $d) {
-            $aF = array();
-            $a = $d['Account_ID'];
-            $sql = $pdo->prepare("SELECT Family_Name FROM tbl_family WHERE Account_ID = :a");
-            $sql->bindParam(":a", $a, PDO::PARAM_INT);
+            $sql = $pdo->prepare("SELECT * FROM tbl_admin_token WHERE Token_ID = :t");
+            $sql->bindParam(":t", $a, PDO::PARAM_INT);
             $sql->execute();
-            $result = $sql->fetch(PDO::FETCH_ASSOC);
-            $data = sanitize($result);
-            $_SESSION['pendingF' . $a] = $data['Family_Name'];
-            $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Status = 'Pending'");
-            $sql->bindParam(":a", $a, PDO::PARAM_INT);
-            $sql->execute();
-            $result = $sql->fetchAll();
-            $data = sanitize($result);
-            $_SESSION['pendingApp' . $a] = $data;
-            foreach ($data as $p) {
-                $as = $p['Assistance_ID'] ?? "";
-                $sql = $pdo->prepare("SELECT Assistance_Name FROM tbl_assistance WHERE Assistance_ID = :a");
-                $sql->bindParam(":a", $as, PDO::PARAM_INT);
-                $sql->execute();
-                $result = $sql->fetch(PDO::FETCH_ASSOC);
-                $data = sanitize($result);;
-                $_SESSION['pAs'.$as] = $data['Assistance_Name'];
-                $aF = explode(", ", $p['Files']) ?? "";
-                for ($i = 0; $i < count($aF); ++$i) {
-                    $f = $aF[$i];
-                    $sql = $pdo->prepare("SELECT File_Name, Requirement_ID FROM tbl_files WHERE File_ID = :f");
-                    $sql->bindParam(":f", $f, PDO::PARAM_INT);
+
+            if ($sql->rowCount() === 1) {
+
+
+                $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Pending' AND is_deleted = 0");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['pA'] = $data;
+                foreach ($data as $d) {
+                    $aid = $d['Application_ID'] ?? "";
+                    $rep = $d['Representative'] ?? "";
+                    $as = $d['Assistance_ID'] ?? "";
+                    $a = $d['Account_ID'] ?? "";
+                    $files = explode(", ", $d['Files']) ?? "";
+
+                    $sql = $pdo->prepare("SELECT Family_Name FROM tbl_family WHERE Account_ID = :a");
+                    $sql->bindParam(":a", $a, PDO::PARAM_INT);
                     $sql->execute();
                     $result = $sql->fetch(PDO::FETCH_ASSOC);
                     $data = sanitize($result);
-                    $_SESSION['pFile' . $f] = $data['File_Name'];
-                    $_SESSION['pR' . $f] = $data['Requirement_ID'];
-                    $r = $data['Requirement_ID'];
-                    $sql = $pdo->prepare("SELECT t1.Description, t2.Assistance_Name FROM tbl_requirements as t1, tbl_assistance as t2 WHERE t1.Assistance_ID = :a AND t1.Requirement_ID = :r AND t2.Assistance_ID = :a");
+                    $_SESSION['pA_fN' . $a] = $data['Family_Name'];
+
+                    $sql = $pdo->prepare("SELECT First_Name, Middle_Name, Last_Name FROM tbl_family_member WHERE User_ID = :u");
+                    $sql->bindParam(":u", $rep, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['pA_name' . $aid] = $data;
+
+                    $sql = $pdo->prepare("SELECT Assistance_Name FROM tbl_assistance WHERE Assistance_ID = :a");
                     $sql->bindParam(":a", $as, PDO::PARAM_INT);
-                    $sql->bindParam(":r", $r, PDO::PARAM_INT);
                     $sql->execute();
                     $result = $sql->fetch(PDO::FETCH_ASSOC);
                     $data = sanitize($result);
-                    $_SESSION['pDesc' . $r] = $data['Description'];
+                    $_SESSION['pA_as' . $aid] = $data['Assistance_Name'];
+
+                    $sql = $pdo->prepare("SELECT * FROM tbl_Address WHERE Account_ID = :a");
+                    $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['pA_add' . $aid] = $data;
+
+                    for ($i = 0; $i < count($files); ++$i) {
+                        $sql = $pdo->prepare("SELECT Requirement_ID, File_Name FROM tbl_files WHERE File_ID = :f");
+                        $sql->bindParam(":f", $files[$i], PDO::PARAM_INT);
+                        $sql->execute();
+                        $result = $sql->fetch(PDO::FETCH_ASSOC);
+                        $data = sanitize($result);
+                        $_SESSION['file' . $i . $aid] = $data['File_Name'] ?? "";
+
+                        $sql = $pdo->prepare("SELECT Description FROM tbl_requirements WHERE Requirement_ID = :r");
+                        $sql->bindParam(":r", $data['Requirement_ID'], PDO::PARAM_INT);
+                        $sql->execute();
+                        $result = $sql->fetch(PDO::FETCH_ASSOC);
+                        $data = sanitize($result);
+                        $_SESSION['desc' . $i . $aid] = $data['Description'] ?? "";
+                    }
+
+                    $sql = $pdo->prepare("SELECT User_ID FROM tbl_family_composition WHERE Account_ID = :a");
+                    $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetchAll();
+                    $data = sanitize($result);
+                    $_SESSION['pA_fC' . $a] = $data;
+
+                    foreach ($data as $d) {
+                        $u = $d['User_ID'] ?? "";
+
+                        $sql = $pdo->prepare("SELECT * FROM tbl_family_member WHERE User_ID = :u");
+                        $sql->bindParam(":u", $u, PDO::PARAM_INT);
+                        $sql->execute();
+                        $result = $sql->fetch(PDO::FETCH_ASSOC);
+                        $data = sanitize($result);
+                        $_SESSION['pA_fM' . $u] = $data;
+                    }
                 }
+
+                $sql = $pdo->query("SELECT * FROM tbl_applications WHERE (Status = 'Approved' OR Status = 'Rejected') AND is_deleted = 0");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['hA'] = $data;
+                foreach ($data as $d) {
+                    $aid = $d['Application_ID'] ?? "";
+                    $rep = $d['Representative'] ?? "";
+                    $as = $d['Assistance_ID'] ?? "";
+                    $a = $d['Account_ID'] ?? "";
+                    $files = explode(", ", $d['Files']) ?? "";
+
+                    $sql = $pdo->prepare("SELECT Family_Name FROM tbl_family WHERE Account_ID = :a");
+                    $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['hA_fN' . $a] = $data['Family_Name'];
+
+                    $sql = $pdo->prepare("SELECT First_Name, Middle_Name, Last_Name FROM tbl_family_member WHERE User_ID = :u");
+                    $sql->bindParam(":u", $rep, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['hA_name' . $aid] = $data;
+
+                    $sql = $pdo->prepare("SELECT Assistance_Name FROM tbl_assistance WHERE Assistance_ID = :a");
+                    $sql->bindParam(":a", $as, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['hA_as' . $aid] = $data['Assistance_Name'];
+
+                    $sql = $pdo->prepare("SELECT * FROM tbl_Address WHERE Account_ID = :a");
+                    $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['hA_add' . $aid] = $data;
+
+                    for ($i = 0; $i < count($files); ++$i) {
+                        $sql = $pdo->prepare("SELECT Requirement_ID, File_Name FROM tbl_files WHERE File_ID = :f");
+                        $sql->bindParam(":f", $files[$i], PDO::PARAM_INT);
+                        $sql->execute();
+                        $result = $sql->fetch(PDO::FETCH_ASSOC);
+                        $data = sanitize($result);
+                        $_SESSION['file' . $i . $aid] = $data['File_Name'] ?? "";
+
+                        $sql = $pdo->prepare("SELECT Description FROM tbl_requirements WHERE Requirement_ID = :r");
+                        $sql->bindParam(":r", $data['Requirement_ID'], PDO::PARAM_INT);
+                        $sql->execute();
+                        $result = $sql->fetch(PDO::FETCH_ASSOC);
+                        $data = sanitize($result);
+                        $_SESSION['desc' . $i . $aid] = $data['Description'] ?? "";
+                    }
+
+                    $sql = $pdo->prepare("SELECT User_ID FROM tbl_family_composition WHERE Account_ID = :a");
+                    $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetchAll();
+                    $data = sanitize($result);
+                    $_SESSION['hA_fC' . $a] = $data;
+
+                    foreach ($data as $d) {
+                        $u = $d['User_ID'] ?? "";
+
+                        $sql = $pdo->prepare("SELECT * FROM tbl_family_member WHERE User_ID = :u");
+                        $sql->bindParam(":u", $u, PDO::PARAM_INT);
+                        $sql->execute();
+                        $result = $sql->fetch(PDO::FETCH_ASSOC);
+                        $data = sanitize($result);
+                        $_SESSION['hA_fM' . $u] = $data;
+                    }
+
+                    $sql = $pdo->query("SELECT * FROM tbl_applications");
+                    $_SESSION['tApp'] = $sql->rowCount();
+                    $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Pending'");
+                    $_SESSION['tPApp'] = $sql->rowCount();
+                    $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Approved'");
+                    $_SESSION['tAApp'] = $sql->rowCount();
+                    $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Rejected'");
+                    $_SESSION['tRApp'] = $sql->rowCount();
+                }
+            } else {
+                header('Location: ../Functions/PHP/logout.php');
+                exit;
             }
+        } catch (PDOException $e) {
+            echo "Connection Error: " . $e->getMessage();
         }
-    } catch (PDOException $e) {
-        echo "Connection Error: " . $e->getMessage();
+    } else {
+        header('Location: ../Functions/PHP/logout.php');
+        exit;
     }
+} else {
+    header('Location: ../Functions/PHP/logout.php');
+    exit;
 }
 ?>

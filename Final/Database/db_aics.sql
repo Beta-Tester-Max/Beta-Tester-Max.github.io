@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2025 at 10:32 AM
+-- Generation Time: May 29, 2025 at 11:04 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,10 +29,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `tbl_access_control` (
   `Access_ID` int(11) NOT NULL,
-  `Token_ID` int(11) NOT NULL,
-  `Role_Title` varchar(50) NOT NULL,
+  `Access_Level` varchar(50) NOT NULL,
   `Access` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_access_control`
+--
+
+INSERT INTO `tbl_access_control` (`Access_ID`, `Access_Level`, `Access`) VALUES
+(1, 'Owner', '1, 1');
 
 -- --------------------------------------------------------
 
@@ -93,9 +99,16 @@ INSERT INTO `tbl_address` (`Address_ID`, `Account_ID`, `House_Number`, `Street_N
 CREATE TABLE `tbl_admin_info` (
   `Admin_ID` int(11) NOT NULL,
   `Token_ID` int(11) NOT NULL,
-  `Access_ID` int(11) NOT NULL,
+  `Access_ID` int(11) DEFAULT NULL,
   `Admin_Name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_admin_info`
+--
+
+INSERT INTO `tbl_admin_info` (`Admin_ID`, `Token_ID`, `Access_ID`, `Admin_Name`) VALUES
+(1, 2, 1, 'Admin');
 
 -- --------------------------------------------------------
 
@@ -492,8 +505,7 @@ INSERT INTO `tbl_requirements` (`Requirement_ID`, `Assistance_ID`, `Document_ID`
 --
 ALTER TABLE `tbl_access_control`
   ADD PRIMARY KEY (`Access_ID`),
-  ADD UNIQUE KEY `Role` (`Role_Title`),
-  ADD KEY `AC>AT` (`Token_ID`);
+  ADD UNIQUE KEY `Role` (`Access_Level`);
 
 --
 -- Indexes for table `tbl_accounts`
@@ -513,8 +525,7 @@ ALTER TABLE `tbl_address`
 --
 ALTER TABLE `tbl_admin_info`
   ADD PRIMARY KEY (`Admin_ID`),
-  ADD KEY `Admin_Info>Admin_Token` (`Token_ID`),
-  ADD KEY `Admin_Info>Access_Control` (`Access_ID`);
+  ADD KEY `Admin_Info>Admin_Token` (`Token_ID`);
 
 --
 -- Indexes for table `tbl_admin_token`
@@ -612,7 +623,7 @@ ALTER TABLE `tbl_requirements`
 -- AUTO_INCREMENT for table `tbl_access_control`
 --
 ALTER TABLE `tbl_access_control`
-  MODIFY `Access_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Access_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_accounts`
@@ -630,7 +641,7 @@ ALTER TABLE `tbl_address`
 -- AUTO_INCREMENT for table `tbl_admin_info`
 --
 ALTER TABLE `tbl_admin_info`
-  MODIFY `Admin_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Admin_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_admin_token`
@@ -709,12 +720,6 @@ ALTER TABLE `tbl_requirements`
 --
 
 --
--- Constraints for table `tbl_access_control`
---
-ALTER TABLE `tbl_access_control`
-  ADD CONSTRAINT `AC>AT` FOREIGN KEY (`Token_ID`) REFERENCES `tbl_admin_token` (`Token_ID`);
-
---
 -- Constraints for table `tbl_address`
 --
 ALTER TABLE `tbl_address`
@@ -724,7 +729,6 @@ ALTER TABLE `tbl_address`
 -- Constraints for table `tbl_admin_info`
 --
 ALTER TABLE `tbl_admin_info`
-  ADD CONSTRAINT `Admin_Info>Access_Control` FOREIGN KEY (`Access_ID`) REFERENCES `tbl_access_control` (`Access_ID`),
   ADD CONSTRAINT `Admin_Info>Admin_Token` FOREIGN KEY (`Token_ID`) REFERENCES `tbl_admin_token` (`Token_ID`);
 
 --

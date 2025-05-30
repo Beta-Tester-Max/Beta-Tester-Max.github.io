@@ -1,7 +1,7 @@
 <?php
 require_once "connect.php";
 
-if (isset($_SESSION['access']) && !empty($_SESSION['access']) && $_SESSION['access'] === 1) {
+if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
     if (isset($_SESSION['Admin_ID']) && !empty($_SESSION['Admin_ID'])) {
         $a = $_SESSION['Admin_ID'] ?? "";
 
@@ -12,7 +12,42 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access']) && $_SESSION['acce
             $sql->execute();
 
             if ($sql->rowCount() === 1) {
+                $sql = $pdo->prepare("SELECT Admin_Name FROM tbl_admin_info WHERE Token_ID = :t");
+                $sql->bindParam(":t", $a, PDO::PARAM_INT);
+                $sql->execute();
+                $result = $sql->fetch(PDO::FETCH_ASSOC);
+                $data = sanitize($result);
+                $adminName = $data['Admin_Name'] ?? "";
 
+                $sql = $pdo->query("SELECT * FROM tbl_access_control");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['accessControl'] = $data;
+
+                $sql = $pdo->query("SELECT Token_ID, `Key` FROM tbl_admin_token");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allTokens'] = $data;
+                foreach ($data as $d) {
+                    $token = $d['Token_ID'] ?? "";
+
+                    $sql = $pdo->prepare("SELECT Access_ID, Admin_ID, Admin_Name FROM tbl_admin_info WHERE Token_ID = :t");
+                    $sql->bindParam(":t", $token, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['adminName'.$token] = $data['Admin_Name'] ?? "";
+                    $_SESSION['adminID'.$token] = $data['Admin_ID'] ?? "";
+                    $_SESSION['acid'.$token] = $data['Access_ID'] ?? "";
+                    $acid = $data['Access_ID'] ?? "";
+
+                    $sql = $pdo->prepare("SELECT Access_Level FROM tbl_access_control WHERE Access_ID = :a");
+                    $sql->bindParam(":a", $acid, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['accessName'.$acid] = $data['Access_Level'] ?? "";
+                }
 
                 $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Pending' AND is_deleted = 0");
                 $result = $sql->fetchAll();

@@ -1,3 +1,9 @@
+<?php
+ini_set('session.cookie_httponly', 1);
+session_start();
+include "../Functions/PHP/displayAlert.php";
+include "../Functions/PHP/adminDataFetcher.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,10 +19,48 @@
     <link rel="stylesheet" href="../assets/administration.css">
     <link rel="stylesheet" href="../assets/set.css">
     <style>
-    .tdn {
-      text-decoration: none;
-      color: #ffffff;
-    }
+        .tdn {
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .btn-modal {
+            background-color: transparent;
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 20px;
+            color: #ffffff;
+            transition: .3s ease;
+            cursor: pointer;
+        }
+
+        .btn-modal:hover {
+            box-shadow: 0 5px rgba(255, 255, 255, 0.33);
+            transform: translateY(-4px);
+            transition: .3s ease;
+        }
+
+        .btn-modal:active {
+            box-shadow: 0 2px rgba(255, 255, 255, 0.33);
+            transform: translateY(0px);
+            transition: .3s ease;
+        }
+
+        .hr {
+            border-bottom: 3px solid #ffffff;
+            box-shadow: 0 2px 5px #ffffff;
+            margin-bottom: 30px;
+        }
+
+        .btn-close {
+            transition: .5s ease;
+        }
+
+        .btn-close:hover {
+            transition: .5s ease;
+            scale: 1.2;
+        }
     </style>
 </head>
 
@@ -35,25 +79,25 @@
                         <span>Dashboard</span>
                     </li>
                 </a>
-                <a class="tdn" href="app.html">
+                <a class="tdn" href="applications.php">
                     <li class="menu-item">
                         <i><img src="../assets/img/Application.png" alt="" /></i>
                         <span>Applications</span>
                     </li>
                 </a>
-                <a class="tdn" href="report.html">
+                <a class="tdn" href="report.php">
                     <li class="menu-item">
                         <i><img src="../assets/img/Report.png" alt="" /></i>
                         <span>Reports</span>
                     </li>
                 </a>
-                <a class="tdn" href="setting.php">
+                <a class="tdn" href="">
                     <li class="menu-item active">
                         <i><img src="../assets/img/Settings.png" alt="" /></i>
                         <span>Settings</span>
                     </li>
                 </a>
-                <a class="tdn" href="notification.html">
+                <a class="tdn" href="notification.php">
                     <li class="menu-item">
                         <i><img src="../assets/img/Notification.png" alt="" /></i>
                         <span>Notifications</span>
@@ -62,7 +106,7 @@
                 <a style="text-decoration: none; color: #ffffff;" href="../Functions/PHP/logout.php">
                     <li class="ps-4 menu-item fs-4">
                         <i class="fa-solid fa-house"></i>
-                        <span>Homepage</span>
+                        <span>Logout</span>
                     </li>
                 </a>
             </ul>
@@ -76,7 +120,7 @@
                 <div class="header-right d-flex align-end">
                     <div class="admin-info">
                         <i class="fas fa-user"></i>
-                        <span>Admin MSWD</span>
+                        <span><?php echo $adminName ?> / Role</span>
                     </div>
                 </div>
             </div>
@@ -90,46 +134,71 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Status</th>
+                            <th>Access Name</th>
+                            <th>Access</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="tbl-row">
-                            <td>Maria Penduko</td>
-                            <td>Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Maria Jaurigue</td>
-                            <td>Admin</td>
-                            <td class="status-active">Active</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Mario Dela Cruz</td>
-                            <td>Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Ricardo Dalsay</td>
-                            <td>Semi-Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Set as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Lola Besyang</td>
-                            <td>Semi-Admin</td>
-                            <td class="status-active">Active</td>
-                            <td><button class="action-btn">Set as Admin</button></td>
-                        </tr>
+                        <?php include "../Functions/PHP/aCTable.php" ?>
                     </tbody>
                 </table>
+
             </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createAccess">Create
+                    Access</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createAccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="cALabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content text-light" style="background-color: #000133;">
+                        <div class="modal-header p-0">
+                            <div class="row" style="width: 100%;">
+                                <div class="col py-3 ms-3">
+                                    <h1 class="modal-title fs-5" id="cALabel">Create Access</h1>
+                                </div>
+                                <div class="col py-3 mt-1 pe-2">
+                                    <div class="col d-flex justify-content-end p-0">
+                                        <button type="button" class="bg-light rounded-circle btn-close"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="../Functions/PHP/createAccess.php">
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" minlength="3" maxlength="50" id="accessName"
+                                        name="name" placeholder="" required>
+                                    <label for="accessName">Enter Access Name</label>
+                                </div>
+
+                                <div class="hr m-0"></div>
+
+                                <h4 class="text-center mt-3">Set Restrictions</h4>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="mAC" name="mAC">
+                                    <label class="form-check-label" for="mAC">Managing Access Control</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="mUA" name="mUA">
+                                    <label class="form-check-label" for="mUA">Managing User Access</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="createAccess">
+                                <button type="submit" class="btn-modal">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hr"></div>
 
             <!-- Manage User Roles -->
             <h2 class="section-title mt-0">Manage User Roles</h2>
@@ -137,43 +206,14 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Token</th>
                             <th>Name</th>
                             <th>Role</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="tbl-row">
-                            <td>Maria Penduko</td>
-                            <td>Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Maria Jaurigue</td>
-                            <td>Admin</td>
-                            <td class="status-active">Active</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Mario Dela Cruz</td>
-                            <td>Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Remove as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Ricardo Dalsay</td>
-                            <td>Semi-Admin</td>
-                            <td class="status-inactive">Inactive</td>
-                            <td><button class="action-btn">Set as Admin</button></td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>Lola Besyang</td>
-                            <td>Semi-Admin</td>
-                            <td class="status-active">Active</td>
-                            <td><button class="action-btn">Set as Admin</button></td>
-                        </tr>
+                        <?php include "../Functions/PHP/uRTable.php" ?>
                     </tbody>
                 </table>
             </div>
@@ -341,49 +381,6 @@
                 </table>
             </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Add click event listeners to action buttons
-                const actionButtons = document.querySelectorAll('.action-btn');
-                actionButtons.forEach(button => {
-                    button.addEventListener('click', function () {
-                        const action = this.textContent;
-                        const row = this.closest('tr');
-                        const name = row.cells[0].textContent;
-                        alert(`${action} for ${name}`);
-                    });
-                });
-
-                // Add click event listeners to view profile links
-                const viewProfileLinks = document.querySelectorAll('tbody a.add-link');
-                viewProfileLinks.forEach(link => {
-                    if (link.textContent === 'View Profile') {
-                        link.addEventListener('click', function (e) {
-                            e.preventDefault();
-                            const applicantName = this.closest('tr').cells[0].textContent;
-                            alert(`Viewing profile for ${applicantName}`);
-                        });
-                    } else if (link.textContent === '+add') {
-                        link.addEventListener('click', function (e) {
-                            e.preventDefault();
-                            const assistanceType = this.closest('tr').cells[0].textContent;
-                            alert(`Add budget for ${assistanceType}`);
-                        });
-                    }
-                });
-            });
-        </script>
-
-        <script>
-            // Menu item selection
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.addEventListener('click', function () {
-                    document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"

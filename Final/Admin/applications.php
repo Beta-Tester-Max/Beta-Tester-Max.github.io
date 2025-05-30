@@ -87,13 +87,13 @@ include "../Functions/PHP/adminDataFetcher.php";
             <span>Dashboard</span>
           </li>
         </a>
-        <a class="tdn" href="app.html">
+        <a class="tdn" href="">
           <li class="menu-item active">
             <i><img src="../assets/img/Application.png" alt="" /></i>
             <span>Applications</span>
           </li>
         </a>
-        <a class="tdn" href="report.html">
+        <a class="tdn" href="report.php">
           <li class="menu-item">
             <i><img src="../assets/img/Report.png" alt="" /></i>
             <span>Reports</span>
@@ -105,7 +105,7 @@ include "../Functions/PHP/adminDataFetcher.php";
             <span>Settings</span>
           </li>
         </a>
-        <a class="tdn" href="notification.html">
+        <a class="tdn" href="notification.php">
           <li class="menu-item">
             <i><img src="../assets/img/Notification.png" alt="" /></i>
             <span>Notifications</span>
@@ -114,7 +114,7 @@ include "../Functions/PHP/adminDataFetcher.php";
         <a style="text-decoration: none; color: #ffffff;" href="../Functions/PHP/logout.php">
           <li class="ps-4 menu-item fs-4">
             <i class="fa-solid fa-house"></i>
-            <span>Homepage</span>
+            <span>Logout</span>
           </li>
         </a>
       </ul>
@@ -128,7 +128,7 @@ include "../Functions/PHP/adminDataFetcher.php";
         <div class="header-right">
           <div class="admin-info">
             <i class="fas fa-user"></i>
-            <span>Admin MSWD</span>
+                        <span><?php echo $adminName?> / Role</span>
           </div>
         </div>
       </div>

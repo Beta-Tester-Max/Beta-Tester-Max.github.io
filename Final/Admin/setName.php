@@ -1,14 +1,14 @@
 <?php
 ini_set('session.cookie_httponly', 1);
 session_start();
-include "../Functions/PHP/hasAuthority.php"
+include "../Functions/PHP/hasToken.php"
   ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AICS - Set Admin Name</title>
+<title>AICS - Admin Login</title>
 <link rel="icon" type="image/x-icon" href="../assets/img/AICS150.png" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet" />
@@ -40,12 +40,19 @@ include "../Functions/PHP/hasAuthority.php"
 
   h1 {
     font-size: 50px;
-    margin-bottom: 30px;
-    transition: .5s ease;
     cursor: default;
   }
 
-  h1:hover {
+  p {
+    margin-bottom: 30px;
+    cursor: default;
+  }
+
+  .title {
+    transition: .5s ease;
+  }
+
+  .title:hover {
     text-shadow: 0 5px rgba(255, 255, 255, 0.33);
     transform: translateY(-4px);
     transition: .5s ease;
@@ -118,12 +125,6 @@ include "../Functions/PHP/hasAuthority.php"
         <span>AICS</span>
       </div>
       <ul class="menu">
-        <a style="text-decoration: none; color: #ffffff;" href="administration.html">
-          <li class="menu-item active">
-            <i class="fas fa-user"></i>
-            <span>Admin Login</span>
-          </li>
-        </a>
         <a style="text-decoration: none; color: #ffffff;" href="../Functions/PHP/logout.php">
           <li class="ps-4 menu-item fs-4">
             <i class="fa-solid fa-house"></i>
@@ -140,28 +141,29 @@ include "../Functions/PHP/hasAuthority.php"
 
           <div class="login">
 
-            <form method="POST" action="../Functions/PHP/adminLogin.php">
+            <form method="POST" action="../Functions/PHP/setAdminName.php">
 
               <div style="text-align: center; display: flex; flex-direction: column;">
 
-                <h1>LOGIN</h1>
+                <div class="title">
+                  <h1>ADMIN NAME</h1>
+                  <p>What should we call you?</p>
+                </div>
 
-                <input style="margin-bottom: 20px;" type="text" minlength="10" maxlength="10" placeholder="Insert Key" name="key" required>
+                <input style="margin-bottom: 20px;" type="text" minlength="3" maxlength="50" placeholder="Insert Name" name="name" required>
 
-                <input style="margin-bottom: 30px;" type="password" minlength="20" maxlength="20" placeholder="Insert Token" name="token" required>
+                <input type="hidden" name="setAdminName">
 
-                <input type="hidden" name="adminLogin">
-
-                <button style="margin-bottom: 10px;" type="submit">Login</button>
+                <button style="margin-bottom: 10px;" type="submit">Set Name</button>
 
               </div>
 
             </form>
 
             <?php
-            if (isset($_SESSION['faL'])) {
-              echo "<p style='text-align: center; color:rgb(240, 4, 4);'>" . $_SESSION['faL'] . "</p>";
-              unset($_SESSION['faL']);
+            if (isset($_SESSION['fsAN'])) {
+              echo "<p style='text-align: center; color:rgb(240, 4, 4);'>" . $_SESSION['fsAN'] . "</p>";
+              unset($_SESSION['fsAN']);
             }
             ?>
 

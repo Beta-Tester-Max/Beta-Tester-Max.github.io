@@ -16,7 +16,7 @@ if (isset($_SESSION['allTokens']) && !empty($_SESSION['allTokens'])) {
             <td><?php
             if (!empty($acid)) {
                 ?>
-                    <button type="button" class="action-btn">Modify Role</button>
+                    <button type="button" class="action-btn" data-bs-toggle="modal" data-bs-target="#uR<?php echo $token ?>">Modify Role</button>
                     <?php
             } elseif (empty($name)) {
                 ?>

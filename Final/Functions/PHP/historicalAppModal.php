@@ -15,7 +15,10 @@ if (isset($_SESSION['hA']) && !empty($_SESSION['hA'])) {
         }
         $ad = $_SESSION['hA_add' . $aid] ?? "";
         $address = $ad['House_Number'] . "&nbsp;" . $ad['Street_Name'] . "&nbsp;" . $ad['Barangay'] . "&nbsp;" . $ad['City_or_Municipality'] . ", " . $ad['Province'];
+        $ds = $p['Date_Submitted'] ?? "";
         $reason = $p['Reason'] ?? "";
+        $sv = $p['Severity'] ?? "";
+        $severity = $_SESSION['hA_sv' . $sv] ?? "";
         $files = explode(", ", $p['Files']) ?? "";
         $st = $p['Status'] ?? "";
         $dr = $p['Date_Reviewed'] ?? "";
@@ -91,8 +94,14 @@ if (isset($_SESSION['hA']) && !empty($_SESSION['hA'])) {
                             </ul>
                         </div>
                         <hr>
+                        <h4><b>Date Submitted</b></h4>
+                        <p><?php echo $ds ?></p>
+                        <hr>
                         <h4><b>Reason</b></h4>
                         <p><?php echo $reason ?></p>
+                        <hr>
+                        <h4><b>Severity</b></h4>
+                        <p><?php echo $severity ?></p>
                         <hr>
                         <div class="applications-column">
                             <h3 class="section-title">Uploaded Documents</h3>

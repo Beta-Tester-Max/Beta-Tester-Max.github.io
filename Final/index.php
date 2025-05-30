@@ -1,6 +1,7 @@
 <?php
 ini_set('session.cookie_httponly', 1);
 session_start();
+include "Functions/PHP/displayAlert.php";
 include "Functions/PHP/userDataFetcher.php";
 include "Functions/PHP/adminLoggedIn.php"
   ?>
@@ -626,10 +627,6 @@ include "Functions/PHP/adminLoggedIn.php"
     <div class="copyright">© 2025 Alaminos Laguna All Rights Reserved.</div>
   </footer>
   <!-- Footer Section end-->
-  <script>
-    let alertMessage = <?php echo json_encode($_SESSION['Alert'] ?? "")?>
-  </script>
-  <script src="Functions/JS/indexScript.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>

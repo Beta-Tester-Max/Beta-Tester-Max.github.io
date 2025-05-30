@@ -1,5 +1,6 @@
 <?php
 require_once "connect.php";
+ini_set('session.cookie_httponly', 1);
 session_start();
 
 if (isset($_POST['login'])) {
@@ -8,33 +9,23 @@ if (isset($_POST['login'])) {
 
     if (empty($a)) {
         $_SESSION['Alert'] = "Email or Username Missing!";
-        $_SESSION['Path'] = "../../login.php";
-
-        header('Location: ../../index.php');
+        header('Location: ../../login.php');
         exit;
     } elseif (strlen($a) > 50) {
         $_SESSION['Alert'] = "Account must not exceed 50 charaters.";
-        $_SESSION['Path'] = "../../login.php";
-
-        header('Location: ../../index.php');
+        header('Location: ../../login.php');
         exit;
     } elseif (strlen(trim($a)) < 3) {
         $_SESSION['Alert'] = "Account must not be shorter than 3 characters! Space not included.";
-        $_SESSION['Path'] = "../../login.php";
-
-        header('Location: ../../index.php');
+        header('Location: ../../login.php');
         exit;
     } elseif (empty($p)) {
         $_SESSION['Alert'] = "Password Missing!";
-        $_SESSION['Path'] = "../../login.php";
-
-        header('Location: ../../index.php');
+        header('Location: ../../login.php');
         exit;
     } elseif (strlen($p) < 8 || strlen($p) > 15) {
         $_SESSION['Alert'] = "Password must not be less than 8 charaters and must not exceed 15 charaters.";
-        $_SESSION['Path'] = "../../login.php";
-
-        header('Location: ../../index.php');
+        header('Location: ../../login.php');
         exit;
     } else {
         try {
@@ -60,25 +51,19 @@ if (isset($_POST['login'])) {
                     }
                 } else {
                     $_SESSION['Alert'] = "Incorrect Password!";
-                    $_SESSION['Path'] = "../../login.php";
-
-                    header('Location: ../../index.php');
+                    header('Location: ../../login.php');
                     exit;
                 }
             } else {
                 $_SESSION['Alert'] = "Incorrect Email!";
-                $_SESSION['Path'] = "../../login.php";
-
-                header('Location: ../../index.php');
+                header('Location: ../../login.php');
                 exit;
             }
         } catch (PDOException $e) {
             $pdo->rollBack();
 
             $_SESSION['Alert'] = "Connection Error: " . $e->getMessage();
-            $_SESSION['Path'] = "../../login.php";
-
-            header('Location: ../../index.php');
+            header('Location: ../../login.php');
             exit;
         }
     }

@@ -61,6 +61,95 @@ include "../Functions/PHP/adminDataFetcher.php";
             transition: .5s ease;
             scale: 1.2;
         }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            border-radius: 8px;
+            background-color: transparent;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            background-color: rgba(217, 241, 8, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgb(248, 240, 4);
+        }
+
+        #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        #snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -130,7 +219,7 @@ include "../Functions/PHP/adminDataFetcher.php";
         <div class="set-content pt-0">
             <!-- Access Control -->
             <h2 class="section-title mt-0">Access Control</h2>
-            <div class="table-container">
+            <div class="table-container overflow-y-auto" style="max-height: 300px;">
                 <table>
                     <thead>
                         <tr>
@@ -202,7 +291,7 @@ include "../Functions/PHP/adminDataFetcher.php";
 
             <!-- Manage User Roles -->
             <h2 class="section-title mt-0">Manage User Roles</h2>
-            <div class="table-container">
+            <div class="table-container overflow-y-auto" style="max-height: 300px;">
                 <table>
                     <thead>
                         <tr>
@@ -218,9 +307,29 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </table>
             </div>
 
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <form method="POST" action="../Functions/PHP/createToken.php">
+                    <input type="hidden" name="createToken">
+                    <button type="submit" class="btn-modal">Generate Token</button>
+                </form>
+            </div>
+
+            <?php
+            if (isset($_SESSION['key']) && isset($_SESSION['token'])) {
+                $k = $_SESSION['key'];
+                $t = $_SESSION['token'];
+                unset($_SESSION['key'], $_SESSION['token']);
+                ?>
+                <script>alert("Key: <?php echo $k ?? "" ?>\nToken: <?php echo $t ?? "" ?>")</script>
+                <?php
+            }
+            ?>
+
+            <div class="hr"></div>
+
             <!-- Activity Log -->
             <h2 class="section-title">Activity Log</h2>
-            <div class="table-container">
+            <div class="table-container overflow-y-auto" style="max-height: 300px;">
                 <table>
                     <thead>
                         <tr>
@@ -266,122 +375,20 @@ include "../Functions/PHP/adminDataFetcher.php";
 
             <!-- Budget Allocation -->
             <h2 class="section-title">Budget Allocation</h2>
-            <div class="table-container">
+            <div class="table-container overflow-y-auto" style="max-height: 270px;">
                 <table class="budget-table">
                     <thead>
                         <tr>
-                            <th>Assistance</th>
-                            <th>Allocated Budget (₱)</th>
-                            <th>Utilized Budget</th>
-                            <th>Remaining Budget</th>
+                            <th>Budget Name</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Medical</td>
-                            <td>5,000,000.00</td>
-                            <td>3,750,000.00</td>
-                            <td>1,250,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Burial</td>
-                            <td>2,000,000.00</td>
-                            <td>1,500,000.00</td>
-                            <td>500,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Transportation</td>
-                            <td>1,000,000.00</td>
-                            <td>450,000.00</td>
-                            <td>550,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Educational</td>
-                            <td>4,000,000.00</td>
-                            <td>3,100,000.00</td>
-                            <td>900,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Food</td>
-                            <td>3,000,000.00</td>
-                            <td>2,600,000.00</td>
-                            <td>400,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Psychosocial</td>
-                            <td>1,500,000.00</td>
-                            <td>950,000.00</td>
-                            <td>550,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                        <tr>
-                            <td>Cash Relief</td>
-                            <td>3,500,000.00</td>
-                            <td>2,200,000.00</td>
-                            <td>1,300,000.00 <a href="#" class="add-link">+add</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Applicant Verification -->
-            <h2 class="section-title">Applicant Verification</h2>
-            <div class="table-container">
-                <table class="budget-table">
-                    <thead>
-                        <tr>
-                            <th>Applicants</th>
-                            <th>Verified Account</th>
-                            <th>Recent Application</th>
-                            <th>Approved Application</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Juan Dela Cruz</td>
-                            <td><a href="#" class="add-link">View Profile</a></td>
-                            <td>Medical</td>
-                            <td>Medical</td>
-                        </tr>
-                        <tr>
-                            <td>Pedro Penduko</td>
-                            <td><a href="#" class="add-link">View Profile</a></td>
-                            <td>Transportation</td>
-                            <td>Psychosocial</td>
-                        </tr>
-                        <tr>
-                            <td>Maria Sinukuan</td>
-                            <td><a href="#" class="add-link">View Profile</a></td>
-                            <td>Burial</td>
-                            <td>Medical</td>
-                        </tr>
-                        <tr>
-                            <td>Rigor Dimaguiba</td>
-                            <td><a href="#" class="add-link">View Profile</a></td>
-                            <td>Cash Relief</td>
-                            <td>Burial</td>
-                        </tr>
-                        <tr>
-                            <td>Ricardo Dalisay</td>
-                            <td><a href="#" class="add-link">View Profile</a></td>
-                            <td>Food</td>
-                            <td>Educational</td>
-                        </tr>
-                        <tr>
-                            <td>Miguelito Guerrero</td>
-                            <td><a href="#" class="add-link">View Profile</a></td>
-                            <td>Educational</td>
-                            <td>Transportation</td>
-                        </tr>
-                        <tr>
-                            <td>Crisostomo Ibarra</td>
-                            <td><a href="#" class="add-link">View Profile</a></td>
-                            <td>Psychosocial</td>
-                            <td>Food</td>
-                        </tr>
+                        <?php include "../Functions/PHP/budgetTable.php"?>
                     </tbody>
                 </table>
             </div>
         </div>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
             crossorigin="anonymous"></script>

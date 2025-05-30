@@ -3,6 +3,7 @@ if (isset($_SESSION['pA']) && !empty($_SESSION['pA'])) {
     foreach ($_SESSION['pA'] as $p) {
         $aid = $p['Application_ID'] ?? "";
         $a = $p['Account_ID'] ?? "";
+        $as = $p['Assistance_ID'] ?? "";
         $n = $_SESSION['pA_name' . $aid] ?? "";
         $assistance = $_SESSION['pA_as' . $aid] ?? "";
         $fn = $n['First_Name'] ?? "";
@@ -15,7 +16,10 @@ if (isset($_SESSION['pA']) && !empty($_SESSION['pA'])) {
         }
         $ad = $_SESSION['pA_add' . $aid] ?? "";
         $address = $ad['House_Number'] . "&nbsp;" . $ad['Street_Name'] . "&nbsp;" . $ad['Barangay'] . "&nbsp;" . $ad['City_or_Municipality'] . ", " . $ad['Province'];
+        $ds = $p['Date_Submitted'] ?? "";
         $reason = $p['Reason'] ?? "";
+        $sv = $p['Severity'] ?? "";
+        $severity = $_SESSION['pA_sv' . $sv] ?? "";
         $files = explode(", ", $p['Files']) ?? "";
         ?>
         <div class="modal fade" id="application_<?php echo $aid ?>" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -35,8 +39,14 @@ if (isset($_SESSION['pA']) && !empty($_SESSION['pA'])) {
                         </div>
                     </div>
                     <div class="modal-body">
+                        <h4><b>Date Submitted</b></h4>
+                        <p><?php echo $ds ?></p>
+                        <hr>
                         <h4><b>Reason</b></h4>
                         <p><?php echo $reason ?></p>
+                        <hr>
+                        <h4><b>Severity</b></h4>
+                        <p><?php echo $severity ?></p>
                         <hr>
                         <div class="applications-column">
                             <h3 class="section-title">Uploaded Documents</h3>
@@ -67,6 +77,8 @@ if (isset($_SESSION['pA']) && !empty($_SESSION['pA'])) {
                             <div class="col ps-2 pe-1">
                                 <form method="POST" action="../Functions/PHP/review.php">
                                     <input type="hidden" value="<?php echo $aid ?>" name="appid">
+                                    <input type="hidden" value="<?php echo $as ?>" name="asid">
+                                    <input type="hidden" value="<?php echo $sv ?>" name="severity">
                                     <input type="hidden" name="approve">
                                     <button type="submit" class="application-action"
                                         style="width: 100%; background-color:rgb(12, 228, 37);"><b>Approve</b></button>

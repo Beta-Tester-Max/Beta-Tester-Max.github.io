@@ -1,6 +1,7 @@
 <?php
 ini_set('session.cookie_httponly', 1);
 session_start();
+include "Functions/PHP/displayAlert.php";
 include "Functions/PHP/userDataFetcher.php";
 include "Functions/PHP/forUser.php";
 include "Functions/PHP/hasFamilyCA.php";

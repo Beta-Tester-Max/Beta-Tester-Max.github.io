@@ -41,20 +41,20 @@ if (isset($_POST['createToken'])) {
             $_SESSION['token'] = $token;
             $_SESSION['key'] = $k;
 
-            header('Location: ../../Admin/tokenMaker.php');
+            header('Location: ../../Admin/setting.php');
             exit;
         } else {
             $_SESSION['token'] = "Token Already Exists! Please Re-Generate Token.";
             $_SESSION['key'] = "^^^^^^";
 
-            header('Location: ../../Admin/tokenMaker.php');
+            header('Location: ../../Admin/setting.php');
             exit;
         }
     } else {
             $_SESSION['token'] = "vvvvvvv";
             $_SESSION['key'] = "Key Already Exists! Please Re-Generate Key.";
 
-            header('Location: ../../Admin/tokenMaker.php');
+            header('Location: ../../Admin/setting.php');
             exit;
     }
 } else {

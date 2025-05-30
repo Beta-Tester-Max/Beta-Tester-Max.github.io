@@ -12,12 +12,20 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
             $sql->execute();
 
             if ($sql->rowCount() === 1) {
-                $sql = $pdo->prepare("SELECT Admin_Name FROM tbl_admin_info WHERE Token_ID = :t");
+                $sql = $pdo->prepare("SELECT Admin_Name, Access_ID FROM tbl_admin_info WHERE Token_ID = :t");
                 $sql->bindParam(":t", $a, PDO::PARAM_INT);
                 $sql->execute();
                 $result = $sql->fetch(PDO::FETCH_ASSOC);
                 $data = sanitize($result);
                 $adminName = $data['Admin_Name'] ?? "";
+                $a = $data['Access_ID'] ?? "";
+
+                $sql = $pdo->prepare("SELECT Access_Level FROM tbl_access_control WHERE Access_ID = :a");
+                $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                $sql->execute();
+                $result = $sql->fetch(PDO::FETCH_ASSOC);
+                $data = sanitize($result);
+                $accessLevel = $data['Access_Level'] ?? "";
 
                 $sql = $pdo->query("SELECT * FROM tbl_access_control");
                 $result = $sql->fetchAll();
@@ -222,10 +230,20 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $_SESSION['tRApp'] = $sql->rowCount();
                 }
 
-                    $sql = $pdo->query("SELECT * FROM tbl_budget ORDER BY Budget_ID DESC");
-                    $result = $sql->fetchAll();
-                    $data = sanitize($result);
-                    $_SESSION['budgetTable'] = $data ?? "";
+                $sql = $pdo->query("SELECT * FROM tbl_budget");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['budgetTable'] = $data ?? "";
+                foreach ($data as $d) {
+                    $as = $d['Assistance_ID'] ?? "";
+
+                    $sql = $pdo->prepare("SELECT Assistance_Name FROM tbl_assistance WHERE Assistance_ID = :a");
+                    $sql->bindParam(":a", $as, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data =sanitize($result);
+                    $_SESSION['AsName'.$as] = $data['Assistance_Name'] ?? "";
+                }
 
             } else {
                 header('Location: ../Functions/PHP/logout.php');

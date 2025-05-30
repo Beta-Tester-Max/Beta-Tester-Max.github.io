@@ -129,7 +129,7 @@ include "../Functions/PHP/adminDataFetcher.php";
         <div class="header-right">
           <div class="admin-info">
             <i class="fas fa-user"></i>
-            <span><?php echo $adminName ?> / Role</span>
+            <?php include "../Functions/php/adminNandA.php"?>
           </div>
         </div>
       </div>
@@ -157,7 +157,7 @@ include "../Functions/PHP/adminDataFetcher.php";
       <!-- Applications Sections -->
       <div class="applications-container">
         <!-- Pending Applications -->
-        <div class="applications-column overflow-y-auto" style="height: 600px;">
+        <div class="applications-column overflow-y-auto" style="height: 500px;">
           <h3 class="section-title">Pending Applications</h3>
           <ul class="application-list">
             <?php include "../Functions/PHP/pendingAppAccounts.php" ?>
@@ -165,7 +165,7 @@ include "../Functions/PHP/adminDataFetcher.php";
         </div>
 
         <!-- Application History -->
-        <div class="applications-column overflow-y-auto" style="height: 600px;">
+        <div class="applications-column overflow-y-auto" style="height: 500px;">
           <h3 class="section-title">Application History</h3>
           <ul class="application-list">
             <?php include "../Functions/PHP/historicalApp.php" ?>
@@ -173,7 +173,7 @@ include "../Functions/PHP/adminDataFetcher.php";
         </div>
 
         <!-- Interview Schedule -->
-        <div class="applications-column overflow-y-auto" style="height: 600px;">
+        <div class="applications-column overflow-y-auto" style="height: 500px;">
           <h3 class="section-title">Subject for Interview</h3>
           <ul class="application-list">
             <li class="application-item">

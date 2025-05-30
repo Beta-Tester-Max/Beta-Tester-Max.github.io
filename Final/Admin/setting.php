@@ -207,9 +207,9 @@ include "../Functions/PHP/adminDataFetcher.php";
                 <div class="category-dropdown">
                 </div>
                 <div class="header-right d-flex align-end">
-                    <div class="admin-info">
+                    <div class="admin-info text-light">
                         <i class="fas fa-user"></i>
-                        <span><?php echo $adminName ?> / Role</span>
+                        <?php include "../Functions/php/adminNandA.php" ?>
                     </div>
                 </div>
             </div>
@@ -384,7 +384,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                         </tr>
                     </thead>
                     <tbody>
-                        <?php include "../Functions/PHP/budgetTable.php"?>
+                        <?php include "../Functions/PHP/budgetTable.php" ?>
                     </tbody>
                 </table>
             </div>

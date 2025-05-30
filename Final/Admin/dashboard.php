@@ -129,7 +129,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                 <div class="header-right">
                     <div class="admin-info">
                         <i class="fas fa-user"></i>
-                        <span><?php echo $adminName?> / Role</span>
+                        <?php include "../Functions/php/adminNandA.php" ?>
                     </div>
                 </div>
             </div>

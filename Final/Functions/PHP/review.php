@@ -63,7 +63,7 @@ if (isset($_POST['approve'])) {
                         $sql = $pdo->prepare("UPDATE tbl_budget
                         SET Amount = :a
                         WHERE Assistance_ID = :as");
-                        $sql->bindParam(":a", $c, PDO::PARAM_INT);
+                        $sql->bindParam(":a", $newam, PDO::PARAM_INT);
                         $sql->bindParam(":as", $as, PDO::PARAM_INT);
 
                         if ($sql->execute()) {

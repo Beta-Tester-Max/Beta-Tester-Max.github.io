@@ -1,0 +1,1 @@
+<span><?php echo $adminName ?> / <?php echo $accessLevel?></span>

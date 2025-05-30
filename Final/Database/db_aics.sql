@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2025 at 11:04 AM
+-- Generation Time: May 30, 2025 at 10:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -163,9 +163,10 @@ INSERT INTO `tbl_applications` (`Application_ID`, `Account_ID`, `Assistance_ID`,
 (10022, 24, 1, 18, 18, 1, 'zxczxczxcddawdsd', 'Approved', '2025-05-22 07:57:24', NULL, '2025-05-28 02:35:51', '98, 99, 100, 101, 102, 103, 104', 0),
 (10023, 24, 4, 18, 18, 8, 'dfffsdfdsfdsfdfs', 'Rejected', '2025-05-22 08:01:59', 'Not Good Enough', '2025-05-28 03:09:53', '105, 106, 107, 108, 109', 0),
 (10024, 24, 5, 18, 18, 9, 'asjdliaskjldas', 'Pending', '2025-05-22 08:06:16', NULL, '2025-05-27 04:58:33', '110, 111, 112', 1),
-(10025, 26, 5, 19, 19, 9, 'I\'m Hungry', 'Pending', '2025-05-27 02:55:59', NULL, NULL, '113, 114, 115', 0),
-(10026, 26, 6, 19, 19, 10, 'I need money', 'Pending', '2025-05-27 02:58:40', NULL, NULL, '116, 117, 118, 119', 0),
-(10027, 24, 5, 18, 18, 9, 'I\'m Hungry', 'Pending', '2025-05-27 04:59:17', NULL, NULL, '120, 121, 122', 0);
+(10025, 26, 5, 19, 19, 9, 'I\'m Hungry', 'Approved', '2025-05-27 02:55:59', NULL, '2025-05-30 08:10:56', '113, 114, 115', 0),
+(10026, 26, 6, 19, 19, 10, 'I need money', 'Approved', '2025-05-27 02:58:40', NULL, '2025-05-30 08:11:10', '116, 117, 118, 119', 0),
+(10027, 24, 5, 18, 18, 9, 'I\'m Hungry', 'Approved', '2025-05-27 04:59:17', NULL, '2025-05-30 08:22:30', '120, 121, 122', 0),
+(10028, 24, 6, 18, 18, 10, 'I\'m in need of muneh', 'Approved', '2025-05-30 08:25:22', NULL, '2025-05-30 08:26:12', '123, 124, 125, 126', 0);
 
 -- --------------------------------------------------------
 
@@ -216,6 +217,26 @@ INSERT INTO `tbl_availability` (`Availability_ID`, `Availability_Name`) VALUES
 (7, 'Annually'),
 (8, 'Per-Semester'),
 (9, 'Per-School-Year');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_budget`
+--
+
+CREATE TABLE `tbl_budget` (
+  `Budget_ID` int(11) NOT NULL,
+  `Assistance_ID` int(11) NOT NULL,
+  `Amount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_budget`
+--
+
+INSERT INTO `tbl_budget` (`Budget_ID`, `Assistance_ID`, `Amount`) VALUES
+(1, 5, 6000),
+(2, 6, 20000);
 
 -- --------------------------------------------------------
 
@@ -393,7 +414,11 @@ INSERT INTO `tbl_files` (`File_ID`, `Account_ID`, `Requirement_ID`, `File_Name`,
 (119, 26, 42, '26_42.pdf', '2025-05-27 02:58:40', 0),
 (120, 24, 34, '24_34.pdf', '2025-05-27 04:59:16', 0),
 (121, 24, 35, '24_35.pdf', '2025-05-27 04:59:17', 0),
-(122, 24, 36, '24_36.pdf', '2025-05-27 04:59:17', 0);
+(122, 24, 36, '24_36.pdf', '2025-05-27 04:59:17', 0),
+(123, 24, 39, '24_39.pdf', '2025-05-30 08:25:22', 0),
+(124, 24, 40, '24_40.pdf', '2025-05-30 08:25:22', 0),
+(125, 24, 41, '24_41.pdf', '2025-05-30 08:25:22', 0),
+(126, 24, 42, '24_42.pdf', '2025-05-30 08:25:22', 0);
 
 -- --------------------------------------------------------
 
@@ -558,6 +583,12 @@ ALTER TABLE `tbl_availability`
   ADD PRIMARY KEY (`Availability_ID`);
 
 --
+-- Indexes for table `tbl_budget`
+--
+ALTER TABLE `tbl_budget`
+  ADD PRIMARY KEY (`Budget_ID`);
+
+--
 -- Indexes for table `tbl_documents`
 --
 ALTER TABLE `tbl_documents`
@@ -653,7 +684,7 @@ ALTER TABLE `tbl_admin_token`
 -- AUTO_INCREMENT for table `tbl_applications`
 --
 ALTER TABLE `tbl_applications`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10028;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10029;
 
 --
 -- AUTO_INCREMENT for table `tbl_assistance`
@@ -666,6 +697,12 @@ ALTER TABLE `tbl_assistance`
 --
 ALTER TABLE `tbl_availability`
   MODIFY `Availability_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tbl_budget`
+--
+ALTER TABLE `tbl_budget`
+  MODIFY `Budget_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_documents`
@@ -701,7 +738,7 @@ ALTER TABLE `tbl_feedbacks`
 -- AUTO_INCREMENT for table `tbl_files`
 --
 ALTER TABLE `tbl_files`
-  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
 --
 -- AUTO_INCREMENT for table `tbl_rates`

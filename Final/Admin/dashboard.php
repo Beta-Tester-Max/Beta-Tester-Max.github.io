@@ -1,6 +1,7 @@
 <?php
 ini_set('session.cookie_httponly', 1);
 session_start();
+include "../Functions/PHP/displayAlert.php";
 include "../Functions/PHP/adminDataFetcher.php";
 ?>
 <!DOCTYPE html>
@@ -128,7 +129,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                 <div class="header-right">
                     <div class="admin-info">
                         <i class="fas fa-user"></i>
-                        <span><?php echo $adminName?> / Role</span>
+                        <?php include "../Functions/php/adminNandA.php" ?>
                     </div>
                 </div>
             </div>

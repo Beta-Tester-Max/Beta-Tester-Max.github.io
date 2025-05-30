@@ -1,6 +1,7 @@
 <?php
 ini_set('session.cookie_httponly', 1);
 session_start();
+include "../Functions/PHP/displayAlert.php";
 include "../Functions/PHP/adminDataFetcher.php";
 ?>
 <!DOCTYPE html>
@@ -52,7 +53,7 @@ include "../Functions/PHP/adminDataFetcher.php";
     }
 
     ::-webkit-scrollbar {
-      width: 5px;
+      width: 10px;
     }
 
     ::-webkit-scrollbar-track {
@@ -63,11 +64,11 @@ include "../Functions/PHP/adminDataFetcher.php";
 
     ::-webkit-scrollbar-thumb {
       border-radius: 8px;
-      background-color:rgba(106, 105, 105, .2);
+      background-color: rgba(217, 241, 8, 0.2);
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background-color:rgb(106, 105, 105);
+      background-color: rgb(248, 240, 4);
     }
   </style>
 </head>
@@ -121,14 +122,14 @@ include "../Functions/PHP/adminDataFetcher.php";
     </div>
 
     <!-- Main Content -->
-    <div class="main">
+    <div class="main pb-0">
       <div class="header">
         <div class="category-dropdown">
         </div>
         <div class="header-right">
           <div class="admin-info">
             <i class="fas fa-user"></i>
-                        <span><?php echo $adminName?> / Role</span>
+            <?php include "../Functions/php/adminNandA.php"?>
           </div>
         </div>
       </div>
@@ -156,7 +157,7 @@ include "../Functions/PHP/adminDataFetcher.php";
       <!-- Applications Sections -->
       <div class="applications-container">
         <!-- Pending Applications -->
-        <div class="applications-column">
+        <div class="applications-column overflow-y-auto" style="height: 500px;">
           <h3 class="section-title">Pending Applications</h3>
           <ul class="application-list">
             <?php include "../Functions/PHP/pendingAppAccounts.php" ?>
@@ -164,7 +165,7 @@ include "../Functions/PHP/adminDataFetcher.php";
         </div>
 
         <!-- Application History -->
-        <div class="applications-column">
+        <div class="applications-column overflow-y-auto" style="height: 500px;">
           <h3 class="section-title">Application History</h3>
           <ul class="application-list">
             <?php include "../Functions/PHP/historicalApp.php" ?>
@@ -172,7 +173,7 @@ include "../Functions/PHP/adminDataFetcher.php";
         </div>
 
         <!-- Interview Schedule -->
-        <div class="applications-column">
+        <div class="applications-column overflow-y-auto" style="height: 500px;">
           <h3 class="section-title">Subject for Interview</h3>
           <ul class="application-list">
             <li class="application-item">

@@ -21,7 +21,7 @@ if (isset($_POST['appCred'])) {
         $data = sanitize($result);
         $sD['an'] = $data['Assistance_Name'];
 
-        $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Assistance_ID = :as AND is_deleted = 0");
+        $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Assistance_ID = :as AND is_deleted = 0 AND Status = 'Pending'");
         $sql->bindParam(":a", $a, PDO::PARAM_INT);
         $sql->bindParam(":as", $aid, PDO::PARAM_INT);
         $sql->execute();
@@ -36,18 +36,14 @@ if (isset($_POST['appCred'])) {
             $pdo->rollBack();
 
             $_SESSION['Alert'] = "You already have a pending application on this type of assistance.";
-            $_SESSION['Path'] = "../../createApp.php";
-
-            header('Location: ../../index.php');
+            header('Location: ../../createApp.php');
             exit;
         }
     } catch (PDOException $e) {
         $pdo->rollBack();
 
         $_SESSION['Alert'] = "You already have a pending application of this type of assistance.";
-        $_SESSION['Path'] = "../../createApp.php";
-
-        header('Location: ../../index.php');
+        header('Location: ../../createApp.php');
         exit;
     }
 }

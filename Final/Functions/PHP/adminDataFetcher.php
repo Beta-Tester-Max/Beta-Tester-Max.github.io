@@ -12,12 +12,20 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
             $sql->execute();
 
             if ($sql->rowCount() === 1) {
-                $sql = $pdo->prepare("SELECT Admin_Name FROM tbl_admin_info WHERE Token_ID = :t");
+                $sql = $pdo->prepare("SELECT Admin_Name, Access_ID FROM tbl_admin_info WHERE Token_ID = :t");
                 $sql->bindParam(":t", $a, PDO::PARAM_INT);
                 $sql->execute();
                 $result = $sql->fetch(PDO::FETCH_ASSOC);
                 $data = sanitize($result);
                 $adminName = $data['Admin_Name'] ?? "";
+                $a = $data['Access_ID'] ?? "";
+
+                $sql = $pdo->prepare("SELECT Access_Level FROM tbl_access_control WHERE Access_ID = :a");
+                $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                $sql->execute();
+                $result = $sql->fetch(PDO::FETCH_ASSOC);
+                $data = sanitize($result);
+                $accessLevel = $data['Access_Level'] ?? "";
 
                 $sql = $pdo->query("SELECT * FROM tbl_access_control");
                 $result = $sql->fetchAll();
@@ -36,9 +44,9 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $sql->execute();
                     $result = $sql->fetch(PDO::FETCH_ASSOC);
                     $data = sanitize($result);
-                    $_SESSION['adminName'.$token] = $data['Admin_Name'] ?? "";
-                    $_SESSION['adminID'.$token] = $data['Admin_ID'] ?? "";
-                    $_SESSION['acid'.$token] = $data['Access_ID'] ?? "";
+                    $_SESSION['adminName' . $token] = $data['Admin_Name'] ?? "";
+                    $_SESSION['adminID' . $token] = $data['Admin_ID'] ?? "";
+                    $_SESSION['acid' . $token] = $data['Access_ID'] ?? "";
                     $acid = $data['Access_ID'] ?? "";
 
                     $sql = $pdo->prepare("SELECT Access_Level FROM tbl_access_control WHERE Access_ID = :a");
@@ -46,7 +54,7 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $sql->execute();
                     $result = $sql->fetch(PDO::FETCH_ASSOC);
                     $data = sanitize($result);
-                    $_SESSION['accessName'.$acid] = $data['Access_Level'] ?? "";
+                    $_SESSION['accessName' . $acid] = $data['Access_Level'] ?? "";
                 }
 
                 $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Pending' AND is_deleted = 0");
@@ -58,6 +66,7 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $rep = $d['Representative'] ?? "";
                     $as = $d['Assistance_ID'] ?? "";
                     $a = $d['Account_ID'] ?? "";
+                    $sv = $d['Severity'] ?? "";
                     $files = explode(", ", $d['Files']) ?? "";
 
                     $sql = $pdo->prepare("SELECT Family_Name FROM tbl_family WHERE Account_ID = :a");
@@ -80,6 +89,13 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $result = $sql->fetch(PDO::FETCH_ASSOC);
                     $data = sanitize($result);
                     $_SESSION['pA_as' . $aid] = $data['Assistance_Name'];
+
+                    $sql = $pdo->prepare("SELECT Criteria FROM tbl_rates WHERE Rate_ID = :r");
+                    $sql->bindParam(":r", $sv, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['pA_sv' . $sv] = $data['Criteria'];
 
                     $sql = $pdo->prepare("SELECT * FROM tbl_Address WHERE Account_ID = :a");
                     $sql->bindParam(":a", $a, PDO::PARAM_INT);
@@ -132,6 +148,7 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $rep = $d['Representative'] ?? "";
                     $as = $d['Assistance_ID'] ?? "";
                     $a = $d['Account_ID'] ?? "";
+                    $sv = $d['Severity'] ?? "";
                     $files = explode(", ", $d['Files']) ?? "";
 
                     $sql = $pdo->prepare("SELECT Family_Name FROM tbl_family WHERE Account_ID = :a");
@@ -154,6 +171,13 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $result = $sql->fetch(PDO::FETCH_ASSOC);
                     $data = sanitize($result);
                     $_SESSION['hA_as' . $aid] = $data['Assistance_Name'];
+
+                    $sql = $pdo->prepare("SELECT Criteria FROM tbl_rates WHERE Rate_ID = :r");
+                    $sql->bindParam(":r", $sv, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['hA_sv' . $sv] = $data['Criteria'];
 
                     $sql = $pdo->prepare("SELECT * FROM tbl_Address WHERE Account_ID = :a");
                     $sql->bindParam(":a", $a, PDO::PARAM_INT);
@@ -205,6 +229,22 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Rejected'");
                     $_SESSION['tRApp'] = $sql->rowCount();
                 }
+
+                $sql = $pdo->query("SELECT * FROM tbl_budget");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['budgetTable'] = $data ?? "";
+                foreach ($data as $d) {
+                    $as = $d['Assistance_ID'] ?? "";
+
+                    $sql = $pdo->prepare("SELECT Assistance_Name FROM tbl_assistance WHERE Assistance_ID = :a");
+                    $sql->bindParam(":a", $as, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data =sanitize($result);
+                    $_SESSION['AsName'.$as] = $data['Assistance_Name'] ?? "";
+                }
+
             } else {
                 header('Location: ../Functions/PHP/logout.php');
                 exit;

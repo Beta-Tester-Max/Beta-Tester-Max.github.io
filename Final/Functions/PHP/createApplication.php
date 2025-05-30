@@ -17,28 +17,23 @@ if (isset($_POST['createApplication'])) {
 
     if (empty($a)) {
         $_SESSION['Alert'] = "Missing Account ID!";
-        $_SESSION['Path'] = "../../appDoc.php";
-        header('Location: ../../index.php');
+        header('Location: ../../appDoc.php');
         exit;
     } elseif (empty($aid)) {
         $_SESSION['Alert'] = "Missing Assistance!";
-        $_SESSION['Path'] = "../../appDoc.php";
-        header('Location: ../../index.php');
+        header('Location: ../../appDoc.php');
         exit;
     } elseif (strlen(trim(strval($aid))) > 11) {
         $_SESSION['Alert'] = "Assistance can only contain 11 digits";
-        $_SESSION['Path'] = "../../appDoc.php";
-        header('Location: ../../index.php');
+        header('Location: ../../appDoc.php');
         exit;
     } elseif (empty($s)) {
         $_SESSION['Alert'] = "Missing Assistance!";
-        $_SESSION['Path'] = "../../appDoc.php";
-        header('Location: ../../index.php');
+        header('Location: ../../appDoc.php');
         exit;
     } elseif (strlen(trim(strval($s))) > 11) {
         $_SESSION['Alert'] = "Assistance can only contain 11 digits";
-        $_SESSION['Path'] = "../../appDoc.php";
-        header('Location: ../../index.php');
+        header('Location: ../../appDoc.php');
         exit;
     } else {
         try {
@@ -85,26 +80,22 @@ if (isset($_POST['createApplication'])) {
                         if (empty($r)) {
                             $pdo->rollBack();
                             $_SESSION['Alert'] = "Missing Reason!";
-                            $_SESSION['Path'] = "../../appDoc.php";
-                            header('Location: ../../index.php');
+                            header('Location: ../../appDoc.php');
                             exit;
                         } elseif (strlen(trim($r)) < 10) {
                             $pdo->rollBack();
                             $_SESSION['Alert'] = "Reason cannot be more less than 10 characters! Not including space.";
-                            $_SESSION['Path'] = "../../appDoc.php";
-                            header('Location: ../../index.php');
+                            header('Location: ../../appDoc.php');
                             exit;
                         } elseif (strlen($r) > 1000) {
                             $pdo->rollBack();
                             $_SESSION['Alert'] = "Reason cannot be more than 1000 characters! Including space.";
-                            $_SESSION['Path'] = "../../appDoc.php";
-                            header('Location: ../../index.php');
+                            header('Location: ../../appDoc.php');
                             exit;
                         } elseif (empty($h) || empty($rp)) {
                             $pdo->rollBack();
                             $_SESSION['Alert'] = "Missing Beneficiary or Representative or both!";
-                            $_SESSION['Path'] = "../../appDoc.php";
-                            header('Location: ../../index.php');
+                            header('Location: ../../appDoc.php');
                             exit;
                         } else {
                             $sql = $pdo->prepare("SELECT * FROM tbl_family_composition WHERE Account_ID = :a AND User_ID = :h");
@@ -154,13 +145,11 @@ if (isset($_POST['createApplication'])) {
                                             if (empty($d)) {
                                                 $pdo->rollBack();
                                                 $_SESSION['Alert'] = "Missing Requirement!";
-                                                $_SESSION['Path'] = "../../appDoc.php";
-                                                header('Location: ../../index.php');
+                                                header('Location: ../../appDoc.php');
                                                 exit;
                                             } elseif (strlen(trim(strval($d))) > 11) {
                                                 $_SESSION['Alert'] = "Requirement can only contain 11 digits";
-                                                $_SESSION['Path'] = "../../appDoc.php";
-                                                header('Location: ../../index.php');
+                                                header('Location: ../../appDoc.php');
                                                 exit;
                                             } else {
                                                 $sql = $pdo->prepare("SELECT * FROM tbl_requirements WHERE Requirement_ID = :r");
@@ -170,8 +159,7 @@ if (isset($_POST['createApplication'])) {
                                                 if ($sql->rowCount() === 0) {
                                                     $pdo->rollBack();
                                                     $_SESSION['Alert'] = "$d This Requirement does not exists.";
-                                                    $_SESSION['Path'] = "../../appDoc.php";
-                                                    header('Location: ../../index.php');
+                                                    header('Location: ../../appDoc.php');
                                                     exit;
                                                 } else {
                                                     $fileKey = 'file' . $i;
@@ -219,15 +207,13 @@ if (isset($_POST['createApplication'])) {
                                                                         } else {
                                                                             $pdo->rollBack();
                                                                             $_SESSION['Alert'] = "Error Renaming and Moving Deleted File. '$nof'";
-                                                                            $_SESSION['Path'] = "../../appDoc.php";
-                                                                            header('Location: ../../index.php');
+                                                                            header('Location: ../../appDoc.php');
                                                                             exit;
                                                                         }
                                                                     } else {
                                                                         $pdo->rollBack();
                                                                         $_SESSION['Alert'] = "Couldn't Find File! '$nof'";
-                                                                        $_SESSION['Path'] = "../../appDoc.php";
-                                                                        header('Location: ../../index.php');
+                                                                        header('Location: ../../appDoc.php');
                                                                         exit;
                                                                     }
                                                                 }
@@ -248,36 +234,31 @@ if (isset($_POST['createApplication'])) {
                                                                     if (!move_uploaded_file($fTN, $fP)) {
                                                                         $pdo->rollBack();
                                                                         $_SESSION['Alert'] = "Error Moving File '$f'.";
-                                                                        $_SESSION['Path'] = "../../appDoc.php";
-                                                                        header('Location: ../../index.php');
+                                                                        header('Location: ../../appDoc.php');
                                                                         exit;
                                                                     }
                                                                 } else {
                                                                     $pdo->rollBack();
                                                                     $_SESSION['Alert'] = "Error Inserting File '$f' into Database.";
-                                                                    $_SESSION['Path'] = "../../appDoc.php";
-                                                                    header('Location: ../../index.php');
+                                                                    header('Location: ../../appDoc.php');
                                                                     exit;
                                                                 }
                                                             } else {
                                                                 $pdo->rollBack();
                                                                 $_SESSION['Alert'] = "File '$f' is not a valid PDF.";
-                                                                $_SESSION['Path'] = "../../appDoc.php";
-                                                                header('Location: ../../index.php');
+                                                                header('Location: ../../appDoc.php');
                                                                 exit;
                                                             }
                                                         } else {
                                                             $pdo->rollBack();
                                                             $_SESSION['Alert'] = "File '$f' exceeds the maximum allowed size of 5MB.";
-                                                            $_SESSION['Path'] = "../../appDoc.php";
-                                                            header('Location: ../../index.php');
+                                                            header('Location: ../../appDoc.php');
                                                             exit;
                                                         }
                                                     } elseif ($im === 'Required') {
                                                         $pdo->rollBack();
                                                         $_SESSION['Alert'] = "Required Documents Can't Be empty.";
-                                                        $_SESSION['Path'] = "../../appDoc.php";
-                                                        header('Location: ../../index.php');
+                                                        header('Location: ../../appDoc.php');
                                                         exit;
                                                     }
                                                 }
@@ -288,93 +269,82 @@ if (isset($_POST['createApplication'])) {
                                         $sql->bindParam(":a", $a, PDO::PARAM_INT);
                                         $sql->bindParam(":as", $aid, PDO::PARAM_INT);
                                         $sql->execute();
-                                        
+
                                         if ($sql->rowCount() === 0) {
 
-                                        $sql = $pdo->prepare("INSERT INTO tbl_applications (Account_ID, Assistance_ID, Beneficiary, Representative, Severity, Reason, Files)
+                                            $sql = $pdo->prepare("INSERT INTO tbl_applications (Account_ID, Assistance_ID, Beneficiary, Representative, Severity, Reason, Files)
                                         VALUES (:a, :as, :h, :rp, :s, :r, :f)");
-                                        $sql->bindParam(":a", $a, PDO::PARAM_INT);
-                                        $sql->bindParam(":as", $aid, PDO::PARAM_INT);
-                                        $sql->bindParam(":h", $h, PDO::PARAM_INT);
-                                        $sql->bindParam(":rp", $rp, PDO::PARAM_INT);
-                                        $sql->bindParam(":s", $s, PDO::PARAM_INT);
-                                        $sql->bindParam(":r", $r, PDO::PARAM_STR);
-                                        $sql->bindParam(":f", $nf, PDO::PARAM_STR);
+                                            $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                                            $sql->bindParam(":as", $aid, PDO::PARAM_INT);
+                                            $sql->bindParam(":h", $h, PDO::PARAM_INT);
+                                            $sql->bindParam(":rp", $rp, PDO::PARAM_INT);
+                                            $sql->bindParam(":s", $s, PDO::PARAM_INT);
+                                            $sql->bindParam(":r", $r, PDO::PARAM_STR);
+                                            $sql->bindParam(":f", $nf, PDO::PARAM_STR);
 
-                                        if ($sql->execute()) {
-                                            $pdo->commit();
+                                            if ($sql->execute()) {
+                                                $pdo->commit();
 
-                                            $_SESSION['recSubApp'] = $arr;
-                                            unset($_SESSION['sD']);
+                                                $_SESSION['recSubApp'] = $arr;
+                                                unset($_SESSION['sD']);
 
-                                            header('Location: ../../application.php');
-                                            exit;
+                                                header('Location: ../../application.php');
+                                                exit;
+                                            } else {
+                                                $pdo->rollBack();
+
+                                                $_SESSION['Alert'] = "Error Inserting Data.";
+                                                header('Location: ../../appDoc.php');
+                                                exit;
+                                            }
                                         } else {
                                             $pdo->rollBack();
 
-                                            $_SESSION['Alert'] = "Error Inserting Data.";
-                                            $_SESSION['Path'] = "../../appDoc.php";
-
-                                            header('Location: ../../index.php');
+                                            $_SESSION['Alert'] = "You already have a pending application of this type of assistance.";
+                                            header('Location: ../../appDoc.php');
                                             exit;
                                         }
                                     } else {
-                                            $pdo->rollBack();
-
-                                            $_SESSION['Alert'] = "You already have a pending application of this type of assistance.";
-                                            $_SESSION['Path'] = "../../appDoc.php";
-
-                                            header('Location: ../../index.php');
-                                            exit;
-                                    }
-                                    } else {
                                         $pdo->rollBack();
                                         $_SESSION['Alert'] = "Couldn't Fetch Requirements.";
-                                        $_SESSION['Path'] = "../../appDoc.php";
-                                        header('Location: ../../index.php');
+                                        header('Location: ../../appDoc.php');
                                         exit;
                                     }
                                 } else {
                                     $pdo->rollBack();
                                     $_SESSION['Alert'] = "Representative is not an Existing User!";
-                                    $_SESSION['Path'] = "../../appDoc.php";
-                                    header('Location: ../../index.php');
+                                    header('Location: ../../appDoc.php');
                                     exit;
                                 }
                             } else {
                                 $pdo->rollBack();
                                 $_SESSION['Alert'] = "Beneficiary is not an Existing User!";
-                                $_SESSION['Path'] = "../../appDoc.php";
-                                header('Location: ../../index.php');
+                                header('Location: ../../appDoc.php');
                                 exit;
                             }
                         }
                     } else {
                         $pdo->rollBack();
                         $_SESSION['Alert'] = "Severity does not exist!";
-                        $_SESSION['Path'] = "../../appDoc.php";
-                        header('Location: ../../index.php');
+                        header('Location: ../../appDoc.php');
                         exit;
                     }
                 } else {
                     $pdo->rollBack();
                     $_SESSION['Alert'] = "Assistance does not exist!";
-                    $_SESSION['Path'] = "../../appDoc.php";
-                    header('Location: ../../index.php');
+                    header('Location: ../../appDoc.php');
                     exit;
                 }
             } else {
                 $pdo->rollBack();
                 $_SESSION['Alert'] = "Account does not exist!";
-                $_SESSION['Path'] = "../../appDoc.php";
-                header('Location: ../../index.php');
+                header('Location: ../../appDoc.php');
                 exit;
             }
         } catch (PDOException $e) {
             $pdo->rollBack();
             $_SESSION['Alert'] = "Connection Error: " . $e->getMessage();
-            $_SESSION['Path'] = "../../appDoc.php";
-            header('Location: ../../index.php');
+            header('Location: ../../appDoc.php');
             exit;
         }
     }

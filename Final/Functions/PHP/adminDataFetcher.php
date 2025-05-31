@@ -245,6 +245,21 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $_SESSION['AsName'.$as] = $data['Assistance_Name'] ?? "";
                 }
 
+                $sql = $pdo->query("SELECT * FROM tbl_assistance");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allAssistance'] = $data ?? "";
+
+                $sql = $pdo->query("SELECT * FROM tbl_documents");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allDocuments'] = $data ?? "";
+
+                $sql = $pdo->query("SELECT * FROM tbl_requirements");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allRequirements'] = $data ?? "";
+
             } else {
                 header('Location: ../Functions/PHP/logout.php');
                 exit;

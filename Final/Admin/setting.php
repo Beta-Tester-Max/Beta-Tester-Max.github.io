@@ -373,6 +373,8 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </table>
             </div>
 
+            <div class="hr"></div>
+
             <!-- Budget Allocation -->
             <h2 class="section-title">Budget Allocation</h2>
             <div class="table-container overflow-y-auto" style="max-height: 270px;">
@@ -388,6 +390,201 @@ include "../Functions/PHP/adminDataFetcher.php";
                     </tbody>
                 </table>
             </div>
+
+            <div class="hr"></div>
+
+            <!-- All Assistance -->
+            <h2 class="section-title">All Assistance</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 270px;">
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Assistance Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/allAssistance.php" ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createAssistance">Create
+                    Assistance</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createAssistance" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="cAsLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content text-light" style="background-color: #000133;">
+                        <div class="modal-header p-0">
+                            <div class="row" style="width: 100%;">
+                                <div class="col py-3 ms-3">
+                                    <h1 class="modal-title fs-5" id="cAsLabel">Create Assistance</h1>
+                                </div>
+                                <div class="col py-3 mt-1 pe-2">
+                                    <div class="col d-flex justify-content-end p-0">
+                                        <button type="button" class="bg-light rounded-circle btn-close"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="../Functions/PHP/createAssistance.php">
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" minlength="3" maxlength="50" id="addAs"
+                                        name="assistance" placeholder="" required>
+                                    <label for="addAs">Enter Assistance Name</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="createAssistance">
+                                <button type="submit" class="btn-modal">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <!-- All Assistance -->
+            <h2 class="section-title">All Documents</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 270px;">
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/allDocuments.php" ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createDocument">Create
+                    Document</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createDocument" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="cDLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content text-light" style="background-color: #000133;">
+                        <div class="modal-header p-0">
+                            <div class="row" style="width: 100%;">
+                                <div class="col py-3 ms-3">
+                                    <h1 class="modal-title fs-5" id="cDLabel">Create Document</h1>
+                                </div>
+                                <div class="col py-3 mt-1 pe-2">
+                                    <div class="col d-flex justify-content-end p-0">
+                                        <button type="button" class="bg-light rounded-circle btn-close"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="../Functions/PHP/createDocument.php">
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" placeholder="" id="addDoc" style="height: 100px"
+                                        minlength="10" maxlength="1000" name="desc" required></textarea>
+                                    <label for="addDoc">Enter Document Description</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="createDocument">
+                                <button type="submit" class="btn-modal">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <!-- All Assistance -->
+            <h2 class="section-title">All Requirements</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 270px;">
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Assistance ID</th>
+                            <th>Document ID</th>
+                            <th>Description</th>
+                            <th>Importance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/allRequirements.php" ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createRequirement">Create
+                    Requirement</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createRequirement" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="cRLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content text-light" style="background-color: #000133;">
+                        <div class="modal-header p-0">
+                            <div class="row" style="width: 100%;">
+                                <div class="col py-3 ms-3">
+                                    <h1 class="modal-title fs-5" id="cRLabel">Create Requirement</h1>
+                                </div>
+                                <div class="col py-3 mt-1 pe-2">
+                                    <div class="col d-flex justify-content-end p-0">
+                                        <button type="button" class="bg-light rounded-circle btn-close"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="../Functions/PHP/createRequirement.php">
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" placeholder="" id="addReq" style="height: 100px"
+                                        minlength="10" maxlength="1000" name="desc" required></textarea>
+                                    <label for="addReq">Enter Document Description</label>
+                                </div>
+
+                                <select class="form-select mb-3" name="assistance" required>
+                                    <option value="" selected>Select Assistance</option>
+                                    <?php include "../Functions/PHP/allAssistanceSelect.php"?>
+                                </select>
+
+                                <select class="form-select mb-3" name="document" required>
+                                    <option value="" selected>Select Document</option>
+                                    <?php include "../Functions/PHP/allDocumentsSelect.php"?>
+                                </select>
+
+                                <select class="form-select mb-3" name="importance" required>
+                                    <option value="" selected>Select Importance</option>
+                                    <option value="Required">Required</option>
+                                    <option value="Optional">Optional</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="createRequirement">
+                                <button type="submit" class="btn-modal">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hr"></div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"

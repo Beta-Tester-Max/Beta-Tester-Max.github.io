@@ -18,7 +18,7 @@ if (isset($_POST['delApp'])) {
             $_SESSION['Path'] = "../../application.php";
             header('Location: ../../index.php');
             exit;
-        } elseif (strlen(trim(strval($aid))) > 11) {
+        } elseif (strlen(strval($aid)) > 11) {
             $_SESSION['Alert'] = "Application ID can only have upto 11 characters.";
             $_SESSION['Path'] = "../../application.php";
             header('Location: ../../index.php');

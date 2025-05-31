@@ -23,7 +23,7 @@ if (isset($_POST['createApplication'])) {
         $_SESSION['Alert'] = "Missing Assistance!";
         header('Location: ../../appDoc.php');
         exit;
-    } elseif (strlen(trim(strval($aid))) > 11) {
+    } elseif (strlen(strval($aid)) > 11) {
         $_SESSION['Alert'] = "Assistance can only contain 11 digits";
         header('Location: ../../appDoc.php');
         exit;
@@ -31,7 +31,7 @@ if (isset($_POST['createApplication'])) {
         $_SESSION['Alert'] = "Missing Assistance!";
         header('Location: ../../appDoc.php');
         exit;
-    } elseif (strlen(trim(strval($s))) > 11) {
+    } elseif (strlen(strval($s)) > 11) {
         $_SESSION['Alert'] = "Assistance can only contain 11 digits";
         header('Location: ../../appDoc.php');
         exit;
@@ -147,7 +147,7 @@ if (isset($_POST['createApplication'])) {
                                                 $_SESSION['Alert'] = "Missing Requirement!";
                                                 header('Location: ../../appDoc.php');
                                                 exit;
-                                            } elseif (strlen(trim(strval($d))) > 11) {
+                                            } elseif (strlen(strval($d)) > 11) {
                                                 $_SESSION['Alert'] = "Requirement can only contain 11 digits";
                                                 header('Location: ../../appDoc.php');
                                                 exit;

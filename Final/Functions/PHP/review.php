@@ -137,7 +137,7 @@ if (isset($_POST['approve'])) {
         $_SESSION['Alert'] = "Application ID cannot be empty";
         header('Location: ../../Admin/applications.php');
         exit;
-    } elseif (strlen(trim(strval($aid))) > 11) {
+    } elseif (strlen(strval($aid)) > 11) {
         $_SESSION['Alert'] = "Application ID cannot be more than 11 digits";
         header('Location: ../../Admin/applications.php');
         exit;

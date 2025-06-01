@@ -3,9 +3,6 @@ require_once "connect.php";
 ini_set('session.cookie_httponly', 1);
 session_start();
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 if (isset($_POST['createApplication'])) {
     $a = intval($_SESSION['Account_ID']) ?? "";
     $aid = intval($_POST['assistance']) ?? "";

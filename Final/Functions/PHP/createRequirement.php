@@ -1,5 +1,6 @@
 <?php
 require_once "connect.php";
+ini_set('session.cookie_httponly', 1);
 session_start();
 
 if (isset($_POST['createRequirement'])) {
@@ -32,7 +33,7 @@ if (isset($_POST['createRequirement'])) {
         $_SESSION['Alert'] = "Requirement Description cannot be less than 10 characters";
         header('Location: ../../Admin/setting.php');
         exit;
-    } elseif (strlen($dd) > 50) {
+    } elseif (strlen($dd) > 1000) {
         $_SESSION['Alert'] = "Requirement Description cannot exceed 1000 characters";
         header('Location: ../../Admin/setting.php');
         exit;

@@ -71,15 +71,15 @@ include "Functions/PHP/adminLoggedIn.php"
             border-color: green;
         }
 
-        #submitBtn:disabled {
+        /* #submitBtn:disabled {
             background-color: #ccc;
             cursor: not-allowed;
-        }
+        } */
 
-        #submitBtn:enabled {
+        /* #submitBtn:enabled {
             background-color: #28a745;
             cursor: pointer;
-        }
+        } */
     </style>
 </head>
 
@@ -127,7 +127,7 @@ include "Functions/PHP/adminLoggedIn.php"
                     <label for="Password" style="color: #0c0b0b">Password</label>
                 </div>
 
-                <div id="passwordRequirements" class="d-none">
+                <!-- <div id="passwordRequirements" class="d-none">
                     <ul>
                         <li id="lengthRequirement">8-15 characters</li>
                         <li id="lowercaseRequirement">At least one lowercase letter</li>
@@ -136,7 +136,7 @@ include "Functions/PHP/adminLoggedIn.php"
                         <li id="specialCharRequirement">At least one special character</li>
                         <li id="noSpaceRequirement">No spaces allowed</li>
                     </ul>
-                </div>
+                </div> -->
 
                 <div class="remember-me">
                     <input type="checkbox" id="remember" />
@@ -149,7 +149,7 @@ include "Functions/PHP/adminLoggedIn.php"
                 </div>
                 <div class="my-2 justify-content-center align-items-center d-flex">
                     <input type="hidden" name="signup">
-                    <button type="submit" disabled id="submitBtn" class="btn btn-success">
+                    <button type="submit" id="submitBtn" class="btn btn-primary">
                         Create
                     </button>
                 </div>

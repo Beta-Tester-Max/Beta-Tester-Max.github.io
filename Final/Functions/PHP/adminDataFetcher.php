@@ -221,13 +221,13 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     }
 
                     $sql = $pdo->query("SELECT * FROM tbl_applications");
-                    $_SESSION['tApp'] = $sql->rowCount();
+                    $_SESSION['tApp'] = $sql->rowCount() ?? 0;
                     $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Pending'");
-                    $_SESSION['tPApp'] = $sql->rowCount();
+                    $_SESSION['tPApp'] = $sql->rowCount() ?? 0;
                     $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Approved'");
-                    $_SESSION['tAApp'] = $sql->rowCount();
+                    $_SESSION['tAApp'] = $sql->rowCount() ?? 0;
                     $sql = $pdo->query("SELECT * FROM tbl_applications WHERE Status = 'Rejected'");
-                    $_SESSION['tRApp'] = $sql->rowCount();
+                    $_SESSION['tRApp'] = $sql->rowCount() ?? 0;
                 }
 
                 $sql = $pdo->query("SELECT * FROM tbl_budget");
@@ -259,6 +259,21 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                 $result = $sql->fetchAll();
                 $data = sanitize($result);
                 $_SESSION['allRequirements'] = $data ?? "";
+                
+                $sql = $pdo->query("SELECT * FROM tbl_availability");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allAvailability'] = $data ?? "";
+                
+                $sql = $pdo->query("SELECT * FROM tbl_rates");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allRates'] = $data ?? "";
+                
+                $sql = $pdo->query("SELECT * FROM tbl_accounts");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allAccounts'] = $data ?? "";
 
             } else {
                 header('Location: ../Functions/PHP/logout.php');

@@ -23,10 +23,6 @@ if (isset($_POST['login'])) {
         $_SESSION['Alert'] = "Password Missing!";
         header('Location: ../../login.php');
         exit;
-    } elseif (strlen($p) < 8 || strlen($p) > 15) {
-        $_SESSION['Alert'] = "Password must not be less than 8 charaters and must not exceed 15 charaters.";
-        header('Location: ../../login.php');
-        exit;
     } else {
         try {
             $sql = $pdo->prepare("SELECT Account_ID, Password, Access_Level FROM tbl_accounts WHERE Username = :a OR Email = :a");
@@ -37,7 +33,7 @@ if (isset($_POST['login'])) {
                 $result = $sql->fetch(PDO::FETCH_ASSOC);
                 $data = sanitize($result);
 
-                if (password_verify($p, $data['Password'])) {
+                if (strcasecmp($p, $data['Password']) === 0) {
                     if ($data['Access_Level'] === 'Admin') {
                         $_SESSION['Authority'] = $data['Access_Level'];
 

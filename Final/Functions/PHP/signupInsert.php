@@ -9,7 +9,7 @@ if (isset($_POST['signup'])) {
     if (isset($_POST['consent']) && $_POST['consent'] === '1') {
         $u = $_POST['username'] ?? "";
         $e = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL) ?? "";
-        $password = $_POST['pass'] ?? "";
+        $password = trim($_POST['pass']) ?? "";
 
         if (empty($u)) {
             $_SESSION['Alert'] = "Missing Username!";
@@ -47,28 +47,28 @@ if (isset($_POST['signup'])) {
             $_SESSION['Alert'] = "Password must be between 8 and 15 characters.";
             header('Location: ../../signup.php');
             exit;
-        } elseif (!preg_match('/[a-z]/', $password)) {
-            $_SESSION['Alert'] = "Password must contain at least one lowercase letter.";
-            header('Location: ../../signup.php');
-            exit;
-        } elseif (!preg_match('/[A-Z]/', $password)) {
-            $_SESSION['Alert'] = "Password must contain at least one uppercase letter.";
-            header('Location: ../../signup.php');
-            exit;
-        } elseif (!preg_match('/[0-9]/', $password)) {
-            $_SESSION['Alert'] = "Password must contain at least one number.";
-            header('Location: ../../signup.php');
-            exit;
-        } elseif (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
-            $_SESSION['Alert'] = "Password must contain at least one special character.";
-            header('Location: ../../signup.php');
-            exit;
-        } elseif (preg_match('/\s/', $password)) {
-            $_SESSION['Alert'] = "Password cannot contain spaces.";
-            header('Location: ../../signup.php');
-            exit;
+            // } elseif (!preg_match('/[a-z]/', $password)) {
+            //     $_SESSION['Alert'] = "Password must contain at least one lowercase letter.";
+            //     header('Location: ../../signup.php');
+            //     exit;
+            // } elseif (!preg_match('/[A-Z]/', $password)) {
+            //     $_SESSION['Alert'] = "Password must contain at least one uppercase letter.";
+            //     header('Location: ../../signup.php');
+            //     exit;
+            // } elseif (!preg_match('/[0-9]/', $password)) {
+            //     $_SESSION['Alert'] = "Password must contain at least one number.";
+            //     header('Location: ../../signup.php');
+            //     exit;
+            // } elseif (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+            //     $_SESSION['Alert'] = "Password must contain at least one special character.";
+            //     header('Location: ../../signup.php');
+            //     exit;
+            // } elseif (preg_match('/\s/', $password)) {
+            //     $_SESSION['Alert'] = "Password cannot contain spaces.";
+            //     header('Location: ../../signup.php');
+            //     exit;
         } else {
-            $p = password_hash($password, PASSWORD_DEFAULT);
+            $p = $password ?? "";
 
             try {
                 $pdo->beginTransaction();
@@ -84,7 +84,7 @@ if (isset($_POST['signup'])) {
 
                     if ($sql->rowCount() === 0) {
                         $sql = $pdo->prepare("INSERT INTO tbl_accounts (Username, Email, Password)
-                VALUES (:u, :e, :p)");
+                        VALUES (:u, :e, :p)");
                         $sql->bindParam(":u", $u, PDO::PARAM_STR);
                         $sql->bindParam(":e", $e, PDO::PARAM_STR);
                         $sql->bindParam(":p", $p, PDO::PARAM_STR);

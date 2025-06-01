@@ -63,7 +63,7 @@ include "Functions/PHP/adminLoggedIn.php"
                 </div>
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="password" class="form-input" id="password" placeholder=""
-                        required style="background-color: #ffffff" name="pass" minlength="8" maxlength="15">
+                        required style="background-color: #ffffff" name="pass">
                     <label for="Password" style="color: #0c0b0b">Password</label>
                 </div>
 

@@ -529,7 +529,8 @@ include "../Functions/PHP/adminDataFetcher.php";
             </div>
 
             <div class="d-flex justify-content-center align-items-center mb-3">
-                <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createRequirement">Create
+                <button type="button" class="btn-modal" data-bs-toggle="modal"
+                    data-bs-target="#createRequirement">Create
                     Requirement</button>
             </div>
 
@@ -561,12 +562,12 @@ include "../Functions/PHP/adminDataFetcher.php";
 
                                 <select class="form-select mb-3" name="assistance" required>
                                     <option value="" selected>Select Assistance</option>
-                                    <?php include "../Functions/PHP/allAssistanceSelect.php"?>
+                                    <?php include "../Functions/PHP/allAssistanceSelect.php" ?>
                                 </select>
 
                                 <select class="form-select mb-3" name="document" required>
                                     <option value="" selected>Select Document</option>
-                                    <?php include "../Functions/PHP/allDocumentsSelect.php"?>
+                                    <?php include "../Functions/PHP/allDocumentsSelect.php" ?>
                                 </select>
 
                                 <select class="form-select mb-3" name="importance" required>
@@ -585,6 +586,161 @@ include "../Functions/PHP/adminDataFetcher.php";
             </div>
 
             <div class="hr"></div>
+
+            <!-- All Availability -->
+            <h2 class="section-title">All Availability</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 270px;">
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Availability Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/allAvailability.php" ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn-modal" data-bs-toggle="modal"
+                    data-bs-target="#createAvailability">Create
+                    Availability</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createAvailability" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="cAvLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content text-light" style="background-color: #000133;">
+                        <div class="modal-header p-0">
+                            <div class="row" style="width: 100%;">
+                                <div class="col py-3 ms-3">
+                                    <h1 class="modal-title fs-5" id="cAvLabel">Create Availability</h1>
+                                </div>
+                                <div class="col py-3 mt-1 pe-2">
+                                    <div class="col d-flex justify-content-end p-0">
+                                        <button type="button" class="bg-light rounded-circle btn-close"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="../Functions/PHP/createAvailability.php">
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" minlength="3" maxlength="50" id="addAv"
+                                        name="availability" placeholder="" required>
+                                    <label for="addAv">Enter Availability Name</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="createAvailability">
+                                <button type="submit" class="btn-modal">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <!-- All Rates -->
+            <h2 class="section-title">All Rates</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 270px;">
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Assistance ID</th>
+                            <th>Availability ID</th>
+                            <th>Criteria</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/allRates.php" ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createRate">Create
+                    Rate</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createRate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="cRLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content text-light" style="background-color: #000133;">
+                        <div class="modal-header p-0">
+                            <div class="row" style="width: 100%;">
+                                <div class="col py-3 ms-3">
+                                    <h1 class="modal-title fs-5" id="cRLabel">Create Rate</h1>
+                                </div>
+                                <div class="col py-3 mt-1 pe-2">
+                                    <div class="col d-flex justify-content-end p-0">
+                                        <button type="button" class="bg-light rounded-circle btn-close"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="../Functions/PHP/createRate.php">
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" placeholder="" id="addCriteria" style="height: 100px"
+                                        minlength="10" maxlength="1000" name="criteria" required></textarea>
+                                    <label for="addCriteria">Enter Criteria</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" minlength="1" maxlength="11" pattern="^\d+$"
+                                        title="Digits only, no spaces allowed" id="addCost" name="cost" placeholder=""
+                                        required>
+                                    <label for="addCost">Enter Cost</label>
+                                </div>
+
+                                <select class="form-select mb-3" name="assistance" required>
+                                    <option value="" selected>Select Assistance</option>
+                                    <?php include "../Functions/PHP/allAssistanceSelect.php" ?>
+                                </select>
+
+                                <select class="form-select mb-3" name="availability" required>
+                                    <option value="" selected>Select Availability</option>
+                                    <?php include "../Functions/PHP/allAvailabilitySelect.php" ?>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="createRate">
+                                <button type="submit" class="btn-modal">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <!-- All User Accounts -->
+            <h2 class="section-title">All User Accounts</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 270px;">
+                <table class="budget-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Date Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/allAccounts.php" ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"

@@ -4,6 +4,8 @@ if (isset($_SESSION['accessControl']) && !empty($_SESSION['accessControl'])) {
         $id = $a['Access_ID'] ?? "";
         $n = $a['Access_Level'] ?? "";
         $access = explode(", ", $a['Access']) ?? "";
+        $acc = array();
+        $ch = array();
         foreach ($access as $b) {
             if ($b === '1') {
                 $m = "<p class='text-success m-0'>Has Access</p>";
@@ -16,7 +18,7 @@ if (isset($_SESSION['accessControl']) && !empty($_SESSION['accessControl'])) {
             $ch[] = $c;
         }
         ?>
-        <tr class="tbl-row">
+        <tr>
             <td><?php echo $n ?></td>
             <td>
                 <div class="row">

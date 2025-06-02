@@ -6,7 +6,7 @@ if (isset($_SESSION['budgetTable']) && !empty($_SESSION['budgetTable'])) {
         $an = $_SESSION['AsName'.$as] ?? "";
 
         ?>
-        <tr class="tbl-row">
+        <tr>
             <td><?php echo $an ?></td>
             <td>₱ <?php echo number_format($am, 2) ?></td>
         </tr>

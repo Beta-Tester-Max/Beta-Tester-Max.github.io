@@ -275,6 +275,17 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                 $data = sanitize($result);
                 $_SESSION['allAccounts'] = $data ?? "";
 
+                $sql = $pdo->query("SELECT * FROM tbl_user_logs");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allUserLogs'] = $data ?? "";
+
+                $sql = $pdo->query("SELECT * FROM tbl_admin_logs");
+                $result = $sql->fetchAll();
+                $data = sanitize($result);
+                $_SESSION['allAdminLogs'] = $data ?? "";
+
+
             } else {
                 header('Location: ../Functions/PHP/logout.php');
                 exit;

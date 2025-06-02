@@ -24,40 +24,81 @@ if (isset($_POST['adminLogin'])) {
         header('Location: ../../Admin/');
         exit;
     } else {
-        $sql = $pdo->prepare("SELECT Token, Token_ID FROM tbl_admin_token WHERE `Key` = :k");
-        $sql->bindParam(":k", $k, PDO::PARAM_STR);
-        $sql->execute();
 
-        if ($sql->rowCount() > 0) {
-            $result = $sql->fetch(PDO::FETCH_ASSOC);
-            $data = sanitize($result);
-            $token = $data['Token'] ?? "";
-            $tid = $data['Token_ID'] ?? "";
+        try {
+            $pdo->beginTransaction();
 
-            if (password_verify($t, $token)) {
-                $sql = $pdo->prepare("SELECT * FROM tbl_admin_info WHERE Token_ID = :t");
-                $sql->bindParam(":t", $tid, PDO::PARAM_INT);
-                $sql->execute();
+            $sql = $pdo->prepare("SELECT Token, Token_ID FROM tbl_admin_token WHERE `Key` = :k");
+            $sql->bindParam(":k", $k, PDO::PARAM_STR);
+            $sql->execute();
 
-                if ($sql->rowCount() > 0) {
-                    unset($_SESSION['Authority']);
-                    $_SESSION['Admin_ID'] = $tid;
-                    $_SESSION['access'] = 1;
-                    header('Location: ../../Admin/dashboard.php');
-                    exit;
+            if ($sql->rowCount() > 0) {
+                $result = $sql->fetch(PDO::FETCH_ASSOC);
+                $data = sanitize($result);
+                $token = $data['Token'] ?? "";
+                $tid = $data['Token_ID'] ?? "";
+
+                if (password_verify($t, $token)) {
+                    $sql = $pdo->prepare("SELECT * FROM tbl_admin_info WHERE Token_ID = :t");
+                    $sql->bindParam(":t", $tid, PDO::PARAM_INT);
+                    $sql->execute();
+                    $ac = "has logged in.";
+
+                    if ($sql->rowCount() > 0) {
+
+                        $sql = $pdo->prepare("INSERT INTO tbl_admin_logs (Token_ID, Action)
+                            VALUES (:t, :ac)");
+                        $sql->bindParam(":t", $tid, PDO::PARAM_INT);
+                        $sql->bindParam(":ac", $ac, PDO::PARAM_STR);
+
+                        if ($sql->execute()) {
+                            $pdo->commit();
+                            unset($_SESSION['Authority']);
+                            $_SESSION['Admin_ID'] = $tid;
+                            $_SESSION['access'] = 1;
+                            header('Location: ../../Admin/dashboard.php');
+                            exit;
+                        } else {
+                            $pdo->rollBack();
+                            $_SESSION['faL'] = "Error Logging Activity.";
+                            header('Location: ../../Admin/');
+                            exit;
+                        }
+                    } else {
+
+                        $sql = $pdo->prepare("INSERT INTO tbl_admin_logs (Token_ID, Action)
+                            VALUES (:t, :ac)");
+                        $sql->bindParam(":t", $tid, PDO::PARAM_INT);
+                        $sql->bindParam(":ac", $ac, PDO::PARAM_STR);
+
+                        if ($sql->execute()) {
+                            $pdo->commit();
+                            unset($_SESSION['Authority']);
+                            $_SESSION['Token_ID'] = $tid;
+                            header('Location: ../../Admin/setName.php');
+                            exit;
+                        } else {
+                            $pdo->rollBack();
+                            $_SESSION['faL'] = "Error Logging Activity.";
+                            header('Location: ../../Admin/');
+                            exit;
+                        }
+                    }
                 } else {
-                    unset($_SESSION['Authority']);
-                    $_SESSION['Token_ID'] = $tid;
-                    header('Location: ../../Admin/setName.php');
+                    $pdo->rollBack();
+                    $_SESSION['faL'] = "Incorrect Token!";
+                    header('Location: ../../Admin/');
                     exit;
                 }
             } else {
-                $_SESSION['faL'] = "Incorrect Token!";
+                $pdo->rollBack();
+                $_SESSION['faL'] = "Incorrect Key!";
                 header('Location: ../../Admin/');
                 exit;
             }
-        } else {
-            $_SESSION['faL'] = "Incorrect Key!";
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            $_SESSION['faL'] = "Connection Error: " . $e->getMessage();
             header('Location: ../../Admin/');
             exit;
         }

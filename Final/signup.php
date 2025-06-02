@@ -1,10 +1,10 @@
-<?php 
+<?php
 ini_set('session.cookie_httponly', 1);
 session_start();
 include "Functions/PHP/displayAlert.php";
 include "Functions/PHP/userLoggedIn.php";
 include "Functions/PHP/adminLoggedIn.php"
-?>
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +15,7 @@ include "Functions/PHP/adminLoggedIn.php"
     <link rel="icon" type="image/x-icon" href="./assets/img/AICS150.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <script src="https://kit.fontawesome.com/7961b8f896.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/login.css" />
     <link rel="stylesheet" href="./assets/nav.css" />
@@ -114,18 +115,20 @@ include "Functions/PHP/adminLoggedIn.php"
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="text" class="form-input" id="username" placeholder="" required
                         style="background-color: #ffffff" minlength="3" maxlength="50" name="username">
-                    <label for="account" style="color: #0c0b0b">Username</label>
+                    <label for="username" style="color: #0c0b0b">Username</label>
                 </div>
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="email" class="form-input" id="email" placeholder="" required
                         style="background-color: #ffffff" minlength="3" maxlength="50" name="email">
-                    <label for="account" style="color: #0c0b0b">Email Address</label>
+                    <label for="email" style="color: #0c0b0b">Email Address</label>
                 </div>
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="password" class="form-input" id="password" placeholder="" required
                         style="background-color: #ffffff" minlength="8" maxlength="15" name="pass">
-                    <label for="Password" style="color: #0c0b0b">Password</label>
+                    <label for="password" style="color: #0c0b0b">Password</label>
                 </div>
+                <input type="checkbox" style="cursor: pointer;" id="passwordVisibility">
+                <label for="passwordVisibility" style="cursor: pointer;">Show Password</label>
 
                 <!-- <div id="passwordRequirements" class="d-none">
                     <ul>
@@ -153,6 +156,7 @@ include "Functions/PHP/adminLoggedIn.php"
                         Create
                     </button>
                 </div>
+                
                 <p class="text-center">Already have an account?</p>
                 <p class="text-center">
                     <a href="login.php">Log In</a> or Go to

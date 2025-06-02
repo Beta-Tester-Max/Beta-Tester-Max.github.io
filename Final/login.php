@@ -64,8 +64,10 @@ include "Functions/PHP/adminLoggedIn.php"
                 <div class="input-container" style="background-color: #ffffff">
                     <input type="password" class="form-input" id="password" placeholder=""
                         required style="background-color: #ffffff" name="pass">
-                    <label for="Password" style="color: #0c0b0b">Password</label>
+                    <label for="password" style="color: #0c0b0b">Password</label>
                 </div>
+                <input type="checkbox" style="cursor: pointer;" id="passwordVisibility">
+                <label for="passwordVisibility" style="cursor: pointer;">Show Password</label>
 
                 <div class="remember-me">
                     <input type="checkbox" id="remember" />
@@ -85,6 +87,7 @@ include "Functions/PHP/adminLoggedIn.php"
             </form>
         </div>
     </div>
+    <script src="Functions/JS/loginScript.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

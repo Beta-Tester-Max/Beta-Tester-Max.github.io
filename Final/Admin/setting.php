@@ -24,6 +24,19 @@ include "../Functions/PHP/adminDataFetcher.php";
             color: #ffffff;
         }
 
+        h1 {
+            font-size: 50px;
+            margin-bottom: 30px;
+            transition: .5s ease;
+            cursor: default;
+        }
+
+        h1:hover {
+            text-shadow: 0 5px rgba(255, 255, 255, 0.33);
+            transform: translateY(-4px);
+            transition: .5s ease;
+        }
+
         .btn-modal {
             background-color: transparent;
             border: 1px solid #ffffff;
@@ -150,6 +163,14 @@ include "../Functions/PHP/adminDataFetcher.php";
                 opacity: 0;
             }
         }
+
+        tr {
+            background-color: #ffffff;
+        }
+
+        tr:hover {
+            background-color: rgb(237, 234, 8);
+        }
     </style>
 </head>
 
@@ -215,165 +236,53 @@ include "../Functions/PHP/adminDataFetcher.php";
             </div>
         </div>
 
+        <div class="hr mt-3"></div>
+
         <!-- Settings Content -->
         <div class="set-content pt-0">
-            <!-- Access Control -->
-            <h2 class="section-title mt-0">Access Control</h2>
-            <div class="table-container overflow-y-auto" style="max-height: 300px;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Access Name</th>
-                            <th>Access</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php include "../Functions/PHP/aCTable.php" ?>
-                    </tbody>
-                </table>
-
-            </div>
-
-            <div class="d-flex justify-content-center align-items-center mb-3">
-                <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createAccess">Create
-                    Access</button>
-            </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="createAccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="cALabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content text-light" style="background-color: #000133;">
-                        <div class="modal-header p-0">
-                            <div class="row" style="width: 100%;">
-                                <div class="col py-3 ms-3">
-                                    <h1 class="modal-title fs-5" id="cALabel">Create Access</h1>
-                                </div>
-                                <div class="col py-3 mt-1 pe-2">
-                                    <div class="col d-flex justify-content-end p-0">
-                                        <button type="button" class="bg-light rounded-circle btn-close"
-                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <form method="POST" action="../Functions/PHP/createAccess.php">
-                            <div class="modal-body">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" minlength="3" maxlength="50" id="accessName"
-                                        name="name" placeholder="" required>
-                                    <label for="accessName">Enter Access Name</label>
-                                </div>
-
-                                <div class="hr m-0"></div>
-
-                                <h4 class="text-center mt-3">Set Restrictions</h4>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="mAC" name="mAC">
-                                    <label class="form-check-label" for="mAC">Managing Access Control</label>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="mUA" name="mUA">
-                                    <label class="form-check-label" for="mUA">Managing User Access</label>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="hidden" name="createAccess">
-                                <button type="submit" class="btn-modal">Create</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hr"></div>
-
-            <!-- Manage User Roles -->
-            <h2 class="section-title mt-0">Manage User Roles</h2>
-            <div class="table-container overflow-y-auto" style="max-height: 300px;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Token</th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php include "../Functions/PHP/uRTable.php" ?>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="d-flex justify-content-center align-items-center mb-3">
-                <form method="POST" action="../Functions/PHP/createToken.php">
-                    <input type="hidden" name="createToken">
-                    <button type="submit" class="btn-modal">Generate Token</button>
-                </form>
-            </div>
-
-            <?php
-            if (isset($_SESSION['key']) && isset($_SESSION['token'])) {
-                $k = $_SESSION['key'];
-                $t = $_SESSION['token'];
-                unset($_SESSION['key'], $_SESSION['token']);
-                ?>
-                <script>alert("Key: <?php echo $k ?? "" ?>\nToken: <?php echo $t ?? "" ?>")</script>
-                <?php
-            }
-            ?>
-
-            <div class="hr"></div>
 
             <!-- Activity Log -->
-            <h2 class="section-title">Activity Log</h2>
+            <h1 class="text-center text-light"><b>Activity Log</b></h1>
+
+            <!-- User Logs -->
+            <h2 class="section-title">User Logs</h2>
             <div class="table-container overflow-y-auto" style="max-height: 300px;">
                 <table>
                     <thead>
                         <tr>
                             <th>Date & Time</th>
-                            <th>Admin Name</th>
+                            <th>Account ID</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 09:30am</td>
-                            <td>Maria Simukuan</td>
-                            <td>Review Application</td>
+                        <?php include "../Functions/PHP/userLogs.php" ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Admin Logs -->
+            <h2 class="section-title">Admin Logs</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 300px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Token ID</th>
+                            <th>Action</th>
                         </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 10:30am</td>
-                            <td>Maria Penduko</td>
-                            <td>Review Application</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 10:45am</td>
-                            <td>Maria Jaurigue</td>
-                            <td>Schedule Application</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 10:50am</td>
-                            <td>Mario Dela Cruz</td>
-                            <td>Send Notifications</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/2023 11:00am</td>
-                            <td>Ricardo Dalsay</td>
-                            <td>Review Application</td>
-                        </tr>
-                        <tr class="tbl-row">
-                            <td>01/10/0223 11:30am</td>
-                            <td>Lola Besyang</td>
-                            <td>Modify Settings</td>
-                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/adminLogs.php" ?>
                     </tbody>
                 </table>
             </div>
 
             <div class="hr"></div>
+
+            
+            <!-- Cost Analysis -->
+            <h1 class="text-center text-light"><b>Cost Analysis</b></h1>
 
             <!-- Budget Allocation -->
             <h2 class="section-title">Budget Allocation</h2>
@@ -392,6 +301,9 @@ include "../Functions/PHP/adminDataFetcher.php";
             </div>
 
             <div class="hr"></div>
+            
+            <!-- Data Creation -->
+            <h1 class="text-center text-light"><b>Data Creation</b></h1>
 
             <!-- All Assistance -->
             <h2 class="section-title">All Assistance</h2>
@@ -409,7 +321,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </table>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center mb-3">
+            <div class="d-flex justify-content-end align-items-center mb-3">
                 <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createAssistance">Create
                     Assistance</button>
             </div>
@@ -449,8 +361,6 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </div>
             </div>
 
-            <div class="hr"></div>
-
             <!-- All Assistance -->
             <h2 class="section-title">All Documents</h2>
             <div class="table-container overflow-y-auto" style="max-height: 270px;">
@@ -467,7 +377,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </table>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center mb-3">
+            <div class="d-flex justify-content-end align-items-center mb-3">
                 <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createDocument">Create
                     Document</button>
             </div>
@@ -507,8 +417,6 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </div>
             </div>
 
-            <div class="hr"></div>
-
             <!-- All Assistance -->
             <h2 class="section-title">All Requirements</h2>
             <div class="table-container overflow-y-auto" style="max-height: 270px;">
@@ -528,7 +436,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </table>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center mb-3">
+            <div class="d-flex justify-content-end align-items-center mb-3">
                 <button type="button" class="btn-modal" data-bs-toggle="modal"
                     data-bs-target="#createRequirement">Create
                     Requirement</button>
@@ -585,8 +493,6 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </div>
             </div>
 
-            <div class="hr"></div>
-
             <!-- All Availability -->
             <h2 class="section-title">All Availability</h2>
             <div class="table-container overflow-y-auto" style="max-height: 270px;">
@@ -603,7 +509,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </table>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center mb-3">
+            <div class="d-flex justify-content-end align-items-center mb-3">
                 <button type="button" class="btn-modal" data-bs-toggle="modal"
                     data-bs-target="#createAvailability">Create
                     Availability</button>
@@ -644,8 +550,6 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </div>
             </div>
 
-            <div class="hr"></div>
-
             <!-- All Rates -->
             <h2 class="section-title">All Rates</h2>
             <div class="table-container overflow-y-auto" style="max-height: 270px;">
@@ -665,7 +569,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                 </table>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center mb-3">
+            <div class="d-flex justify-content-end align-items-center mb-3">
                 <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createRate">Create
                     Rate</button>
             </div>
@@ -723,6 +627,115 @@ include "../Functions/PHP/adminDataFetcher.php";
 
             <div class="hr"></div>
 
+            <!-- Authorization -->
+            <h1 class="text-center text-light"><b>Authorization</b></h1>
+
+            <!-- Access Control -->
+            <h2 class="section-title mt-0">Access Control</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 300px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Access Name</th>
+                            <th>Access</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/aCTable.php" ?>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center mb-3">
+                <button type="button" class="btn-modal" data-bs-toggle="modal" data-bs-target="#createAccess">Create
+                    Access</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="createAccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="cALabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content text-light" style="background-color: #000133;">
+                        <div class="modal-header p-0">
+                            <div class="row" style="width: 100%;">
+                                <div class="col py-3 ms-3">
+                                    <h1 class="modal-title fs-5" id="cALabel">Create Access</h1>
+                                </div>
+                                <div class="col py-3 mt-1 pe-2">
+                                    <div class="col d-flex justify-content-end p-0">
+                                        <button type="button" class="bg-light rounded-circle btn-close"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="../Functions/PHP/createAccess.php">
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" minlength="3" maxlength="50" id="accessName"
+                                        name="name" placeholder="" required>
+                                    <label for="accessName">Enter Access Name</label>
+                                </div>
+
+                                <div class="hr m-0"></div>
+
+                                <h4 class="text-center mt-3">Set Restrictions</h4>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="mAC" name="mAC">
+                                    <label class="form-check-label" for="mAC">Managing Access Control</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="mUA" name="mUA">
+                                    <label class="form-check-label" for="mUA">Managing User Access</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="createAccess">
+                                <button type="submit" class="btn-modal">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Admin Accounts -->
+            <h2 class="section-title mt-0">All Admin Accounts</h2>
+            <div class="table-container overflow-y-auto" style="max-height: 300px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Token</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php include "../Functions/PHP/uRTable.php" ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center mb-3">
+                <form method="POST" action="../Functions/PHP/createToken.php">
+                    <input type="hidden" name="createToken">
+                    <button type="submit" class="btn-modal">Generate Token</button>
+                </form>
+            </div>
+
+            <?php
+            if (isset($_SESSION['key']) && isset($_SESSION['token'])) {
+                $k = $_SESSION['key'];
+                $t = $_SESSION['token'];
+                unset($_SESSION['key'], $_SESSION['token']);
+                ?>
+                <script>alert("Key: <?php echo $k ?? "" ?>\nToken: <?php echo $t ?? "" ?>")</script>
+                <?php
+            }
+            ?>
             <!-- All User Accounts -->
             <h2 class="section-title">All User Accounts</h2>
             <div class="table-container overflow-y-auto" style="max-height: 270px;">
@@ -733,7 +746,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                             <th>Username</th>
                             <th>Email</th>
                             <th>Password</th>
-                            <th>Date Created</th>
+                            <th>Date & Time</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -741,6 +754,9 @@ include "../Functions/PHP/adminDataFetcher.php";
                     </tbody>
                 </table>
             </div>
+
+            <div class="hr"></div>
+
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"

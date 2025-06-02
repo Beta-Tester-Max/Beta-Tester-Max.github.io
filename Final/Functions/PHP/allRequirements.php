@@ -7,7 +7,7 @@ if (isset($_SESSION['allRequirements']) && !empty($_SESSION['allRequirements']))
         $desc = $a['Description'] ?? "";
         $im = $a['Importance'] ?? "";
         ?>
-        <tr class="tbl-row">
+        <tr>
             <td><?php echo $id ?></td>
             <td><?php echo $aid ?></td>
             <td><?php echo $did ?></td>

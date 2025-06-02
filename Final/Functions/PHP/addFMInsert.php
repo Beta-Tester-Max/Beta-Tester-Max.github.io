@@ -216,7 +216,7 @@ if (isset($_POST['addFamilyMember'])) {
                         $sql = $pdo->prepare("INSERT INTO tbl_family_composition (Account_ID, Family_ID, User_ID)
                                     VALUES (:a, :fid, :uid)");
                         $sql->bindParam(":a", $a, PDO::PARAM_INT);
-                        $sql->bindParam(":fid", $fid, PDO::PARAM_INT);
+                        $sql->bindParam(":fid", $f, PDO::PARAM_INT);
                         $sql->bindParam(":uid", $uid, PDO::PARAM_INT);
 
                         if ($sql->execute()) {
@@ -238,11 +238,26 @@ if (isset($_POST['addFamilyMember'])) {
                 }
             }
             if ($lastCount === $count) {
-                $pdo->commit();
+                $ac = "has added $count family member/s.";
 
-                $_SESSION['Alert'] = "Account Information has been Set Successfully!";
-                header('Location: ../../profile.php');
-                exit;
+                $sql = $pdo->prepare("INSERT INTO tbl_user_logs (Account_ID, Action)
+                            VALUES (:a, :ac)");
+                $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                $sql->bindParam(":ac", $ac, PDO::PARAM_STR);
+
+                if ($sql->execute()) {
+                    $pdo->commit();
+
+                    $_SESSION['Alert'] = "Account Information has been Set Successfully!";
+                    header('Location: ../../profile.php');
+                    exit;
+                } else {
+                    $pdo->rollBack();
+
+                    $_SESSION['Alert'] = "Error Logging Activity.";
+                    header('Location: ../../setProfile.php');
+                    exit;
+                }
             } else {
                 $pdo->rollBack();
 

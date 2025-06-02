@@ -7,7 +7,7 @@ if (isset($_SESSION['allRates']) && !empty($_SESSION['allRates'])) {
         $cr = $a['Criteria'] ?? "";
         $co = $a['Cost'] ?? "";
         ?>
-        <tr class="tbl-row">
+        <tr>
             <td><?php echo $id ?></td>
             <td><?php echo $asid ?></td>
             <td><?php echo $avid ?></td>

@@ -270,7 +270,7 @@ if (isset($_POST['createApplication'])) {
                                         if ($sql->rowCount() === 0) {
 
                                             $sql = $pdo->prepare("INSERT INTO tbl_applications (Account_ID, Assistance_ID, Beneficiary, Representative, Severity, Reason, Files)
-                                        VALUES (:a, :as, :h, :rp, :s, :r, :f)");
+                                            VALUES (:a, :as, :h, :rp, :s, :r, :f)");
                                             $sql->bindParam(":a", $a, PDO::PARAM_INT);
                                             $sql->bindParam(":as", $aid, PDO::PARAM_INT);
                                             $sql->bindParam(":h", $h, PDO::PARAM_INT);
@@ -280,13 +280,29 @@ if (isset($_POST['createApplication'])) {
                                             $sql->bindParam(":f", $nf, PDO::PARAM_STR);
 
                                             if ($sql->execute()) {
-                                                $pdo->commit();
+                                                $appid = $pdo->lastInsertId();
+                                                $ac = "has created a $asan type Application. ID: $appid.";
 
-                                                $_SESSION['recSubApp'] = $arr;
-                                                unset($_SESSION['sD']);
+                                                $sql = $pdo->prepare("INSERT INTO tbl_user_logs (Account_ID, Action)
+                                                VALUES (:a, :ac)");
+                                                $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                                                $sql->bindParam(":ac", $ac, PDO::PARAM_STR);
 
-                                                header('Location: ../../application.php');
-                                                exit;
+                                                if ($sql->execute()) {
+                                                    $pdo->commit();
+
+                                                    $_SESSION['recSubApp'] = $arr;
+                                                    unset($_SESSION['sD']);
+
+                                                    header('Location: ../../application.php');
+                                                    exit;
+                                                } else {
+                                                    $pdo->rollBack();
+
+                                                    $_SESSION['Alert'] = "Error Logging Activity.";
+                                                    header('Location: ../../appDoc.php');
+                                                    exit;
+                                                }
                                             } else {
                                                 $pdo->rollBack();
 

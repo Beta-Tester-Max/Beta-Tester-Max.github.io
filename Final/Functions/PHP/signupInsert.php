@@ -90,8 +90,30 @@ if (isset($_POST['signup'])) {
                         $sql->bindParam(":p", $p, PDO::PARAM_STR);
 
                         if ($sql->execute()) {
-                            $pdo->commit();
-                            $inserted = true;
+                            $a = $pdo->lastInsertId();
+                            $ac = "Account $u/$e has been created.";
+
+                            $sql = $pdo->prepare("INSERT INTO tbl_user_logs (Account_ID, Action)
+                            VALUES (:a, :ac)");
+                            $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                            $sql->bindParam(":ac", $ac, PDO::PARAM_STR);
+
+                            if ($sql->execute()) {
+                                $pdo->commit();
+                                $inserted = true;
+                            } else {
+                                $pdo->rollBack();
+
+                                $_SESSION['Alert'] = "Error Logging Activity.";
+                                header('Location: ../../signup.php');
+                                exit;
+                            }
+                        } else {
+                            $pdo->rollBack();
+
+                            $_SESSION['Alert'] = "Error Inserting Account";
+                            header('Location: ../../signup.php');
+                            exit;
                         }
                     } else {
                         $pdo->rollBack();
@@ -131,7 +153,7 @@ if (isset($_POST['signup'])) {
 
             $_SESSION['Account_ID'] = $data['Account_ID'];
             $_SESSION['Alert'] = "Account Registered Successfully!";
-            header('Location: ../../signup.php');
+            header('Location: ../../index.php');
             exit;
         } else {
             $_SESSION['Alert'] = "Account Registered Successfully! Login Failed.";

@@ -25,7 +25,7 @@ if (isset($_POST['login'])) {
         exit;
     } else {
         try {
-            $sql = $pdo->prepare("SELECT Account_ID, Password, Access_Level FROM tbl_accounts WHERE Username = :a OR Email = :a");
+            $sql = $pdo->prepare("SELECT * FROM tbl_accounts WHERE Username = :a OR Email = :a");
             $sql->bindParam(":a", $a, PDO::PARAM_STR);
             $sql->execute();
 
@@ -40,10 +40,24 @@ if (isset($_POST['login'])) {
                         header('Location: ../../Admin/');
                         exit;
                     } else {
-                        $_SESSION['Account_ID'] = $data['Account_ID'];
+                        $a = $data['Account_ID'] ?? "";
+                        $ac = "has logged in.";
 
-                        header('Location: ../../profile.php');
-                        exit;
+                        $sql = $pdo->prepare("INSERT INTO tbl_user_logs (Account_ID, Action)
+                            VALUES (:a, :ac)");
+                        $sql->bindParam(":a", $a, PDO::PARAM_INT);
+                        $sql->bindParam(":ac", $ac, PDO::PARAM_STR);
+
+                        if ($sql->execute()) {
+                            $_SESSION['Account_ID'] = $data['Account_ID'] ?? "";
+
+                            header('Location: ../../profile.php');
+                            exit;
+                        } else {
+                            $_SESSION['Alert'] = "Error Logging Activity";
+                            header('Location: ../../login.php');
+                            exit;
+                        }
                     }
                 } else {
                     $_SESSION['Alert'] = "Incorrect Password!";

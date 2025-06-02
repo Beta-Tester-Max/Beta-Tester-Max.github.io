@@ -4,7 +4,7 @@ if (isset($_SESSION['allDocuments']) && !empty($_SESSION['allDocuments'])) {
         $id = $a['Document_ID'] ?? "";
         $desc = $a['Description'] ?? "";
         ?>
-        <tr class="tbl-row">
+        <tr>
             <td><?php echo $id ?></td>
             <td><?php echo $desc ?></td>
         </tr>

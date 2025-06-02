@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2025 at 10:54 AM
+-- Generation Time: Jun 02, 2025 at 10:06 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -60,9 +60,8 @@ CREATE TABLE `tbl_accounts` (
 --
 
 INSERT INTO `tbl_accounts` (`Account_ID`, `Username`, `Email`, `Password`, `Access_Level`, `TimeStamp`) VALUES
-(1, 'Admin', '', '$2y$10$4EQwJIARDJjkesvHLmygse552iZeBpa8lF.2UVxpScgABFslgE9D2', 'Admin', '0000-00-00 00:00:00'),
-(24, 'aa1', '1234@gmail.com', '$2y$10$BK8n9P7/Li0S8sPcWtNhp.WlhUFJqSNhuC.TNXPcDTmB7WQUVjLnq', 'User', '2025-05-22 07:02:45'),
-(26, 'aa2', 'Testacc@gmail.com', '$2y$10$wuNiXIGQjvRVq0AfnwRNAukE.XY0I.FOzDqDWWcIhWQkd0TblfTim', 'User', '2025-05-27 02:24:29');
+(1, 'Admin', '', '123', 'Admin', '0000-00-00 00:00:00'),
+(29, 'aa1', 'Testacc@gmail.com', '12345678', 'User', '2025-06-02 01:46:05');
 
 -- --------------------------------------------------------
 
@@ -87,8 +86,7 @@ CREATE TABLE `tbl_address` (
 --
 
 INSERT INTO `tbl_address` (`Address_ID`, `Account_ID`, `House_Number`, `Street_Name`, `Barangay`, `City_or_Municipality`, `Province`, `Region`, `Zip_Code`) VALUES
-(10, 24, 229, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001),
-(11, 26, 300, 'Purok 2', 'San Juan', 'Alaminos', 'Laguna', '4A', 4001);
+(13, 29, 229, 'Fake Street', 'San Fake', 'Alaminos', 'Laguna', '4A', 4001);
 
 -- --------------------------------------------------------
 
@@ -113,6 +111,30 @@ INSERT INTO `tbl_admin_info` (`Admin_ID`, `Token_ID`, `Access_ID`, `Admin_Name`)
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_admin_logs`
+--
+
+CREATE TABLE `tbl_admin_logs` (
+  `Log_ID` int(11) NOT NULL,
+  `Token_ID` int(11) NOT NULL,
+  `Action` text NOT NULL,
+  `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_admin_logs`
+--
+
+INSERT INTO `tbl_admin_logs` (`Log_ID`, `Token_ID`, `Action`, `TimeStamp`) VALUES
+(1, 5, 'Token: $2y$10$fQvI0uers.OnGPHRLrGKMuABoqMlNzC0fo.AY/lGuxt77cHG7U.Gm; has been generated.', '2025-06-02 06:23:25'),
+(2, 6, 'f1KE40118b has been generated.', '2025-06-02 06:26:51'),
+(3, 7, 'Key: 7Kd8f7a2bE; has been generated.', '2025-06-02 06:31:17'),
+(4, 2, 'has logged out.', '2025-06-02 06:50:34'),
+(5, 2, 'has logged in.', '2025-06-02 06:50:44');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_admin_token`
 --
 
@@ -129,8 +151,9 @@ CREATE TABLE `tbl_admin_token` (
 
 INSERT INTO `tbl_admin_token` (`Token_ID`, `Key`, `Token`, `TimeStamp`) VALUES
 (2, '4689ddK2E5', '$2y$10$p55B/NbT5qjAWCAauTo1hOjRFqntB9YL7ilKwRoHv3gkHhUWRKUPO', '2025-05-22 07:35:22'),
-(3, '33fc17EK15', '$2y$10$1kUwROrgl2CLBi/C2TAzde6C11XFYhAh5FGNCPIA0bmkQXBtaYX3O', '2025-05-22 07:37:29'),
-(4, 'c4EK51dadb', '$2y$10$vuhdvO07S7uuHQQ54EK6ce2rCIZ9kbPTvHE7hBrajd.Axvkw6zD3m', '2025-05-28 03:13:41');
+(5, 'dcK470Eae4', '$2y$10$fQvI0uers.OnGPHRLrGKMuABoqMlNzC0fo.AY/lGuxt77cHG7U.Gm', '2025-06-02 06:23:24'),
+(6, 'f1KE40118b', '$2y$10$IC.upKr.fM1GIiLrH.mar.Q9d5Qs1r0IuUjQRymw4kSezpMPGg54.', '2025-06-02 06:26:51'),
+(7, '7Kd8f7a2bE', '$2y$10$UPCvLmsgx50QN8BONOZlVO4hD/QReZbpKsGkOzY7fNy0mggyQxfWi', '2025-06-02 06:31:17');
 
 -- --------------------------------------------------------
 
@@ -159,14 +182,7 @@ CREATE TABLE `tbl_applications` (
 --
 
 INSERT INTO `tbl_applications` (`Application_ID`, `Account_ID`, `Assistance_ID`, `Beneficiary`, `Representative`, `Severity`, `Reason`, `Status`, `Date_Submitted`, `ReasonFR`, `Date_Reviewed`, `Files`, `is_deleted`) VALUES
-(10021, 24, 5, 18, 18, 9, 'Need Food Assistance', 'Pending', '2025-05-22 07:55:34', NULL, '2025-05-22 07:59:24', '95, 96, 97', 1),
-(10022, 24, 1, 18, 18, 1, 'zxczxczxcddawdsd', 'Approved', '2025-05-22 07:57:24', NULL, '2025-05-28 02:35:51', '98, 99, 100, 101, 102, 103, 104', 0),
-(10023, 24, 4, 18, 18, 8, 'dfffsdfdsfdsfdfs', 'Rejected', '2025-05-22 08:01:59', 'Not Good Enough', '2025-05-28 03:09:53', '105, 106, 107, 108, 109', 0),
-(10024, 24, 5, 18, 18, 9, 'asjdliaskjldas', 'Pending', '2025-05-22 08:06:16', NULL, '2025-05-27 04:58:33', '110, 111, 112', 1),
-(10025, 26, 5, 19, 19, 9, 'I\'m Hungry', 'Approved', '2025-05-27 02:55:59', NULL, '2025-05-30 08:10:56', '113, 114, 115', 0),
-(10026, 26, 6, 19, 19, 10, 'I need money', 'Approved', '2025-05-27 02:58:40', NULL, '2025-05-30 08:11:10', '116, 117, 118, 119', 0),
-(10027, 24, 5, 18, 18, 9, 'I\'m Hungry', 'Approved', '2025-05-27 04:59:17', NULL, '2025-05-30 08:22:30', '120, 121, 122', 0),
-(10028, 24, 6, 18, 18, 10, 'I\'m in need of muneh', 'Approved', '2025-05-30 08:25:22', NULL, '2025-05-30 08:26:12', '123, 124, 125, 126', 0);
+(10029, 29, 5, 25, 25, 9, 'I\'m so Hungry', 'Pending', '2025-06-02 02:28:11', NULL, '2025-06-02 02:33:37', '127, 128, 129', 1);
 
 -- --------------------------------------------------------
 
@@ -296,8 +312,7 @@ CREATE TABLE `tbl_family` (
 --
 
 INSERT INTO `tbl_family` (`Family_ID`, `Account_ID`, `Family_Name`) VALUES
-(10, 24, 'Cruz'),
-(11, 26, 'Doe');
+(13, 29, 'Doe');
 
 -- --------------------------------------------------------
 
@@ -317,9 +332,7 @@ CREATE TABLE `tbl_family_composition` (
 --
 
 INSERT INTO `tbl_family_composition` (`Family_Composition_ID`, `Account_ID`, `Family_ID`, `User_ID`) VALUES
-(9, 24, 10, 18),
-(10, 26, 11, 19),
-(11, 24, 10, 20);
+(16, 29, 13, 25);
 
 -- --------------------------------------------------------
 
@@ -348,9 +361,7 @@ CREATE TABLE `tbl_family_member` (
 --
 
 INSERT INTO `tbl_family_member` (`User_ID`, `First_Name`, `Middle_Name`, `Last_Name`, `Email`, `Phone_Number`, `Birth_Day`, `Sex`, `Civil_Status`, `Educational_Attainment`, `Occupation`, `TimeStamp`, `is_deceased`) VALUES
-(18, 'John', 'Diaz', 'Doe', 'jd@gmail.com', '0999-999-9999', '2000-02-24', 'm', 'Single', '', '', '2025-05-22 07:54:39', 0),
-(19, 'John', '', 'Doe', 'jduser@gmail.com', '0888-888-8888', '1992-08-26', 'm', 'Single', '', '', '2025-05-27 02:32:59', 0),
-(20, 'Jane', 'Dhana', 'Doe', '', '', '2025-05-22', 'f', 'Single', '', '', '2025-05-28 05:48:34', 0);
+(25, 'John', 'Diaz', 'Doe', 'jd@gmail.com', '0999-999-9999', '1996-06-17', 'm', 'Single', '', '', '2025-06-02 02:21:12', 0);
 
 -- --------------------------------------------------------
 
@@ -387,38 +398,9 @@ CREATE TABLE `tbl_files` (
 --
 
 INSERT INTO `tbl_files` (`File_ID`, `Account_ID`, `Requirement_ID`, `File_Name`, `TimeStamp`, `is_deleted`) VALUES
-(95, 24, 34, 'deleted_95_24_34.pdf', '2025-05-22 07:55:34', 1),
-(96, 24, 35, 'deleted_96_24_35.pdf', '2025-05-22 07:55:34', 1),
-(97, 24, 36, 'deleted_97_24_36.pdf', '2025-05-22 07:55:34', 1),
-(98, 24, 1, '24_1.pdf', '2025-05-22 07:57:24', 0),
-(99, 24, 2, '24_2.pdf', '2025-05-22 07:57:24', 0),
-(100, 24, 3, '24_3.pdf', '2025-05-22 07:57:24', 0),
-(101, 24, 4, '24_4.pdf', '2025-05-22 07:57:24', 0),
-(102, 24, 5, '24_5.pdf', '2025-05-22 07:57:24', 0),
-(103, 24, 6, '24_6.pdf', '2025-05-22 07:57:24', 0),
-(104, 24, 7, '24_7.pdf', '2025-05-22 07:57:24', 0),
-(105, 24, 28, '24_28.pdf', '2025-05-22 08:01:59', 0),
-(106, 24, 29, '24_29.pdf', '2025-05-22 08:01:59', 0),
-(107, 24, 30, '24_30.pdf', '2025-05-22 08:01:59', 0),
-(108, 24, 31, '24_31.pdf', '2025-05-22 08:01:59', 0),
-(109, 24, 33, '24_33.pdf', '2025-05-22 08:01:59', 0),
-(110, 24, 34, 'deleted_110_24_34.pdf', '2025-05-22 08:06:16', 1),
-(111, 24, 35, 'deleted_111_24_35.pdf', '2025-05-22 08:06:16', 1),
-(112, 24, 36, 'deleted_112_24_36.pdf', '2025-05-22 08:06:16', 1),
-(113, 26, 34, '26_34.pdf', '2025-05-27 02:55:59', 0),
-(114, 26, 35, '26_35.pdf', '2025-05-27 02:55:59', 0),
-(115, 26, 36, '26_36.pdf', '2025-05-27 02:55:59', 0),
-(116, 26, 39, '26_39.pdf', '2025-05-27 02:58:40', 0),
-(117, 26, 40, '26_40.pdf', '2025-05-27 02:58:40', 0),
-(118, 26, 41, '26_41.pdf', '2025-05-27 02:58:40', 0),
-(119, 26, 42, '26_42.pdf', '2025-05-27 02:58:40', 0),
-(120, 24, 34, '24_34.pdf', '2025-05-27 04:59:16', 0),
-(121, 24, 35, '24_35.pdf', '2025-05-27 04:59:17', 0),
-(122, 24, 36, '24_36.pdf', '2025-05-27 04:59:17', 0),
-(123, 24, 39, '24_39.pdf', '2025-05-30 08:25:22', 0),
-(124, 24, 40, '24_40.pdf', '2025-05-30 08:25:22', 0),
-(125, 24, 41, '24_41.pdf', '2025-05-30 08:25:22', 0),
-(126, 24, 42, '24_42.pdf', '2025-05-30 08:25:22', 0);
+(127, 29, 34, '29_34.pdf', '2025-06-02 02:28:11', 0),
+(128, 29, 35, '29_35.pdf', '2025-06-02 02:28:11', 0),
+(129, 29, 36, '29_36.pdf', '2025-06-02 02:28:11', 0);
 
 -- --------------------------------------------------------
 
@@ -521,6 +503,36 @@ INSERT INTO `tbl_requirements` (`Requirement_ID`, `Assistance_ID`, `Document_ID`
 (49, 7, 4, 'Police or Legal Report', 'Optional'),
 (50, 7, 20, 'Disaster or Emergency Certificate', 'Optional');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_user_logs`
+--
+
+CREATE TABLE `tbl_user_logs` (
+  `Log_ID` int(11) NOT NULL,
+  `Account_ID` int(11) NOT NULL,
+  `Action` text NOT NULL,
+  `TimeStamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_user_logs`
+--
+
+INSERT INTO `tbl_user_logs` (`Log_ID`, `Account_ID`, `Action`, `TimeStamp`) VALUES
+(2, 29, 'Account aa1/Testacc@gmail.com has been created.', '2025-06-02 01:46:05'),
+(3, 29, 'Account / logged in.', '2025-06-02 01:59:58'),
+(4, 29, 'Account aa1/Testacc@gmail.com logged in.', '2025-06-02 02:02:31'),
+(5, 29, 'has set their Profile.', '2025-06-02 02:12:04'),
+(6, 29, 'has added 1 family member/s.', '2025-06-02 02:18:37'),
+(7, 29, 'has set their Family Name and Address. and added 1 family member/s', '2025-06-02 02:21:12'),
+(8, 29, 'has created an Food Assistance type Application.', '2025-06-02 02:28:11'),
+(9, 29, 'has deleted an Application. ID: 10029.', '2025-06-02 02:33:37'),
+(10, 29, 'has logged out.', '2025-06-02 02:43:20'),
+(11, 29, 'has logged in.', '2025-06-02 02:44:22'),
+(12, 29, 'has logged out.', '2025-06-02 02:44:37');
+
 --
 -- Indexes for dumped tables
 --
@@ -551,6 +563,12 @@ ALTER TABLE `tbl_address`
 ALTER TABLE `tbl_admin_info`
   ADD PRIMARY KEY (`Admin_ID`),
   ADD KEY `Admin_Info>Admin_Token` (`Token_ID`);
+
+--
+-- Indexes for table `tbl_admin_logs`
+--
+ALTER TABLE `tbl_admin_logs`
+  ADD PRIMARY KEY (`Log_ID`);
 
 --
 -- Indexes for table `tbl_admin_token`
@@ -647,6 +665,13 @@ ALTER TABLE `tbl_requirements`
   ADD KEY `Assistance>Requirements` (`Assistance_ID`);
 
 --
+-- Indexes for table `tbl_user_logs`
+--
+ALTER TABLE `tbl_user_logs`
+  ADD PRIMARY KEY (`Log_ID`),
+  ADD KEY `User_Logs>Accounts` (`Account_ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -660,13 +685,13 @@ ALTER TABLE `tbl_access_control`
 -- AUTO_INCREMENT for table `tbl_accounts`
 --
 ALTER TABLE `tbl_accounts`
-  MODIFY `Account_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `Account_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `tbl_address`
 --
 ALTER TABLE `tbl_address`
-  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Address_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_admin_info`
@@ -675,16 +700,22 @@ ALTER TABLE `tbl_admin_info`
   MODIFY `Admin_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `tbl_admin_logs`
+--
+ALTER TABLE `tbl_admin_logs`
+  MODIFY `Log_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `tbl_admin_token`
 --
 ALTER TABLE `tbl_admin_token`
-  MODIFY `Token_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Token_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_applications`
 --
 ALTER TABLE `tbl_applications`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10029;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10030;
 
 --
 -- AUTO_INCREMENT for table `tbl_assistance`
@@ -714,19 +745,19 @@ ALTER TABLE `tbl_documents`
 -- AUTO_INCREMENT for table `tbl_family`
 --
 ALTER TABLE `tbl_family`
-  MODIFY `Family_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Family_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_family_composition`
 --
 ALTER TABLE `tbl_family_composition`
-  MODIFY `Family_Composition_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Family_Composition_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tbl_family_member`
 --
 ALTER TABLE `tbl_family_member`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `tbl_feedbacks`
@@ -738,7 +769,7 @@ ALTER TABLE `tbl_feedbacks`
 -- AUTO_INCREMENT for table `tbl_files`
 --
 ALTER TABLE `tbl_files`
-  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `tbl_rates`
@@ -751,6 +782,12 @@ ALTER TABLE `tbl_rates`
 --
 ALTER TABLE `tbl_requirements`
   MODIFY `Requirement_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+
+--
+-- AUTO_INCREMENT for table `tbl_user_logs`
+--
+ALTER TABLE `tbl_user_logs`
+  MODIFY `Log_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
@@ -810,6 +847,12 @@ ALTER TABLE `tbl_rates`
 ALTER TABLE `tbl_requirements`
   ADD CONSTRAINT `Assistance>Requirements` FOREIGN KEY (`Assistance_ID`) REFERENCES `tbl_assistance` (`Assistance_ID`),
   ADD CONSTRAINT `Documents>Requirements` FOREIGN KEY (`Document_ID`) REFERENCES `tbl_documents` (`Document_ID`);
+
+--
+-- Constraints for table `tbl_user_logs`
+--
+ALTER TABLE `tbl_user_logs`
+  ADD CONSTRAINT `User_Logs>Accounts` FOREIGN KEY (`Account_ID`) REFERENCES `tbl_accounts` (`Account_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

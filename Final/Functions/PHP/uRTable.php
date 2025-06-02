@@ -9,7 +9,8 @@ if (isset($_SESSION['allTokens']) && !empty($_SESSION['allTokens'])) {
         $acname = $_SESSION['accessName' . $acid] ?? "";
 
         ?>
-        <tr class="tbl-row">
+        <tr>
+            <td><?php echo $token ?></td>
             <td><?php echo $k ?></td>
             <td><?php echo (!empty($name)) ? $name : '<i class="text-secondary">Not Set</i>' ?></td>
             <td><?php echo (!empty($acname)) ? $acname : '<i class="text-secondary">Not Set</i>' ?></td>

@@ -4,7 +4,7 @@ if (isset($_SESSION['allAvailability']) && !empty($_SESSION['allAvailability']))
         $id = $a['Availability_ID'] ?? "";
         $an = $a['Availability_Name'] ?? "";
         ?>
-        <tr class="tbl-row">
+        <tr>
             <td><?php echo $id ?></td>
             <td><?php echo $an ?></td>
         </tr>

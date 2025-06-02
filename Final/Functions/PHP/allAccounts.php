@@ -7,10 +7,10 @@ if (isset($_SESSION['allAccounts']) && !empty($_SESSION['allAccounts'])) {
         $p = $a['Password'] ?? "";
         $t = $a['TimeStamp'] ?? "";
         ?>
-        <tr class="tbl-row">
+        <tr>
             <td><?php echo $id ?></td>
             <td><?php echo $u ?></td>
-            <td><?php echo $e ?></td>
+            <td><?php echo (!empty($e)) ? $e : '<i>Not Set</i>'?></td>
             <td><?php echo $p ?></td>
             <td><?php echo $t ?></td>
         </tr>

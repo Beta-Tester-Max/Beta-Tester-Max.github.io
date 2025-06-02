@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2025 at 10:06 AM
+-- Generation Time: Jun 02, 2025 at 11:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -216,23 +216,24 @@ INSERT INTO `tbl_assistance` (`Assistance_ID`, `Assistance_Name`) VALUES
 
 CREATE TABLE `tbl_availability` (
   `Availability_ID` int(11) NOT NULL,
-  `Availability_Name` varchar(50) NOT NULL
+  `Availability_Name` varchar(50) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_availability`
 --
 
-INSERT INTO `tbl_availability` (`Availability_ID`, `Availability_Name`) VALUES
-(1, 'Always'),
-(2, 'Daily'),
-(3, 'Weekly'),
-(4, 'Monthly'),
-(5, 'Quarterly'),
-(6, 'Semi-Annually'),
-(7, 'Annually'),
-(8, 'Per-Semester'),
-(9, 'Per-School-Year');
+INSERT INTO `tbl_availability` (`Availability_ID`, `Availability_Name`, `is_deleted`) VALUES
+(1, 'Always', 0),
+(2, 'Daily', 0),
+(3, 'Weekly', 0),
+(4, 'Monthly', 0),
+(5, 'Quarterly', 0),
+(6, 'Semi-Annually', 0),
+(7, 'Annually', 0),
+(8, 'Per-Semester', 0),
+(9, 'Per-School-Year', 0);
 
 -- --------------------------------------------------------
 

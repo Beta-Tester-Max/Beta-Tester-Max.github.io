@@ -501,6 +501,7 @@ include "../Functions/PHP/adminDataFetcher.php";
                         <tr>
                             <th>ID</th>
                             <th>Availability Name</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>

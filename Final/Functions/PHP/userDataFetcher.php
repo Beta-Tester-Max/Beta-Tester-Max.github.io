@@ -103,6 +103,7 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
         foreach ($data as $d) {
             $apid = $d['Application_ID'] ?? "";
             $aid = $d['Assistance_ID'] ?? "";
+            $rbid = $d['Reviewed_By'] ?? "";
 
             $sql = $pdo->prepare("SELECT Assistance_Name FROM tbl_assistance WHERE Assistance_ID = :a");
             $sql->bindParam(":a", $aid, PDO::PARAM_INT);
@@ -110,6 +111,13 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             $data = sanitize($result);
             $_SESSION['aAan' . $apid] = $data['Assistance_Name'] ?? "";
+
+            $sql = $pdo->prepare("SELECT Admin_Name FROM tbl_admin_info WHERE Token_ID = :t");
+            $sql->bindParam(":t", $rbid, PDO::PARAM_INT);
+            $sql->execute();
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            $data = sanitize($result);
+            $_SESSION['aArb' . $apid] = $data['Admin_Name'] ?? "";
         }
 
         $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Status = 'Rejected' AND is_deleted = 0");
@@ -122,6 +130,7 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
         foreach ($data as $d) {
             $apid = $d['Application_ID'] ?? "";
             $aid = $d['Assistance_ID'] ?? "";
+            $rbid = $d['Reviewed_By'] ?? "";
 
             $sql = $pdo->prepare("SELECT Assistance_Name FROM tbl_assistance WHERE Assistance_ID = :a");
             $sql->bindParam(":a", $aid, PDO::PARAM_INT);
@@ -129,6 +138,13 @@ if (isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID'])) {
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             $data = sanitize($result);
             $_SESSION['rAan' . $apid] = $data['Assistance_Name'] ?? "";
+
+            $sql = $pdo->prepare("SELECT Admin_Name FROM tbl_admin_info WHERE Token_ID = :t");
+            $sql->bindParam(":t", $rbid, PDO::PARAM_INT);
+            $sql->execute();
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            $data = sanitize($result);
+            $_SESSION['rArb' . $apid] = $data['Admin_Name'] ?? "";
         }
 
     } catch (PDOException $e) {

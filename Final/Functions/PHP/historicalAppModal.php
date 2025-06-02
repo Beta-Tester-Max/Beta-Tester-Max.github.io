@@ -21,6 +21,7 @@ if (isset($_SESSION['hA']) && !empty($_SESSION['hA'])) {
         $severity = $_SESSION['hA_sv' . $sv] ?? "";
         $files = explode(", ", $p['Files']) ?? "";
         $st = $p['Status'] ?? "";
+        $rb = $_SESSION['hA_rB' . $aid] ?? "";
         $dr = $p['Date_Reviewed'] ?? "";
         ?>
         <div class="modal fade" id="application_<?php echo $aid ?>" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -75,7 +76,7 @@ if (isset($_SESSION['hA']) && !empty($_SESSION['hA'])) {
                                             </div>
                                             <div class="col-6">
                                                 <div class="application-name">
-                                                    <?php echo "Upcoming changes"?>
+                                                    <?php echo $rb ?>
                                                 </div>
                                             </div>
                                             <div class="col-6">
@@ -85,7 +86,7 @@ if (isset($_SESSION['hA']) && !empty($_SESSION['hA'])) {
                                             </div>
                                             <div class="col-6">
                                                 <div class="application-name">
-                                                    <?php echo (!empty($dr)) ? $dr : "Missing Date"?>
+                                                    <?php echo (!empty($dr)) ? $dr : "Missing Date" ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,13 +128,22 @@ if (isset($_SESSION['hA']) && !empty($_SESSION['hA'])) {
                             </ul>
                         </div>
                     </div>
-                    <div class="modal-footer p-0">
-                        <div class="row p-2" style="width: 100%;">
-                            <button class="application-action" style="width: 100%;"
-                                data-bs-target="#accountInfo_<?php echo $aid ?>" data-bs-toggle="modal">View
-                                Information</button>
+                    <form method="POST" action="../Functions/PHP/appData.php">
+                        <div class="modal-footer p-0">
+                            <div class="row pt-2 px-2" style="width: 100%;">
+                                <button type="button" class="application-action" style="width: 100%;"
+                                    data-bs-target="#accountInfo_hA<?php echo $aid ?>" data-bs-toggle="modal">View
+                                    Information</button>
+                            </div>
+                            <input type="hidden" value="<?php echo $aid ?>" name="id">
+                            <div class="row pb-2 px-2" style="width: 100%;">
+                                <input type="hidden" name="createCaseStudy">
+                                <button type="submit" class="btn btn-info csBtn"
+                                    style="width: 100%; height: 28px; font-size: 12px;">Create Case
+                                    Study</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

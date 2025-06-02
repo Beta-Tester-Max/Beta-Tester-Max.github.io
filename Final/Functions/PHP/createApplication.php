@@ -262,7 +262,7 @@ if (isset($_POST['createApplication'])) {
                                             }
                                         }
 
-                                        $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Assistance_ID = :as AND is_deleted = 0");
+                                        $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Assistance_ID = :as AND is_deleted = 0 AND Status = 'Pending'");
                                         $sql->bindParam(":a", $a, PDO::PARAM_INT);
                                         $sql->bindParam(":as", $aid, PDO::PARAM_INT);
                                         $sql->execute();

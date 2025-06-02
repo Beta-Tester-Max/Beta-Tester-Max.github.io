@@ -17,7 +17,7 @@ if (isset($_SESSION['pA']) && !empty($_SESSION['pA'])) {
         $ad = $_SESSION['pA_add' . $aid] ?? "";
         $address = $ad['House_Number'] . "&nbsp;" . $ad['Street_Name'] . "&nbsp;" . $ad['Barangay'] . "&nbsp;" . $ad['City_or_Municipality'] . ", " . $ad['Province'];
         ?>
-        <div class="modal fade" id="accountInfo_<?php echo $aid ?>" data-bs-backdrop="static" data-bs-keyboard="false"
+        <div class="modal fade" id="accountInfo_pA<?php echo $aid ?>" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="accountlabel_<?php echo $aid ?>" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-admin text-light">

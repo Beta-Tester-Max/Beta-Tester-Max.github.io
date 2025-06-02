@@ -70,6 +70,10 @@ include "../Functions/PHP/adminDataFetcher.php";
     ::-webkit-scrollbar-thumb:hover {
       background-color: rgb(248, 240, 4);
     }
+
+    .csBtn:hover {
+      opacity: .5;
+    }
   </style>
 </head>
 

@@ -32,6 +32,14 @@ function sanitize($data): mixed
     }
 }
 
+function cleanStr($str) {
+    $trimmed = trim($str);
+    return str_replace(' ', '', $trimmed);
+}
+
+function cleanInt($int) {
+    return preg_replace('/\D/', '', $int);
+}
 
 define('ENCRYPTION_KEY_FILE', 'secret.key');
 

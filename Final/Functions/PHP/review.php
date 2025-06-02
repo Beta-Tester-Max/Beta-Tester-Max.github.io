@@ -4,11 +4,20 @@ ini_set('session.cookie_httponly', 1);
 session_start();
 
 if (isset($_POST['approve'])) {
-    $aid = intval($_POST['appid']) ?? "";
-    $as = intval($_POST['asid']) ?? "";
-    $sv = intval($_POST['severity']) ?? "";
+    $tid = intval(cleanInt($_SESSION['Admin_ID'])) ?? "";
+    $aid = intval(cleanInt($_POST['appid'])) ?? "";
+    $as = intval(cleanInt($_POST['asid'])) ?? "";
+    $sv = intval(cleanInt($_POST['severity'])) ?? "";
 
-    if (empty($aid)) {
+    if (empty($tid)) {
+        $_SESSION['Alert'] = "Admin ID cannot be empty";
+        header('Location: ../../Admin/applications.php');
+        exit;
+    } elseif (strlen(strval($tid)) > 11) {
+        $_SESSION['Alert'] = "Admin ID cannot be more than 11 digits";
+        header('Location: ../../Admin/applications.php');
+        exit;
+    } elseif (empty($aid)) {
         $_SESSION['Alert'] = "Application ID cannot be empty";
         header('Location: ../../Admin/applications.php');
         exit;
@@ -37,8 +46,10 @@ if (isset($_POST['approve'])) {
             $pdo->beginTransaction();
 
             $sql = $pdo->prepare("UPDATE tbl_applications
-            SET Status = 'Approved'
+            SET Reviewed_by = :r,
+            Status = 'Approved'
             WHERE Application_ID = :a");
+            $sql->bindParam(":r", $tid, PDO::PARAM_INT);
             $sql->bindParam(":a", $aid, PDO::PARAM_INT);
             if ($sql->execute()) {
                 $sql = $pdo->prepare("SELECT * FROM tbl_budget WHERE Assistance_ID = :a");
@@ -67,10 +78,24 @@ if (isset($_POST['approve'])) {
                         $sql->bindParam(":as", $as, PDO::PARAM_INT);
 
                         if ($sql->execute()) {
-                            $pdo->commit();
-                            $_SESSION['Alert'] = "Application Approved Successfully!";
-                            header('Location: ../../Admin/applications.php');
-                            exit;
+                            $ac = "has approved an Application. ID $aid.";
+
+                            $sql = $pdo->prepare("INSERT INTO tbl_admin_logs (Token_ID, Action)
+                            VALUES (:t, :ac)");
+                            $sql->bindParam(":t", $tid, PDO::PARAM_INT);
+                            $sql->bindParam(":ac", $ac, PDO::PARAM_STR);
+
+                            if ($sql->execute()) {
+                                $pdo->commit();
+                                $_SESSION['Alert'] = "Application Approved Successfully!";
+                                header('Location: ../../Admin/applications.php');
+                                exit;
+                            } else {
+                                $pdo->rollBack();
+                                $_SESSION['Alert'] = "Error Logging Activity.";
+                                header('Location: ../../Admin/applications.php');
+                                exit;
+                            }
                         } else {
                             $pdo->rollBack();
                             $_SESSION['Alert'] = "Error Updating Budget";
@@ -130,10 +155,19 @@ if (isset($_POST['approve'])) {
         }
     }
 } elseif (isset($_POST['reject'])) {
-    $aid = intval($_POST['appid']) ?? "";
+    $tid = intval(cleanInt($_SESSION['Admin_ID'])) ?? "";
+    $aid = intval(cleanInt($_POST['appid'])) ?? "";
     $r = $_POST['reason'] ?? "";
 
-    if (empty($aid)) {
+    if (empty($tid)) {
+        $_SESSION['Alert'] = "Admin ID cannot be empty";
+        header('Location: ../../Admin/applications.php');
+        exit;
+    } elseif (strlen(strval($tid)) > 11) {
+        $_SESSION['Alert'] = "Admin ID cannot be more than 11 digits";
+        header('Location: ../../Admin/applications.php');
+        exit;
+    } elseif (empty($aid)) {
         $_SESSION['Alert'] = "Application ID cannot be empty";
         header('Location: ../../Admin/applications.php');
         exit;
@@ -158,17 +192,33 @@ if (isset($_POST['approve'])) {
             $pdo->beginTransaction();
 
             $sql = $pdo->prepare("UPDATE tbl_applications
-            SET Status = 'Rejected',
+            SET Reviewed_By = :rb,
+            Status = 'Rejected',
             ReasonFR = :r
             WHERE Application_ID = :a");
+            $sql->bindParam(":rb", $tid, PDO::PARAM_STR);
             $sql->bindParam(":a", $aid, PDO::PARAM_INT);
             $sql->bindParam(":r", $r, PDO::PARAM_STR);
             if ($sql->execute()) {
-                $pdo->commit();
+                $ac = "has rejected an Application. ID $aid.";
 
-                $_SESSION['Alert'] = "Application Rejected Successfully!";
-                header('Location: ../../Admin/applications.php');
-                exit;
+                $sql = $pdo->prepare("INSERT INTO tbl_admin_logs (Token_ID, Action)
+                            VALUES (:t, :ac)");
+                $sql->bindParam(":t", $tid, PDO::PARAM_INT);
+                $sql->bindParam(":ac", $ac, PDO::PARAM_STR);
+
+                if ($sql->execute()) {
+                    $pdo->commit();
+
+                    $_SESSION['Alert'] = "Application Rejected Successfully!";
+                    header('Location: ../../Admin/applications.php');
+                    exit;
+                } else {
+                    $pdo->rollBack();
+                    $_SESSION['Alert'] = "Error Logging Activity.";
+                    header('Location: ../../Admin/applications.php');
+                    exit;
+                }
             } else {
                 $pdo->rollBack();
                 $_SESSION['Alert'] = "Error Updating Application!";

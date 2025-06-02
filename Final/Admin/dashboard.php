@@ -133,8 +133,28 @@ include "../Functions/PHP/adminDataFetcher.php";
                     </div>
                 </div>
             </div>
-        </div>
 
+            <!-- Statistics Cards -->
+            <div class="stats-container">
+                <div class="stat-card total">
+                    <div class="stat-value"><?php echo $_SESSION['tApp'] ?? 0 ?></div>
+                    <div class="stat-label">Total Applications</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-value"><?php echo $_SESSION['tAApp'] ?? 0 ?></div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-value"><?php echo $_SESSION['tPApp'] ?? 0 ?></div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-value"><?php echo $_SESSION['tRApp'] ?? 0 ?></div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"

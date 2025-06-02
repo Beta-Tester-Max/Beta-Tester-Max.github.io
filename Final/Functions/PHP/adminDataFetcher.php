@@ -150,6 +150,7 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $a = $d['Account_ID'] ?? "";
                     $sv = $d['Severity'] ?? "";
                     $files = explode(", ", $d['Files']) ?? "";
+                    $rbid = $d['Reviewed_By'] ?? "";
 
                     $sql = $pdo->prepare("SELECT Family_Name FROM tbl_family WHERE Account_ID = :a");
                     $sql->bindParam(":a", $a, PDO::PARAM_INT);
@@ -178,6 +179,13 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $result = $sql->fetch(PDO::FETCH_ASSOC);
                     $data = sanitize($result);
                     $_SESSION['hA_sv' . $sv] = $data['Criteria'];
+
+                    $sql = $pdo->prepare("SELECT Admin_Name FROM tbl_admin_info WHERE Token_ID = :t");
+                    $sql->bindParam(":t", $rbid, PDO::PARAM_INT);
+                    $sql->execute();
+                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+                    $data = sanitize($result);
+                    $_SESSION['hA_rB' . $aid] = $data['Admin_Name'] ?? "";
 
                     $sql = $pdo->prepare("SELECT * FROM tbl_Address WHERE Account_ID = :a");
                     $sql->bindParam(":a", $a, PDO::PARAM_INT);
@@ -241,8 +249,8 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                     $sql->bindParam(":a", $as, PDO::PARAM_INT);
                     $sql->execute();
                     $result = $sql->fetch(PDO::FETCH_ASSOC);
-                    $data =sanitize($result);
-                    $_SESSION['AsName'.$as] = $data['Assistance_Name'] ?? "";
+                    $data = sanitize($result);
+                    $_SESSION['AsName' . $as] = $data['Assistance_Name'] ?? "";
                 }
 
                 $sql = $pdo->query("SELECT * FROM tbl_assistance");
@@ -259,17 +267,17 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                 $result = $sql->fetchAll();
                 $data = sanitize($result);
                 $_SESSION['allRequirements'] = $data ?? "";
-                
-                $sql = $pdo->query("SELECT * FROM tbl_availability");
+
+                $sql = $pdo->query("SELECT * FROM tbl_availability WHERE is_deleted = 0");
                 $result = $sql->fetchAll();
                 $data = sanitize($result);
                 $_SESSION['allAvailability'] = $data ?? "";
-                
+
                 $sql = $pdo->query("SELECT * FROM tbl_rates");
                 $result = $sql->fetchAll();
                 $data = sanitize($result);
                 $_SESSION['allRates'] = $data ?? "";
-                
+
                 $sql = $pdo->query("SELECT * FROM tbl_accounts");
                 $result = $sql->fetchAll();
                 $data = sanitize($result);
@@ -284,7 +292,6 @@ if (isset($_SESSION['access']) && !empty($_SESSION['access'])) {
                 $result = $sql->fetchAll();
                 $data = sanitize($result);
                 $_SESSION['allAdminLogs'] = $data ?? "";
-
 
             } else {
                 header('Location: ../Functions/PHP/logout.php');

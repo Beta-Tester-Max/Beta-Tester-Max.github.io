@@ -90,7 +90,7 @@ if (isset($_SESSION['pA']) && !empty($_SESSION['pA'])) {
                             </div>
                         </div>
                         <div class="row pb-2 px-2" style="width: 100%;">
-                            <button class="application-action" style="width: 100%;" data-bs-target="#accountInfo_<?php echo $aid ?>"
+                            <button class="application-action" style="width: 100%;" data-bs-target="#accountInfo_pA<?php echo $aid ?>"
                                 data-bs-toggle="modal">View Information</button>
                         </div>
                     </div>

@@ -5,8 +5,9 @@
 </form>
 
 <?php
+include "Functions/PHP/connect.php";
 if (isset($_POST['importance'])) {
-    $t = trim($_POST['importance']) ?? "";
+    $t = cleanInt($_POST['importance']) ?? "";
     echo $t;
 }
 ?>

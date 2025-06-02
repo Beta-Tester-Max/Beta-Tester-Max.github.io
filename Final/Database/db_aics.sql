@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2025 at 11:08 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jun 03, 2025 at 01:16 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -106,7 +106,8 @@ CREATE TABLE `tbl_admin_info` (
 --
 
 INSERT INTO `tbl_admin_info` (`Admin_ID`, `Token_ID`, `Access_ID`, `Admin_Name`) VALUES
-(1, 2, 1, 'Admin');
+(1, 2, 1, 'Admin'),
+(2, 8, 1, 'Bobert 3000');
 
 -- --------------------------------------------------------
 
@@ -130,7 +131,19 @@ INSERT INTO `tbl_admin_logs` (`Log_ID`, `Token_ID`, `Action`, `TimeStamp`) VALUE
 (2, 6, 'f1KE40118b has been generated.', '2025-06-02 06:26:51'),
 (3, 7, 'Key: 7Kd8f7a2bE; has been generated.', '2025-06-02 06:31:17'),
 (4, 2, 'has logged out.', '2025-06-02 06:50:34'),
-(5, 2, 'has logged in.', '2025-06-02 06:50:44');
+(5, 2, 'has logged in.', '2025-06-02 06:50:44'),
+(6, 8, 'Token has been generated.', '2025-06-02 15:17:18'),
+(7, 8, 'has logged in.', '2025-06-02 15:18:44'),
+(8, 8, 'created new Availability \"Twice a week\". ID: 10.', '2025-06-02 15:59:43'),
+(9, 8, 'deleted an availability. ID: 10.', '2025-06-02 16:00:28'),
+(10, 8, 'created has Approved an Application. ID 10030.', '2025-06-02 16:29:38'),
+(11, 8, 'has logged in.', '2025-06-02 17:55:38'),
+(12, 8, 'has approved an Application. ID 10031.', '2025-06-02 17:56:14'),
+(13, 8, 'has rejected an Application. ID 10032.', '2025-06-02 18:08:43'),
+(14, 8, 'has rejected an Application. ID 10032.', '2025-06-02 18:12:56'),
+(15, 8, 'has logged in.', '2025-06-02 22:17:56'),
+(16, 8, 'has logged in.', '2025-06-02 22:31:50'),
+(17, 8, 'has rejected an Application. ID 10033.', '2025-06-02 22:35:40');
 
 -- --------------------------------------------------------
 
@@ -151,9 +164,7 @@ CREATE TABLE `tbl_admin_token` (
 
 INSERT INTO `tbl_admin_token` (`Token_ID`, `Key`, `Token`, `TimeStamp`) VALUES
 (2, '4689ddK2E5', '$2y$10$p55B/NbT5qjAWCAauTo1hOjRFqntB9YL7ilKwRoHv3gkHhUWRKUPO', '2025-05-22 07:35:22'),
-(5, 'dcK470Eae4', '$2y$10$fQvI0uers.OnGPHRLrGKMuABoqMlNzC0fo.AY/lGuxt77cHG7U.Gm', '2025-06-02 06:23:24'),
-(6, 'f1KE40118b', '$2y$10$IC.upKr.fM1GIiLrH.mar.Q9d5Qs1r0IuUjQRymw4kSezpMPGg54.', '2025-06-02 06:26:51'),
-(7, '7Kd8f7a2bE', '$2y$10$UPCvLmsgx50QN8BONOZlVO4hD/QReZbpKsGkOzY7fNy0mggyQxfWi', '2025-06-02 06:31:17');
+(8, 'a8Ka3fEb3e', '$2y$10$M7Ok0nRtd.mLqE5arOay6uUgRGWZsyDbG4lGqevt8fyzW3JIPfKLq', '2025-06-02 15:17:18');
 
 -- --------------------------------------------------------
 
@@ -172,6 +183,7 @@ CREATE TABLE `tbl_applications` (
   `Status` varchar(50) DEFAULT 'Pending',
   `Date_Submitted` timestamp NOT NULL DEFAULT current_timestamp(),
   `ReasonFR` text DEFAULT NULL,
+  `Reviewed_By` int(11) DEFAULT NULL,
   `Date_Reviewed` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `Files` text NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
@@ -181,8 +193,10 @@ CREATE TABLE `tbl_applications` (
 -- Dumping data for table `tbl_applications`
 --
 
-INSERT INTO `tbl_applications` (`Application_ID`, `Account_ID`, `Assistance_ID`, `Beneficiary`, `Representative`, `Severity`, `Reason`, `Status`, `Date_Submitted`, `ReasonFR`, `Date_Reviewed`, `Files`, `is_deleted`) VALUES
-(10029, 29, 5, 25, 25, 9, 'I\'m so Hungry', 'Pending', '2025-06-02 02:28:11', NULL, '2025-06-02 02:33:37', '127, 128, 129', 1);
+INSERT INTO `tbl_applications` (`Application_ID`, `Account_ID`, `Assistance_ID`, `Beneficiary`, `Representative`, `Severity`, `Reason`, `Status`, `Date_Submitted`, `ReasonFR`, `Reviewed_By`, `Date_Reviewed`, `Files`, `is_deleted`) VALUES
+(10031, 29, 5, 25, 25, 9, 'I\'m Hungry', 'Approved', '2025-06-02 17:54:35', NULL, 8, '2025-06-02 17:56:14', '162, 163, 164', 0),
+(10032, 29, 5, 25, 25, 9, 'I\'m Hungry Again', 'Rejected', '2025-06-02 18:08:20', 'Nope no more food for u', 8, '2025-06-02 18:12:56', '165, 166, 167', 0),
+(10033, 29, 5, 25, 25, 9, 'I\'m Hungry this time too', 'Rejected', '2025-06-02 22:34:56', 'I told u not again', 8, '2025-06-02 22:35:40', '168, 169, 170', 0);
 
 -- --------------------------------------------------------
 
@@ -233,7 +247,8 @@ INSERT INTO `tbl_availability` (`Availability_ID`, `Availability_Name`, `is_dele
 (6, 'Semi-Annually', 0),
 (7, 'Annually', 0),
 (8, 'Per-Semester', 0),
-(9, 'Per-School-Year', 0);
+(9, 'Per-School-Year', 0),
+(10, 'Twice a week', 1);
 
 -- --------------------------------------------------------
 
@@ -252,7 +267,7 @@ CREATE TABLE `tbl_budget` (
 --
 
 INSERT INTO `tbl_budget` (`Budget_ID`, `Assistance_ID`, `Amount`) VALUES
-(1, 5, 6000),
+(1, 5, 12000),
 (2, 6, 20000);
 
 -- --------------------------------------------------------
@@ -399,9 +414,15 @@ CREATE TABLE `tbl_files` (
 --
 
 INSERT INTO `tbl_files` (`File_ID`, `Account_ID`, `Requirement_ID`, `File_Name`, `TimeStamp`, `is_deleted`) VALUES
-(127, 29, 34, '29_34.pdf', '2025-06-02 02:28:11', 0),
-(128, 29, 35, '29_35.pdf', '2025-06-02 02:28:11', 0),
-(129, 29, 36, '29_36.pdf', '2025-06-02 02:28:11', 0);
+(162, 29, 34, 'deleted_162_29_34.pdf', '2025-06-02 17:54:35', 1),
+(163, 29, 35, 'deleted_163_29_35.pdf', '2025-06-02 17:54:35', 1),
+(164, 29, 36, 'deleted_164_29_36.pdf', '2025-06-02 17:54:35', 1),
+(165, 29, 34, 'deleted_165_29_34.pdf', '2025-06-02 18:08:20', 1),
+(166, 29, 35, 'deleted_166_29_35.pdf', '2025-06-02 18:08:20', 1),
+(167, 29, 36, 'deleted_167_29_36.pdf', '2025-06-02 18:08:20', 1),
+(168, 29, 34, '29_34.pdf', '2025-06-02 22:34:56', 0),
+(169, 29, 35, '29_35.pdf', '2025-06-02 22:34:56', 0),
+(170, 29, 36, '29_36.pdf', '2025-06-02 22:34:56', 0);
 
 -- --------------------------------------------------------
 
@@ -532,7 +553,13 @@ INSERT INTO `tbl_user_logs` (`Log_ID`, `Account_ID`, `Action`, `TimeStamp`) VALU
 (9, 29, 'has deleted an Application. ID: 10029.', '2025-06-02 02:33:37'),
 (10, 29, 'has logged out.', '2025-06-02 02:43:20'),
 (11, 29, 'has logged in.', '2025-06-02 02:44:22'),
-(12, 29, 'has logged out.', '2025-06-02 02:44:37');
+(12, 29, 'has logged out.', '2025-06-02 02:44:37'),
+(15, 29, 'has logged in.', '2025-06-02 16:15:07'),
+(16, 29, 'has created a Food Assistance type Application. ID: 10030.', '2025-06-02 16:28:51'),
+(17, 29, 'has created a Food Assistance type Application. ID: 10031.', '2025-06-02 17:54:35'),
+(18, 29, 'has created a Food Assistance type Application. ID: 10032.', '2025-06-02 18:08:20'),
+(19, 29, 'has logged in.', '2025-06-02 22:34:33'),
+(20, 29, 'has created a Food Assistance type Application. ID: 10033.', '2025-06-02 22:34:56');
 
 --
 -- Indexes for dumped tables
@@ -698,25 +725,25 @@ ALTER TABLE `tbl_address`
 -- AUTO_INCREMENT for table `tbl_admin_info`
 --
 ALTER TABLE `tbl_admin_info`
-  MODIFY `Admin_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Admin_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_admin_logs`
 --
 ALTER TABLE `tbl_admin_logs`
-  MODIFY `Log_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Log_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tbl_admin_token`
 --
 ALTER TABLE `tbl_admin_token`
-  MODIFY `Token_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Token_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_applications`
 --
 ALTER TABLE `tbl_applications`
-  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10030;
+  MODIFY `Application_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10034;
 
 --
 -- AUTO_INCREMENT for table `tbl_assistance`
@@ -728,7 +755,7 @@ ALTER TABLE `tbl_assistance`
 -- AUTO_INCREMENT for table `tbl_availability`
 --
 ALTER TABLE `tbl_availability`
-  MODIFY `Availability_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Availability_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_budget`
@@ -770,7 +797,7 @@ ALTER TABLE `tbl_feedbacks`
 -- AUTO_INCREMENT for table `tbl_files`
 --
 ALTER TABLE `tbl_files`
-  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `File_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 
 --
 -- AUTO_INCREMENT for table `tbl_rates`
@@ -788,7 +815,7 @@ ALTER TABLE `tbl_requirements`
 -- AUTO_INCREMENT for table `tbl_user_logs`
 --
 ALTER TABLE `tbl_user_logs`
-  MODIFY `Log_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Log_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables

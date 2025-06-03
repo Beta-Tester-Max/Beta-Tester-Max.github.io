@@ -39,9 +39,9 @@ if (isset($_SESSION['hA']) && !empty($_SESSION['hA'])) {
                             <h3 class="section-title">Family Members</h3>
                             <ul class="application-list">
                                 <?php
-                                foreach ($_SESSION['pA_fC' . $a] as $fc) {
+                                foreach ($_SESSION['hA_fC' . $a] as $fc) {
                                     $u = $fc['User_ID'] ?? "";
-                                    $uI = $_SESSION['pA_fM' . $u] ?? "";
+                                    $uI = $_SESSION['hA_fM' . $u] ?? "";
                                     $fn = $uI['First_Name'] ?? "";
                                     $mn = $uI['Middle_Name'] ?? "";
                                     $ln = $uI['Last_Name'] ?? "";

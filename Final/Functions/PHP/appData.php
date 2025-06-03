@@ -4,43 +4,41 @@ ini_set('session.cookie_httponly', 1);
 session_start();
 if (isset($_POST['createCaseStudy'])) {
     $aD = array();
-    header('Location: ../../Admin/caseStudyMaker.php');
-    exit;
+    $a = $_POST['id'];
 
-    // try {
-    //     $pdo->beginTransaction();
+    $sql = $pdo->prepare("SELECT Account_ID, Beneficiary FROM tbl_applications WHERE Application_ID = :a");
+    $sql->bindParam(":a", $a, PDO::PARAM_INT);
+    $sql->execute();
+    $result = $sql->fetch();
+    $data = sanitize($result);
+    $b = $data['Beneficiary'] ?? "";
+    $acc = $data['Account_ID'] ?? "";
 
-    //     $sql = $pdo->prepare("SELECT Assistance_Name FROM tbl_assistance WHERE Assistance_ID = :a");
-    //     $sql->bindParam(":a", $sD['a'], PDO::PARAM_INT);
-    //     $sql->execute();
-    //     $result = $sql->fetch(PDO::FETCH_ASSOC);
-    //     $data = sanitize($result);
-    //     $sD['an'] = $data['Assistance_Name'];
+    $sql = $pdo->prepare("SELECT * FROM tbl_family_member WHERE User_ID = :u");
+    $sql->bindParam(":u", $b, PDO::PARAM_INT);
+    $sql->execute();
+    $result = $sql->fetch();
+    $data = sanitize($result);
+    $aD['helpee'] = $data ?? "";
 
-    //     $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Account_ID = :a AND Assistance_ID = :as AND is_deleted = 0 AND Status = 'Pending'");
-    //     $sql->bindParam(":a", $a, PDO::PARAM_INT);
-    //     $sql->bindParam(":as", $aid, PDO::PARAM_INT);
-    //     $sql->execute();
+    $sql = $pdo->prepare("SELECT User_ID FROM tbl_family_composition WHERE Account_ID = :a AND NOT User_ID = :u");
+    $sql->bindParam(":a", $acc, PDO::PARAM_INT);
+    $sql->bindParam(":u", $b, PDO::PARAM_INT);
+    $sql->execute();
+    $result = $sql->fetchAll();
+    $data = sanitize($result);
 
-    //     if ($sql->rowCount() === 0) {
+    foreach ($data as $d) {
+        $u = $d['User_ID'] ?? "";
 
-    //         $_SESSION['sD'] = $sD;
+        $sql = $pdo->prepare("SELECT * FROM tbl_family_member WHERE User_ID = :u");
+        $sql->bindParam(":u", $u, PDO::PARAM_INT);
+        $sql->execute();
+        $result = $sql->fetch();
+        $data = sanitize($result);
+        $aD['familyMembers'] = $data ?? "";
+    }
 
-    //         header('Location: ../../appDoc.php');
-    //         exit;
-    //     } else {
-    //         $pdo->rollBack();
-
-    //         $_SESSION['Alert'] = "You already have a pending application on this type of assistance.";
-    //         header('Location: ../../createApp.php');
-    //         exit;
-    //     }
-    // } catch (PDOException $e) {
-    //     $pdo->rollBack();
-
-    //     $_SESSION['Alert'] = "You already have a pending application of this type of assistance.";
-    //     header('Location: ../../createApp.php');
-    //     exit;
-    // }
+    var_dump($aD);
 }
 ?>

@@ -6,6 +6,7 @@ session_start();
 if (isset($_POST['generateReport'])) {
 $sd = $_POST['startDate'];
 $ed = $_POST['endDate'];
+$fed = $ed." 23:59:59";
 $a = $_POST['assistance'];
 
 try {
@@ -13,13 +14,13 @@ try {
     $sql = $pdo->prepare("SELECT * FROM tbl_applications WHERE Assistance_ID = :a AND Date_Submitted BETWEEN :sd AND :ed");
     $sql->bindParam(":a", $a, PDO::PARAM_INT);
     $sql->bindParam(":sd", $sd, PDO::PARAM_STR);
-    $sql->bindParam(":ed", $ed, PDO::PARAM_STR);
+    $sql->bindParam(":ed", $fed, PDO::PARAM_STR);
     $sql->execute();
 
     $results = $sql->fetchAll(PDO::FETCH_ASSOC);
 
     header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="'.$a.'Report.csv"');
+    header('Content-Disposition: attachment; filename="Report.xls"');
 
     $output = fopen('php://output', 'w');
 
@@ -30,7 +31,8 @@ try {
             fputcsv($output, $row);
         }
     } else {
-        fputcsv($output, ['No records found.']);
+        // fputcsv($output, ['No records found.']);
+        echo "here";
     }
 
     fclose($output);

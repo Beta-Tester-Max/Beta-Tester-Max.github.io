@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Futuristic Neon Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      margin: 0;
+      background-color: #0f0f1a;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .chart-container {
+      width: 90%;
+      max-width: 800px;
+      padding: 20px;
+      background: #1a1a2e;
+      border: 2px solid #00f2ff;
+      box-shadow: 0 0 20px #00f2ff, 0 0 40px #0ff;
+      border-radius: 20px;
+    }
+
+    canvas {
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-container">
+    <canvas id="futuristicChart"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('futuristicChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Neon Growth',
+          data: [12, 19, 11, 26, 30, 45],
+          borderColor: '#00f2ff',
+          backgroundColor: 'rgba(0, 242, 255, 0.2)',
+          tension: 0.4,
+          pointBackgroundColor: '#0ff',
+          pointBorderColor: '#0ff',
+          pointHoverRadius: 7
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: '#0ff'
+            }
+          },
+          tooltip: {
+            backgroundColor: '#1a1a2e',
+            titleColor: '#00f2ff',
+            bodyColor: '#fff'
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: '#0ff'
+            },
+            grid: {
+              color: 'rgba(0, 255, 255, 0.1)'
+            }
+          },
+          y: {
+            ticks: {
+              color: '#0ff'
+            },
+            grid: {
+              color: 'rgba(0, 255, 255, 0.1)'
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

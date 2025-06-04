@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Futuristic Multi-Chart Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+:root {
+    --bg: #f8f8f8;
+    --bg2: #d4d4d4;
+    --font: #ffffff;
+    --sbg: #000000;
+}
+
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      font-family: 'Orbitron', sans-serif;
+      color:var(--sbg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .chart-container {
+      width: 90%;
+      max-width: 800px;
+      background: var(--bg2);
+      border: 2px solid var(--sbg);
+      box-shadow: 0 0 20px var(--sbg), 0 0 40px var(--sbg);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    canvas {
+      background: transparent;
+    }
+
+    .btn-group {
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background: var(--bg);
+      border: 1px solid var(--sbg);
+      color:var(--sbg);
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 8px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn:hover {
+      background:var(--sbg);
+      color: var(--font);
+      transform: scale(1.05);
+    }
+
+    .btn.active {
+      background:var(--sbg);
+      color: var(--font);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="btn-group">
+    <button class="btn active" onclick="switchChart('line')">Line</button>
+    <button class="btn" onclick="switchChart('bar')">Bar</button>
+    <button class="btn" onclick="switchChart('pie')">Pie</button>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="futuristicChart"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('futuristicChart').getContext('2d');
+
+    const chartData = {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Dark Data',
+        data: [12, 19, 11, 26, 30, 45],
+        backgroundColor: [
+          'rgba(160, 160, 160, 0.7)',
+          'rgba(130, 130, 130, 0.7)',
+          'rgba(100, 100, 100, 0.7)',
+          'rgba(70, 70, 70, 0.7)',
+          'rgba(40, 40, 40, 0.7)',
+          'rgba(10, 10, 10, 0.7)'
+        ],
+        borderColor: '#000000',
+        borderWidth: 2,
+        tension: 0.4,
+        pointBackgroundColor: '#000',
+        pointBorderColor: '#000',
+        pointHoverRadius: 7
+      }]
+    };
+
+    const configOptions = {
+      plugins: {
+        legend: {
+          labels: { color: '#000' }
+        },
+        tooltip: {
+          backgroundColor: '#ffffff',
+          titleColor: '#000000',
+          bodyColor: '#000'
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#000' },
+          grid: { color: 'rgba(0, 0, 0, 0.1)' }
+        },
+        y: {
+          ticks: { color: '#000' },
+          grid: { color: 'rgba(0, 0, 0, 0.1)' }
+        }
+      }
+    };
+
+    let chart = new Chart(ctx, {
+      type: 'line',
+      data: chartData,
+      options: configOptions
+    });
+
+    function switchChart(type) {
+      // Update button states
+      document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.btn[onclick="switchChart('${type}')"]`).classList.add('active');
+
+      // Destroy existing chart and create a new one
+      chart.destroy();
+
+      let options = configOptions;
+      if (type === 'pie') {
+        options = {
+          plugins: configOptions.plugins
+        };
+      }
+
+      chart = new Chart(ctx, {
+        type: type,
+        data: chartData,
+        options: options
+      });
+    }
+  </script>
+
+</body>
+</html>

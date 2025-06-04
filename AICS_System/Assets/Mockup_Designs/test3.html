@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Slanted Pie Chart</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      margin: 0;
+      background-color: #0f0f1a;
+      font-family: 'Orbitron', sans-serif;
+      color: #0ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #container {
+      width: 90%;
+      max-width: 700px;
+      height: 500px;
+      background: #1a1a2e;
+      border: 2px solid #00f2ff;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00f2ff, 0 0 40px #0ff;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script>
+    Highcharts.chart('container', {
+      chart: {
+        type: 'pie',
+        backgroundColor: 'transparent',
+        options3d: {
+          enabled: true,
+          alpha: 45,
+          beta: 0
+        }
+      },
+      title: {
+        text: '3D Neon Pie Chart',
+        style: { color: '#0ff' }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          depth: 35,
+          dataLabels: {
+            enabled: true,
+            style: { color: '#fff' }
+          }
+        }
+      },
+      series: [{
+        name: 'Data',
+        data: [
+          ['Jan', 12],
+          ['Feb', 19],
+          ['Mar', 11],
+          ['Apr', 26],
+          ['May', 30],
+          ['Jun', 45]
+        ]
+      }],
+      colors: ['#00f2ff', '#00d0ff', '#00a0ff', '#0070ff', '#0050ff', '#0030ff']
+    });
+  </script>
+</body>
+</html>

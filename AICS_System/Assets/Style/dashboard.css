@@ -1,23 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: "Orbitron", sans-serif;
   margin: 0;
   padding: 0;
   background: var(--bg);
   color: var(--font);
+  overflow-x: hidden;
 }
 
 :root {
   --bg: #ffffff;
-  --sbg: #bababa;
-  --font: #2a2a2a;
+  --obg: #0f0f1a;
+  --sbg: #ffffff;
+  --tbg: rgba(0, 0, 0, 0.1);
+  --font: #000000;
+  --sfont: #000200;
   --img: url("../Image/logo_dark.PNG");
+  --c: 'Dark Growth';
 }
 
 :root.darkness {
-  --bg: #2a2a2a;
-  --sbg: #3f3f3f;
+  --bg: #1d1d1d;
+  --obg: #ffffff;
+  --sbg: #333333;
+  --tbg: rgba(255, 255, 255,0.1);
   --font: #ffffff;
+  --sfont: #fff2ff;
   --img: url("../Image/logo_light.png");
+  --c: 'Neon Growth';
 }
 
 @keyframes gradient {
@@ -43,9 +54,9 @@ body {
 }
 
 .side-nav {
-  position: absolute;
+  position: fixed;
   width: 10em;
-  height: 100%;
+  height: 100vh;
   padding-top: 1em;
   box-sizing: border-box;
   background: var(--sbg);
@@ -113,14 +124,12 @@ body {
 
 .side-nav li.active {
   color: transparent;
-  background: linear-gradient(
-    to right,
-    var(--font),
-    var(--bg),
-    var(--font),
-    var(--bg),
-    var(--font)
-  );
+  background: linear-gradient(to right,
+      var(--font),
+      var(--bg),
+      var(--font),
+      var(--bg),
+      var(--font));
   background-size: 200%;
   background-clip: text;
   animation: gradient 2.5s linear infinite;
@@ -129,6 +138,8 @@ body {
 .container {
   padding-left: 10em;
   width: 100%;
+  min-width: 57.5em;
+  height: 100%;
   background: var(--bg);
   box-sizing: border-box;
 }
@@ -180,63 +191,51 @@ body {
 .main {
   box-sizing: border-box;
   padding: 2em;
-  min-height: 43.15em;
-  box-shadow: inset 0px 0px 10px var(--font);
+  height: 100em;
+  box-shadow: inset 0px 0px 4px var(--font);
+  display: flex;
+  justify-content: end;
 }
 
-.stats-container {
-  position: relative  ;
-  width: 70%;
-  height: 15em;
-  border-radius: 10px;
-  box-shadow: 2px 2px 10px var(--font);
+@media (max-width: 1500px) {
+  .main {
+    justify-content: center;
+  }
+}
+
+.chart-container {
   box-sizing: border-box;
-  padding: 1em;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
+  width: 43.8em;
+  height: 25em;
+  padding: 20px;
+  background: var(--bg);
+  box-shadow: 0 0 2px var(--sfont), 0 0 4px var(--font);
+  border-radius: 20px;
 }
 
-.card {
-  width: 10em;
-  height: 10em;
-  rotate: 45deg;
-  border: 1px solid var(--font);
+@keyframes highlightChart {
+  0% {
+    scale: 1;
+  }
+  25% {
+    scale: 1.05;
+  }
+  50% {
+    scale: 1;
+  }
+  75% {
+    scale: 1.05;
+  }
+  0% {
+    scale: 1;
+  }
+}
+
+.chart {
+  width: 100%;
   box-sizing: border-box;
 }
 
-.card-1 {
-  background: rgb(234, 234, 15);
-  position: absolute;
-  transform: translateX(10em) translateY(-10em);
-}
-
-.card-2 {
-  background: #2b2bdc;
-  position: absolute;
-  transform: translateX(10em);
-}
-
-.card-3 {
-  background: #10c610;
-  position: absolute;
-  transform: translateX(20em);
-}
-
-.card-4 {
-  background: #be1b1b;
-  position: absolute;
-  transform: translateX(20em) translateY(-10em);
-}
-
-.card-body {
-  position: absolute;
-  transform: rotate(-45deg) translateX(0em) translateY(1em);
-}
-
-.card-body p {
-  text-align: center;
-}
-
-.card-body p b{
-  font-size: 4em;
+canvas {
+  background: transparent;
 }

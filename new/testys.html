@@ -1,652 +1,852 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ABMS - Alaminos Beneficiary Management System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <style>
-        @font-face {
-            font-family: 'Sharp Grotesk Pan Euro';
-            src: url('https://fonts.cdnfonts.com/css/sharp-grotesk-pan-euro') format('woff2');
-            font-weight: normal;
-            font-style: normal;
+      @font-face {
+        font-family: "Sharp Grotesk Pan Euro";
+        src: url("https://fonts.cdnfonts.com/css/sharp-grotesk-pan-euro")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      :root {
+        --primary-color: #ffe923;
+        --secondary-color: #f2f2f2;
+        --accent-color: #0d47a1;
+        --danger-color: #d32f2f;
+        --success-color: #388e3c;
+        --text-color: #333;
+        --light-text: #666;
+        --border-radius: 10px;
+        --retro-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
+        --retro-hover-shadow: 6px 6px 0px #969696, -3px -3px 10px #ffe923;
+        --retro-active-shadow: none;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Sharp Grotesk Pan Euro", "Segoe UI", Tahoma, Geneva,
+          Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--primary-color);
+        color: var(--text-color);
+        background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M0 0h5v5H0zm5 5h5v5H5zm5 5h5v5H5zm5 5h5v5H5zm5 5h5v5H5z" fill="%23FFE923" opacity="0.1"/></svg>');
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header Styles */
+      header {
+        background-color: var(--primary-color);
+        color: #333;
+        padding: 1rem 0;
+        box-shadow: var(--retro-shadow);
+        border-bottom: 2px solid #333;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #333;
+        text-shadow: 2px 2px 0 #000;
+        animation: pulse 2s infinite;
+      }
+
+      .user-menu {
+        display: flex;
+        align-items: center;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #fff;
+        margin-left: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+        font-weight: bold;
+        border: 2px solid #333;
+        box-shadow: var(--retro-shadow);
+      }
+
+      /* Navigation Styles */
+      nav {
+        background-color: white;
+        box-shadow: var(--retro-shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 2px solid #333;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-right: 1px solid #ddd;
+        box-shadow: var(--retro-shadow);
+      }
+
+      .nav-links li:hover,
+      .nav-links li.active {
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+        box-shadow: var(--retro-hover-shadow);
+      }
+
+      /* Dashboard Styles */
+      .dashboard {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 2rem 0;
+      }
+
+      .stat-card {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--retro-shadow);
+        text-align: center;
+        border: 2px solid #333;
+        animation: fadeIn 1s ease-in;
+      }
+
+      .stat-card:hover {
+        box-shadow: var(--retro-hover-shadow);
+        transform: translateX(-0.5em) translateY(-0.5em);
+      }
+
+      .stat-card h3 {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 0 #000;
+      }
+
+      .stat-card p {
+        color: var(--light-text);
+      }
+
+      .alerts {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--retro-shadow);
+        margin: 2rem 0;
+        border: 2px solid #333;
+      }
+
+      .alert-item {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem;
+        border-bottom: 1px solid var(--secondary-color);
+      }
+
+      .alert-icon {
+        margin-right: 1rem;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: white;
+        border: 2px solid #333;
+        box-shadow: var(--retro-shadow);
+      }
+      .danger {
+        background-color: var(--danger-color);
+      }
+
+      .warning {
+        background-color: #ffa000;
+      }
+
+      /* Module Styles */
+      .module {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--retro-shadow);
+        margin-bottom: 2rem;
+        border: 2px solid #333;
+      }
+
+      .module-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 1rem;
+      }
+
+      .search-bar {
+        display: flex;
+        gap: 10px;
+      }
+
+      .search-bar input {
+        padding: 0.6rem;
+        border: 2px solid #333;
+        border-radius: var(--border-radius);
+        flex-grow: 1;
+        background-color: #f9f9f9;
+      }
+
+      .search-bar button {
+        background-color: var(--primary-color);
+        color: #333;
+        border: 2px solid #333;
+        padding: 0.6rem 1rem;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-family: "Sharp Grotesk Pan Euro", sans-serif;
+      }
+
+      .beneficiary-list,
+      .payout-list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+      }
+
+      .beneficiary-card,
+      .payout-card {
+        background-color: var(--secondary-color);
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        border: 1px solid #ddd;
+        transition: all 0.3s;
+        box-shadow: var(--retro-shadow);
+      }
+
+      .beneficiary-card:hover,
+      .payout-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--retro-hover-shadow);
+      }
+
+      .id-card {
+        position: relative;
+        background-color: white;
+        border: 3px solid var(--primary-color);
+        padding: 1rem;
+        margin-top: 1rem;
+        animation: slideIn 0.5s ease-out;
+        box-shadow: var(--retro-shadow);
+      }
+
+      /* Button Styles with Retro Effect */
+      .btn {
+        padding: 0.6rem 1.2rem;
+        border: 2px solid #333;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-weight: bold;
+        font-family: "Sharp Grotesk Pan Euro", sans-serif;
+        transition: all 0.2s;
+        box-shadow: var(--retro-shadow);
+      }
+
+      .btn:hover {
+        transform: scale(1.05);
+        box-shadow: var(--retro-hover-shadow);
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: #333;
+      }
+
+      .btn-success {
+        background-color: var(--success-color);
+        color: white;
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+      }
+
+      .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 600px;
+        border: 2px solid #333;
+        box-shadow: var(--retro-shadow);
+        animation: scaleIn 0.5s ease-out;
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+        animation: blink 1s infinite;
+      }
+
+      /* Form Styles */
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 0.6rem;
+        border: 2px solid #333;
+        border-radius: var(--border-radius);
+        background-color: #f9f9f9;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .dashboard {
+          grid-template-columns: 1fr;
         }
 
-        :root {
-            --primary-color: #FFE923;
-            --secondary-color: #f2f2f2;
-            --accent-color: #0d47a1;
-            --danger-color: #d32f2f;
-            --success-color: #388e3c;
-            --text-color: #333;
-            --light-text: #666;
-            --border-radius: 10px;
-            --retro-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
-            --retro-hover-shadow: 6px 6px 0px #969696, -3px -3px 10px #FFE923;
-            --retro-active-shadow: none;
+        .beneficiary-list,
+        .payout-list {
+          grid-template-columns: 1fr;
         }
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Sharp Grotesk Pan Euro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      /* Animations */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
         }
-
-        body {
-            background-color:var(--primary-color);
-            color: var(--text-color);
-            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M0 0h5v5H0zm5 5h5v5H5zm5 5h5v5H5zm5 5h5v5H5zm5 5h5v5H5z" fill="%23FFE923" opacity="0.1"/></svg>');
+        50% {
+          transform: scale(1.05);
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        100% {
+          transform: scale(1);
         }
+      }
 
-        /* Header Styles */
-        header {
-            background-color: var(--primary-color);
-            color: #333;
-            padding: 1rem 0;
-            box-shadow: var(--retro-shadow);
-            border-bottom: 2px solid #333;
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        to {
+          opacity: 1;
         }
+      }
 
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #333;
-            text-shadow: 2px 2px 0 #000;
-            animation: pulse 2s infinite;
+      @keyframes slideIn {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
         }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
+        to {
+          transform: translateY(0);
+          opacity: 1;
         }
+      }
 
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #fff;
-            margin-left: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-weight: bold;
-            border: 2px solid #333;
-            box-shadow: var(--retro-shadow);
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
         }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
 
-        /* Navigation Styles */
-        nav {
-            background-color: white;
-            box-shadow: var(--retro-shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 2px solid #333;
+      @keyframes blink {
+        0% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.5;
+        }
+      }
+      .barangay-section {
+        background-color: #fffdd0;
+        padding: 2.5em;
+        border: #000000 2px solid;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        margin-left: 95px;
+        margin-right: 95px;
+        box-shadow: rgba(0, 0, 0, 0.4) 1px 2px 2px;
+      }
+
+      .section-title {
+        color: #333300;
+        margin-bottom: 20px;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      .barangay-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+      }
+
+      .barangay-btn {
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        color: #333300;
+        background-color: #ffffcc;
+        transition: 0.4s ease-in-out;
+        box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .barangay-btn:hover {
+        box-shadow: 6px 6px 0px #969696, -3px -3px 10px #ffffff;
+        transform: translateX(-0.5em) translateY(-0.5em);
+        background-color: #ffd700;
+      }
+
+      .barangay-btn:active {
+        transition: 0.2s;
+        transform: translateX(0em) translateY(0em);
+        box-shadow: none;
+      }
+      /* menu */
+      .menu-toggle {
+        display: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: #333;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+          padding: 1rem;
         }
 
         .nav-links {
-            display: flex;
-            list-style: none;
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          background-color: white;
+          border-top: 1px solid #ddd;
+        }
+
+        .nav-links.active {
+          display: flex;
         }
 
         .nav-links li {
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-right: 1px solid #ddd;
-            box-shadow: var(--retro-shadow);
+          padding: 1rem;
+          text-align: center;
+          border-bottom: 1px solid #ddd;
         }
 
-        .nav-links li:hover, .nav-links li.active {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-            box-shadow: var(--retro-hover-shadow);
+        .nav-links li a {
+          color: inherit;
+          text-decoration: none;
+          display: block;
         }
-
-        /* Dashboard Styles */
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 2rem 0;
-        }
-
-        .stat-card {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--retro-shadow);
-            text-align: center;
-            border: 2px solid #333;
-            animation: fadeIn 1s ease-in;
-        }
-
-        .stat-card:hover {
-            box-shadow: var(--retro-hover-shadow);
-            transform: translateX(-0.5em) translateY(-0.5em);
-        }
-
-        .stat-card h3 {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 0 #000;
-        }
-
-        .stat-card p {
-            color: var(--light-text);
-        }
-
-        .alerts {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--retro-shadow);
-            margin: 2rem 0;
-            border: 2px solid #333;
-        }
-
-        .alert-item {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem;
-            border-bottom: 1px solid var(--secondary-color);
-        }
-
-        .alert-icon {
-            margin-right: 1rem;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: white;
-            border: 2px solid #333;
-            box-shadow: var(--retro-shadow);
-        }
-         .danger {
-            background-color: var(--danger-color);
-        }
-
-        .warning {
-            background-color: #ffa000;
-        }
-
-        /* Module Styles */
-        .module {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--retro-shadow);
-            margin-bottom: 2rem;
-            border: 2px solid #333;
-        }
-
-        .module-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 1rem;
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 10px;
-        }
-
-        .search-bar input {
-            padding: 0.6rem;
-            border: 2px solid #333;
-            border-radius: var(--border-radius);
-            flex-grow: 1;
-            background-color: #f9f9f9;
-        }
-
-        .search-bar button {
-            background-color: var(--primary-color);
-            color: #333;
-            border: 2px solid #333;
-            padding: 0.6rem 1rem;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-family: 'Sharp Grotesk Pan Euro', sans-serif;
-        }
-
-        .beneficiary-list, .payout-list {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        .beneficiary-card, .payout-card {
-            background-color: var(--secondary-color);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            border: 1px solid #ddd;
-            transition: all 0.3s;
-            box-shadow: var(--retro-shadow);
-        }
-
-        .beneficiary-card:hover, .payout-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--retro-hover-shadow);
-        }
-
-        .id-card {
-            position: relative;
-            background-color: white;
-            border: 3px solid var(--primary-color);
-            padding: 1rem;
-            margin-top: 1rem;
-            animation: slideIn 0.5s ease-out;
-            box-shadow: var(--retro-shadow);
-        }
-
-        /* Button Styles with Retro Effect */
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border: 2px solid #333;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-weight: bold;
-            font-family: 'Sharp Grotesk Pan Euro', sans-serif;
-            transition: all 0.2s;
-            box-shadow: var(--retro-shadow);
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: var(--retro-hover-shadow);
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: #333;
-        }
-
-        .btn-success {
-            background-color: var(--success-color);
-            color: white;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
-
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 600px;
-            border: 2px solid #333;
-            box-shadow: var(--retro-shadow);
-            animation: scaleIn 0.5s ease-out;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-            animation: blink 1s infinite;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.6rem;
-            border: 2px solid #333;
-            border-radius: var(--border-radius);
-            background-color: #f9f9f9;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-            
-            .beneficiary-list, .payout-list {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes blink {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Header -->
     <header>
-        <div class="container header-content">
-            <div class="logo">ABMS</div>
-            <div class="user-menu">
-                <i class="fas fa-bell"></i>
-                <div class="user-avatar">A</div>
-            </div>
+      <div class="container header-content">
+        <div class="logo">ABMS</div>
+        <div class="user-menu">
+          <i class="fas fa-bell"></i>
+          <div class="user-avatar">A</div>
         </div>
+      </div>
     </header>
 
     <!-- Navigation -->
+    <!-- <nav>
+      <div class="container">
+        <ul class="nav-links">
+          <li class="active">Dashboard</li>
+          <a href="#beneficiary"><li>Beneficiary Management</li></a>
+          <a href="#payoutManagement"><li>Payout Management</li></a>
+          <a href="#idGen"><li>ID Generation</li></a>
+          <a href="#brgy"><li>Brgy Management</li></a>
+          <li>Reports</li>
+          <li>Settings</li>
+        </ul>
+      </div>
+    </nav> -->
+
     <nav>
-        <div class="container">
-            <ul class="nav-links">
-                <li class="active">Dashboard</li>
-                <a href="#beneficiary"><li>Beneficiary Management</li></a>
-                <a href="#payoutManagement"><li>Payout Management</li></a>
-                <a href="#idGen"><li>ID Generation</li></a>
-                <a href="#brgy"><li>Brgy Management</li></a>
-                <li>Reports</li>
-                <li>Settings</li>
-            </ul>
+      <div class="container">
+        <div class="menu-toggle" id="mobile-menu">
+          <i class="fas fa-bars"></i>
         </div>
+        <ul class="nav-links">
+          <li class="active">Dashboard</li>
+          <li><a href="#beneficiary">Beneficiary Management</a></li>
+          <li><a href="#payoutManagement">Payout Management</a></li>
+          <li><a href="#idGen">ID Generation</a></li>
+          <li><a href="#brgy">Brgy Management</a></li>
+          <li>Reports</li>
+          <li>Settings</li>
+        </ul>
+      </div>
     </nav>
 
     <div class="container">
-        <!-- Dashboard Content -->
-        <div class="dashboard">
-            <div class="stat-card">
-                <h3>1,245</h3>
-                <p>Total Beneficiaries</p>
-            </div>
-            <div class="stat-card">
-                <h3>342</h3>
-                <p>Senior Citizens</p>
-            </div>
-            <div class="stat-card">
-                <h3>189</h3>
-                <p>Persons with Disabilities</p>
-            </div>
+      <!-- Dashboard Content -->
+      <div class="dashboard">
+        <div class="stat-card">
+          <h3>1,245</h3>
+          <p>Total Beneficiaries</p>
         </div>
+        <div class="stat-card">
+          <h3>342</h3>
+          <p>Senior Citizens</p>
+        </div>
+        <div class="stat-card">
+          <h3>189</h3>
+          <p>Persons with Disabilities</p>
+        </div>
+      </div>
 
-        <!-- Alerts Section -->
-        <div class="alerts">
-            <div class="alert-item">
-                <div class="alert-icon danger">
-                    <i class="fas fa-exclamation"></i>
-                </div>
-                <p>5 pending verifications require immediate attention</p>
-            </div>
-            <div class="alert-item">
-                <div class="alert-icon warning">
-                    <i class="fas fa-info"></i>
-                </div>
-                <p>15 payouts scheduled for next week</p>
-            </div>
+      <!-- Alerts Section -->
+      <div class="alerts">
+        <div class="alert-item">
+          <div class="alert-icon danger">
+            <i class="fas fa-exclamation"></i>
+          </div>
+          <p>5 pending verifications require immediate attention</p>
         </div>
+        <div class="alert-item">
+          <div class="alert-icon warning">
+            <i class="fas fa-info"></i>
+          </div>
+          <p>15 payouts scheduled for next week</p>
+        </div>
+      </div>
 
-        <!-- Beneficiary Management Module -->
-        <div class="module" id="beneficiary">
-            <div class="module-header">
-                <h2>Beneficiary Management</h2>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search by name or ID...">
-                    <button><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div class="beneficiary-list">
-                <div class="beneficiary-card">
-                    <h4>Maria Sanchez</h4>
-                    <p>Senior Citizen</p>
-                    <p>PhilSys ID: PH12345678</p>
-                    <button class="btn btn-primary" onclick="showBeneficiaryDetails()">View Details</button>
-                </div>
-                <div class="beneficiary-card">
-                    <h4>Carlos Ramirez</h4>
-                    <p>Person with Disability</p>
-                    <p>PhilSys ID: PH87654321</p>
-                    <button class="btn btn-primary">View Details</button>
-                </div>
-                <div class="beneficiary-card">
-                    <h4>Sofia Garcia</h4>
-                    <p>Child</p>
-                    <p>PhilSys ID: PH98765432</p>
-                    <button class="btn btn-primary">View Details</button>
-                </div>
-                <div class="beneficiary-card">
-                    <h4>Juan Perez</h4>
-                    <p>Senior Citizen</p>
-                    <p>PhilSys ID: PH19876543</p>
-                    <button class="btn btn-primary">View Details</button>
-                </div>
-            </div>
-            <button class="btn btn-success" onclick="openRegistrationModal()">Register New Beneficiary</button>
+      <!-- Beneficiary Management Module -->
+      <div class="module" id="beneficiary">
+        <div class="module-header">
+          <h2>Beneficiary Management</h2>
+          <div class="search-bar">
+            <input type="text" placeholder="Search by name or ID..." />
+            <button><i class="fas fa-search"></i></button>
+          </div>
         </div>
+        <div class="beneficiary-list">
+          <div class="beneficiary-card">
+            <h4>Maria Sanchez</h4>
+            <p>Senior Citizen</p>
+            <p>PhilSys ID: PH12345678</p>
+            <button class="btn btn-primary" onclick="showBeneficiaryDetails()">
+              View Details
+            </button>
+          </div>
+          <div class="beneficiary-card">
+            <h4>Carlos Ramirez</h4>
+            <p>Person with Disability</p>
+            <p>PhilSys ID: PH87654321</p>
+            <button class="btn btn-primary">View Details</button>
+          </div>
+          <div class="beneficiary-card">
+            <h4>Sofia Garcia</h4>
+            <p>Child</p>
+            <p>PhilSys ID: PH98765432</p>
+            <button class="btn btn-primary">View Details</button>
+          </div>
+          <div class="beneficiary-card">
+            <h4>Juan Perez</h4>
+            <p>Senior Citizen</p>
+            <p>PhilSys ID: PH19876543</p>
+            <button class="btn btn-primary">View Details</button>
+          </div>
+        </div>
+        <button class="btn btn-success" onclick="openRegistrationModal()">
+          Register New Beneficiary
+        </button>
+      </div>
 
-        <!-- Payout Management Module -->
-        <div class="module" id="payoutManagement">
-            <div class="module-header">
-                <h2>Payout Management</h2>
-                <button class="btn btn-success" onclick="openScheduleModal()">Schedule Payout</button>
-            </div>
-            <div class="payout-list">
-                <div class="payout-card">
-                    <h4>Senior Citizens Monthly Stipend</h4>
-                    <p>Date: June 15, 2023</p>
-                    <p>Status: <span style="color: green; font-weight: bold;">Completed</span></p>
-                    <p>Amount: ₱1,500</p>
-                </div>
-                <div class="payout-card">
-                    <h4>Disability Assistance</h4>
-                    <p>Date: June 20, 2023</p>
-                    <p>Status: <span style="color: orange; font-weight: bold;">Pending</span></p>
-                    <p>Amount: ₱2,000</p>
-                </div>
-                <div class="payout-card">
-                    <h4>Child Education Grant</h4>
-                    <p>Date: July 1, 2023</p>
-                    <p>Status: <span style="color: blue; font-weight: bold;">Scheduled</span></p>
-                    <p>Amount: ₱1,000</p>
-                </div>
-                <div class="payout-card">
-                    <h4>General Medical Assistance</h4>
-                    <p>Date: June 25, 2023</p>
-                    <p>Status: <span style="color: green; font-weight: bold;">Completed</span></p>
-                    <p>Amount: ₱3,000</p>
-                </div>
-            </div>
+      <!-- Payout Management Module -->
+      <div class="module" id="payoutManagement">
+        <div class="module-header">
+          <h2>Payout Management</h2>
+          <button class="btn btn-success" onclick="openScheduleModal()">
+            Schedule Payout
+          </button>
         </div>
+        <div class="payout-list">
+          <div class="payout-card">
+            <h4>Senior Citizens Monthly Stipend</h4>
+            <p>Date: June 15, 2023</p>
+            <p>
+              Status:
+              <span style="color: green; font-weight: bold">Completed</span>
+            </p>
+            <p>Amount: ₱1,500</p>
+          </div>
+          <div class="payout-card">
+            <h4>Disability Assistance</h4>
+            <p>Date: June 20, 2023</p>
+            <p>
+              Status:
+              <span style="color: orange; font-weight: bold">Pending</span>
+            </p>
+            <p>Amount: ₱2,000</p>
+          </div>
+          <div class="payout-card">
+            <h4>Child Education Grant</h4>
+            <p>Date: July 1, 2023</p>
+            <p>
+              Status:
+              <span style="color: blue; font-weight: bold">Scheduled</span>
+            </p>
+            <p>Amount: ₱1,000</p>
+          </div>
+          <div class="payout-card">
+            <h4>General Medical Assistance</h4>
+            <p>Date: June 25, 2023</p>
+            <p>
+              Status:
+              <span style="color: green; font-weight: bold">Completed</span>
+            </p>
+            <p>Amount: ₱3,000</p>
+          </div>
+        </div>
+      </div>
 
-        <!-- ID Generation Module -->
-        <div class="module" id="idGen">
-            <div class="module-header">
-                <h2>ID Generation</h2>
-            </div>
-            <button class="btn btn-success">Generate New IDs</button>
-            <div class="id-card">
-                <h3>Maria Sanchez</h3>
-                <p>Senior Citizen</p>
-                <p>PhilSys ID: PH12345678</p>
-            </div>
+      <!-- ID Generation Module -->
+      <div class="module" id="idGen">
+        <div class="module-header">
+          <h2>ID Generation</h2>
         </div>
+        <button class="btn btn-success">Generate New IDs</button>
+        <div class="id-card">
+          <h3>Maria Sanchez</h3>
+          <p>Senior Citizen</p>
+          <p>PhilSys ID: PH12345678</p>
+        </div>
+      </div>
     </div>
 
     <!-- Beneficiary Registration Modal -->
     <div class="modal" id="registrationModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('registrationModal')">&times;</span>
-            <h2>Register New Beneficiary</h2>
-            <form id="beneficiaryForm">
-                <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" required>
-                </div>
-                <div class="form-group">
-                    <label for="birthdate">Birthdate</label>
-                    <input type="date" id="birthdate" required>
-                </div>
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" required>
-                </div>
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select id="category" required>
-                        <option value="">Select Category</option>
-                        <option value="Senior Citizen">Senior Citizen</option>
-                        <option value="PWD">Persons with Disability</option>
-                        <option value="Child">Child</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input type="tel" id="phone">
-                </div>
-                <button type="submit" class="btn btn-primary">Register Beneficiary</button>
-            </form>
-        </div>
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('registrationModal')"
+          >&times;</span
+        >
+        <h2>Register New Beneficiary</h2>
+        <form id="beneficiaryForm">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" required />
+          </div>
+          <div class="form-group">
+            <label for="birthdate">Birthdate</label>
+            <input type="date" id="birthdate" required />
+          </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" required />
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" required>
+              <option value="">Select Category</option>
+              <option value="Senior Citizen">Senior Citizen</option>
+              <option value="PWD">Persons with Disability</option>
+              <option value="Child">Child</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" />
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Register Beneficiary
+          </button>
+        </form>
+      </div>
     </div>
 
     <!-- Payout Schedule Modal -->
     <div class="modal" id="scheduleModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('scheduleModal')">&times;</span>
-            <h2>Schedule New Payout</h2>
-            <form id="payoutForm">
-                <div class="form-group">
-                    <label for="beneficiary">Beneficiary</label>
-                    <select id="beneficiary" required>
-                        <option value="">Select Beneficiary</option>
-                        <option value="1">Senior Citizens</option>
-                        <option value="2">Children</option>
-                        <option value="3">Person with Disabilities</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="number" id="amount" min="0" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="date">Scheduled Date</label>
-                    <input type="date" id="date" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Schedule Payout</button>
-            </form>
-        </div>
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('scheduleModal')"
+          >&times;</span
+        >
+        <h2>Schedule New Payout</h2>
+        <form id="payoutForm">
+          <div class="form-group">
+            <label for="beneficiary">Beneficiary</label>
+            <select id="beneficiary" required>
+              <option value="">Select Beneficiary</option>
+              <option value="1">Senior Citizens</option>
+              <option value="2">Children</option>
+              <option value="3">Person with Disabilities</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" min="0" step="0.01" required />
+          </div>
+          <div class="form-group">
+            <label for="date">Scheduled Date</label>
+            <input type="date" id="date" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Schedule Payout</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Brgy management -->
+    <div class="barangay-section">
+      <h2 class="section-title">Barangay Management</h2>
+      <div class="barangay-grid">
+        <button class="barangay-btn">Barangay I (Pob.)</button>
+        <button class="barangay-btn">Barangay II (Pob.)</button>
+        <button class="barangay-btn">Barangay III (Pob.)</button>
+        <button class="barangay-btn">Barangay IV (Pob.)</button>
+        <button class="barangay-btn">Del Carmen</button>
+        <button class="barangay-btn">Palma</button>
+        <button class="barangay-btn">San Agustin</button>
+        <button class="barangay-btn">San Andres</button>
+        <button class="barangay-btn">San Benito</button>
+        <button class="barangay-btn">San Gregorio</button>
+        <button class="barangay-btn">San Ildefonso</button>
+        <button class="barangay-btn">San Juan</button>
+        <button class="barangay-btn">San Miguel</button>
+        <button class="barangay-btn">San Roque</button>
+        <button class="barangay-btn">Santa Rosa</button>
+      </div>
     </div>
 
     <script>
-        // Open registration modal
-        function openRegistrationModal() {
-            document.getElementById('registrationModal').style.display = 'block';
-        }
+      //  <!-- navbar -->
+      document
+        .getElementById("mobile-menu")
+        .addEventListener("click", function () {
+          document.querySelector(".nav-links").classList.toggle("active");
+        });
+      //  <!-- navbar -->
+      // Open registration modal
+      function openRegistrationModal() {
+        document.getElementById("registrationModal").style.display = "block";
+      }
 
-        // Open schedule modal
-        function openScheduleModal() {
-            document.getElementById('scheduleModal').style.display = 'block';
-        }
+      // Open schedule modal
+      function openScheduleModal() {
+        document.getElementById("scheduleModal").style.display = "block";
+      }
 
-        // Close modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
+      // Close modal
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
 
-        // Show beneficiary details
-        function showBeneficiaryDetails() {
-            alert('Beneficiary details will be displayed here');
-        }
+      // Show beneficiary details
+      function showBeneficiaryDetails() {
+        alert("Beneficiary details will be displayed here");
+      }
 
-        // Handle form submissions
-        document.getElementById('beneficiaryForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Beneficiary registered successfully!');
-            closeModal('registrationModal');
+      // Handle form submissions
+      document
+        .getElementById("beneficiaryForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert("Beneficiary registered successfully!");
+          closeModal("registrationModal");
         });
 
-        document.getElementById('payoutForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Payout scheduled successfully!');
-            closeModal('scheduleModal');
+      document
+        .getElementById("payoutForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert("Payout scheduled successfully!");
+          closeModal("scheduleModal");
         });
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
+      // Close modal when clicking outside
+      window.onclick = function (event) {
+        if (event.target.classList.contains("modal")) {
+          event.target.style.display = "none";
         }
+      };
 
-        // Navigation functionality
-        document.querySelectorAll('.nav-links li').forEach(link => {
-            link.addEventListener('click', function() {
-                document.querySelector('.nav-links li.active').classList.remove('active');
-                this.classList.add('active');
-            });
+      // Navigation functionality
+      document.querySelectorAll(".nav-links li").forEach((link) => {
+        link.addEventListener("click", function () {
+          document
+            .querySelector(".nav-links li.active")
+            .classList.remove("active");
+          this.classList.add("active");
         });
+      });
     </script>
-</body>
+  </body>
 </html>

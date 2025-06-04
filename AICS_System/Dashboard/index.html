@@ -5,10 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AICS SYSTEM - Login</title>
     <link rel="icon" type="image/x-icon" href="" />
-    <link rel="stylesheet" href="Assets/Style/background.css" />
+    <link rel="stylesheet" href="../Assets/Style/dashboard.css" />
   </head>
 
   <body>
-    <div></div>
+    <div class="side-nav">
+      <div class="center">
+        <div class="img"></div>
+      </div>
+      <h3><b>Pages</b></h3>
+      <ul>
+        <a class="disabled" href="">
+          <li class="active">
+            <i class="fa-solid fa-table-columns"></i> Dashboard
+          </li>
+        </a>
+        <a href="">
+          <li><i class="fa-solid fa-file-word"></i> Case Study</li>
+        </a>
+        <a href="">
+          <li><i class="fa-solid fa-clipboard-question"></i> Report</li>
+        </a>
+        <a href="">
+          <li><i class="fa-solid fa-gear"></i> Settings</li>
+        </a>
+      </ul>
+
+      <div class="spacer"></div>
+
+      <h3><b>Contents</b></h3>
+      <ul>
+        <a href="">
+          <li><i class="fa-solid fa-chart-simple"></i> Statistics</li>
+        </a>
+        <a href="">
+          <li><i class="fa-solid fa-clock"></i> Recent</li>
+        </a>
+        <a href="">
+          <li><i class="fa-solid fa-coins"></i> Budgeting</li>
+        </a>
+      </ul>
+    </div>
+
+    <div class="container">
+      <div class="top-nav">
+        <div class="right">
+          <button type="button" id="modeChanger">Dark Mode</button>
+          <img src="../Assets/Image/profile_placeholder.png" />
+          <h4>Username</h4>
+        </div>
+      </div>
+      <div class="main">
+        <div class="stats-container">
+          <div class="card card-1">
+            <div class="card-body">
+              <p><b>20</b><br />Total Applications</p>
+            </div>
+          </div>
+          <div class="card card-2">
+            <div class="card-body">
+              <p><b>20</b><br />Total Applications</p>
+            </div>
+          </div>
+          <div class="card card-3">
+            <div class="card-body">
+              <p><b>20</b><br />Total Applications</p>
+            </div>
+          </div>
+          <div class="card card-4">
+            <div class="card-body">
+              <p><b>20</b><br />Total Applications</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../Functions/JS/dashboard.js"></script>
+    <script
+      src="https://kit.fontawesome.com/7961b8f896.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

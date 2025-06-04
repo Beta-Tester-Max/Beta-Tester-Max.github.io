@@ -1,122 +1,117 @@
-/* Background Pattern */
-html {
-  height: 100vh;
-  position: relative;
-  --sz: 10px;
-  --c0: #000000;
-  --c1: #fa0202;
-  --c2: #b30303;
-  --c3: #5c0101;
-  --ts: 50% / calc(var(--sz) * 12.8) calc(var(--sz) * 22);
-
-  background: conic-gradient(
-        from 120deg at 50% 86.5%,
-        var(--c1) 0 120deg,
-        #0000 0 360deg
-      )
-      var(--ts),
-    conic-gradient(from 120deg at 50% 86.5%, var(--c1) 0 120deg, #0000 0 360deg)
-      var(--ts),
-    conic-gradient(from 120deg at 50% 74%, var(--c0) 0 120deg, #0000 0 360deg)
-      var(--ts),
-    conic-gradient(
-        from 60deg at 60% 50%,
-        var(--c1) 0 60deg,
-        var(--c2) 0 120deg,
-        #0000 0 360deg
-      )
-      var(--ts),
-    conic-gradient(
-        from 180deg at 40% 50%,
-        var(--c3) 0 60deg,
-        var(--c1) 0 120deg,
-        #0000 0 360deg
-      )
-      var(--ts),
-    conic-gradient(from 0deg at 90% 35%, var(--c0) 0 90deg, #0000 0 360deg)
-      var(--ts),
-    conic-gradient(from -90deg at 10% 35%, var(--c0) 0 90deg, #0000 0 360deg)
-      var(--ts),
-    conic-gradient(from -60deg at 50% 13.5%, var(--c1) 0 120deg, #0000 0 360deg)
-      var(--ts),
-    conic-gradient(from -60deg at 50% 13.5%, var(--c1) 0 120deg, #0000 0 360deg)
-      var(--ts),
-    conic-gradient(
-        from -60deg at 50% 41%,
-        var(--c2) 0 60deg,
-        var(--c3) 0 120deg,
-        #0000 0 360deg
-      )
-      var(--ts),
-    var(--c0);
-
-  animation: moveBoxes 10s linear infinite;
-}
-
-/* Background Dark Overlay */
-html::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  pointer-events: none;
-}
-
-/* Background Pattern Animation*/
-@keyframes moveBoxes {
-  0% {
-    background-position: 0 0;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0 0;
-  }
+@import url("https://fonts.cdnfonts.com/css/roslindale");
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
 }
 
 body {
-  font-family: "Agency FB", sans-serif;
-  color: #ff9900;
+  min-height: 100vh;
+  font-family: "roslindale", sans-serif;
+  background-color: #333333;
+  color: #ffffff;
 }
 
-.softCenter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+html {
+  overflow: hidden;
+}
+html:hover .top:before,
+.container:hover .top:after,
+.container:hover .bottom:before,
+.container:hover .bottom:after,
+.container:active .top:before,
+.container:active .top:after,
+.container:active .bottom:before,
+.container:active .bottom:after {
+  margin-left: 200px;
+  transform-origin: -200px 50%;
+  transition-delay: 0s;
+}
+html:hover .center,
+.container:active .center {
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+
+.top:before,
+.top:after,
+.bottom:before,
+.bottom:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 200vmax;
+  height: 200vmax;
+  top: 50%;
+  left: 50%;
+  margin-top: -100vmax;
+  transform-origin: 0 50%;
+  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
+  z-index: 10;
+  opacity: 0.65;
+  transition-delay: 0.2s;
+}
+
+.top:before {
+  transform: rotate(45deg);
+  background: #000000;
+}
+.top:after {
+  transform: rotate(135deg);
+  background: #000000;
+}
+
+.bottom:before {
+  transform: rotate(-45deg);
+  background: #000000;
+}
+.bottom:after {
+  transform: rotate(-135deg);
+  background: #000000;
 }
 
 .center {
   position: absolute;
+  width: 400px;
+  height: 400px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  margin-left: -200px;
+  margin-top: -200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
+  transition-delay: 0s;
 }
 
-.login {
-  /* background-image: linear-gradient(to right, rgba(255, 0, 0, .5) , rgba(250, 0, 121, .5), rgba(255, 0, 132, .5), rgba(250, 0, 212, .5), rgba(238, 0, 255, .5)); */
-  background-color: rgba(0, 0, 0, 0.3);
-  border: 1px solid #ff4000;
-  border-radius: 10px;
-  padding: 2.5em;
+@keyframes gradient {
+  to {
+    background-position: 200%;
+  }
 }
 
 .epic-hover-effect {
-  text-align: center;
-  margin: 0;
-  font-size: 50px;
-  transition: 0.5s ease;
-  cursor: default;
+    margin: 0;
+  font-size: 2rem;
+  color: #ffffff;
   user-select: none;
+  transition: 0.5s ease;
+  background: transparent;
 }
 
 .epic-hover-effect:hover {
-  text-shadow: 0 6px rgba(255, 153, 0, .33);
-  transform: translateY(-8px);
+  color: transparent;
+  background: linear-gradient(to right, #00ffff, #009efa, #00ffff, #009efa, #00ffff);
+  background-size: 200%;
+  background-clip: text;
+  animation: gradient 2.5s linear infinite;
+  scale: 1.3;
   transition: 0.5s ease;
+  transform: rotate(360deg);
 }
 
 .form__group {
@@ -127,12 +122,13 @@ body {
 }
 
 .form__field {
+  color: #ffffff;
+  font-weight: 700;
   font-family: inherit;
   border: 0;
-  border-bottom: 2px solid #ff9900;
+  border-bottom: 2px solid #ffffff;
   outline: 0;
   font-size: 1.3rem;
-  color: #fbff00;
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
@@ -152,13 +148,23 @@ body {
   display: block;
   transition: 0.2s;
   font-size: 1rem;
-  color: #ff9900;
+  color: #ffffff;
+}
+
+.form__field:hover {
+  color: #00ffff;
+  border-image: linear-gradient(to right, #00ffff, #009efa);
+  border-image-slice: 1;
+}
+.form__field:hover ~ .form__label {
+  color: #00ffff;
 }
 
 .form__field:focus {
+  color: #00ffff;
   padding-bottom: 6px;
   border-width: 3px;
-  border-image: linear-gradient(to right, #fa0021, #fa00c8);
+  border-image: linear-gradient(to right, #00ffff, #009efa);
   border-image-slice: 1;
 }
 .form__field:focus ~ .form__label {
@@ -167,41 +173,43 @@ body {
   display: block;
   transition: 0.2s;
   font-size: 1rem;
-  color: #fa00c8;
+  color: #00ffff;
   font-weight: 700;
 }
 
-.form__field:required, .form__field:invalid {
+.form__field:required,
+.form__field:invalid {
   box-shadow: none;
 }
 
 .btn {
-  font-family: "Agency FB", sans-serif;
+  font-family: inherit;
   font-weight: 700;
   width: 100%;
   background-color: transparent;
-  color: #ff9900;
-  border: 1px solid #ff9900;
-  border-radius: .5em;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 0.5em;
   font-size: 2em;
-  padding-top: .25em;
-  padding-bottom: .25em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
   transition: 0.5s ease;
+  cursor: pointer;
 }
 
 .btn:hover {
-  box-shadow: 0 6px rgba(255, 153, 0, .33);
+  box-shadow: 0 6px rgba(0, 255, 255, 0.33);
   transform: translateY(-8px);
-  background-color: #ff9900;
-  border: 1px solid #000000;
-  color: #000000;
+  background: linear-gradient(to right, #00ffff, #009efa, #00ffff, #009efa, #00ffff);
+  background-size: 200%;
+  animation: gradient 2.5s linear infinite;
+  border: 1px solid #333333;
+  color: #333333;
   transition: 0.5s ease;
 }
 
 .btn:active {
-    box-shadow: none;
-    transform: translateY(0px);
-    transition: 0.5s ease;
-  }
-
-
+  box-shadow: none;
+  transform: translateY(0px);
+  transition: 0.5s ease;
+}

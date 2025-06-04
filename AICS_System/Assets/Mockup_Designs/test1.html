@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AICS SYSTEM - Login</title>
+    <link rel="icon" type="image/x-icon" href="" />
+    <link rel="stylesheet" href="Assets/Style/index.css" />
+  </head>
+
+  <body>
+    <div class="login center" style="max-width: 20em">
+      <h1 class="epic-hover-effect">Login</h1>
+
+      <form action="">
+        <div class="form__group field">
+          <input
+            type="input"
+            class="form__field"
+            placeholder=""
+            name="key"
+            id="key"
+            required
+          />
+          <label for="key" class="form__label">Key</label>
+        </div>
+
+        <div class="form__group field" style="margin-bottom: 2em">
+          <input
+            type="input"
+            class="form__field"
+            placeholder=""
+            name="token"
+            id="token"
+            required
+          />
+          <label for="token" class="form__label">Token</label>
+        </div>
+
+        <div class="softCenter">
+          <button type="button" class="btn" onclick="window.location.href = 'Dashboard'">Login</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

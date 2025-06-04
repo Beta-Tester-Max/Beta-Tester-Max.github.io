@@ -1,0 +1,207 @@
+/* Background Pattern */
+html {
+  height: 100vh;
+  position: relative;
+  --sz: 10px;
+  --c0: #000000;
+  --c1: #fa0202;
+  --c2: #b30303;
+  --c3: #5c0101;
+  --ts: 50% / calc(var(--sz) * 12.8) calc(var(--sz) * 22);
+
+  background: conic-gradient(
+        from 120deg at 50% 86.5%,
+        var(--c1) 0 120deg,
+        #0000 0 360deg
+      )
+      var(--ts),
+    conic-gradient(from 120deg at 50% 86.5%, var(--c1) 0 120deg, #0000 0 360deg)
+      var(--ts),
+    conic-gradient(from 120deg at 50% 74%, var(--c0) 0 120deg, #0000 0 360deg)
+      var(--ts),
+    conic-gradient(
+        from 60deg at 60% 50%,
+        var(--c1) 0 60deg,
+        var(--c2) 0 120deg,
+        #0000 0 360deg
+      )
+      var(--ts),
+    conic-gradient(
+        from 180deg at 40% 50%,
+        var(--c3) 0 60deg,
+        var(--c1) 0 120deg,
+        #0000 0 360deg
+      )
+      var(--ts),
+    conic-gradient(from 0deg at 90% 35%, var(--c0) 0 90deg, #0000 0 360deg)
+      var(--ts),
+    conic-gradient(from -90deg at 10% 35%, var(--c0) 0 90deg, #0000 0 360deg)
+      var(--ts),
+    conic-gradient(from -60deg at 50% 13.5%, var(--c1) 0 120deg, #0000 0 360deg)
+      var(--ts),
+    conic-gradient(from -60deg at 50% 13.5%, var(--c1) 0 120deg, #0000 0 360deg)
+      var(--ts),
+    conic-gradient(
+        from -60deg at 50% 41%,
+        var(--c2) 0 60deg,
+        var(--c3) 0 120deg,
+        #0000 0 360deg
+      )
+      var(--ts),
+    var(--c0);
+
+  animation: moveBoxes 10s linear infinite;
+}
+
+/* Background Dark Overlay */
+html::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+/* Background Pattern Animation*/
+@keyframes moveBoxes {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+body {
+  font-family: "Agency FB", sans-serif;
+  color: #ff9900;
+}
+
+.softCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login {
+  /* background-image: linear-gradient(to right, rgba(255, 0, 0, .5) , rgba(250, 0, 121, .5), rgba(255, 0, 132, .5), rgba(250, 0, 212, .5), rgba(238, 0, 255, .5)); */
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid #ff4000;
+  border-radius: 10px;
+  padding: 2.5em;
+}
+
+.epic-hover-effect {
+  text-align: center;
+  margin: 0;
+  font-size: 50px;
+  transition: 0.5s ease;
+  cursor: default;
+  user-select: none;
+}
+
+.epic-hover-effect:hover {
+  text-shadow: 0 6px rgba(255, 153, 0, .33);
+  transform: translateY(-8px);
+  transition: 0.5s ease;
+}
+
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 50%;
+}
+
+.form__field {
+  font-family: inherit;
+  border: 0;
+  border-bottom: 2px solid #ff9900;
+  outline: 0;
+  font-size: 1.3rem;
+  color: #fbff00;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+.form__field::placeholder {
+  color: transparent;
+}
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 20px;
+}
+
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #ff9900;
+}
+
+.form__field:focus {
+  padding-bottom: 6px;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #fa0021, #fa00c8);
+  border-image-slice: 1;
+}
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #fa00c8;
+  font-weight: 700;
+}
+
+.form__field:required, .form__field:invalid {
+  box-shadow: none;
+}
+
+.btn {
+  font-family: "Agency FB", sans-serif;
+  font-weight: 700;
+  width: 100%;
+  background-color: transparent;
+  color: #ff9900;
+  border: 1px solid #ff9900;
+  border-radius: .5em;
+  font-size: 2em;
+  padding-top: .25em;
+  padding-bottom: .25em;
+  transition: 0.5s ease;
+}
+
+.btn:hover {
+  box-shadow: 0 6px rgba(255, 153, 0, .33);
+  transform: translateY(-8px);
+  background-color: #ff9900;
+  border: 1px solid #000000;
+  color: #000000;
+  transition: 0.5s ease;
+}
+
+.btn:active {
+    box-shadow: none;
+    transform: translateY(0px);
+    transition: 0.5s ease;
+  }
+
+

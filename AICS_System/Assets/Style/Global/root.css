@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+body {
+  font-family: "Orbitron", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--font);
+  overflow-x: hidden;
+}
+
+:root {
+  --bg: #ffffff;
+  --obg: #0f0f1a;
+  --sbg: #ffffff;
+  --tbg: rgba(0, 0, 0, 0.1);
+  --font: #000000;
+  --sfont: #000200;
+  --img: url("../../Image/logo_dark.PNG");
+  --c: 'Dark Growth';
+}
+
+:root.darkness {
+  --bg: #1d1d1d;
+  --obg: #ffffff;
+  --sbg: #333333;
+  --tbg: rgba(255, 255, 255,0.1);
+  --font: #ffffff;
+  --sfont: #fff2ff;
+  --img: url("../../Image/logo_light.png");
+  --c: 'Neon Growth';
+}

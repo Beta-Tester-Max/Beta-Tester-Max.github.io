@@ -1,11 +1,14 @@
 import { toggleMode } from './Global/toggleMode.js';
 import { getRoot } from './Global/root.js';
 import { getChartContainer, chart } from "./Global/chart.js";
+import { highlightBtn, highlightItem, glowChart } from "./Global/glowChart.js";
 
 const root = getRoot();
 const THEME_STORAGE_KEY = "userTheme";
 const chartContainer = getChartContainer("chart");
 const toggleModeBtn = document.getElementById("toggleMode");
+const highStats = document.getElementById("highlightStatistics");
+const stats = document.getElementById("statistics");
 
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "light";
@@ -35,5 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     } else {
         console.warn("Toggle button with ID 'toggleMode' not found.");
+    }
+
+    if (highStats) {
+      highStats.addEventListener("click", function () {
+        if (stats)  {
+          glowChart(highStats, stats);
+        }
+      });
     }
 });

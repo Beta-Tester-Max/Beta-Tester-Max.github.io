@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,100..900;1,100..900&family=Jaro:opsz@6..72&family=Nova+Square&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 body {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Alumni Sans SC", sans-serif;
   margin: 0;
   padding: 0;
   background: var(--bg);
@@ -18,15 +23,316 @@ body {
   --sfont: #000200;
   --img: url("../../Image/logo_dark.PNG");
   --c: 'Dark Growth';
+  --fcolor: #ff0000;
+  --sfcolor: #ff0497;
+  --h: rgba(255, 0, 0, 0.33);
+  --r: #ff0000;
 }
 
 :root.darkness {
   --bg: #1d1d1d;
   --obg: #ffffff;
   --sbg: #333333;
-  --tbg: rgba(255, 255, 255,0.1);
+  --tbg: rgba(255, 255, 255, 0.1);
   --font: #ffffff;
   --sfont: #fff2ff;
   --img: url("../../Image/logo_light.png");
   --c: 'Neon Growth';
+  --fcolor: #00ffff;
+  --sfcolor: #009efa;
+  --h: rgba(0, 255, 255, 0.33);
+  --r: #ff9100;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+.col {
+  flex: 1 0 0%;
+  max-width: 100%;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.vhr {
+  border-right: 1px solid var(--font);
+}
+
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-bottom: 10px;
+}
+
+.form__field--input {
+  color: var(--font);
+  width: 100%;
+  font-weight: 700;
+  font-family: inherit;
+  border: 0;
+  border-bottom: 2px solid var(--font);
+  outline: 0;
+  font-size: 1.3rem;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.form__field--input::placeholder {
+  color: transparent;
+}
+
+.form__field--input:placeholder-shown ~ .form__label--input {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 20px;
+}
+
+.form__label--input {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--font);
+}
+
+.form__field--input:hover {
+  color: var(--fcolor);
+  border-image: linear-gradient(to right, var(--fcolor), var(--sfcolor));
+  border-image-slice: 1;
+}
+.form__field--input:hover ~ .form__label--input {
+  color: var(--fcolor);
+}
+
+.form__field--input:focus {
+  color: var(--fcolor);
+  padding-bottom: 6px;
+  border-width: 3px;
+  border-image: linear-gradient(to right, var(--fcolor), var(--sfcolor));
+  border-image-slice: 1;
+}
+.form__field--input:focus ~ .form__label--input {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--fcolor);
+  font-weight: 700;
+}
+
+.form__field--input:required,
+.form__field--input:invalid {
+  box-shadow: none;
+}
+
+.form__field--date {
+  color: var(--font);
+  width: 100%;
+  font-weight: 700;
+  font-family: inherit;
+  border: 0;
+  border-bottom: 2px solid var(--font);
+  outline: 0;
+  font-size: 1.3rem;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.form__field--date::placeholder {
+  color: transparent;
+}
+
+.form__field--date:placeholder-shown ~ .form__label--date {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 20px;
+}
+
+.form__label--date {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--font);
+}
+
+.form__field--date:hover {
+  color: var(--fcolor);
+  border-image: linear-gradient(to right, var(--fcolor), var(--sfcolor));
+  border-image-slice: 1;
+}
+.form__field--date:hover ~ .form__label--date {
+  color: var(--fcolor);
+}
+
+.form__field--date:focus {
+  color: var(--fcolor);
+  padding-bottom: 6px;
+  border-width: 3px;
+  border-image: linear-gradient(to right, var(--fcolor), var(--sfcolor));
+  border-image-slice: 1;
+}
+.form__field--date:focus ~ .form__label--date {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--fcolor);
+  font-weight: 700;
+}
+
+.form__field--date:required,
+.form__field--date:invalid {
+  box-shadow: none;
+}
+
+.form__group--select {
+  position: relative;
+  padding: 15px 0 0;
+  margin-bottom: 10px;
+  height: 56px; /* fixed height matching input/select */
+  box-sizing: border-box;
+}
+
+.form__field--select,
+.form__real-select {
+  color: var(--font);
+  width: 100%;
+  font-weight: 700;
+  font-family: inherit;
+  border: 0;
+  border-bottom: 2px solid var(--font);
+  outline: 0;
+  font-size: 1.3rem;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.form__real-select {
+  display: none;
+  background-color: transparent;
+}
+
+.form__field--select::placeholder {
+  color: transparent;
+}
+
+.form__field--select:placeholder-shown ~ .form__label--select {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 20px;
+}
+
+.form__label--select {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--font);
+}
+
+.form__field--select:hover {
+  color: var(--fcolor);
+  border-image: linear-gradient(to right, var(--fcolor), var(--sfcolor));
+  border-image-slice: 1;
+}
+
+.form__field--select:hover ~ .form__label--select {
+  color: var(--fcolor);
+}
+.form__real-select:hover ~ .form__label--select {
+  color: var(--fcolor);
+}
+
+.form__field--select:focus {
+  color: var(--fcolor);
+  padding-bottom: 6px;
+  border-width: 3px;
+  border-image: linear-gradient(to right, var(--fcolor), var(--sfcolor));
+  border-image-slice: 1;
+}
+.form__real-select:focus {
+  color: var(--fcolor);
+  padding-bottom: 6px;
+  border-width: 3px;
+  border-image: linear-gradient(to right, var(--fcolor), var(--sfcolor));
+  border-image-slice: 1;
+}
+.form__field--select:focus ~ .form__label--select {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--fcolor);
+  font-weight: 700;
+}
+.form__real-select:focus ~ .form__label--select {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--fcolor);
+  font-weight: 700;
+}
+
+.form__field--select:required,
+.form__real-select:required {
+  box-shadow: none;
+}
+
+.required {
+  vertical-align: text-top;
+  font-size: 10px;
+  color: var(--r);
+}
+
+.btn {
+  font-family: inherit;
+  font-weight: 700;
+  width: 50%;
+  background-color: transparent;
+  color: var(--font);
+  border: 1px solid var(--font);
+  border-radius: 0.5em;
+  font-size: 1.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  margin-top: 5px;
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  box-shadow: 0 6px var(--h);
+  transform: translateY(-8px);
+  background: linear-gradient(to right, var(--fcolor), var(--sfcolor), var(--fcolor), var(--sfcolor), var(--fcolor));
+  background-size: 200%;
+  animation: gradient 2.5s linear infinite;
+  border: 1px solid var(--bg);
+  color: var(--bg);
+  transition: 0.5s ease;
+}
+
+.btn:active {
+  box-shadow: none;
+  transform: translateY(0px);
+  transition: 0.5s ease;
 }

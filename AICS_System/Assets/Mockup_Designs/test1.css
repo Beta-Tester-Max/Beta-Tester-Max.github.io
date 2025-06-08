@@ -50,7 +50,7 @@ html {
       var(--ts),
     var(--c0);
 
-  animation: moveBoxes 10s linear infinite;
+  animation: moveBoxes 50s linear infinite;
 }
 
 /* Background Dark Overlay */

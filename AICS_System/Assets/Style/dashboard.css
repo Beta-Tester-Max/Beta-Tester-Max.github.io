@@ -1,6 +1,10 @@
 @import url('Global/root.css');
 @import url('Global/nav.css');
 
+body {
+  min-width: 1150px;
+}
+
 .chart-container {
   box-sizing: border-box;
   width: 43.8em;
@@ -36,10 +40,4 @@
 
 canvas {
   background: transparent;
-}
-
-@media (max-width: 1500px) {
-  .chart-container {
-    width: 100%;
-  }
 }

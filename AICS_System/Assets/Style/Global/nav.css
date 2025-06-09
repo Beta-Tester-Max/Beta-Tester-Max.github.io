@@ -17,7 +17,7 @@
 }
 
 .spacer {
-  height: 2em;
+  height: 1em;
 }
 
 .side-nav {
@@ -34,14 +34,14 @@
   background: var(--img);
   background-size: cover;
   background-position: center;
-  height: 2em;
-  width: 3em;
-  margin-bottom: 2em;
+  height: 3em;
+  width: 4em;
+  margin-bottom: .5em;
   transition: 0.5s ease;
 }
 
 .side-nav .center .img:hover {
-  transform: rotate(720deg);
+  filter: drop-shadow(0 0 4px var(--font));
   transition: 0.5s ease;
 }
 
@@ -70,9 +70,8 @@
 }
 
 .side-nav li {
-  padding-bottom: 5px;
-  padding: 0 1em;
-  margin-bottom: 0.5em;
+  padding-left: 2em;
+  margin-bottom: 0.4em;
   transition: 0.5s ease;
   text-align: start;
   user-select: none;
@@ -112,6 +111,10 @@
   box-sizing: border-box;
 }
 
+.container h4 {
+  font-size: 20px;
+}
+
 .top-nav {
   box-sizing: border-box;
   padding: 0.5em;
@@ -139,14 +142,13 @@
   height: 2em;
   width: auto;
   margin-right: 0.5em;
-  border-radius: 50px;
-  box-shadow: 0 0 2px var(--font);
+  filter: drop-shadow(0 0 1px var(--font));
   user-select: none;
   transition: 0.5s ease;
 }
 
 .top-nav .right img:hover {
-  box-shadow: 0 0 10px var(--font);
+  filter: drop-shadow(0 0 4px var(--font));
   transition: 0.5s ease;
 }
 

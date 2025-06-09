@@ -198,14 +198,6 @@ body {
   box-shadow: none;
 }
 
-.form__group--select {
-  position: relative;
-  padding: 15px 0 0;
-  margin-bottom: 10px;
-  height: 56px; /* fixed height matching input/select */
-  box-sizing: border-box;
-}
-
 .form__field--select,
 .form__real-select {
   color: var(--font);
@@ -307,7 +299,7 @@ body {
 .btn {
   font-family: inherit;
   font-weight: 700;
-  width: 50%;
+  width: 100%;
   background-color: transparent;
   color: var(--font);
   border: 1px solid var(--font);

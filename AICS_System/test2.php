@@ -32,7 +32,7 @@ try {
         $elements = $section->getElements();
         foreach ($elements as $element) {
             if (get_class($element) === 'PhpOffice\PhpWord\Element\TextRun') {
-                foreach ($element->getElements() as $childElement) {
+                foreach ($element as $childElement) {
                     $fontInfo = extractFontInfoFromTextRun($childElement);
                     if ($fontInfo) {
                         $fontName = $fontInfo['name'];

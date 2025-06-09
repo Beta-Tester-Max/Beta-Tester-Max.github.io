@@ -88,56 +88,66 @@
                   <input type="text" class="form__field--date" id="dob" name="bday" placeholder="MM/DD/YYYY" required />
                   <label for="dob" class="form__label--date">Date of Birth <span class="required">*</span></label>
                 </div>
-                <div class="form__group--select">
+                <div class="form__group">
                   <input type="text" id="sxInput" class="form__field--select" placeholder=" " readonly />
-                  <select id="sxSelect" class="form__real-select">
+                  <select id="sxSelect" class="form__real-select" required>
                     <option value="" disabled selected hidden>Select</option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                   </select>
                   <label for="sxInput" class="form__label--select">Sex <span class="required">*</span></label>
                 </div>
-                <div class="form__group field">
-                  <input type="input" class="form__field--input" placeholder="Middle Name" name="mname"
-                    id="middleName" />
-                  <label for="middleName" class="form__label--input">Civil Status <span class="required">*</span></label>
+                <div class="form__group">
+                  <input type="text" id="csInput" class="form__field--select" placeholder=" " readonly />
+                  <select id="csSelect" class="form__real-select" required>
+                    <option value="" disabled selected hidden>Select</option>
+                    <option value="S">Single</option>
+                    <option value="M">Married</option>
+                    <option value="CL">Common Law</option>
+                    <option value="W">Widowed</option>
+                    <option value="S">Seperated</option>
+                  </select>
+                  <label for="csInput" class="form__label--select">Civil Status <span class="required">*</span></label>
                 </div>
               </div>
               <div class="col vhr">
-                <div class="form__group field">
-                  <input type="input" class="form__field--input" placeholder="First Name" name="fname" id="firstName"
-                    required />
-                  <label for="firstName" class="form__label--input">First Name <span class="required">*</span></label>
+                <div class="form__group">
+                  <input type="text" id="eaInput" class="form__field--select" placeholder=" " readonly />
+                  <select id="eaSelect" class="form__real-select">
+                    <option value="" disabled selected hidden>Select</option>
+                    <option value="S">College Graduate</option>
+                    <option value="S">College Undergraduate</option>
+                    <option value="M">Senior High School Graduate</option>
+                    <option value="M">Senior High School Undergraduate</option>
+                    <option value="CL">Junior High School Graduate</option>
+                    <option value="CL">Junior High School Undergraduate</option>
+                    <option value="W">Elematary Graduate</option>
+                    <option value="W">Elematary Undergraduate</option>
+                    <option value="S">N/A</option>
+                  </select>
+                  <label for="eaInput" class="form__label--select">Educational Attainnment</label>
                 </div>
                 <div class="form__group field">
-                  <input type="input" class="form__field--input" placeholder="Middle Name" name="mname"
-                    id="middleName" />
-                  <label for="middleName" class="form__label--input">Middle Name</label>
+                  <input type="input" class="form__field--input" placeholder="Occupation" name="occupation"
+                    id="occupation" />
+                  <label for="occupation" class="form__label--input">Occupation</label>
                 </div>
                 <div class="form__group field">
-                  <input type="input" class="form__field--input" placeholder="Last Name" name="lname" id="lastName"
-                    required />
-                  <label for="lastName" class="form__label--input">Last Name <span class="required">*</span></label>
+                  <input type="input" class="form__field--input" placeholder="Address" name="address" id="address"
+                    required onclick="alert('Its a button')"/>
+                  <label for="address" class="form__label--input">Address <span class="required">*</span></label>
                 </div>
               </div>
               <div class="col">
                 <div class="form__group field">
-                  <input type="input" class="form__field--input" placeholder="" name="fname" id="firstName" required />
-                  <label for="firstName" class="form__label--input">First Name</label>
+                  <input type="input" class="form__field--input" placeholder="" name="contactno" id="contactno" required />
+                  <label for="contactno" class="form__label--input">Contact No. <span class="required">*</span></label>
                 </div>
-                <div class="form__group field">
-                  <input type="input" class="form__field--input" placeholder="" name="mname" id="middleName" required />
-                  <label for="middleName" class="form__label--input">Middle Name</label>
-                </div>
-                <div class="center">
-                  <button type="submit" class="btn">Submit</button>
+                <div class="center" style="margin-top: 3.5em;">
+                  <button type="submit" class="btn">Next</button>
                 </div>
               </div>
             </div>
-            <!-- <div class="input">
-              <label for="firstName">First Name</label>
-              <input type="text" id="firstName">
-            </div> -->
           </div>
         </form>
       </div>

@@ -1,32 +1,60 @@
 <?php
-require './../vendor/autoload.php';
-
+require_once './../vendor/autoload.php';  // Make sure to adjust the path to your autoload file
 use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Shared\Html;
 
-header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-header("Content-Disposition: attachment; filename=edited.docx");
+// Ensure the incoming HTML content is UTF-8 encoded
+if (isset($_POST['htmlContent'])) {
+    // Decode the incoming HTML content
+    $htmlContent = urldecode($_POST['htmlContent']);  // Decoding the encoded HTML content
 
-$data = json_decode(file_get_contents('php://input'), true);
-$html = $data['content'] ?? '';
-$fontName = $data['fontName'] ?? 'Calibri';
-$fontSize = $data['fontSize'] ?? '12pt';
+    // Sanitize and fix malformed HTML using DOMDocument
+    $dom = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $dom->loadHTML(mb_convert_encoding($htmlContent, 'HTML-ENTITIES', 'UTF-8'));
 
-$wrappedHtml = '<div style="font-family:' . htmlspecialchars($fontName) . '; font-size:' . htmlspecialchars($fontSize) . ';">' . $html . '</div>';
+    // If there are errors in the DOM, handle them (you can also log them)
+    if ($errors = libxml_get_errors()) {
+        foreach ($errors as $error) {
+            echo "Error: " . $error->message;
+        }
+        libxml_clear_errors();
+        exit;
+    }
 
-$phpWord = new PhpWord();
+    // Fix any broken tags if needed (e.g., <br>, <p>, etc.)
+    $fixedHtml = $dom->saveHTML();
 
-$phpWord->setDefaultFontName($fontName);
-$phpWord->setDefaultFontSize((int)filter_var($fontSize, FILTER_SANITIZE_NUMBER_INT));
+    // Create a new PhpWord instance
+    $phpWord = new PhpWord();
+    $section = $phpWord->addSection();
 
-$section = $phpWord->addSection();
+    try {
+        // Use the Html class to add HTML content to the Word document
+        $htmlParser = new Html();
+        $htmlParser->addHtml($section, $fixedHtml);
+    } catch (Exception $e) {
+        // Error handling
+        echo "Error converting HTML to Word: " . $e->getMessage();
+        exit;
+    }
 
-Html::addHtml($section, $wrappedHtml, false, false);
+    // Save the document as a .docx file
+    $tempFile = tempnam(sys_get_temp_dir(), 'phpword_');
+    $docxFile = $tempFile . '.docx';
+    $phpWord->save($docxFile, 'Word2007');
 
-$tempFile = tempnam(sys_get_temp_dir(), 'word');
-$xmlWriter = IOFactory::createWriter($phpWord, 'Word2007');
-$xmlWriter->save($tempFile);
+    // Set headers for file download
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    header('Content-Disposition: attachment; filename="Social_Case_Study_Report.docx"');
+    header('Content-Length: ' . filesize($docxFile));
 
-readfile($tempFile);
-unlink($tempFile);
+    // Output the file to the browser
+    readfile($docxFile);
+
+    // Clean up temporary file
+    unlink($docxFile);
+    exit;
+}
+?>

@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'marginBottom' => 360,
         'marginLeft' => 360,
         'marginRight' => 360,
-        'paperSize' => 'Legal',
+        'paperSize' => 'Legal'
     ]);
 
     $table = $section->addTable();
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $imagePath = './Assets/Image/Alam150.png';
     $table->addCell(890)->addImage($imagePath, array('width' => 55, 'height' => 56, 'align' => 'center', 'spaceAfter' => 0));
 
-    $cell = $table->addCell(6890); // Add a cell with width 5000
+    $cell = $table->addCell(6890);
 
     // Add text inside the cell
     $cell->addText("Republic of the Philippines", ['name' => 'Calibri (Body)', 'size' => 11], ['align' => 'center', 'valign' => 'center', 'spaceAfter' => 0, 'spaceBefore' => 200]);
@@ -40,9 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $section->addText(
         '____________________________________________________________________________',
         ['underline' => 'single', 'size' => 12, 'bold' => true],
-        ['align' => 'center', 'valign' => 'center', 'spaceAfter' => 200, 'spaceBefore' => 0] // Customize the "line"
+        ['align' => 'center', 'valign' => 'center', 'spaceAfter' => 0, 'spaceBefore' => 0] // Customize the "line"
     );
     // Use the edited fields to generate the document
+    $section->addText($_POST['field1'], ['name' => 'Calibri (Body)', 'size' => 11], ['valign' => 'center', 'spaceAfter' => 0, 'spaceBefore' => 0, 'indentation' => ['left' => 8500]]);
     $section->addText("SOCIAL CASE STUDY REPORT", ['name' => 'Calibri (Body)', 'size' => 11, 'bold' => true], ['align' => 'center']);
 
     $section->addText("                                  I.            IDENTIFYING DATA:", ['name' => 'Calibri (Body)', 'size' => 11, 'bold' => true], ['valign' => 'center', 'spaceAfter' => 0, 'spaceBefore' => 0]);
@@ -179,5 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $phpWord->save('php://output', 'Word2007');
 
     exit;
+} else {
+    
 }
 ?>

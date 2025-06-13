@@ -1,0 +1,123 @@
+@page {
+            margin: 0;
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #000133;
+        }
+
+        .document {
+            background-color: white;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1b1b1b;
+        }
+
+        .logo1 {
+            height: 80px;
+        }
+
+        .logo2 {
+            height: 100px;
+        }
+
+        .title-container {
+            text-align: center;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: #002663;
+        }
+
+        .title {
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #002663;
+            font-size: 18px;
+        }
+
+        .date {
+            text-align: right;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th,
+        td {
+            padding: 6px 8px;
+            text-align: left;
+            border: 1px solid #1b1b1b;
+            font-size: 14px;
+        }
+
+        .section {
+            margin: 25px 0;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            font-size: 16px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid #1b1b1b;
+            font-weight: bold;
+        }
+
+        .editable {
+            color: #cc0000;
+            font-weight: bold;
+            border-bottom: 1px dashed #999;
+            padding: 2px 4px;
+            cursor: pointer;
+            min-width: 100px;
+            display: inline-block;
+        }
+
+        .save-print {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 25px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #002663;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #003380;
+        }
+
+        .red-text {
+            color: #cc0000;
+            font-weight: bold;
+        }

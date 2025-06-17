@@ -1,7 +1,5 @@
 <?php
 require_once '../vendor/autoload.php';  // Include PHPWord
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Create a new PHPWord object
     $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
@@ -179,8 +177,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Content-Disposition: attachment; filename="' . $file . '"');
     $phpWord->save('php://output', 'Word2007');
 
-    exit;
-} else {
-    
-}
 ?>

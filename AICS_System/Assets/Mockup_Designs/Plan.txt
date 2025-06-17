@@ -1,0 +1,13 @@
+Plan:
+03:55:14.64 - making form I work
+- then make recollection / continue
+- then make form II
+- then make form III
+- then make form IV
+- then make from V
+- test data fetch
+- test docx data fetch
+- create pdf format
+- display pdf format
+- allow editing
+- allow printing

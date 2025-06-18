@@ -15,24 +15,6 @@ body {
   border-radius: 20px;
 }
 
-@keyframes highlightChart {
-  0% {
-    scale: 1;
-  }
-  25% {
-    scale: 1.05;
-  }
-  50% {
-    scale: 1;
-  }
-  75% {
-    scale: 1.05;
-  }
-  0% {
-    scale: 1;
-  }
-}
-
 .chart {
   width: 100%;
   box-sizing: border-box;

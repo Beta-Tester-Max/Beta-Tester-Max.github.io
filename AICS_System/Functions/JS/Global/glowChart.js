@@ -1,11 +1,3 @@
-export function highlightItem(item) {
-  let glowItem = document.getElementById(item);
-}
-
-export function highlightBtn(btn) {
-  let glowBtn = document.getElementById(btn);
-}
-
 export function glowChart(btn, item) {
   if (btn) {
     if (item) {
@@ -16,8 +8,10 @@ export function glowChart(btn, item) {
         item.style.animation = "";
         item.style.transition = ".5s ease";
       }, 3000);
+    } else {
+      console.log("Missing Item!");
     }
   } else {
-    console.log("Missing Item!");
+    console.log("Missing Button!");
   }
 }

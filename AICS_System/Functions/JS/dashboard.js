@@ -1,7 +1,7 @@
 import { toggleMode } from './Global/toggleMode.js';
 import { getRoot } from './Global/root.js';
 import { getChartContainer, chart } from "./Global/chart.js";
-import { highlightBtn, highlightItem, glowChart } from "./Global/glowChart.js";
+import { glowChart } from "./Global/glowChart.js";
 
 const root = getRoot();
 const THEME_STORAGE_KEY = "userTheme";

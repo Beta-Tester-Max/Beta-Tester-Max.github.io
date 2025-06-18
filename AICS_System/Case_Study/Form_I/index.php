@@ -12,7 +12,7 @@ include "./../../Functions/PHP/alert.php";
     <link rel="icon" type="image/x-icon" href="" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="../../Assets/Style/caseStudy.css" />
+    <link rel="stylesheet" href="../../Assets/Style/formI.css" />
     <script>
         (function () {
             const THEME_KEY = "userTheme";
@@ -55,6 +55,11 @@ include "./../../Functions/PHP/alert.php";
         <div class="spacer"></div>
 
         <h3><b>Contents</b></h3>
+        <ul>
+            <a href="#" id="highlightFormI">
+                <li><i class="fa-solid fa-file-pen"></i> Form I</li>
+            </a>
+        </ul>
     </div>
 
     <div class="container">
@@ -151,7 +156,7 @@ include "./../../Functions/PHP/alert.php";
             </div>
         </div>
 
-        <script type="module" src="../../Functions/JS/formI.js"></script>
+        <script type="module" src="../../Functions/JS/form.js"></script>
         <script src="https://kit.fontawesome.com/7961b8f896.js" crossorigin="anonymous"></script>
 </body>
 

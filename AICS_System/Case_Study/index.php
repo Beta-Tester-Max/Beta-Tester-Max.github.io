@@ -61,7 +61,16 @@
       </div>
     </div>
     <div class="main">
-      <a href="./Form_I/">Create Case Study</a>
+
+      <div class="content">
+        <div style="padding: 0 20px; padding-top: 20px;">
+          <form action="">
+            <input type="text">
+            <button type="submit">Create Case Study</button>
+          </form>
+        </div>
+        <hr>
+      </div>
     </div>
 
     <script type="module" src="../Functions/JS/caseStudy.js"></script>

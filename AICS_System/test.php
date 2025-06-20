@@ -1,4 +1,3 @@
-<?php ob_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -141,4 +140,3 @@
 </body>
 
 </html>
-<?php $document = ob_get_clean(); ?>

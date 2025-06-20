@@ -1,7 +1,6 @@
 <?php
 include "./../../Functions/PHP/dataFetcher.php";
 include "./../../Functions/PHP/alert.php";
-include "./../../Functions/PHP/formIReq.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +12,7 @@ include "./../../Functions/PHP/formIReq.php";
     <link rel="icon" type="image/x-icon" href="" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="../../Assets/Style/formI.css" />
+    <link rel="stylesheet" href="../../Assets/Style/formII.css" />
     <script>
         (function () {
             const THEME_KEY = "userTheme";
@@ -58,7 +57,7 @@ include "./../../Functions/PHP/formIReq.php";
         <h3><b>Contents</b></h3>
         <ul>
             <a href="#" id="highlightContent">
-                <li><i class="fa-solid fa-file-pen"></i> Form I</li>
+                <li><i class="fa-solid fa-file-pen"></i> Form II</li>
             </a>
         </ul>
     </div>

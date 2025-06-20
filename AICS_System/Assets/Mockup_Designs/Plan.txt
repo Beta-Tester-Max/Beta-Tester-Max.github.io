@@ -1,6 +1,6 @@
 Plan:
 03:55:14.64 - making form I work
-- then make recollection / continue
+02:00:45.40- then make recollection / continue
 - then make form II
 - then make form III
 - then make form IV

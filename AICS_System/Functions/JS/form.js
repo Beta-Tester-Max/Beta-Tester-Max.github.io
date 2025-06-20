@@ -1,5 +1,6 @@
 import { toggleMode } from "./Global/toggleMode.js";
 import { getRoot } from "./Global/root.js";
+import { glowChart } from "./Global/glowChart.js";
 
 const root = getRoot();
 const THEME_STORAGE_KEY = "userTheme";
@@ -11,6 +12,8 @@ const form = document.getElementById("form");
 const sxSelect = document.getElementById("sxSelect");
 const csSelect = document.getElementById("csSelect");
 const bSelect = document.getElementById("bSelect");
+const highlightContent = document.getElementById("highlightContent");
+const content = document.getElementById('content');
 
 document.addEventListener("DOMContentLoaded", () => {
   const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "light";
@@ -108,6 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (errors.length > 0) {
         event.preventDefault();
         alert(errors.join("\n"));
+      }
+    });
+  }
+
+  if (highlightContent) {
+    highlightContent.addEventListener("click", function () {
+      if (content) {
+        glowChart(highlightContent, content);
       }
     });
   }

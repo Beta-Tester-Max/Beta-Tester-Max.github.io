@@ -18,4 +18,8 @@ $_SESSION['allEA'] = $result;
 $sql = $pdo->query("SELECT * FROM tbl_b");
 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 $_SESSION['allB'] = $result;
+
+$sql = $pdo->query("SELECT id, cSName FROM tbl_cs");
+$result = $sql->fetchAll(PDO::FETCH_ASSOC);
+$_SESSION['allCaseStudy'] = $result;
 ?>

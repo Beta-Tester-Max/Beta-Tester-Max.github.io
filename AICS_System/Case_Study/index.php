@@ -1,3 +1,8 @@
+<?php
+include "./../Functions/PHP/dataFetcher.php";
+include "./../Functions/PHP/alert.php";
+include "./../Functions/PHP/ongoingCS.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,13 +68,21 @@
     <div class="main">
 
       <div class="content">
-        <div style="padding: 0 20px; padding-top: 20px;">
-          <form action="">
-            <input type="text">
+        <div style="padding: 0 10px;">
+          <form method="POST" action="./../Functions/PHP/createCS.php">
+            <div class="form__group field">
+              <input type="input" class="form__field--input" minlength="2" maxlength="50" placeholder="Case Study Name"
+                name="csName" id="csName" required>
+              <label for="csName" class="form__label--input">Case Study Name</label>
+            </div>
+            <input type="hidden" name="createCS">
             <button type="submit">Create Case Study</button>
           </form>
         </div>
         <hr>
+        <div style="overflow-y: auto; overflow-x: hidden";>
+          <?php include "./../Functions/PHP/allCaseStudy.php" ?>
+        </div>
       </div>
     </div>
 

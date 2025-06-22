@@ -10,9 +10,14 @@ if (isset($_SESSION['csID']) || !empty($_SESSION['csID'])) {
     } elseif (!preg_match("/^\d+$/", $csid)) {
         header('Location: logout.php');
         exit;
+    } elseif (isset($_SESSION['hasFormI']) || !empty($_SESSION['hasFormI'])) {
+        if ($_SESSION['hasFormI'] === 1) {
+            header('Location: ../Form_II/');
+            exit;
+        }
     }
 } else {
-    header('Location: ../');
+    header('Location: ../Case_Study/');
     exit;
 }
 ?>

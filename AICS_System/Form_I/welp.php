@@ -1,7 +1,7 @@
-<?php
-include "./../../Functions/PHP/dataFetcher.php";
-include "./../../Functions/PHP/alert.php";
-include "./../../Functions/PHP/formIReq.php";
+<?php $cd = "Case_Study";
+include "./../Functions/PHP/dataFetcher.php";
+include "./../Functions/PHP/alert.php";
+include "./../Functions/PHP/formIReq.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@ include "./../../Functions/PHP/formIReq.php";
     <link rel="icon" type="image/x-icon" href="" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="../../Assets/Style/formI.css" />
+    <link rel="stylesheet" href="../Assets/Style/formI.css" />
     <script>
         (function () {
             const THEME_KEY = "userTheme";
@@ -31,50 +31,20 @@ include "./../../Functions/PHP/formIReq.php";
 </head>
 
 <body>
-    <div class="side-nav">
-        <div class="center">
-            <div class="img"></div>
-        </div>
-        <h3><b>Pages</b></h3>
-        <ul>
-            <a href="../../Dashboard/">
-                <li>
-                    <i class="fa-solid fa-table-columns"></i> Dashboard
-                </li>
-            </a>
-            <a class="disabled" href="">
-                <li class="active"><i class="fa-solid fa-file-word"></i> Case Study</li>
-            </a>
-            <a href="">
-                <li><i class="fa-solid fa-clipboard-question"></i> Report</li>
-            </a>
-            <a href="">
-                <li><i class="fa-solid fa-gear"></i> Settings</li>
-            </a>
-        </ul>
-
-        <div class="spacer"></div>
-
-        <h3><b>Contents</b></h3>
-        <ul>
-            <a href="#" id="highlightContent">
-                <li><i class="fa-solid fa-file-pen"></i> Form I</li>
-            </a>
-        </ul>
-    </div>
-
+    <?php include "./../Assets/Global/nav.php" ?>
     <div class="container">
         <div class="top-nav">
             <div class="right">
                 <button type="button" id="toggleMode">Dark Mode</button>
-                <img src="../../Assets/Image/profile_placeholder.png" />
+                <img src="../Assets/Image/profile_placeholder.png" />
                 <h4>Username</h4>
             </div>
         </div>
         <div class="main">
             <div class="content" id="content">
-                <h1><a class="close" href="./../../Functions/PHP/exitCS.php"><i class="fa-solid fa-arrow-left"></i></a> I. Benefeciary</h1>
-                <form method="post" action="./../../Functions/PHP/formI.php" id="form">
+                <h1><a class="close" href="./../Functions/PHP/exitCS.php"><i class="fa-solid fa-arrow-left"></i></a>
+                    I. Benefeciary</h1>
+                <form method="post" action="./../Functions/PHP/formI.php" id="form">
                     <div class="form">
                         <div class="row">
                             <div class="col vhr">
@@ -106,14 +76,18 @@ include "./../../Functions/PHP/formIReq.php";
                                 <div class="form__group">
                                     <input type="text" id="sxInput" class="form__field--select" placeholder=" "
                                         readonly />
-                                    <?php include "./../../Functions/PHP/sxSelect.php" ?>
+                                    <select id="sxSelect" class="form__real-select" name="sx">
+                                        <?php include "./../Functions/PHP/sxSelect.php" ?>
+                                    </select>
                                     <label for="sxInput" class="form__label--select">Sex <span
                                             class="required">*</span></label>
                                 </div>
                                 <div class="form__group">
                                     <input type="text" id="csInput" class="form__field--select" placeholder=" "
                                         readonly />
-                                    <?php include "./../../Functions/PHP/cSSelect.php" ?>
+                                    <select id="csSelect" class="form__real-select" name="civStat">
+                                        <?php include "./../Functions/PHP/cSSelect.php" ?>
+                                    </select>
                                     <label for="csInput" class="form__label--select">Civil Status <span
                                             class="required">*</span></label>
                                 </div>
@@ -122,7 +96,9 @@ include "./../../Functions/PHP/formIReq.php";
                                 <div class="form__group">
                                     <input type="text" id="eaInput" class="form__field--select" placeholder=" "
                                         readonly />
-                                    <?php include "./../../Functions/PHP/eASelect.php" ?>
+                                    <select id="eaSelect" class="form__real-select" name="educAtt">
+                                        <?php include "./../Functions/PHP/eASelect.php" ?>
+                                    </select>
                                     <label for="eaInput" class="form__label--select">Educational Attainnment</label>
                                 </div>
                                 <div class="form__group field">
@@ -133,7 +109,9 @@ include "./../../Functions/PHP/formIReq.php";
                                 <div class="form__group">
                                     <input type="text" id="bInput" class="form__field--select" placeholder=" "
                                         readonly />
-                                    <?php include "./../../Functions/PHP/bSelect.php" ?>
+                                    <select id="bSelect" class="form__real-select" name="barangay">
+                                        <?php include "./../Functions/PHP/bSelect.php" ?>
+                                    </select>
                                     <label for="bInput" class="form__label--select">Barangay <span
                                             class="required">*</span></label>
                                 </div>
@@ -157,7 +135,7 @@ include "./../../Functions/PHP/formIReq.php";
             </div>
         </div>
 
-        <script type="module" src="../../Functions/JS/form.js"></script>
+        <script type="module" src="../Functions/JS/form.js"></script>
         <script src="https://kit.fontawesome.com/7961b8f896.js" crossorigin="anonymous"></script>
 </body>
 

@@ -24,7 +24,7 @@ function cleanStr($str) {
 }
 
 function cleanInt($int) {
-    return preg_replace('/\D/', '', $int);
+    return intval(preg_replace('/\D/', '', $int));
 }
 
 define('ENCRYPTION_KEY_FILE', 'secret.key');

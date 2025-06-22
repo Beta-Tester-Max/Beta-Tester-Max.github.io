@@ -1,3 +1,4 @@
+<?php $cd = basename(__DIR__);?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,44 +26,7 @@
 </head>
 
 <body>
-  <div class="side-nav">
-    <div class="center">
-      <div class="img"></div>
-    </div>
-    <h3><b>Pages</b></h3>
-    <ul>
-      <a class="disabled" href="">
-        <li class="active">
-          <i class="fa-solid fa-table-columns"></i> Dashboard
-        </li>
-      </a>
-      <a href="../Case_Study/">
-        <li><i class="fa-solid fa-file-word"></i> Case Study</li>
-      </a>
-      <a href="">
-        <li><i class="fa-solid fa-clipboard-question"></i> Report</li>
-      </a>
-      <a href="">
-        <li><i class="fa-solid fa-gear"></i> Settings</li>
-      </a>
-    </ul>
-
-    <div class="spacer"></div>
-
-    <h3><b>Contents</b></h3>
-    <ul>
-      <a href="#" id="highlightStatistics">
-        <li><i class="fa-solid fa-chart-simple"></i> Statistics</li>
-      </a>
-      <a href="#">
-        <li><i class="fa-solid fa-clock"></i> Recent</li>
-      </a>
-      <a href="#">
-        <li><i class="fa-solid fa-coins"></i> Budgeting</li>
-      </a>
-    </ul>
-  </div>
-
+  <?php include "./../Assets/Global/nav.php"?>
   <div class="container">
     <div class="top-nav">
       <div class="right">

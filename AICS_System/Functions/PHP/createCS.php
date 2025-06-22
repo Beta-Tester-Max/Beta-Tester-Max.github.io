@@ -26,7 +26,7 @@ if (isset($_POST['createCS'])) {
             if ($sql->execute()) {
                 $_SESSION['csID'] = $pdo->lastInsertId();
                 $pdo->commit();
-                header('Location: ../../Case_Study/Form_I/');
+                header('Location: ../../Form_I/');
                 exit;
             } else {
                 $pdo->rollBack();

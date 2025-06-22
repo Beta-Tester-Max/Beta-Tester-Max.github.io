@@ -22,21 +22,21 @@
 
 .side-nav {
   position: fixed;
-  width: 10em;
+  width: 2em;
   height: 100%;
-  padding-top: 1em;
   box-sizing: border-box;
   background: var(--sbg);
   font-size: 30px;
 }
 
 .side-nav .center .img {
+  margin-bottom: 10px;
+  margin-top: 10px;
   background: var(--img);
   background-size: cover;
   background-position: center;
-  height: 3em;
-  width: 4em;
-  margin-bottom: .5em;
+  height: 1.2em;
+  width: 1.5em;
   transition: 0.5s ease;
 }
 
@@ -46,8 +46,9 @@
 }
 
 .side-nav h3 {
+  font-size: 18px;
+  text-align: center;
   margin-top: 0;
-  padding: 0 1em;
   user-select: none;
 }
 
@@ -61,7 +62,7 @@
   color: var(--font);
   text-decoration: none;
   text-align: center;
-  font-size: 1em;
+  font-size: 20px;
 }
 
 .side-nav a.disabled {
@@ -70,16 +71,15 @@
 }
 
 .side-nav li {
-  padding-left: 2em;
   margin-bottom: 0.4em;
   transition: 0.5s ease;
-  text-align: start;
+  text-align: center;
   user-select: none;
 }
 
 .side-nav a:hover li {
-  transform: translateY(-16px);
-  box-shadow: 0 6px 6px var(--font);
+  transform: translateY(-8px);
+  box-shadow: 0 2px 2px var(--font);
   transition: 0.5s ease;
 }
 
@@ -103,8 +103,8 @@
 }
 
 .container {
-  padding-left: 18.75em;
-  width: 100%;
+  justify-self: right;
+  width: 104.5em;
   min-width: 57.5em;
   height: 100%;
   background: var(--bg);
@@ -159,10 +159,13 @@
 }
 
 .main {
+  height: 49.24em;
+  overflow-x: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
   padding: 2em;
-  height: 100em;
   box-shadow: inset 0px 0px 4px var(--font);
+  position: relative;
   display: flex;
   justify-content: center;
 }

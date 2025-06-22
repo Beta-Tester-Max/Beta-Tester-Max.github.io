@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2025 at 10:29 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jun 23, 2025 at 01:18 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -69,18 +69,36 @@ CREATE TABLE `tbl_c` (
   `s` char(5) NOT NULL,
   `cS` char(5) NOT NULL,
   `eA` char(5) DEFAULT 'N/A',
-  `o` varchar(50) DEFAULT 'None',
-  `cN` varchar(13) NOT NULL DEFAULT '0000-000-0000'
+  `o` varchar(50) DEFAULT 'None'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_c`
 --
 
-INSERT INTO `tbl_c` (`id`, `fN`, `mN`, `lN`, `dB`, `s`, `cS`, `eA`, `o`, `cN`) VALUES
-(1, 'Admin', '', 'Owner', '2025-06-02', 'M', 'S', 'CG', '', '0999-999-9999'),
-(2, 'Admin', '', 'Owner', '2025-06-02', 'M', 'S', 'CG', '', '0999-999-9999'),
-(3, 'Admin', '', 'Owner', '2025-06-03', 'M', 'S', NULL, '', '0999-999-9999');
+INSERT INTO `tbl_c` (`id`, `fN`, `mN`, `lN`, `dB`, `s`, `cS`, `eA`, `o`) VALUES
+(5, 'Little', 'Einstein', 'Tutorials', '2025-06-03', 'M', 'S', 'CG', ''),
+(8, 'Rob', '', 'Bert', '2025-06-02', 'M', 'S', NULL, ''),
+(9, 'Eins', '', 'Stien', '2025-06-01', 'M', 'S', NULL, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_cn`
+--
+
+CREATE TABLE `tbl_cn` (
+  `id` int(5) NOT NULL,
+  `c` int(5) NOT NULL,
+  `cn` varchar(13) NOT NULL DEFAULT '0XXX-XXX-XXXX'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_cn`
+--
+
+INSERT INTO `tbl_cn` (`id`, `c`, `cn`) VALUES
+(2, 5, '0999-999-9999');
 
 -- --------------------------------------------------------
 
@@ -90,8 +108,11 @@ INSERT INTO `tbl_c` (`id`, `fN`, `mN`, `lN`, `dB`, `s`, `cS`, `eA`, `o`, `cN`) V
 
 CREATE TABLE `tbl_cs` (
   `id` int(11) NOT NULL,
-  `r` int(5) NOT NULL,
-  `b` char(5) NOT NULL,
+  `cSName` varchar(50) NOT NULL,
+  `form_I` tinyint(1) DEFAULT 0,
+  `r` int(5) DEFAULT NULL,
+  `b` char(5) DEFAULT NULL,
+  `form_II` tinyint(1) DEFAULT 0,
   `tS` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -99,10 +120,9 @@ CREATE TABLE `tbl_cs` (
 -- Dumping data for table `tbl_cs`
 --
 
-INSERT INTO `tbl_cs` (`id`, `r`, `b`, `tS`) VALUES
-(1, 1, 'BIP', '2025-06-17 07:25:51'),
-(2, 2, 'BIP', '2025-06-17 07:29:15'),
-(3, 3, 'BIP', '2025-06-17 08:26:56');
+INSERT INTO `tbl_cs` (`id`, `cSName`, `form_I`, `r`, `b`, `form_II`, `tS`) VALUES
+(7, 'Magbanua Educational Assistance', 1, 5, 'BIP', 1, '2025-06-22 13:16:38'),
+(8, 'Magbanua Educational Assistance V2 ZZZZZZZZZZZZZZZ', 0, NULL, NULL, 0, '2025-06-22 13:32:57');
 
 -- --------------------------------------------------------
 
@@ -158,6 +178,58 @@ INSERT INTO `tbl_ea` (`id`, `eAC`, `eAN`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_r`
+--
+
+CREATE TABLE `tbl_r` (
+  `id` int(2) NOT NULL,
+  `rC` char(5) NOT NULL,
+  `rN` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_r`
+--
+
+INSERT INTO `tbl_r` (`id`, `rC`, `rN`) VALUES
+(1, 'S', 'Son'),
+(2, 'D', 'Daughter'),
+(3, 'SI', 'Sister'),
+(4, 'BR', 'Brother'),
+(5, 'GS', 'Grandson'),
+(6, 'GD', 'Granddaughter'),
+(7, 'M', 'Mother'),
+(8, 'F', 'Father'),
+(9, 'GF', 'Grandfather'),
+(10, 'GM', 'Grandmother'),
+(11, 'SP', 'Spouse'),
+(12, 'LIP', 'Live-in Partner'),
+(13, 'R', 'Relative');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_rel`
+--
+
+CREATE TABLE `tbl_rel` (
+  `id` int(5) NOT NULL,
+  `findiv` int(5) NOT NULL,
+  `sindiv` int(5) NOT NULL,
+  `relation` char(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_rel`
+--
+
+INSERT INTO `tbl_rel` (`id`, `findiv`, `sindiv`, `relation`) VALUES
+(1, 5, 8, 'S'),
+(2, 5, 9, 'S');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_sx`
 --
 
@@ -196,6 +268,13 @@ ALTER TABLE `tbl_c`
   ADD KEY `eA_from_tbl_ea(eAC)_nullable` (`eA`);
 
 --
+-- Indexes for table `tbl_cn`
+--
+ALTER TABLE `tbl_cn`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `c_from_tbl_c` (`c`);
+
+--
 -- Indexes for table `tbl_cs`
 --
 ALTER TABLE `tbl_cs`
@@ -218,6 +297,22 @@ ALTER TABLE `tbl_ea`
   ADD UNIQUE KEY `eAC` (`eAC`);
 
 --
+-- Indexes for table `tbl_r`
+--
+ALTER TABLE `tbl_r`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `rC` (`rC`);
+
+--
+-- Indexes for table `tbl_rel`
+--
+ALTER TABLE `tbl_rel`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `findiv_from_tbl_c` (`findiv`),
+  ADD KEY `sindiv_from_tbl_c` (`sindiv`),
+  ADD KEY `relation_from_tbl_r` (`relation`);
+
+--
 -- Indexes for table `tbl_sx`
 --
 ALTER TABLE `tbl_sx`
@@ -238,13 +333,19 @@ ALTER TABLE `tbl_b`
 -- AUTO_INCREMENT for table `tbl_c`
 --
 ALTER TABLE `tbl_c`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tbl_cn`
+--
+ALTER TABLE `tbl_cn`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_cs`
 --
 ALTER TABLE `tbl_cs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_cvs`
@@ -257,6 +358,18 @@ ALTER TABLE `tbl_cvs`
 --
 ALTER TABLE `tbl_ea`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tbl_r`
+--
+ALTER TABLE `tbl_r`
+  MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `tbl_rel`
+--
+ALTER TABLE `tbl_rel`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_sx`
@@ -277,11 +390,25 @@ ALTER TABLE `tbl_c`
   ADD CONSTRAINT `s_from_tbl_sx(sC)` FOREIGN KEY (`s`) REFERENCES `tbl_sx` (`sC`);
 
 --
+-- Constraints for table `tbl_cn`
+--
+ALTER TABLE `tbl_cn`
+  ADD CONSTRAINT `c_from_tbl_c` FOREIGN KEY (`c`) REFERENCES `tbl_c` (`id`);
+
+--
 -- Constraints for table `tbl_cs`
 --
 ALTER TABLE `tbl_cs`
   ADD CONSTRAINT `b_from_tbl_b(bC)` FOREIGN KEY (`b`) REFERENCES `tbl_b` (`bC`),
   ADD CONSTRAINT `r_from_tbl_c` FOREIGN KEY (`r`) REFERENCES `tbl_c` (`id`);
+
+--
+-- Constraints for table `tbl_rel`
+--
+ALTER TABLE `tbl_rel`
+  ADD CONSTRAINT `findiv_from_tbl_c` FOREIGN KEY (`findiv`) REFERENCES `tbl_c` (`id`),
+  ADD CONSTRAINT `relation_from_tbl_r` FOREIGN KEY (`relation`) REFERENCES `tbl_r` (`rC`),
+  ADD CONSTRAINT `sindiv_from_tbl_c` FOREIGN KEY (`sindiv`) REFERENCES `tbl_c` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

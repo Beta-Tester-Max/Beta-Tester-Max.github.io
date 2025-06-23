@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2025 at 01:18 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jun 23, 2025 at 09:21 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -113,6 +113,10 @@ CREATE TABLE `tbl_cs` (
   `r` int(5) DEFAULT NULL,
   `b` char(5) DEFAULT NULL,
   `form_II` tinyint(1) DEFAULT 0,
+  `form_III` text DEFAULT NULL,
+  `form_VI` text DEFAULT NULL,
+  `form_V` text DEFAULT NULL,
+  `Status` varchar(50) DEFAULT 'Ongoing',
   `tS` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -120,9 +124,9 @@ CREATE TABLE `tbl_cs` (
 -- Dumping data for table `tbl_cs`
 --
 
-INSERT INTO `tbl_cs` (`id`, `cSName`, `form_I`, `r`, `b`, `form_II`, `tS`) VALUES
-(7, 'Magbanua Educational Assistance', 1, 5, 'BIP', 1, '2025-06-22 13:16:38'),
-(8, 'Magbanua Educational Assistance V2 ZZZZZZZZZZZZZZZ', 0, NULL, NULL, 0, '2025-06-22 13:32:57');
+INSERT INTO `tbl_cs` (`id`, `cSName`, `form_I`, `r`, `b`, `form_II`, `form_III`, `form_VI`, `form_V`, `Status`, `tS`) VALUES
+(7, 'Magbanua Educational Assistance', 1, 5, 'BIP', 1, NULL, NULL, NULL, 'Ongoing', '2025-06-22 13:16:38'),
+(8, 'Magbanua Educational Assistance V2 ZZZZZZZZZZZZZZZ', 0, NULL, NULL, 0, NULL, NULL, NULL, 'Ongoing', '2025-06-22 13:32:57');
 
 -- --------------------------------------------------------
 

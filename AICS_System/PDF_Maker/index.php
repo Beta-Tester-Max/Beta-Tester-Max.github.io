@@ -1,31 +1,111 @@
 <?php
 require './../../vendor/autoload.php';
+require_once "../Functions/PHP/connect.php";
+ini_set('session.cookie_httponly', 1);
+session_start();
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-// Initialize DOMPDF
-$options = new Options();
-$options->set('isHtml5ParserEnabled', true);
-$options->set('isPhpEnabled', true);
-$dompdf = new Dompdf($options);
+if (isset($_POST['viewPDF'])) {
+  $id = cleanInt(intval($_POST['id'] ?? ""));
+  if (empty($id)) {
+    $_SESSION['alert'] = "Missing ID!";
+    header('Location: ../Case_Study/');
+    exit;
+  } elseif (strlen(strval($id)) > 11) {
+    $_SESSION['alert'] = "Invaid ID Length.";
+    header('Location: ../Case_Study/');
+    exit;
+  } else {
 
-// Get the absolute path of the image
-$dswdLogoPath = realpath('../Assets/Image/dswd-logo.png');
-$alaminosLogoPath = realpath('../Assets/Image/Alam150.png');
-$asAlaminosLogoPath = realpath('../Assets/Image/ayosAlaminos.png');
-$dswdLogoData = base64_encode(file_get_contents($dswdLogoPath));
-$alaminosLogoData = base64_encode(file_get_contents($alaminosLogoPath));
-$asAlaminosData = base64_encode(file_get_contents($asAlaminosLogoPath ));
-$dswdLogoBase64 = 'data:image/png;base64,' . $dswdLogoData;
-$alaminosBase64 = 'data:image/png;base64,' . $alaminosLogoData;
-$asAlaminosBase64 = 'data:image/png;base64,' . $asAlaminosData;
-// <img src="' . $alaminosBase64 . '" alt="DSWD Logo" />
-// <img src="' . $dswdLogoBase64 . '" alt="DSWD Logo" />
-// <img src="' . $asAlaminosBase64 . '" alt="DSWD Logo" />
+    try {
+      $sql = $pdo->prepare("SELECT * FROM tbl_cs WHERE id = :1");
+      $sql->bindParam(":1", $id, PDO::PARAM_INT);
+      $sql->execute();
 
-// Create HTML content for your PDF with the Base64 image
-$html = '
+      if ($sql->rowCount() > 0) {
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        $rid = cleanInt($result['r'] ?? "");
+
+        $sql = $pdo->prepare("SELECT * FROM tbl_c WHERE id = :1");
+        $sql->bindParam(":1", $rid, PDO::PARAM_INT);
+        $sql->execute();
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        $fn = strval($result['fN'] ?? "");
+        $mn = strval($result['mN'] ?? "");
+        $ln = strval($result['lN'] ?? "");
+        $fullname = (empty($mn)) ? $fn . "&nbsp;" . $ln : $fn . "&nbsp;" . $mn . "&nbsp;" . $ln;
+        $fetchedDB = strval($result['dB'] ?? "");
+        $parts = explode("-", $fetchedDB);
+
+        $year = $parts[0];
+        $month = $parts[1];
+        $day = $parts[2];
+
+        $monthNum = ltrim($month, '0');
+
+        switch ($monthNum) {
+          case 1:
+            $monthName = "January";
+            break;
+          case 2:
+            $monthName = "February";
+            break;
+          case 3:
+            $monthName = "March";
+            break;
+          case 4:
+            $monthName = "April";
+            break;
+          case 5:
+            $monthName = "May";
+            break;
+          case 6:
+            $monthName = "June";
+            break;
+          case 7:
+            $monthName = "July";
+            break;
+          case 8:
+            $monthName = "August";
+            break;
+          case 9:
+            $monthName = "September";
+            break;
+          case 10:
+            $monthName = "October";
+            break;
+          case 11:
+            $monthName = "November";
+            break;
+          case 12:
+            $monthName = "December";
+            break;
+          default:
+            $monthName = "Invalid Month";
+        }
+
+        $db = "$monthName $day, $year";
+
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf = new Dompdf($options);
+        $dswdLogoPath = realpath('../Assets/Image/dswd-logo.png');
+        $alaminosLogoPath = realpath('../Assets/Image/Alam150.png');
+        $asAlaminosLogoPath = realpath('../Assets/Image/ayosAlaminos.png');
+        $dswdLogoData = base64_encode(file_get_contents($dswdLogoPath));
+        $alaminosLogoData = base64_encode(file_get_contents($alaminosLogoPath));
+        $asAlaminosData = base64_encode(file_get_contents($asAlaminosLogoPath));
+        $dswdLogoBase64 = 'data:image/png;base64,' . $dswdLogoData;
+        $alaminosBase64 = 'data:image/png;base64,' . $alaminosLogoData;
+        $asAlaminosBase64 = 'data:image/png;base64,' . $asAlaminosData;
+        // <img src="' . $alaminosBase64 . '" alt="DSWD Logo" />
+        // <img src="' . $dswdLogoBase64 . '" alt="DSWD Logo" />
+        // <img src="' . $asAlaminosBase64 . '" alt="DSWD Logo" />
+
+        $html = '
     <html>
   <head>
     <style>
@@ -107,12 +187,12 @@ $html = '
     <tr>
     <td style="width: 150px;"><b>Name</b></td>
     <td style="width: 40px;"><b>:</b></td>
-    <td>Vilma V. Dua</td>
+    <td>' . $fullname . '</td>
     </tr>
     <tr>
     <td style="width: 150px;"><b>Date of Birth</b></td>
     <td style="width: 40px;"><b>:</b></td>
-    <td>November 5, 1979</td>
+    <td>' . $db . '</td>
     </tr>
     <tr>
     <td style="width: 150px;"><b>Age</b></td>
@@ -193,16 +273,23 @@ $html = '
 </html>
 ';
 
-
-// Load HTML content into DOMPDF
-$dompdf->loadHtml($html);
-
-// (Optional) Set Paper Size (default is A4)
-$dompdf->setPaper('Legal', 'portrait');
-
-// Render PDF from HTML (first pass)
-$dompdf->render();
-
-// Output the generated PDF to the browser
-$dompdf->stream('generated_pdf.pdf', array('Attachment' => 0));
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('Legal', 'portrait');
+        $dompdf->render();
+        $dompdf->stream('Case_Study.pdf', array('Attachment' => 0));
+      } else {
+        $_SESSION['alert'] = "Case Study Doesn't Exists!";
+        header('Location: ../Case_Study/');
+        exit;
+      }
+    } catch (PDOException $e) {
+      $_SESSION['alert'] = "Connection Error: " . $e->getMessage();
+      header('Location: ../Case_Study/');
+      exit;
+    }
+  }
+} else {
+  header('Location: ../Functions/PHP/include/logout.php');
+  exit;
+}
 ?>

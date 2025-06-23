@@ -25,9 +25,17 @@ $sql = $pdo->query("SELECT * FROM tbl_r");
 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 $_SESSION['allR'] = $result;
 
-$sql = $pdo->query("SELECT id, cSName FROM tbl_cs");
+$sql = $pdo->query("SELECT id, cSName FROM tbl_cs WHERE Status = 'Ongoing' AND form_V = 0");
 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 $_SESSION['allCaseStudy'] = $result;
+
+$sql = $pdo->query("SELECT id, cSName FROM tbl_cs WHERE Status = 'Complete' AND form_V = 1");
+$result = $sql->fetchAll(PDO::FETCH_ASSOC);
+$_SESSION['allCompleteCaseStudy'] = $result;
+
+$sql = $pdo->query("SELECT * FROM tbl_a");
+$result = $sql->fetchAll(PDO::FETCH_ASSOC);
+$_SESSION['allAssistance'] = $result;
 } catch (PDOException $e) {
     $alert = "Connection Error: ". $e->getMessage();
     ?>

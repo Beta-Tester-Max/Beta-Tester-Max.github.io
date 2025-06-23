@@ -13,15 +13,15 @@ if (isset($_SESSION['csID']) || !empty($_SESSION['csID'])) {
     }
     try {
 
-        $sql = $pdo->prepare("SELECT form_I FROM tbl_cs WHERE id = :1");
+        $sql = $pdo->prepare("SELECT form_II FROM tbl_cs WHERE id = :1");
         $sql->bindParam(":1", $csid, PDO::PARAM_INT);
         $sql->execute();
         $r = $sql->fetch(PDO::FETCH_ASSOC);
-        $_SESSION['hasFormI'] = cleanInt(intval($r['form_I'] ?? ""));
-        if (cleanInt(intval($r['form_I'] ?? "")) === 1) {
+        $_SESSION['hasFormII'] = cleanInt(intval($r['form_II'] ?? ""));
+        if (cleanInt(intval($r['form_II'] ?? "")) === 1) {
 
         } else {
-            header('Location: ../Form_I/');
+            header('Location: ../Form_II/');
             exit;
         }
     } catch (PDOException $e) {
@@ -33,7 +33,7 @@ if (isset($_SESSION['csID']) || !empty($_SESSION['csID'])) {
         <?php
     }
 } else {
-    header('Location: ../Form_I/');
+    header('Location: ../Form_II/');
     exit;
 }
 ?>

@@ -1,7 +1,7 @@
 <?php $cd = "Case_Study";
 include "./../Functions/PHP/include/dataFetcher.php";
 include "./../Functions/PHP/include/alert.php";
-include "./../Functions/PHP/include/formIIIReq.php";
+include "./../Functions/PHP/include/formIVReq.php";
 ?>
 <!doctype html>
 <html lang="en">
@@ -22,30 +22,29 @@ include "./../Functions/PHP/include/formIIIReq.php";
         <div class="row">
             <div class="col"></div>
             <div class="col border rounded shadow-sm pb-2">
-                <form method="post" action="./../Functions/PHP/formIII.php">
+                <form method="post" action="./../Functions/PHP/formIV.php">
                     <div class="row">
-                        <div class="col">
-                            <h4 class="m-0 mt-2 user-select-none">III. PROBLEM PRESENTED:</h4>
+                        <div class="col-11">
+                            <h4 class="m-0 mt-2 user-select-none">IV. CLIENT’S HISTORICAL BACKGROUND:</h4>
                         </div>
-                        <div class="col d-flex justify-content-end align-items-start pt-2">
-                            <a href="./../Functions/PHP/f3tof2.php" type="button" class="btn-close"
+                        <div class="col-1 d-flex justify-content-end align-items-start pt-2">
+                            <a href="./../Functions/PHP/f4tof3.php" type="button" class="btn-close"
                                 aria-label="Close"></a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <div class="form-floating">
-                                <select class="form-select shadow-sm" id="assistance" name="assistance" required>
-                                    <?php include "./../Functions/PHP/include/aSelect.php" ?>
-                                </select>
-                                <label for="assistance">Assistance Type <span class="text-danger">*</span></label>
+                                <textarea class="form-control" placeholder="Leave a comment here" id="f4text"
+                                    style="height: 100px" minlength="10" maxlength="10000" name="f4text" required></textarea>
+                                <label for="f4text">Write Historical Background Here</label>
                             </div>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col d-flex justify-content-end align-items-start">
-                            <input type="hidden" name="formIII">
+                            <input type="hidden" name="formIV">
                             <button type="submit" class="btn btn-outline-dark btn-lg shadow-sm me-1">Next</button>
                         </div>
                     </div>

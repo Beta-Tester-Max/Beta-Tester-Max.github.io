@@ -24,7 +24,35 @@ if (isset($_POST['continue'])) {
             $sql->execute();
             $r = $sql->fetch(PDO::FETCH_ASSOC);
             $_SESSION['hasFormI'] = cleanInt(intval($r['form_I'] ?? ""));
-            if (cleanInt(intval($r['form_I'] ?? "")) === 1) {
+
+            $sql = $pdo->prepare("SELECT form_II FROM tbl_cs WHERE id = :1");
+            $sql->bindParam(":1", $id, PDO::PARAM_INT);
+            $sql->execute();
+            $r = $sql->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['hasFormII'] = cleanInt(intval($r['form_II'] ?? ""));
+
+            $sql = $pdo->prepare("SELECT form_III FROM tbl_cs WHERE id = :1");
+            $sql->bindParam(":1", $id, PDO::PARAM_INT);
+            $sql->execute();
+            $r = $sql->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['hasFormIII'] = cleanInt(intval($r['form_III'] ?? ""));
+
+            $sql = $pdo->prepare("SELECT form_IV FROM tbl_cs WHERE id = :1");
+            $sql->bindParam(":1", $id, PDO::PARAM_INT);
+            $sql->execute();
+            $r = $sql->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['hasFormIV'] = cleanInt(intval($r['form_IV'] ?? ""));
+
+            if (cleanInt(intval($_SESSION['hasFormIV'] ?? "")) === 1) {
+                header('Location: ../../Form_V/');
+                exit;
+            } elseif (cleanInt(intval($_SESSION['hasFormIII'] ?? "")) === 1) {
+                header('Location: ../../Form_IV/');
+                exit;
+            } elseif (cleanInt(intval($_SESSION['hasFormII'] ?? "")) === 1) {
+                header('Location: ../../Form_III/');
+                exit;
+            } elseif (cleanInt(intval($_SESSION['hasFormI'] ?? "")) === 1) {
                 header('Location: ../../Form_II/');
                 exit;
             } else {

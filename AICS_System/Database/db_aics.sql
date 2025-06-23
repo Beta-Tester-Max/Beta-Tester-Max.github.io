@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2025 at 09:21 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jun 24, 2025 at 12:50 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_aics`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_a`
+--
+
+CREATE TABLE `tbl_a` (
+  `id` int(2) NOT NULL,
+  `aC` char(5) NOT NULL,
+  `aN` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_a`
+--
+
+INSERT INTO `tbl_a` (`id`, `aC`, `aN`) VALUES
+(1, 'TA', 'Transportation Assistance'),
+(2, 'MA', 'Medical Assistance'),
+(3, 'BA', 'Burial Assistance'),
+(4, 'EA', 'Educational Assistance'),
+(5, 'FA', 'Food Assistance'),
+(6, 'CRA', 'Cash Relief Assistance'),
+(7, 'PS', 'Psychosocial Support');
 
 -- --------------------------------------------------------
 
@@ -113,9 +138,12 @@ CREATE TABLE `tbl_cs` (
   `r` int(5) DEFAULT NULL,
   `b` char(5) DEFAULT NULL,
   `form_II` tinyint(1) DEFAULT 0,
-  `form_III` text DEFAULT NULL,
-  `form_VI` text DEFAULT NULL,
-  `form_V` text DEFAULT NULL,
+  `form_III` tinyint(1) DEFAULT 0,
+  `asType` char(5) DEFAULT NULL,
+  `form_IV` tinyint(1) DEFAULT 0,
+  `form_VI_text` text DEFAULT NULL,
+  `form_V` tinyint(1) DEFAULT 0,
+  `form_V_text` text DEFAULT NULL,
   `Status` varchar(50) DEFAULT 'Ongoing',
   `tS` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -124,9 +152,9 @@ CREATE TABLE `tbl_cs` (
 -- Dumping data for table `tbl_cs`
 --
 
-INSERT INTO `tbl_cs` (`id`, `cSName`, `form_I`, `r`, `b`, `form_II`, `form_III`, `form_VI`, `form_V`, `Status`, `tS`) VALUES
-(7, 'Magbanua Educational Assistance', 1, 5, 'BIP', 1, NULL, NULL, NULL, 'Ongoing', '2025-06-22 13:16:38'),
-(8, 'Magbanua Educational Assistance V2 ZZZZZZZZZZZZZZZ', 0, NULL, NULL, 0, NULL, NULL, NULL, 'Ongoing', '2025-06-22 13:32:57');
+INSERT INTO `tbl_cs` (`id`, `cSName`, `form_I`, `r`, `b`, `form_II`, `form_III`, `asType`, `form_IV`, `form_VI_text`, `form_V`, `form_V_text`, `Status`, `tS`) VALUES
+(7, 'Magbanua Educational Assistance', 1, 5, 'BIP', 1, 1, 'MA', 1, 'light and concrete materials. Client/patient was seen and examined at San Pablo City General Hospital San Pablo City, Laguna under the service of Dr. Navata and was diagnosed of T/C Gastric Pathology and was recommended for Whole Abdomen Ultrasound. ', 1, 'ALAMINOS MSWD', 'Complete', '2025-06-22 13:16:38'),
+(8, 'Magbanua Educational Assistance V2 ZZZZZZZZZZZZZZZ', 0, NULL, NULL, 0, 0, NULL, 0, NULL, 0, NULL, 'Ongoing', '2025-06-22 13:32:57');
 
 -- --------------------------------------------------------
 
@@ -256,6 +284,13 @@ INSERT INTO `tbl_sx` (`id`, `sC`, `sN`) VALUES
 --
 
 --
+-- Indexes for table `tbl_a`
+--
+ALTER TABLE `tbl_a`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `aC` (`aC`);
+
+--
 -- Indexes for table `tbl_b`
 --
 ALTER TABLE `tbl_b`
@@ -284,7 +319,8 @@ ALTER TABLE `tbl_cn`
 ALTER TABLE `tbl_cs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `r_from_tbl_c` (`r`),
-  ADD KEY `b_from_tbl_b(bC)` (`b`);
+  ADD KEY `b_from_tbl_b(bC)` (`b`),
+  ADD KEY `asType_from_tbl_a` (`asType`);
 
 --
 -- Indexes for table `tbl_cvs`
@@ -326,6 +362,12 @@ ALTER TABLE `tbl_sx`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `tbl_a`
+--
+ALTER TABLE `tbl_a`
+  MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_b`
@@ -403,6 +445,7 @@ ALTER TABLE `tbl_cn`
 -- Constraints for table `tbl_cs`
 --
 ALTER TABLE `tbl_cs`
+  ADD CONSTRAINT `asType_from_tbl_a` FOREIGN KEY (`asType`) REFERENCES `tbl_a` (`aC`),
   ADD CONSTRAINT `b_from_tbl_b(bC)` FOREIGN KEY (`b`) REFERENCES `tbl_b` (`bC`),
   ADD CONSTRAINT `r_from_tbl_c` FOREIGN KEY (`r`) REFERENCES `tbl_c` (`id`);
 

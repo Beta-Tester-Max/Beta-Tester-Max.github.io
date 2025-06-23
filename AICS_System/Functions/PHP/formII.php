@@ -53,7 +53,7 @@ if (isset($_POST['formII'])) {
                             $_SESSION['alert'] = "Missing First Name! Family Member No.$i";
                             header('Location: ../../Form_I/');
                             exit;
-                        } elseif (strlen(cleanStr($fn)) < 2 || strlen(cleanStr($fn)) > 50) {
+                        } elseif (strlen(cleanStr($fn)) < 2 || strlen($fn) > 50) {
                             $_SESSION['alert'] = "First Name must have 2-50 characters. Family Member No.$i";
                             header('Location: ../../Form_I/');
                             exit;
@@ -65,7 +65,7 @@ if (isset($_POST['formII'])) {
                             $_SESSION['alert'] = "Missing Last Name! Family Member No.$i";
                             header('Location: ../../Form_I/');
                             exit;
-                        } elseif (strlen(cleanStr($ln)) < 2 || strlen(cleanStr($ln)) > 50) {
+                        } elseif (strlen(cleanStr($ln)) < 2 || strlen($ln) > 50) {
                             $_SESSION['alert'] = "Last Name must have 2-50 characters. Family Member No.$i";
                             header('Location: ../../Form_I/');
                             exit;

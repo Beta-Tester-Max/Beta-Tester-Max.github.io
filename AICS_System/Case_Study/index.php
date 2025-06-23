@@ -22,15 +22,38 @@ include "./../Functions/PHP/include/ongoingCS.php";
         <div class="row">
             <div class="col"></div>
             <div class="col rounded border shadow-sm p-2">
-                <form class="d-flex align-items-center justify-content-center" method="POST" action="./../Functions/PHP/createCS.php">
-                    <input type="text" class="form-control me-2" minlength="2" maxlength="50" placeholder="Case Study Name"
-                        name="csName" id="csName" required>
+                <form class="d-flex align-items-center justify-content-center" method="POST"
+                    action="./../Functions/PHP/createCS.php">
+                    <input type="text" class="form-control me-2" minlength="2" maxlength="50"
+                        placeholder="Case Study Name" name="csName" id="csName" required>
                     <input type="hidden" name="createCS">
                     <button type="submit" class="btn btn-outline-dark">Create</button>
                 </form>
                 <hr>
-                <div class="overflow-x-hidden overflow-y-auto" style="max-height: 30em;">
-                    <?php include "./../Functions/PHP/include/allCaseStudy.php" ?>
+                <div class="row">
+                    <div class="col">
+                        <h4 class="m-0 mt-2 user-select-none"><b>Ongoing Case Study</b></h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="overflow-x-hidden overflow-y-auto" style="max-height: 30em;">
+                            <?php include "./../Functions/PHP/include/allCaseStudy.php" ?>
+                        </div>
+                    </div>
+                </div>
+                <hr style="height: 5px; background-color: #000000; border: none;">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="m-0 mt-2 user-select-none"><b>Complete Case Study</b></h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="overflow-x-hidden overflow-y-auto" style="max-height: 30em;">
+                            <?php include "./../Functions/PHP/include/allCompleteCaseStudy.php" ?>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col"></div>

@@ -25,7 +25,7 @@ include "./../Functions/PHP/include/formIReq.php";
                 <form method="POST" action="./../Functions/PHP/formI.php">
                     <div class="row">
                         <div class="col">
-                            <h4 class="m-0 mt-2 user-select-none">I. BENEFECIARY</h4>
+                            <h4 class="m-0 mt-2 user-select-none">I. IDENTIFYING DATA:</h4>
                         </div>
                         <div class="col d-flex justify-content-end align-items-start pt-2">
                             <a href="./../Functions/PHP/exitCS.php" type="button" class="btn-close"

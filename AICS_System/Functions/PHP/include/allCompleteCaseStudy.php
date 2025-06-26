@@ -5,8 +5,8 @@ if (isset($_SESSION['allCompleteCaseStudy']) || !empty($_SESSION['allCompleteCas
         $name = $a['cSName'] ?? "";
 
         ?>
-        <form method="post" action="./../PDF_Maker/">
-            <div class="row">
+        <form method="post" target="_blank" action="./../PDF_Maker/">
+            <div class="row mb-2">
                 <div class="col-10 d-flex align-items-center">
                     <p class="fs-5 m-0"><?php echo htmlspecialchars($name) ?></p>
                 </div>

@@ -6,7 +6,7 @@ if (isset($_SESSION['allCaseStudy']) || !empty($_SESSION['allCaseStudy'])) {
 
         ?>
         <form method="post" action="./../Functions/PHP/continueCS.php">
-            <div class="row">
+            <div class="row mb-2">
                 <div class="col-10 d-flex align-items-center">
                     <p class="fs-5 m-0"><?php echo htmlspecialchars($name) ?></p>
                 </div>

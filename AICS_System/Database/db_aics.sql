@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2025 at 12:50 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Jun 27, 2025 at 08:22 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -94,17 +94,9 @@ CREATE TABLE `tbl_c` (
   `s` char(5) NOT NULL,
   `cS` char(5) NOT NULL,
   `eA` char(5) DEFAULT 'N/A',
-  `o` varchar(50) DEFAULT 'None'
+  `o` varchar(50) DEFAULT 'None',
+  `is_pwd` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_c`
---
-
-INSERT INTO `tbl_c` (`id`, `fN`, `mN`, `lN`, `dB`, `s`, `cS`, `eA`, `o`) VALUES
-(5, 'Little', 'Einstein', 'Tutorials', '2025-06-03', 'M', 'S', 'CG', ''),
-(8, 'Rob', '', 'Bert', '2025-06-02', 'M', 'S', NULL, ''),
-(9, 'Eins', '', 'Stien', '2025-06-01', 'M', 'S', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -117,13 +109,6 @@ CREATE TABLE `tbl_cn` (
   `c` int(5) NOT NULL,
   `cn` varchar(13) NOT NULL DEFAULT '0XXX-XXX-XXXX'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_cn`
---
-
-INSERT INTO `tbl_cn` (`id`, `c`, `cn`) VALUES
-(2, 5, '0999-999-9999');
 
 -- --------------------------------------------------------
 
@@ -138,23 +123,14 @@ CREATE TABLE `tbl_cs` (
   `r` int(5) DEFAULT NULL,
   `b` char(5) DEFAULT NULL,
   `form_II` tinyint(1) DEFAULT 0,
-  `form_III` tinyint(1) DEFAULT 0,
+  `form_III` text DEFAULT NULL,
+  `form_IV` text DEFAULT NULL,
+  `form_V` text DEFAULT NULL,
   `asType` char(5) DEFAULT NULL,
-  `form_IV` tinyint(1) DEFAULT 0,
-  `form_VI_text` text DEFAULT NULL,
-  `form_V` tinyint(1) DEFAULT 0,
-  `form_V_text` text DEFAULT NULL,
+  `cost` decimal(11,2) DEFAULT NULL,
   `Status` varchar(50) DEFAULT 'Ongoing',
   `tS` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_cs`
---
-
-INSERT INTO `tbl_cs` (`id`, `cSName`, `form_I`, `r`, `b`, `form_II`, `form_III`, `asType`, `form_IV`, `form_VI_text`, `form_V`, `form_V_text`, `Status`, `tS`) VALUES
-(7, 'Magbanua Educational Assistance', 1, 5, 'BIP', 1, 1, 'MA', 1, 'light and concrete materials. Client/patient was seen and examined at San Pablo City General Hospital San Pablo City, Laguna under the service of Dr. Navata and was diagnosed of T/C Gastric Pathology and was recommended for Whole Abdomen Ultrasound. ', 1, 'ALAMINOS MSWD', 'Complete', '2025-06-22 13:16:38'),
-(8, 'Magbanua Educational Assistance V2 ZZZZZZZZZZZZZZZ', 0, NULL, NULL, 0, 0, NULL, 0, NULL, 0, NULL, 'Ongoing', '2025-06-22 13:32:57');
 
 -- --------------------------------------------------------
 
@@ -210,6 +186,17 @@ INSERT INTO `tbl_ea` (`id`, `eAC`, `eAN`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_family`
+--
+
+CREATE TABLE `tbl_family` (
+  `id` int(5) NOT NULL,
+  `Family_Name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_r`
 --
 
@@ -246,18 +233,11 @@ INSERT INTO `tbl_r` (`id`, `rC`, `rN`) VALUES
 
 CREATE TABLE `tbl_rel` (
   `id` int(5) NOT NULL,
+  `Family_ID` int(5) NOT NULL,
   `findiv` int(5) NOT NULL,
   `sindiv` int(5) NOT NULL,
   `relation` char(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_rel`
---
-
-INSERT INTO `tbl_rel` (`id`, `findiv`, `sindiv`, `relation`) VALUES
-(1, 5, 8, 'S'),
-(2, 5, 9, 'S');
 
 -- --------------------------------------------------------
 
@@ -319,8 +299,7 @@ ALTER TABLE `tbl_cn`
 ALTER TABLE `tbl_cs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `r_from_tbl_c` (`r`),
-  ADD KEY `b_from_tbl_b(bC)` (`b`),
-  ADD KEY `asType_from_tbl_a` (`asType`);
+  ADD KEY `b_from_tbl_b(bC)` (`b`);
 
 --
 -- Indexes for table `tbl_cvs`
@@ -337,6 +316,12 @@ ALTER TABLE `tbl_ea`
   ADD UNIQUE KEY `eAC` (`eAC`);
 
 --
+-- Indexes for table `tbl_family`
+--
+ALTER TABLE `tbl_family`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_r`
 --
 ALTER TABLE `tbl_r`
@@ -350,7 +335,8 @@ ALTER TABLE `tbl_rel`
   ADD PRIMARY KEY (`id`),
   ADD KEY `findiv_from_tbl_c` (`findiv`),
   ADD KEY `sindiv_from_tbl_c` (`sindiv`),
-  ADD KEY `relation_from_tbl_r` (`relation`);
+  ADD KEY `relation_from_tbl_r` (`relation`),
+  ADD KEY `familyID_from_tbl_family` (`Family_ID`);
 
 --
 -- Indexes for table `tbl_sx`
@@ -379,19 +365,19 @@ ALTER TABLE `tbl_b`
 -- AUTO_INCREMENT for table `tbl_c`
 --
 ALTER TABLE `tbl_c`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_cn`
 --
 ALTER TABLE `tbl_cn`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_cs`
 --
 ALTER TABLE `tbl_cs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_cvs`
@@ -406,6 +392,12 @@ ALTER TABLE `tbl_ea`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `tbl_family`
+--
+ALTER TABLE `tbl_family`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tbl_r`
 --
 ALTER TABLE `tbl_r`
@@ -415,7 +407,7 @@ ALTER TABLE `tbl_r`
 -- AUTO_INCREMENT for table `tbl_rel`
 --
 ALTER TABLE `tbl_rel`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_sx`
@@ -445,7 +437,6 @@ ALTER TABLE `tbl_cn`
 -- Constraints for table `tbl_cs`
 --
 ALTER TABLE `tbl_cs`
-  ADD CONSTRAINT `asType_from_tbl_a` FOREIGN KEY (`asType`) REFERENCES `tbl_a` (`aC`),
   ADD CONSTRAINT `b_from_tbl_b(bC)` FOREIGN KEY (`b`) REFERENCES `tbl_b` (`bC`),
   ADD CONSTRAINT `r_from_tbl_c` FOREIGN KEY (`r`) REFERENCES `tbl_c` (`id`);
 
@@ -453,6 +444,7 @@ ALTER TABLE `tbl_cs`
 -- Constraints for table `tbl_rel`
 --
 ALTER TABLE `tbl_rel`
+  ADD CONSTRAINT `familyID_from_tbl_family` FOREIGN KEY (`Family_ID`) REFERENCES `tbl_family` (`id`),
   ADD CONSTRAINT `findiv_from_tbl_c` FOREIGN KEY (`findiv`) REFERENCES `tbl_c` (`id`),
   ADD CONSTRAINT `relation_from_tbl_r` FOREIGN KEY (`relation`) REFERENCES `tbl_r` (`rC`),
   ADD CONSTRAINT `sindiv_from_tbl_c` FOREIGN KEY (`sindiv`) REFERENCES `tbl_c` (`id`);

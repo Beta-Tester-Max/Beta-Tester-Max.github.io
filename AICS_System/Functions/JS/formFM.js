@@ -168,7 +168,7 @@ function updateFamilyTableWord() {
         var civSel = memberDiv.querySelector('#civStat' + (i+1));
         var civStat = (civSel && civSel.value && civSel.selectedOptions[0] && civSel.selectedOptions[0].text !== '--Select--') ? civSel.selectedOptions[0].text : "";
         var eduSel = memberDiv.querySelector('#educAtt' + (i+1));
-        var educAtt = (eduSel && eduSel.value && eduSel.selectedOptions[0] && eduSel.selectedOptions[0].text !== '--Select--') ? eduSel.selectedOptions[0].text : "";
+        var educAtt = (eduSel && eduSel.selectedIndex > 0) ? eduSel.options[eduSel.selectedIndex].text : "";
         var occupation = memberDiv.querySelector('#occupation' + (i+1));
         occupation = occupation ? occupation.value : "";
         var age = "";
@@ -183,6 +183,9 @@ function updateFamilyTableWord() {
             age = years !== "" && !isNaN(years) ? years + " years old" : "";
         }
         var fullName = [fname, mname, lname].filter(Boolean).join(" ");
+        // N/A logic for optional fields
+        var educAttDisplay = educAtt ? educAtt : 'N/A';
+        var occupationDisplay = occupation ? occupation : 'N/A';
         var row = document.createElement("tr");
         row.innerHTML =
             '<td>' + fullName + '</td>' +
@@ -190,8 +193,8 @@ function updateFamilyTableWord() {
             '<td>' + age + '</td>' +
             '<td>' + sx + '</td>' +
             '<td>' + civStat + '</td>' +
-            '<td>' + educAtt + '</td>' +
-            '<td>' + occupation + '</td>';
+            '<td>' + educAttDisplay + '</td>' +
+            '<td>' + occupationDisplay + '</td>';
         tableBody.appendChild(row);
     }
 }

@@ -25,11 +25,11 @@ $sql = $pdo->query("SELECT * FROM tbl_r");
 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 $_SESSION['allR'] = $result;
 
-$sql = $pdo->query("SELECT id, cSName FROM tbl_cs WHERE Status = 'Ongoing' AND form_V = 0");
+$sql = $pdo->query("SELECT id, cSName FROM tbl_cs WHERE Status = 'Ongoing'");
 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 $_SESSION['allCaseStudy'] = $result;
 
-$sql = $pdo->query("SELECT id, cSName FROM tbl_cs WHERE Status = 'Complete' AND form_V = 1");
+$sql = $pdo->query("SELECT id, cSName FROM tbl_cs WHERE Status = 'Complete'");
 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 $_SESSION['allCompleteCaseStudy'] = $result;
 
